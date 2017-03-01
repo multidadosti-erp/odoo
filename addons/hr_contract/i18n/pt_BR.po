@@ -1,26 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * hr_contract
-# 
-# Translators:
-# Martin Trigaux <mat@odoo.com>, 2016
-# Grazziano Duarte <gra.negocia@gmail.com>, 2016
-# Mateus Lopes <mateus1@gmail.com>, 2016
-# Rodrigo Macedo <rodrigomacedo@rmsolucoeseminformatica.com>, 2016
-# Adriel Kotviski <kotviski@gmail.com>, 2016
+# 	* hr_contract
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0c\n"
+"Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-07 08:57+0000\n"
-"PO-Revision-Date: 2016-09-07 08:57+0000\n"
-"Last-Translator: Adriel Kotviski <kotviski@gmail.com>, 2016\n"
-"Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
+"POT-Creation-Date: 2017-03-01 13:45+0000\n"
+"PO-Revision-Date: 2017-03-01 10:46-0300\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
 "Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #. module: hr_contract
 #: model:ir.model,name:hr_contract.model_base_action_rule
@@ -53,6 +48,11 @@ msgid "Company Vehicle"
 msgstr "Veículo da Empresa"
 
 #. module: hr_contract
+#: model:ir.model,name:hr_contract.model_hr_contract
+msgid "Contract"
+msgstr "Contrato"
+
+#. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_name
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_view_form
 msgid "Contract Reference"
@@ -60,14 +60,14 @@ msgstr "Contrato Referência"
 
 #. module: hr_contract
 #: model:ir.model,name:hr_contract.model_hr_contract_type
-#: model:ir.model.fields,field_description:hr_contract.field_hr_contract_type_id_5769
+#: model:ir.model.fields,field_description:hr_contract.field_hr_contract_type_id_5106
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_type_name
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_type_view_form
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_type_view_search
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_type_view_tree
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_view_search
 msgid "Contract Type"
-msgstr "Tipo de contrato"
+msgstr "Tipo de Contrato"
 
 #. module: hr_contract
 #: model:ir.actions.act_window,name:hr_contract.action_hr_contract_type
@@ -84,14 +84,13 @@ msgstr "Contrato prestes a expirar"
 #. module: hr_contract
 #: model:mail.message.subtype,description:hr_contract.mt_contract_close
 msgid "Contract expired"
-msgstr "Contrato expirado"
+msgstr "Contrato Expirado"
 
 #. module: hr_contract
 #: code:addons/hr_contract/models/hr_contract.py:84
 #, python-format
 msgid "Contract start date must be less than contract end date."
-msgstr ""
-"Contrato data de início deve ser inferior a data de término do contrato."
+msgstr "Contrato data de início deve ser inferior a data de término do contrato."
 
 #. module: hr_contract
 #: model:mail.message.subtype,name:hr_contract.mt_department_contract_pending
@@ -156,11 +155,6 @@ msgstr "Duração"
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_view_search
 msgid "Employee"
 msgstr "Funcionário"
-
-#. module: hr_contract
-#: model:ir.model,name:hr_contract.model_hr_contract
-msgid "Employee Contract"
-msgstr "Contrato do Funcionário"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_date_end
