@@ -345,7 +345,7 @@ class SaleOrder(models.Model):
                     vals = {}
                     if order.name not in invoices[group_key].origin.split(', '):
                         vals['origin'] = invoices[group_key].origin + ', ' + order.name
-                    if order.client_order_ref and order.client_order_ref not in invoices[group_key].name.split(', '):
+                    if order.client_order_ref and order.client_order_ref not in invoices[group_key].name.split(', ') and order.client_order_ref != invoices[group_key].name:
                         vals['name'] = invoices[group_key].name + ', ' + order.client_order_ref
                     invoices[group_key].write(vals)
                 if line.qty_to_invoice > 0:
@@ -442,7 +442,6 @@ class SaleOrder(models.Model):
     def action_done(self):
         self.write({'state': 'done'})
 
-    @api.multi
     def _prepare_procurement_group(self):
         return {'name': self.name}
 
