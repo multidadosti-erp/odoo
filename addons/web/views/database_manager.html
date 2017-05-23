@@ -115,7 +115,7 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-3 o_database_list">
       <div class="text-center">
-        <img src="/web/static/src/img/logo2.png" class="img-responsive center-block"/>
+        <img src="/web/static/src/img/database_selector.jpg" class="img-responsive center-block"/>
       </div>
       {% if insecure and databases %}
       <div class="alert alert-warning">
@@ -155,9 +155,9 @@
           </button>
         </div>
         {% else %}
-        <div class="text-center">
-          <a href="/web/database/manager">Manage databases</a>
-        </div>
+        <!--<div class="text-center">-->
+          <!--<a href="/web/database/manager">Manage databases</a>-->
+        <!--</div>-->
         {% endif %}
       {% else %}
         <form role="form" action="/web/database/create" method="post">

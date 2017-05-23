@@ -10,8 +10,10 @@ var SwitchCompanyMenu = Widget.extend({
     template: 'SwitchCompanyMenu',
     willStart: function() {
         if (!session.user_companies) {
+            console.log(session.user_companies);
             return $.Deferred().reject();
         }
+        console.log(session.user_companies);
         return this._super();
     },
     start: function() {
