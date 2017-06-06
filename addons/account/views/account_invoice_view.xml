@@ -256,7 +256,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Bill">
+                        <page string="Bill" name="bill">
                             <field context="{'type': type, 'journal_id': journal_id}" name="invoice_line_ids">
                                 <tree string="Bill lines" editable="bottom">
                                     <field name="sequence" widget="handle" />
@@ -311,7 +311,7 @@
                                 <field name="comment" placeholder="Additional notes..."/>
                             </div>
                         </page>
-                        <page string="Other Info">
+                        <page string="Other Info" name="other_info">
                             <group>
                                 <group>
                                     <field name="journal_id" groups="account.group_account_user" options="{'no_create': True}"
