@@ -70,7 +70,7 @@ msgstr ""
 #. module: sale_crm
 #: model:ir.model.fields,field_description:sale_crm.field_res_users_payment_token_count
 msgid "Count Payment Token"
-msgstr ""
+msgstr "Төлбөрийн Токенийг тоолох"
 
 #. module: sale_crm
 #: model:ir.model.fields,field_description:sale_crm.field_res_users_membership_state
@@ -123,6 +123,13 @@ msgid ""
 "-Invoiced Member: A member whose invoice has been created.\n"
 "-Paying member: A member who has paid the membership fee."
 msgstr ""
+"Энэ нь гишүүнчлэлийн төлөвийг илтгэдэг.\n"
+"-Гишүүн бус: Ямар ч гишүүнчлэлд бүртгүүлээгүй түнш.\n"
+"-Цуцласан Гишүүн: Гишүүнчлэлээ цуцласан гишүүн.\n"
+"-Хуучин Гишүүн: Гишүүнчлэлийн хугацаа нь хэтэрсэн гишүүн.\n"
+"-Хүлээж байгаа Гишүүн: Гишүүнчлэлд бүртгүүлсэн ба нэхэмжлэл нь үүсэх гэж байгаа гишүүн.\n"
+"-Нэхэмжлэгдсэн Гишүүн: Нэхэмжлэл нь үүссэн гишүүн.\n"
+"-Төлбөрт гишүүн: Гишүүнчлэлийн төлбөрөө төлсөн гишүүн."
 
 #. module: sale_crm
 #: model:ir.model,name:sale_crm.model_crm_lead
@@ -174,7 +181,7 @@ msgstr "Бараа гаргалтын мессеж"
 #. module: sale_crm
 #: model:ir.ui.view,arch_db:sale_crm.crm_case_form_view_oppor
 msgid "New Quotation"
-msgstr ""
+msgstr "Шинэ Үнийн Санал"
 
 #. module: sale_crm
 #: model:ir.model.fields,field_description:sale_crm.field_crm_lead_sale_number
@@ -194,7 +201,7 @@ msgstr "Захиалга"
 #. module: sale_crm
 #: model:ir.model.fields,field_description:sale_crm.field_res_users_payment_token_ids
 msgid "Payment Tokens"
-msgstr ""
+msgstr "Төлбөрийн Токен"
 
 #. module: sale_crm
 #: model:ir.actions.act_window,name:sale_crm.sale_action_quotations_new
