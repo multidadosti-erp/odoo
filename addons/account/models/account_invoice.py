@@ -845,30 +845,9 @@ class AccountInvoice(models.Model):
 
             name = inv.name or '/'
             if inv.payment_term_id:
-                totlines = inv.with_context(ctx).payment_term_id.with_context(currency_id=company_currency.id).compute(total, date_invoice)[0]
-                res_amount_currency = total_currency
-                ctx['date'] = date_invoice
-                for i, t in enumerate(totlines):
-                    if inv.currency_id != company_currency:
-                        amount_currency = company_currency.with_context(ctx).compute(t[1], inv.currency_id)
-                    else:
-                        amount_currency = False
-
-                    # last line: add the diff
-                    res_amount_currency -= amount_currency or 0
-                    if i + 1 == len(totlines):
-                        amount_currency += res_amount_currency
-
-                    iml.append({
-                        'type': 'dest',
-                        'name': name,
-                        'price': t[1],
-                        'account_id': inv.account_id.id,
-                        'date_maturity': t[0],
-                        'amount_currency': diff_currency and amount_currency,
-                        'currency_id': diff_currency and inv.currency_id.id,
-                        'invoice_id': inv.id
-                    })
+                iml.extend(self.move_line_from_payment_term(inv,
+                                                            total,
+                                                            total_currency))
             else:
                 iml.append({
                     'type': 'dest',
@@ -911,6 +890,48 @@ class AccountInvoice(models.Model):
             }
             inv.with_context(ctx).write(vals)
         return True
+
+    def move_line_from_payment_term(self, inv, total, total_currency):
+
+        ctx = dict(self._context, lang=inv.partner_id.lang)
+
+        date_invoice = inv.date_invoice
+        company_currency = inv.company_id.currency_id
+        diff_currency = inv.currency_id != company_currency
+
+        totlines = inv.with_context(ctx).payment_term_id.with_context(
+            currency_id=company_currency.id).compute(total, date_invoice)[0]
+        res_amount_currency = total_currency
+
+        ctx['date'] = date_invoice
+        name = inv.name or '/'
+
+        iml = []
+
+        for i, t in enumerate(totlines):
+            if inv.currency_id != company_currency:
+                amount_currency = company_currency.with_context(ctx).compute(
+                    t[1], inv.currency_id)
+            else:
+                amount_currency = False
+
+            # last line: add the diff
+            res_amount_currency -= amount_currency or 0
+            if i + 1 == len(totlines):
+                amount_currency += res_amount_currency
+
+            iml.append({
+                'type': 'dest',
+                'name': name,
+                'price': t[1],
+                'account_id': inv.account_id.id,
+                'date_maturity': t[0],
+                'amount_currency': diff_currency and amount_currency,
+                'currency_id': diff_currency and inv.currency_id.id,
+                'invoice_id': inv.id
+            })
+
+        return iml
 
     @api.multi
     def invoice_validate(self):
