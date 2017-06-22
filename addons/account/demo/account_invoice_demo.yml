@@ -5,7 +5,7 @@
     partner_id: base.res_partner_12
     user_id: base.user_demo
     reference_type: none
-    payment_term_id: False
+    payment_term_id: account.account_payment_term
     type: 'out_invoice'
     date_invoice: !eval time.strftime('%Y-%m')+'-01'
     invoice_line_ids:
@@ -15,9 +15,9 @@
       - product_id: product.consu_delivery_03
         price_unit: 280.0
         quantity: 5.0
-#-
-#  !python {model: account.invoice, id: demo_invoice_1}:
-#    self.action_invoice_open()
+-
+  !python {model: account.invoice, id: demo_invoice_1}:
+    self.action_invoice_open()
 -
   !record {model: account.invoice, id: demo_invoice_2}:
     partner_id: base.res_partner_2
@@ -30,9 +30,9 @@
       - product_id: product.consu_delivery_01
         price_unit: 25
         quantity: 20
-#-
-#  !python {model: account.invoice, id: demo_invoice_2}:
-#    self.action_invoice_open()
+-
+  !python {model: account.invoice, id: demo_invoice_2}:
+    self.action_invoice_open()
 -
   !record {model: account.invoice, id: demo_invoice_3}:
     partner_id: base.res_partner_2
@@ -45,9 +45,9 @@
       - product_id: product.consu_delivery_03
         price_unit: 15.0
         quantity: 5.0
-#-
-#  !python {model: account.invoice, id: demo_invoice_3}:
-#    self.action_invoice_open()
+-
+  !python {model: account.invoice, id: demo_invoice_3}:
+    self.action_invoice_open()
 -
    Set the context for supplier bills because the 'type' field is readonly in invoice form views, so it value won't be considered by the yaml import
 -
@@ -58,7 +58,7 @@
     partner_id: base.res_partner_12
     user_id: base.user_demo
     reference_type: none
-    payment_term_id: False
+    payment_term_id: account.account_payment_term
     type: 'in_invoice'
     date_invoice: !eval time.strftime('%Y-%m')+'-01'
     invoice_line_ids:
@@ -89,7 +89,7 @@
       if account:
           line_vals['account_id'] = account.id
           self._update('account.invoice.line', 'account', line_vals, 'ceo_wages_line')
-#          self.env['account.invoice'].browse(ref('demo_invoice_january_wages')).action_invoice_open()
+          self.env['account.invoice'].browse(ref('demo_invoice_january_wages')).action_invoice_open()
 -
   !record {model: account.invoice, id: demo_invoice_equipment_purchase}:
     partner_id: base.res_partner_1
@@ -114,7 +114,7 @@
             line_vals['invoice_line_tax_ids'] = [(6, 0, [tax_id])]
           self._update('account.invoice.line', 'account', line_vals, 'coffee_machine_line')
           self.env['account.invoice'].browse(ref('demo_invoice_equipment_purchase'))._onchange_invoice_line_ids()
-#          self.env['account.invoice'].browse(ref('demo_invoice_equipment_purchase')).action_invoice_open()
+          self.env['account.invoice'].browse(ref('demo_invoice_equipment_purchase')).action_invoice_open()
 
 -
   !python {model: account.bank.statement.line, id: False} : |
