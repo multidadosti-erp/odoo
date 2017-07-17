@@ -5895,7 +5895,7 @@ msgstr "Manter Aberto"
 #: model:ir.ui.view,arch_db:account.report_journal
 #, python-format
 msgid "Label"
-msgstr "Rótulo"
+msgstr "Parcela"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax_description
