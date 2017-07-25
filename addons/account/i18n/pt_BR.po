@@ -1678,7 +1678,7 @@ msgstr "Impostos Subsequentes a Afetar"
 #: model:ir.ui.view,arch_db:account.account_aged_balance_view
 #: model:ir.ui.view,arch_db:account.report_agedpartnerbalance
 msgid "Aged Partner Balance"
-msgstr "Saldo Anterior do Parceiro"
+msgstr "Aging List"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_aged_balance_view
