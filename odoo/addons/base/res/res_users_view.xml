@@ -288,7 +288,7 @@
                     <h1>
                         <field name="name" readonly="1" class="oe_inline"/>
                     </h1>
-                    <button name="preference_change_password" type="object" string="Change password" class="oe_link"/>
+                    <button name="preference_change_password" type="object" string="Change password" class="btn-primary"/>
                     <group name="preferences" col="4">
                         <field name="lang" readonly="0"/>
                         <field name="tz" widget="timezone_mismatch" options="{'tz_offset_field': 'tz_offset'}" readonly="0"/>
