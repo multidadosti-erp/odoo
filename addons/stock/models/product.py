@@ -272,6 +272,10 @@ class Product(models.Model):
         if value == 0.0 and operator in ('=', '>=', '<='):
             return self._search_product_quantity(operator, value, 'qty_available')
         product_ids = self._search_qty_available_new(operator, value, self._context.get('lot_id'), self._context.get('owner_id'), self._context.get('package_id'))
+        if (value > 0 and operator in ('<=', '<')) or (value < 0 and operator in ('>=', '>')):
+            # include also unavailable products
+            domain = self._search_product_quantity(operator, value, 'qty_available')
+            product_ids += domain[0][2]
         return [('id', 'in', product_ids)]
 
     def _search_qty_available_new(self, operator, value, lot_id=False, owner_id=False, package_id=False):
@@ -364,6 +368,12 @@ class Product(models.Model):
     def action_view_routes(self):
         return self.mapped('product_tmpl_id').action_view_routes()
 
+    @api.multi
+    def write(self, values):
+        res = super(Product, self).write(values)
+        if 'active' in values and not values['active'] and self.mapped('orderpoint_ids').filtered(lambda r: r.active):
+            raise UserError(_('You still have some active reordering rules on this product. Please archive or delete them first.'))
+        return res
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -415,9 +425,6 @@ class ProductTemplate(models.Model):
     route_from_categ_ids = fields.Many2many(
         relation="stock.location.route", string="Category Routes",
         related='categ_id.total_route_ids')
-
-    def _is_cost_method_standard(self):
-        return True
 
     def _compute_quantities(self):
         res = self._compute_quantities_dict()

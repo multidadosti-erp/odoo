@@ -698,7 +698,7 @@ class AccountInvoice(models.Model):
         total_currency = 0
         for line in invoice_move_lines:
             if self.currency_id != company_currency:
-                currency = self.currency_id.with_context(date=self.date_invoice or fields.Date.context_today(self))
+                currency = self.currency_id.with_context(date=self.date or self.date_invoice or fields.Date.context_today(self))
                 if not (line.get('currency_id') and line.get('amount_currency')):
                     line['currency_id'] = currency.id
                     line['amount_currency'] = currency.round(line['price'])
@@ -832,7 +832,6 @@ class AccountInvoice(models.Model):
 
             if not inv.date_invoice:
                 inv.with_context(ctx).write({'date_invoice': fields.Date.context_today(self)})
-            date_invoice = inv.date_invoice
             company_currency = inv.company_id.currency_id
 
             # create move lines (one per invoice line + eventual taxes and analytic lines)
@@ -866,7 +865,7 @@ class AccountInvoice(models.Model):
             journal = inv.journal_id.with_context(ctx)
             line = inv.finalize_invoice_move_lines(line)
 
-            date = inv.date or date_invoice
+            date = inv.date or inv.date_invoice
             move_vals = {
                 'ref': inv.reference,
                 'line_ids': line,
@@ -898,15 +897,14 @@ class AccountInvoice(models.Model):
         date_invoice = inv.date_invoice
         company_currency = inv.company_id.currency_id
         diff_currency = inv.currency_id != company_currency
+        name = inv.name or '/'
+        
+        iml = []
 
         totlines = inv.with_context(ctx).payment_term_id.with_context(
             currency_id=company_currency.id).compute(total, date_invoice)[0]
         res_amount_currency = total_currency
-
-        ctx['date'] = date_invoice
-        name = inv.name or '/'
-
-        iml = []
+        ctx['date'] = inv.date or inv.date_invoice
 
         for i, t in enumerate(totlines):
             if inv.currency_id != company_currency:
@@ -1498,6 +1496,12 @@ class AccountPaymentTerm(models.Model):
             last_date = result and result[-1][0] or fields.Date.today()
             result.append((last_date, dist))
         return result
+
+    @api.multi
+    def unlink(self):
+        property_recs = self.env['ir.property'].search([('value_reference', 'in', ['account.payment.term,%s'%payment_term.id for payment_term in self])])
+        property_recs.unlink()
+        return super(AccountPaymentTerm, self).unlink()
 
 
 class AccountPaymentTermLine(models.Model):
