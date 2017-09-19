@@ -3253,7 +3253,7 @@ msgstr "Parabéns! Você concluiu!"
 msgid ""
 "Contains the logic shared between models which allows to register payments"
 msgstr ""
-"Contém a lógica compartilhada entre os modelos que permitem registar os "
+"Contém a lógica compartilhada entre os modelos que permitem registrar os "
 "pagamentos"
 
 #. module: account
@@ -10945,6 +10945,12 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account.invoice_supplier_form
 msgid "You have"
 msgstr "Você tem"
+
+#. module: account
+#: code:addons/account/models/account_payment.py:360
+#, python-format
+msgid "You have to define a sequence for %s in your company."
+msgstr ""
 
 #. module: account
 #: code:addons/account/wizard/account_report_general_ledger.py:21
