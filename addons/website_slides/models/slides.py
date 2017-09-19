@@ -387,7 +387,7 @@ class Slide(models.Model):
             values['image'] = values['datas']
         if values.get('website_published') and not values.get('date_published'):
             values['date_published'] = datetime.datetime.now()
-        if values.get('url'):
+        if values.get('url') and not values.get('document_id'):
             doc_data = self._parse_document_url(values['url']).get('values', dict())
             for key, value in doc_data.iteritems():
                 values.setdefault(key, value)
@@ -401,7 +401,7 @@ class Slide(models.Model):
 
     @api.multi
     def write(self, values):
-        if values.get('url'):
+        if values.get('url') and values['url'] != self.url:
             doc_data = self._parse_document_url(values['url']).get('values', dict())
             for key, value in doc_data.iteritems():
                 values.setdefault(key, value)
@@ -450,6 +450,7 @@ class Slide(models.Model):
                 'type': 'ir.actions.act_url',
                 'url': '%s' % self.website_url,
                 'target': 'self',
+                'target_type': 'public',
                 'res_id': self.id,
             }
         return super(Slide, self).get_access_action()

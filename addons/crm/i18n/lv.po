@@ -2302,7 +2302,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm.crm_lead_tag_form
 #: model:ir.ui.view,arch_db:crm.crm_lead_tag_tree
 msgid "Lead Tags"
-msgstr ""
+msgstr "Pavedienu birkas"
 
 #. module: crm
 #: model:ir.model,name:crm.model_crm_lead2opportunity_partner
@@ -2341,7 +2341,7 @@ msgstr "Pavedieni"
 #. module: crm
 #: model:ir.ui.menu,name:crm.menu_crm_config_lead
 msgid "Leads & Opportunities"
-msgstr ""
+msgstr "Pavedieni & Iespējas"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:59
@@ -2765,7 +2765,7 @@ msgstr "Manas iespējas"
 #: model:ir.actions.server,name:crm.action_your_pipeline
 #: model:ir.ui.menu,name:crm.menu_crm_opportunities
 msgid "My Pipeline"
-msgstr "Mana pārdošanas plūsma"
+msgstr "Pārdošanas plūsma"
 
 #. module: crm
 #: model:ir.model.fields,field_description:crm.field_base_partner_merge_automatic_wizard_group_by_name

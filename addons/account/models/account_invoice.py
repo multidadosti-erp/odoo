@@ -505,6 +505,7 @@ class AccountInvoice(models.Model):
 
         self.account_id = account_id
         self.payment_term_id = payment_term_id
+        self.date_due = False
         self.fiscal_position_id = fiscal_position
 
         if type in ('in_invoice', 'out_refund'):
@@ -666,7 +667,7 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         credit_aml = self.env['account.move.line'].browse(credit_aml_id)
         if not credit_aml.currency_id and self.currency_id != self.company_id.currency_id:
-            credit_aml.with_context(allow_amount_currency=True).write({
+            credit_aml.with_context(allow_amount_currency=True, check_move_validity=False).write({
                 'amount_currency': self.company_id.currency_id.with_context(date=credit_aml.date).compute(credit_aml.balance, self.currency_id),
                 'currency_id': self.currency_id.id})
         if credit_aml.payment_id:
@@ -762,7 +763,6 @@ class AccountInvoice(models.Model):
                 if tax.amount_type == "group":
                     for child_tax in tax.children_tax_ids:
                         done_taxes.append(child_tax.id)
-                done_taxes.append(tax.id)
                 res.append({
                     'invoice_tax_line_id': tax_line.id,
                     'tax_line_id': tax_line.tax_id.id,
@@ -774,8 +774,9 @@ class AccountInvoice(models.Model):
                     'account_id': tax_line.account_id.id,
                     'account_analytic_id': tax_line.account_analytic_id.id,
                     'invoice_id': self.id,
-                    'tax_ids': [(6, 0, done_taxes)] if tax_line.tax_id.include_base_amount else []
+                    'tax_ids': [(6, 0, list(done_taxes))] if tax_line.tax_id.include_base_amount else []
                 })
+                done_taxes.append(tax.id)
         return res
 
     def inv_line_characteristic_hashcode(self, invoice_line):
@@ -946,7 +947,7 @@ class AccountInvoice(models.Model):
         return {
             'date_maturity': line.get('date_maturity', False),
             'partner_id': part,
-            'name': line['name'][:64],
+            'name': line['name'],
             'debit': line['price'] > 0 and line['price'],
             'credit': line['price'] < 0 and -line['price'],
             'account_id': line['account_id'],
@@ -1133,7 +1134,7 @@ class AccountInvoice(models.Model):
         if self.origin:
             communication = '%s (%s)' % (communication, self.origin)
 
-        payment = self.env['account.payment'].create({
+        payment_vals = {
             'invoice_ids': [(6, 0, self.ids)],
             'amount': pay_amount or self.residual,
             'payment_date': date or fields.Date.context_today(self),
@@ -1145,7 +1146,11 @@ class AccountInvoice(models.Model):
             'payment_method_id': payment_method.id,
             'payment_difference_handling': writeoff_acc and 'reconcile' or 'open',
             'writeoff_account_id': writeoff_acc and writeoff_acc.id or False,
-        })
+        }
+        if self.env.context.get('tx_currency_id'):
+            payment_vals['currency_id'] = self.env.context.get('tx_currency_id')
+
+        payment = self.env['account.payment'].create(payment_vals)
         payment.post()
 
         return True
