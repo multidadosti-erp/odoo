@@ -373,7 +373,7 @@ class InventoryLine(models.Model):
             self._compute_theoretical_qty()
             self.product_qty = self.theoretical_qty
 
-    @api.model
+    @api.multi
     def write(self, values):
         values.pop('product_name', False)
         res = super(InventoryLine, self).write(values)
@@ -454,9 +454,9 @@ class InventoryLine(models.Model):
                 continue
             diff = line.theoretical_qty - line.product_qty
             if diff < 0:  # found more than expected
-                vals = self._get_move_values(abs(diff), line.product_id.property_stock_inventory.id, line.location_id.id)
+                vals = line._get_move_values(abs(diff), line.product_id.property_stock_inventory.id, line.location_id.id)
             else:
-                vals = self._get_move_values(abs(diff), line.location_id.id, line.product_id.property_stock_inventory.id)
+                vals = line._get_move_values(abs(diff), line.location_id.id, line.product_id.property_stock_inventory.id)
             move = moves.create(vals)
 
             if diff > 0:

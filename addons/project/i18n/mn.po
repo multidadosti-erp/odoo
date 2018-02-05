@@ -3,7 +3,7 @@
 # * project
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
+# Martin Trigaux, 2017
 # nasaaskii <nasaaskii@gmail.com>, 2017
 # Otgonbayar.A <gobi.mn@gmail.com>, 2017
 # Erdenebold Ts <erdenebold10@gmail.com>, 2017
@@ -982,7 +982,7 @@ msgid ""
 "                                The worst question to ask is, \"What did you do this week?\" It invariably  generates unnecessary, time-consuming dialogue from team members. Plus, you should already know what everyone on the team did during the week."
 msgstr ""
 "<strong>Асуултаар эхэл.</strong><br/>\n"
-"Хамгийн муу асуулт бол \"Та энэ долоо хоногт юу хийв?\" Энэ нь багийн гишүүдээс хэрэгцээгүй, цаг үрсэн хариултыг авдаг. Тэгээд ч долоо хоногийн турш багийнхан юу хийснийг та аль хэдийнэ мэдэж байх ёстой."
+"Хамгийн муу асуулт бол \"Та энэ долоо хоногт юу хийв?\" Энэ нь багийн гишүүдээс хэрэгцээгүй, цаг үрсэн хариултыг авдаг. Тэгээд ч долоо хоногийн турш багийнхан юу хийснийг та аль хэдийн мэдэж байх ёстой."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -1141,6 +1141,11 @@ msgstr "Жишээ төслийг идэвхжүүлэх"
 #: model:ir.model.fields,field_description:project.field_project_task_active
 msgid "Active"
 msgstr "Идэвхитэй"
+
+#. module: project
+#: model:ir.ui.view,arch_db:project.project_planner
+msgid "Activities"
+msgstr ""
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.task_type_edit
@@ -2817,6 +2822,11 @@ msgstr "Хавсрагдсан баримтын тоо"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
+msgid "Objectives"
+msgstr ""
+
+#. module: project
+#: model:ir.ui.view,arch_db:project.project_planner
 msgid ""
 "Odoo Project is a super fast and easy way to make your activities and tasks visible to\n"
 "                        everyone in your company. Follow how things progress, see when things are stuck, know\n"
@@ -3123,6 +3133,7 @@ msgstr "Төслийн даалгаврууд"
 #: model:ir.model.fields,field_description:project.field_project_task_type_project_ids
 #: model:ir.ui.menu,name:project.menu_projects_config
 #: model:ir.ui.view,arch_db:project.analytic_account_inherited_form
+#: model:ir.ui.view,arch_db:project.project_planner
 #: model:ir.ui.view,arch_db:project.view_project
 msgid "Projects"
 msgstr "Төслүүд"

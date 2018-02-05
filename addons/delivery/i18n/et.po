@@ -3,18 +3,21 @@
 # * delivery
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
+# Martin Trigaux, 2017
 # Arma Gedonsky <armagedonsky@hot.ee>, 2017
 # Rivo Zängov <eraser@eraser.ee>, 2017
 # Wanradt Koell <wanradt@gmail.com>, 2017
-# Gert V <gert@airobot.ee>, 2017
+# Gert Valdek <gert@airobot.ee>, 2017
+# Egon Raamat <egon@avalah.ee>, 2017
+# Eneli Õigus <enelioigus@gmail.com>, 2017
+# Marek Pontus, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0c\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-07 08:56+0000\n"
 "PO-Revision-Date: 2016-09-07 08:56+0000\n"
-"Last-Translator: Gert V <gert@airobot.ee>, 2017\n"
+"Last-Translator: Marek Pontus, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +58,7 @@ msgstr ""
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_purchase_count
 msgid "# Purchases"
-msgstr ""
+msgstr "# Ostud"
 
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_sales_count
@@ -301,7 +304,7 @@ msgstr ""
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_color
 msgid "Color Index"
-msgstr ""
+msgstr "Värvi index"
 
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_company_id
@@ -430,7 +433,7 @@ msgstr ""
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_deferred_revenue_category_id
 msgid "Deferred Revenue Type"
-msgstr ""
+msgstr "Ajatatud tulu tüüp"
 
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_delivery_count
@@ -630,6 +633,7 @@ msgstr ""
 #. module: delivery
 #: model:delivery.carrier,name:delivery.free_delivery_carrier
 #: model:product.product,name:delivery.free_delivery_carrier_product_product
+#: model:product.template,name:delivery.free_delivery_carrier_product_template
 msgid "Free delivery charges"
 msgstr ""
 
@@ -728,6 +732,9 @@ msgid ""
 " It is automatically resized as a 1024x1024px image, with aspect ratio "
 "preserved."
 msgstr ""
+"Toote variatsiooni pilt (kui pole määratud siis suur baastoote pilt). See "
+"muudetakse automaatselt suurusele 1024x1024 nii, et esialgne kõrguse ja "
+"laiuse suhe jääb paika."
 
 #. module: delivery
 #: model:ir.model.fields,help:delivery.field_delivery_carrier_image_medium
@@ -998,6 +1005,7 @@ msgstr "Tavamaksumus - Üldmaksumus"
 #. module: delivery
 #: model:delivery.carrier,name:delivery.normal_delivery_carrier
 #: model:product.product,name:delivery.normal_delivery_carrier_product_product
+#: model:product.template,name:delivery.normal_delivery_carrier_product_template
 msgid "Normal Delivery Charges"
 msgstr ""
 
@@ -1048,7 +1056,7 @@ msgstr "Väljuv"
 #. module: delivery
 #: model:ir.ui.view,arch_db:delivery.view_quant_package_form_save
 msgid "Package"
-msgstr ""
+msgstr "Pakend"
 
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_product_packaging_shipper_package_code
@@ -1075,7 +1083,7 @@ msgstr "Pakendamine"
 #. module: delivery
 #: model:ir.model,name:delivery.model_stock_pack_operation
 msgid "Packing Operation"
-msgstr ""
+msgstr "Pakendamine"
 
 #. module: delivery
 #: model:ir.model,name:delivery.model_res_partner
@@ -1287,7 +1295,7 @@ msgstr ""
 #. module: delivery
 #: model:ir.model,name:delivery.model_stock_return_picking
 msgid "Return Picking"
-msgstr ""
+msgstr "Tagastuse noppimine"
 
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_route_ids
@@ -1355,6 +1363,9 @@ msgid ""
 "Selecting \"Blocking Message\" will throw an exception with the message and "
 "block the flow. The Message has to be written in the next field."
 msgstr ""
+"Valides 'Hoiatus' teavitab see kasutaja teatega, valides 'Blokeerimise "
+"teade' teavitab kasutajat ja peatab tegevuse. Teade tuleb kirjutada "
+"järgmisse lahtrisse."
 
 #. module: delivery
 #: model:ir.ui.view,arch_db:delivery.view_picking_withcarrier_out_form
@@ -1409,7 +1420,7 @@ msgstr ""
 #. module: delivery
 #: model:ir.model.fields,help:delivery.field_delivery_carrier_can_be_expensed
 msgid "Specify whether the product can be selected in an HR expense."
-msgstr ""
+msgstr "Täpsustage, kas toodet saab valida personali kuludes."
 
 #. module: delivery
 #: model:ir.model.fields,help:delivery.field_delivery_carrier_property_cost_method
@@ -1503,6 +1514,7 @@ msgstr ""
 #. module: delivery
 #: model:delivery.carrier,name:delivery.delivery_carrier
 #: model:product.product,name:delivery.delivery_carrier_product_product
+#: model:product.template,name:delivery.delivery_carrier_product_template
 msgid "The Poste"
 msgstr ""
 
@@ -1700,7 +1712,7 @@ msgstr "Lugemata sõnumite loendur"
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_valuation
 msgid "Valuation"
-msgstr ""
+msgstr "Hindamine"
 
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_price_rule_variable
@@ -1725,7 +1737,7 @@ msgstr ""
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_supplier_taxes_id
 msgid "Vendor Taxes"
-msgstr ""
+msgstr "Tarnija maksud"
 
 #. module: delivery
 #: model:ir.model.fields,field_description:delivery.field_delivery_carrier_seller_ids
@@ -1813,6 +1825,9 @@ msgid ""
 "specific valuation account set on the source location. When not set on the "
 "product, the one from the product category is used."
 msgstr ""
+"Reaalajas varude hindamisel kantakse kõik andmikku sissetulevad varud "
+"sellele kontole, kui just pole kindlat hindamise kontot määratud allika "
+"asukohas. Kui tootel pole määratud, siis kasutatakse toote kategooria oma."
 
 #. module: delivery
 #: model:ir.model.fields,help:delivery.field_delivery_carrier_property_stock_account_output
@@ -1822,6 +1837,9 @@ msgid ""
 "specific valuation account set on the destination location. When not set on "
 "the product, the one from the product category is used."
 msgstr ""
+"Reaalajas varude hindamisel kantakse kõik andmikku sissetulevad varud "
+"sellele kontole, kui just pole kindlat hindamise kontot määratud allika "
+"asukohas. Kui tootel pole määratud, siis kasutatakse toote kategooria oma."
 
 #. module: delivery
 #: model:ir.model.fields,help:delivery.field_delivery_carrier_email_template_id

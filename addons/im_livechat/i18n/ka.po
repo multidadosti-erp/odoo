@@ -1,20 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * im_livechat
-#
+# 
 # Translators:
+# Martin Trigaux <mat@odoo.com>, 2017
+# Saba Khmaladze <skhmaladze@uglt.org>, 2018
+# Giorgi Melitauri <gmelitauri@live.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 9.0\n"
+"Project-Id-Version: Odoo Server 10.0c\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-07 08:58+0000\n"
-"PO-Revision-Date: 2016-06-27 15:58+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Georgian (http://www.transifex.com/odoo/odoo-9/language/ka/)\n"
-"Language: ka\n"
+"PO-Revision-Date: 2016-09-07 08:58+0000\n"
+"Last-Translator: Giorgi Melitauri <gmelitauri@live.com>, 2018\n"
+"Language-Team: Georgian (https://www.transifex.com/odoo/teams/41243/ka/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ka\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: im_livechat
@@ -37,8 +40,7 @@ msgstr ""
 #: model:ir.model.fields,help:im_livechat.field_im_livechat_channel_rule_action
 msgid ""
 "* 'Display the button' displays the chat button on the pages.\n"
-"* 'Auto popup' displays the button and automatically open the conversation "
-"pane.\n"
+"* 'Auto popup' displays the button and automatically open the conversation pane.\n"
 "* 'Hide the button' hides the chat button on the pages."
 msgstr ""
 
@@ -55,7 +57,7 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_rule_action
 msgid "Action"
-msgstr "ქმედება"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_mail_channel_anonymous_name
@@ -111,7 +113,7 @@ msgstr ""
 #: code:addons/im_livechat/static/src/xml/im_livechat.xml:13
 #, python-format
 msgid "Bad"
-msgstr ""
+msgstr "ცუდი"
 
 #. module: im_livechat
 #: model:ir.actions.act_window,name:im_livechat.im_livechat_canned_response_action
@@ -124,8 +126,7 @@ msgstr ""
 msgid ""
 "Canned responses allow you to insert prewritten responses in\n"
 "                your messages by typing <i>:shortcut</i>. The shortcut is\n"
-"                replaced directly in your message, so that you can still "
-"edit\n"
+"                replaced directly in your message, so that you can still edit\n"
 "                it before sending."
 msgstr ""
 
@@ -138,7 +139,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_report_operator_view_search
 #: model:ir.ui.view,arch_db:im_livechat.mail_channel_view_search
 msgid "Channel"
-msgstr "არხი"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_report_channel_channel_name
@@ -159,7 +160,7 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.ui.menu,name:im_livechat.support_channels
 msgid "Channels"
-msgstr "არხები"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_input_placeholder
@@ -187,12 +188,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_report_channel_technical_name
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_report_channel_view_search
 msgid "Code"
-msgstr "კოდი"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.ui.menu,name:im_livechat.livechat_config
 msgid "Configuration"
-msgstr ""
+msgstr "კონფიგურაცია"
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_report_channel_channel_id
@@ -209,7 +210,7 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_rule_country_ids
 msgid "Country"
-msgstr "ქვეყანა"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_create_uid
@@ -318,8 +319,8 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_channel_view_form
 msgid ""
-"For website built with Odoo CMS, please install the website_livechat module. "
-"Then go to Settings &gt; Website Settings and select the Website Live Chat "
+"For website built with Odoo CMS, please install the website_livechat module."
+" Then go to Settings &gt; Website Settings and select the Website Live Chat "
 "Channel you want to add on your website."
 msgstr ""
 
@@ -342,7 +343,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_report_operator_view_search
 #: model:ir.ui.view,arch_db:im_livechat.mail_channel_view_search
 msgid "Group By..."
-msgstr "დაჯგუფება"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.ui.view,arch_db:im_livechat.mail_channel_view_tree
@@ -359,7 +360,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:im_livechat.mail_channel_view_form
 #: model:ir.ui.view,arch_db:im_livechat.mail_channel_view_tree
 msgid "History"
-msgstr "ისტორია"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_report_channel_start_date_hour
@@ -396,7 +397,7 @@ msgstr "იდენტიფიკატორი"
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_image
 msgid "Image"
-msgstr "გამოსახულება"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_channel_view_kanban
@@ -509,7 +510,7 @@ msgstr ""
 #. module: im_livechat
 #: model:res.groups,name:im_livechat.im_livechat_group_manager
 msgid "Manager"
-msgstr "მენეჯერი"
+msgstr "მმართველი"
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_rule_sequence
@@ -519,7 +520,7 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_image_medium
 msgid "Medium"
-msgstr "საშუალო"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,help:im_livechat.field_im_livechat_channel_image_medium
@@ -568,7 +569,7 @@ msgstr ""
 #: code:addons/im_livechat/static/src/xml/im_livechat.xml:12
 #, python-format
 msgid "OK"
-msgstr "კარგი"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_report_channel_partner_id
@@ -576,7 +577,7 @@ msgstr "კარგი"
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_report_channel_view_search
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_report_operator_view_search
 msgid "Operator"
-msgstr "ოპერატორ"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.ui.menu,name:im_livechat.menu_reporting_livechat_operator
@@ -607,7 +608,7 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_channel_view_form
 msgid "Options"
-msgstr "ოფციები"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,help:im_livechat.field_im_livechat_channel_rating_percentage_satisfaction
@@ -617,7 +618,7 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.model,name:im_livechat.model_rating_rating
 msgid "Rating"
-msgstr ""
+msgstr "შეფასება"
 
 #. module: im_livechat
 #. openerp-web
@@ -635,13 +636,13 @@ msgstr ""
 #. module: im_livechat
 #: model:ir.ui.menu,name:im_livechat.menu_reporting_livechat
 msgid "Report"
-msgstr "რეპორტი"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_rule_ids
 #: model:ir.ui.view,arch_db:im_livechat.im_livechat_channel_rule_view_tree
 msgid "Rules"
-msgstr "წესები"
+msgstr ""
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_script_external
@@ -692,8 +693,8 @@ msgstr ""
 #: model:ir.model.fields,help:im_livechat.field_im_livechat_channel_image_small
 msgid ""
 "Small-sized photo of the group. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is "
-"required."
+"image, with aspect ratio preserved. Use this field anywhere a small image is"
+" required."
 msgstr ""
 
 #. module: im_livechat
@@ -821,8 +822,7 @@ msgstr ""
 #: model:ir.actions.act_window,help:im_livechat.im_livechat_channel_action
 msgid ""
 "You can create channels for each website on which you want\n"
-"                to integrate the website live chat widget, allowing your "
-"website\n"
+"                to integrate the website live chat widget, allowing your website\n"
 "                visitors to talk in real time with your operators."
 msgstr ""
 

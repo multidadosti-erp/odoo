@@ -3,19 +3,19 @@
 # * base
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
+# Martin Trigaux, 2017
 # Otgonbayar.A <gobi.mn@gmail.com>, 2017
+# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2017
 # odmunkh enkh-ochir <odmunkh0609@gmail.com>, 2017
 # nasaaskii <nasaaskii@gmail.com>, 2017
 # Batzul B <batzul.active@gmail.com>, 2017
-# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-20 07:12+0000\n"
 "PO-Revision-Date: 2017-10-20 07:12+0000\n"
-"Last-Translator: Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2017\n"
+"Last-Translator: Batzul B <batzul.active@gmail.com>, 2017\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -7197,7 +7197,7 @@ msgstr "Антарктид"
 #. module: base
 #: model:res.country,name:base.ag
 msgid "Antigua and Barbuda"
-msgstr "Antigua and Barbuda"
+msgstr "Антигуа ба Барбуда"
 
 #. module: base
 #: model:ir.actions.client,name:base.modules_act_cl
@@ -7841,7 +7841,7 @@ msgstr "Ботсван"
 #. module: base
 #: model:res.country,name:base.bv
 msgid "Bouvet Island"
-msgstr "Bouvet Island"
+msgstr "Bouvet арал"
 
 #. module: base
 #: model:res.country,name:base.br
@@ -9267,7 +9267,7 @@ msgstr "Куб"
 #. module: base
 #: model:res.country,name:base.cw
 msgid "Curaçao"
-msgstr "Curaçao"
+msgstr "Курсао"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_currency_form
@@ -9488,8 +9488,8 @@ msgid ""
 "Database fetch misses ids ({}) and has extra ids ({}), may be caused by a "
 "type incoherence in a previous request"
 msgstr ""
-"Өгөгдлийн санд ids ({}) алга, харин нэмэлт ids ({}) байна. Өмнөх хүсэлт дэхь"
-" төрлийн үл нийцлээс болсон байж магадгүй."
+"Өгөгдлийн санд дугаар ({}) алга, харин нэмэлт дугаар ({}) байна. Модулийн "
+"төрөл нь өмнөхөөсөө өөр байснаас болсон байж магадгүй."
 
 #. module: base
 #: model:ir.model.fields,help:base.field_ir_values_res_id
@@ -11036,7 +11036,7 @@ msgstr "Фран Цалин"
 #. module: base
 #: model:res.country,name:base.tf
 msgid "French Southern Territories"
-msgstr "French Southern Territories"
+msgstr "Францын өмнөд нутгууд"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_sequence_date_range_date_from
@@ -11395,7 +11395,7 @@ msgstr "Гвиней"
 #. module: base
 #: model:res.country,name:base.gw
 msgid "Guinea Bissau"
-msgstr "Guinea Bissau"
+msgstr "Гвиней Бисау улс"
 
 #. module: base
 #: model:res.country,name:base.gy
@@ -11719,7 +11719,7 @@ msgstr "Хэрхэн тооцоолсон талбарыг тодорхойло�
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_recruitment_survey
 msgid "Hr Recruitment Interview Forms"
-msgstr "Хүний нөөцийн бүрдүүлэлтийн ярилцлагын маягтууд"
+msgstr "ХН бүрдүүлэлтийн ярилцлагын маягтууд"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_human_resources_survey
@@ -12672,7 +12672,7 @@ msgstr "Ажлууд, Хэлтсүүд, Ажилчдийн дэлгэрэнгү�
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_recruitment
 msgid "Jobs, Recruitment, Applications, Job Interviews"
-msgstr "Ажлын байр, Бүрдүүлэлт, Ажилд орох өргөдөл, Ажлын ярилцлага"
+msgstr "Ажлын байр,  ХН бүрдүүлэлт, Ажилд орох өргөдөл, Ажлын ярилцлага"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_wkf_activity_join_mode
@@ -13243,7 +13243,7 @@ msgid ""
 "[('blue','Blue'),('yellow','Yellow')]"
 msgstr ""
 "Сонгох талбарын сонголтын жагсаалт, Python илэрхийлэл байдлаар (түлхүүр, "
-"шошго) хосуудын жагсаалтаар тодорхойлогддог. Жишбээлбэл: "
+"шошго) хосуудын жагсаалтаар тодорхойлогддог. Жишээлбэл: "
 "[('blue','Blue'),('yellow','Yellow')]"
 
 #. module: base
@@ -13594,7 +13594,7 @@ msgstr "Маршалын арлууд"
 #. module: base
 #: model:res.country,name:base.mq
 msgid "Martinique (French)"
-msgstr "Martinique (French)"
+msgstr "Мартини (Франц)"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_mass_mailing
@@ -15250,7 +15250,7 @@ msgstr ""
 #. module: base
 #: model:res.country,name:base.pf
 msgid "Polynesia (French)"
-msgstr "Polynesia (French)"
+msgstr "Полинез (Франц)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_portal
@@ -15799,12 +15799,12 @@ msgstr "Бичлэгийн дүрэм"
 #. module: base
 #: model:ir.module.category,name:base.module_category_hr_recruitment
 msgid "Recruitment"
-msgstr "Нэмэлт"
+msgstr "ХН бүрдүүлэлт"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_recruitment
 msgid "Recruitment Process"
-msgstr "Ажилтан Авах Процесс"
+msgstr "ХН бүрдүүлэлтийн явц"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_subscription
@@ -16107,7 +16107,7 @@ msgstr "Жижиглэн борлуулагч"
 #. module: base
 #: model:res.country,name:base.re
 msgid "Reunion (French)"
-msgstr "Reunion (French)"
+msgstr "Реюньон арал (Франц)"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_deferred_revenue
@@ -16264,7 +16264,7 @@ msgstr "Сэйнт Хелена"
 #. module: base
 #: model:res.country,name:base.kn
 msgid "Saint Kitts & Nevis Anguilla"
-msgstr "Saint Kitts & Nevis Anguilla"
+msgstr "Сент Китс ба Невис Ангуила"
 
 #. module: base
 #: model:res.country,name:base.lc
@@ -16279,7 +16279,7 @@ msgstr "Гэгээн Мартин (Франц хэсэг)"
 #. module: base
 #: model:res.country,name:base.pm
 msgid "Saint Pierre and Miquelon"
-msgstr "Saint Pierre and Miquelon"
+msgstr "Сент Пьер ба Микелон"
 
 #. module: base
 #: model:res.country,name:base.st
@@ -16913,25 +16913,25 @@ msgstr "Заримдаа BIC юмуу Swift гэж нэрлэдэг."
 #: code:addons/base/ir/ir_model.py:879
 #, python-format
 msgid "Sorry, you are not allowed to access this document."
-msgstr "Уулаарай, та энэ баримт руу хандах эрхгүй"
+msgstr "Уучлаарай, танд энэ баримт руу хандах эрх алга."
 
 #. module: base
 #: code:addons/base/ir/ir_model.py:881
 #, python-format
 msgid "Sorry, you are not allowed to create this kind of document."
-msgstr "Уучлаарай, та энэ төрөлийн баримт үүсгэх зөвшөөрөл байхгүй байна."
+msgstr "Уучлаарай, танд энэ төрлийн баримт үүсгэх эрх алга."
 
 #. module: base
 #: code:addons/base/ir/ir_model.py:882
 #, python-format
 msgid "Sorry, you are not allowed to delete this document."
-msgstr "Уучлаарай, та энэ баримтыг устгах зөвшөөрөлгүй."
+msgstr "Уучлаарай, танд энэ баримтыг устгах эрх алга."
 
 #. module: base
 #: code:addons/base/ir/ir_model.py:880
 #, python-format
 msgid "Sorry, you are not allowed to modify this document."
-msgstr "Уучлаарай, та энэ баримтыг засварлах зөвшөөрөл байхгүй"
+msgstr "Уучлаарай, танд энэ баримтыг засварлах эрх алга."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_filters_sort
@@ -17599,6 +17599,12 @@ msgid "Thailand - Accounting Reports"
 msgstr ""
 
 #. module: base
+#: code:addons/base/res/res_users.py:288
+#, python-format
+msgid "The \"App Switcher\" action cannot be selected as home action."
+msgstr ""
+
+#. module: base
 #: model:ir.model.fields,help:base.field_res_country_code
 msgid ""
 "The ISO country code in two chars. \n"
@@ -18059,7 +18065,7 @@ msgstr ""
 #: code:addons/models.py:5631
 #, python-format
 msgid "The value for the field '%s' already exists."
-msgstr "'%s' талбарт аль хэдийнэ утга байна."
+msgstr "'%s' талбарт аль хэдийн утга байна."
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_theme
@@ -19269,12 +19275,12 @@ msgstr "Үүнээс удамшсан харагдцууд"
 #. module: base
 #: model:res.country,name:base.vg
 msgid "Virgin Islands (British)"
-msgstr "Virgin Islands (British)"
+msgstr "Виржиний арлууд (Англи)"
 
 #. module: base
 #: model:res.country,name:base.vi
 msgid "Virgin Islands (USA)"
-msgstr "Виржини арлууд (USA)"
+msgstr "Виржиний арлууд (АНУ)"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_module_category_visible
@@ -19294,7 +19300,7 @@ msgstr "WMS Газардсан Өртгүүд"
 #. module: base
 #: model:res.country,name:base.wf
 msgid "Wallis and Futuna Islands"
-msgstr "Wallis and Futuna Islands"
+msgstr "Уоллис ба Футуна арлууд"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_warehouse
