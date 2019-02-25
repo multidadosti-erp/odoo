@@ -262,7 +262,7 @@ msgstr "Roteamento HTTP"
 #. module: base_setup
 #: model_terms:ir.ui.view,arch_db:base_setup.res_config_settings_view_form
 msgid "Import & Export"
-msgstr "Importar & Exportar"
+msgstr "Importação e Exportação"
 
 #. module: base_setup
 #: model_terms:ir.ui.view,arch_db:base_setup.res_config_settings_view_form

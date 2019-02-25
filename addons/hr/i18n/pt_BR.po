@@ -20,6 +20,7 @@
 # Lauro de Lima <lauro@ciclix.com>, 2019
 # Ramiro Pereira de Magalhães <ramiro.p.magalhaes@gmail.com>, 2019
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2020
+# André Carvalho <and2carvalho@gmail.com>, 2020
 #
 msgid ""
 msgstr ""
@@ -1428,17 +1429,17 @@ msgstr "Configurações"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_config_settings__module_hr_org_chart
 msgid "Show Organizational Chart"
-msgstr "Mostrar Organograma"
+msgstr "Mostrar organograma"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Show organizational chart on employee form"
-msgstr "Mostrar organograma no formulário do funcionário"
+msgstr "Mostrar organograma no formulário do empregado"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Show organizational chart on employee form."
-msgstr "Mostrar organograma no formulário do funcionário"
+msgstr "Mostrar organograma no formulário do empregado"
 
 #. module: hr
 #: selection:hr.employee,marital:0
