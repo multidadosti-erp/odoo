@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * mail
-# 
+#
 # Translators:
 # Marcos Abreu <marcoos.abreu@gmail.com>, 2018
 # Danilo Rodrigues, 2018
@@ -31,7 +31,7 @@
 # Guilherme Libardi <guilherme.libardig@gmail.com>, 2020
 # Fernando Colus <fcolus1@gmail.com>, 2020
 # Maurício Liell <mauricio@liell.com.br>, 2020
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -2421,7 +2421,12 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
 msgid "Has Mentions"
-msgstr ""
+msgstr "Tem menções"
+
+#. module: mail
+#: model:mail.channel,description:mail.channel_all_employees
+msgid "General announcements for all employees."
+msgstr "Anúncios gerais para todos os funcionários."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
