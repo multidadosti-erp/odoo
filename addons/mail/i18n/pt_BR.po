@@ -2399,7 +2399,12 @@ msgstr ""
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
 msgid "Has Mentions"
-msgstr ""
+msgstr "Tem menções"
+
+#. module: mail
+#: model:mail.channel,description:mail.channel_all_employees
+msgid "General announcements for all employees."
+msgstr "Anúncios gerais para todos os funcionários."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
@@ -5702,7 +5707,11 @@ msgstr "Usar modelo"
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Use your own email servers"
+<<<<<<< HEAD
 msgstr "Usar seus próprios servidores de email"
+=======
+msgstr "Use seus próprios servidores de email"
+>>>>>>> [IMP] Adiciona traduções
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_subtype__sequence
