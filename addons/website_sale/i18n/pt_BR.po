@@ -31,9 +31,6 @@
 # Caroline Renson <car@odoo.com>, 2020
 # Luiz Fernando <lfpsgs@outlook.com>, 2020
 # Fernando Colus <fcolus1@gmail.com>, 2020
-# PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020
-# Vanderlei Romera <vanderleiromera@gmail.com>, 2020
-# Kevin Harrings <kha@odoo.com>, 2020
 #
 msgid ""
 msgstr ""
