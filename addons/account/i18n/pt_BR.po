@@ -50,7 +50,6 @@
 # Fernando Colus <fcolus1@gmail.com>, 2020
 # Éder Brito <britoederr@gmail.com>, 2020
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2021
-# Martin Trigaux, 2021
 #
 msgid ""
 msgstr ""
@@ -8644,8 +8643,13 @@ msgstr "Selecione aqui o tipo de avaliação relacionada a esta linha do prazo d
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid "Select this if the taxes should use cash basis, which will create an entry for such taxes on a given account during reconciliation."
-msgstr "Selecione esta opção se o imposto deve usar regime de caixa, o que irá criar uma entrada para este imposto sobre uma determinada conta durante a conciliação."
+msgid ""
+"Select this if the taxes should use cash basis, which will create an entry "
+"for such taxes on a given account during reconciliation."
+msgstr ""
+"Selecione esta opção se o imposto deve usar regime de caixa, o que irá criar"
+" uma entrada para este imposto sobre uma determinada conta durante a "
+"conciliação"
 
 #. module: account
 #: code:addons/account/wizard/account_invoice_state.py:21
