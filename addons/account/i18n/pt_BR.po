@@ -2820,7 +2820,7 @@ msgstr "Não é possível criar movimentos para empresas diferentes."
 #: code:addons/account/models/account_move.py:229
 #, python-format
 msgid "Cannot create unbalanced journal entry."
-msgstr "Não é possível criar entrada de diário não balanceada."
+msgstr "Lançamento abaixo do valor mínimo."
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:641
