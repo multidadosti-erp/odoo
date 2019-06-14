@@ -37,8 +37,6 @@
 # Guilherme Libardi <guilherme.libardig@gmail.com>, 2020
 # Maurício Liell <mauricio@liell.com.br>, 2020
 # danimaribeiro <danimaribeiro@gmail.com>, 2020
-# Fernando Colus <fcolus1@gmail.com>, 2020
-# PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020
 #
 msgid ""
 msgstr ""
