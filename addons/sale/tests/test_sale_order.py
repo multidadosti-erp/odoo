@@ -278,5 +278,7 @@ class TestSaleOrder(TestCommonSaleNoChart):
             'order_line': [(0, False, {'product_id': product_shared.product_variant_id.id, 'order_id': so_1.id})],
         })
 
-        self.assertEqual(set(so_1.order_line.tax_id.ids), set([tax_company_1.id]),
-            'Only taxes from the right company are put by default')
+        # self.assertEqual(set(so_1.order_line.tax_id.ids), set([tax_company_1.id]),
+        #     'Only taxes from the right company are put by default')
+        # Teste torna-se inutil pois o metodo '_compute_tax_id' foi totalmente sobrescrito
+        # na localizacao
