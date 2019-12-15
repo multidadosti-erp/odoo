@@ -30,6 +30,7 @@
 # Tuomas Lyyra <tuomas.lyyra@legenda.fi>, 2019
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2019
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2019
+# Kari Lindgren <kari.lindgren@emsystems.fi>, 2020
 #
 msgid ""
 msgstr ""
