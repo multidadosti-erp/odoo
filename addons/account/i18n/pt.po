@@ -18,6 +18,7 @@
 # Tiago Santos <tiago.santos@arxi.pt>, 2019
 # Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2019
 # cafonso <cafonso62@gmail.com>, 2019
+# Manuela Silva <manuelarodsilva@gmail.com>, 2020
 #
 msgid ""
 msgstr ""
