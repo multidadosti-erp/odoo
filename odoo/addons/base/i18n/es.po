@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base
-# 
+#
 # Translators:
 # Wilcar José Angulo <wilcarjose@gmail.com>, 2018
 # Lina Maria Avendaño Carvajal <lina8823@gmail.com>, 2018
