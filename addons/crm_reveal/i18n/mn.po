@@ -14,8 +14,7 @@
 # Minj P <pminj322@gmail.com>, 2019
 # Батболд <batbold.ts@gmail.com>, 2019
 # Batmunkh Ganbat <batmunkh.g@bumanit.mn>, 2019
-# Minj P <pminj322@gmail.com>, 2019
-# Батболд Цэнд-Аюуш <batbold.ts@gmail.com>, 2019
+# Uuganbayar Batbaatar <uuganaaub33@gmail.com>, 2020
 #
 msgid ""
 msgstr ""

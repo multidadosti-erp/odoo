@@ -13,7 +13,7 @@
 # Oleksandr Paziuk <o.paziuk@mobilunity.com>, 2018
 # Martin Trigaux, 2019
 # Bohdan Lisnenko, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2021
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2020
 #
 msgid ""
 msgstr ""

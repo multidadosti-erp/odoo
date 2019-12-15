@@ -33,9 +33,6 @@
 # Stefano Consolaro <stefano.consolaro@mymage.it>, 2019
 # Francesco Foresti <francesco.foresti@ooops404.com>, 2021
 # Sergio Zanchetta <primes2h@gmail.com>, 2021
-# BigBlu <paolo.moroni@air-srl.com>, 2021
-# Lorenzo Battistini <lb@takobi.online>, 2021
-# Friederike Fasterling-Nesselbosch, 2021
 #
 msgid ""
 msgstr ""

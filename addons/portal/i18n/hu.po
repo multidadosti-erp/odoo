@@ -9,7 +9,6 @@
 # Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # Istvan <leki69@gmail.com>, 2019
 # Tamás Németh <ntomasz81@gmail.com>, 2020
-# Tamás Dombos, 2021
 #
 msgid ""
 msgstr ""

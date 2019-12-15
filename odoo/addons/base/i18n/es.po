@@ -75,8 +75,6 @@
 # Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2021
 # Jairo Llopis <yajo.sk8@gmail.com>, 2021
 # Valentino <vgaffuri2018@student.hult.edu>, 2021
-# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2021
-# Alicia Rodríguez <arodriguez@binovo.es>, 2021
 #
 msgid ""
 msgstr ""

@@ -19,9 +19,6 @@
 # cafonso <cafonso62@gmail.com>, 2019
 # Nuno Silva <nuno.silva@arxi.pt>, 2020
 # Álvaro Brunido <abrunido@outlook.pt>, 2021
-# Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2021
-# Daniel Reis, 2021
-# Manuela Silva <mmsrs@sky.com>, 2021
 #
 msgid ""
 msgstr ""

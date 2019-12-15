@@ -14,7 +14,7 @@
 # Jasmina Macur <jasmina@hbs.si>, 2019
 # Grega Vavtar <grega@hbs.si>, 2020
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2020
-# Nejc G <nejc@luxim.si>, 2021
+# Jasmina Macur <jasmina@hbs.si>, 2021
 #
 msgid ""
 msgstr ""

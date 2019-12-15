@@ -11,6 +11,7 @@
 # Istvan <leki69@gmail.com>, 2019
 # Tamás Németh <ntomasz81@gmail.com>, 2020
 # Ákos Nagy <akos.nagy@oregional.hu>, 2020
+# gezza <geza.nagy@oregional.hu>, 2020
 #
 msgid ""
 msgstr ""

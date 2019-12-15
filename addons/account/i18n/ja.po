@@ -20,10 +20,8 @@
 # Martin Trigaux, 2019
 # Tim Siu Lai <tl@roomsfor.hk>, 2019
 # Hau Dao <hau@quartile.co>, 2020
-# Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2020
-# Noma Yuki, 2020
-# Tsuda Ryoko <ryoko04nov@gmail.com>, 2021
-# Ryoko Tsuda <ryoko@quartile.co>, 2021
+# Tsuda Ryoko <ryoko04nov@gmail.com>, 2020
+# Yoshi Tashiro <tashiro@roomsfor.hk>, 2020
 #
 msgid ""
 msgstr ""

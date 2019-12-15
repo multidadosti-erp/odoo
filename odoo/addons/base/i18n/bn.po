@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base
-# 
+#
 # Translators:
 # Martin Trigaux, 2019
 # Abu Zafar <azmikbal@gmail.com>, 2021
 # Khanstore <dmashraf@gmail.com>, 2021
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -8566,7 +8566,7 @@ msgstr "ইডিআই নথির জন্য কলম্বিয়ার
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_co_edi_ubl_2_1
 msgid "Colombian Localization for EDI documents UBL 2.1"
-msgstr "ইডিআই নথির জন্য কলম্বিয়ার স্থানীয়করণ ইউবিএল ২.১"
+msgstr ""
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_groups__color

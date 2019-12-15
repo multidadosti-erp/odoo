@@ -14,8 +14,6 @@
 # tserendavaa tsogtoo <tseegii011929@gmail.com>, 2020
 # Батболд <batbold.ts@gmail.com>, 2020
 # Uuganbayar Batbaatar <uuganaaub33@gmail.com>, 2020
-# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2021
-# Bayarkhuu Bataa, 2021
 #
 msgid ""
 msgstr ""

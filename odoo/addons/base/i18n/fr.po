@@ -74,7 +74,6 @@
 # Cécile Collart <cco@odoo.com>, 2020
 # Yann Papouin <ypa@decgroupe.com>, 2020
 # Alexandra Jubert <aju@odoo.com>, 2021
-# Camille Dantinne <cmd@odoo.com>, 2021
 #
 msgid ""
 msgstr ""

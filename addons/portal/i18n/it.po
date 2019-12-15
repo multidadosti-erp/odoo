@@ -17,7 +17,6 @@
 # Francesco Foresti <francesco.foresti@ooops404.com>, 2019
 # Lorenzo Battistini <lb@takobi.online>, 2020
 # Sergio Zanchetta <primes2h@gmail.com>, 2021
-# Friederike Fasterling-Nesselbosch, 2021
 #
 msgid ""
 msgstr ""

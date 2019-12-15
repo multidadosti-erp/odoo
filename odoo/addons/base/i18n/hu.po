@@ -25861,7 +25861,7 @@ msgstr "sorozatosított"
 #. module: base
 #: selection:ir.model.fields,ttype:0
 msgid "serialized"
-msgstr "sorozatosított"
+msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_snailmail_account

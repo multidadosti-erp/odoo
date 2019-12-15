@@ -20,7 +20,6 @@
 # Noma Yuki, 2020
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2021
 # Kakurai Ai <ai@quartile.co>, 2021
-# Ryoko Tsuda <ryoko@quartile.co>, 2021
 #
 msgid ""
 msgstr ""

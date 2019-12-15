@@ -16,9 +16,6 @@
 # Yihya Hugirat <hugirat@gmail.com>, 2019
 # דודי מלכה <Dudimalka6@gmail.com>, 2019
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2020
-# Yves Goldberg <admin@ygol.com>, 2020
-# Lilach Gilliam <lilach.gilliam@gmail.com>, 2021
-# david danilov, 2021
 #
 msgid ""
 msgstr ""
