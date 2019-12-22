@@ -3237,7 +3237,11 @@ msgstr "Imposta a completata"
 #: code:addons/mail/static/src/xml/discuss.xml:179
 #, python-format
 msgid "Mark all as read"
+<<<<<<< HEAD
 msgstr "Segna tutti come letti"
+=======
+msgstr "Segna tutti come già letti"
+>>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: mail
 #. openerp-web
@@ -5600,7 +5604,11 @@ msgid ""
 "- 'Create Next Activity': create an activity (Discuss)"
 msgstr ""
 "Tipologia azione server. Sono disponibili i seguenti valori:\n"
+<<<<<<< HEAD
 "- \"Esegui codice python\": esegue un blocco di codice python\n"
+=======
+"- \"Esegui codice Python\": esegue un blocco di codice Python\n"
+>>>>>>> [I18N] Update translation terms from Transifex
 "- \"Crea\": crea un nuovo record con nuovi valori\n"
 "- \"Aggiorna record\": aggiorna i valori di un record\n"
 "- \"Esegui alcune azioni\": definisce un'azione che attiva diverse altre azioni server\n"

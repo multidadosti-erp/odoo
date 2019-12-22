@@ -7,7 +7,10 @@
 # Martin Trigaux, 2018
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # nurbahyt baha <nurbahyt.kh@gmail.com>, 2019
+<<<<<<< HEAD
 # tserendavaa tsogtoo <tseegii011929@gmail.com>, 2019
+=======
+>>>>>>> [I18N] Update translation terms from Transifex
 # 
 msgid ""
 msgstr ""
@@ -15,7 +18,11 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-09 10:32+0000\n"
 "PO-Revision-Date: 2018-08-24 09:25+0000\n"
+<<<<<<< HEAD
 "Last-Translator: tserendavaa tsogtoo <tseegii011929@gmail.com>, 2019\n"
+=======
+"Last-Translator: nurbahyt baha <nurbahyt.kh@gmail.com>, 2019\n"
+>>>>>>> [I18N] Update translation terms from Transifex
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

@@ -495,11 +495,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "<span>Quantity</span>"
 msgstr "<span>Mennyiség</span>"
+<<<<<<< HEAD
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "<span>Reference</span>"
 msgstr ""
+=======
+>>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view

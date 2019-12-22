@@ -26,8 +26,12 @@
 # Paolo Valier, 2019
 # Luana Andronico <andronicoluana@gmail.com>, 2019
 # Simone Sanfilippo <s.sanfilippo@hinge16.eu>, 2019
+<<<<<<< HEAD
 # Lorenzo Battistini <lb@takobi.online>, 2020
 # Sergio Zanchetta <primes2h@gmail.com>, 2020
+=======
+# Sergio Zanchetta <primes2h@gmail.com>, 2019
+>>>>>>> [I18N] Update translation terms from Transifex
 # 
 msgid ""
 msgstr ""
@@ -6888,7 +6892,11 @@ msgstr "Match Regex"
 #: code:addons/account/models/chart_template.py:934
 #, python-format
 msgid "Match existing invoices/bills."
+<<<<<<< HEAD
 msgstr "Abbina fatture esistenti."
+=======
+msgstr "Abbina fatture / fatture esistenti."
+>>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__matched_credit_ids

@@ -11,10 +11,15 @@
 # Tsog Tsog <ts.tsogoo@gmail.com>, 2019
 # nurbakhit nurka <nurbakhit@bumanit.mn>, 2019
 # tserendavaa tsogtoo <tseegii011929@gmail.com>, 2019
+<<<<<<< HEAD
 # Батболд <batbold.ts@gmail.com>, 2019
 # Minj P <pminj322@gmail.com>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2020
 # Munkhbaatar Gombosuren <muuguu17@gmail.com>, 2020
+=======
+# Батболд Цэнд-Аюуш <batbold.ts@gmail.com>, 2019
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+>>>>>>> [I18N] Update translation terms from Transifex
 # 
 msgid ""
 msgstr ""

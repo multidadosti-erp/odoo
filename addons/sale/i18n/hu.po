@@ -207,7 +207,11 @@ msgstr "<i class=\"fa fa-print\"/> Nyomtatás"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.optional_product_items
 msgid "<i class=\"fa fa-shopping-cart add-optionnal-item\"/> Add to cart"
+<<<<<<< HEAD
 msgstr "<i class=\"fa fa-shopping-cart add-optionnal-item\"/> Kosárba tesz"
+=======
+msgstr "<i class=\"fa fa-shopping-cart add-optionnal-item\"/>Kosárba tesz"
+>>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
@@ -402,7 +406,11 @@ msgstr "<strong>Ez az árajánlat egy piszkozat.</strong>"
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
 msgid "<strong>This offer expired!</strong>"
+<<<<<<< HEAD
 msgstr "<strong>Ez az ajánlat lejárt!</strong>"
+=======
+msgstr "<strong>Az ajánlat lejárt!</strong>"
+>>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template

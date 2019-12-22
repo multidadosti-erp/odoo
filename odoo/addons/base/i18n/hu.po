@@ -25823,16 +25823,19 @@ msgstr "hivatkozás"
 #: selection:ir.model.fields,ttype:0
 msgid "selection"
 msgstr "kiválasztás"
+<<<<<<< HEAD
 
 #. module: base
 #: selection:ir.model.fields,ttype:0
 msgid "serialized"
 msgstr "sorozatosított"
+=======
+>>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: base
 #: selection:ir.model.fields,ttype:0
 msgid "serialized"
-msgstr ""
+msgstr "sorozatosított"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_snailmail_account
