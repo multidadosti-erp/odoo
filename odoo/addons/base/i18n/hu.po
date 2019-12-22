@@ -14,7 +14,6 @@
 # Martin Trigaux, 2019
 # Ákos Nagy <akos.nagy@oregional.hu>, 2020
 # Tamás Németh <ntomasz81@gmail.com>, 2021
-# Tamás Dombos, 2021
 #
 msgid ""
 msgstr ""
@@ -25857,11 +25856,6 @@ msgstr "kiválasztás"
 #: selection:ir.model.fields,ttype:0
 msgid "serialized"
 msgstr "sorozatosított"
-
-#. module: base
-#: selection:ir.model.fields,ttype:0
-msgid "serialized"
-msgstr ""
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_snailmail_account

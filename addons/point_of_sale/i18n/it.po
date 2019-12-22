@@ -23,7 +23,6 @@
 # Lorenzo Battistini <lb@takobi.online>, 2019
 # Simone Sanfilippo <s.sanfilippo@hinge16.eu>, 2020
 # Sergio Zanchetta <primes2h@gmail.com>, 2021
-# Friederike Fasterling-Nesselbosch, 2021
 #
 msgid ""
 msgstr ""

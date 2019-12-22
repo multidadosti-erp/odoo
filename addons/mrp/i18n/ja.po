@@ -18,8 +18,6 @@
 # Hau Dao <hau@quartile.co>, 2020
 # Noma Yuki, 2020
 # Shigekazu N. <shigekazu.noka@gmail.com>, 2020
-# Abe Tomohiro <tomohiro@quartile.co>, 2021
-# Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2021
 #
 msgid ""
 msgstr ""
