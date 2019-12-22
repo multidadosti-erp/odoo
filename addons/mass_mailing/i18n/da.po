@@ -15,7 +15,6 @@
 # Sanne Kristensen <sanne@vkdata.dk>, 2019
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2019
 # lhmflexerp <lhm@flexerp.dk>, 2019
-# Walther Barnett <wba@miracle.dk>, 2020
 # Mads Søndergaard, 2020
 #
 msgid ""
