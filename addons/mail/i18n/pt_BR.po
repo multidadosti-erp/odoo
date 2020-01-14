@@ -2649,7 +2649,7 @@ msgid ""
 "If set, the queue manager will send the email after the date. If not set, "
 "the email will be send as soon as possible. Jinja2 placeholders may be used."
 msgstr ""
-"Se definido, o gerenciador de filas enviará o email após a data. Se não definido,"
+"Se definido, o gerenciador de filas enviará o email após a data. Se não definido, "
 "o email será enviado o mais breve possível."
 
 #. module: mail
