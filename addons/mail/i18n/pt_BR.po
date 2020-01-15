@@ -1438,7 +1438,7 @@ msgstr "Criar próxima atividade"
 #: code:addons/mail/models/mail_thread.py:400
 #, python-format
 msgid "Create a new %(document)s"
-msgstr "Crie um novo %(documento)s"
+msgstr "Crie um novo %(document)s"
 
 #. module: mail
 #: code:addons/mail/models/mail_thread.py:392
