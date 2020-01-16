@@ -4923,11 +4923,7 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_reconcile_model__force_second_tax_included
 #: model:ir.model.fields,help:account.field_account_reconcile_model_template__force_second_tax_included
 msgid "Force the second tax to be managed as a price included tax."
-<<<<<<< HEAD
-msgstr "Forçar a asegunda taxa a ser gerenciada como taxa incluída no preço."
-=======
 msgstr "Forçar o segundo imposto a ser gerido como um preço com imposto incluído."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_reconcile_model__force_tax_included
@@ -5094,11 +5090,7 @@ msgstr "Vá para o painel de configuração"
 #: code:addons/account/models/company.py:459
 #, python-format
 msgid "Go to the journal configuration"
-<<<<<<< HEAD
-msgstr "Vá para a configuração do diário"
-=======
 msgstr "Ir para a configuração do diário"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:res.partner,trust:0
@@ -5139,11 +5131,7 @@ msgstr "Agrupar Linhas da Fatura"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_register_payments__group_invoices
 msgid "Group Invoices"
-<<<<<<< HEAD
-msgstr "Grupo de Faturas"
-=======
 msgstr "Faturas de Grupo"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:account.tax,amount_type:0
@@ -5191,11 +5179,7 @@ msgstr "Tem todos os argumentos necessários"
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__has_error
 #: model:ir.model.fields,help:account.field_account_invoice_send__has_error
 msgid "Has error"
-<<<<<<< HEAD
-msgstr "Possui erro"
-=======
 msgstr "Tem erro"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__hide_payment_method
@@ -5920,11 +5904,7 @@ msgstr "Fatura paga"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_invoice_send_wizard_form
 msgid "Invoice send & Print"
-<<<<<<< HEAD
-msgstr "Envio & Impressão da fatura"
-=======
 msgstr "Envio e impressão de facturas"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:mail.message.subtype,description:account.mt_invoice_validated
@@ -5996,21 +5976,12 @@ msgstr "Faturas devidas a você"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Invoices to Validate"
-<<<<<<< HEAD
-msgstr "Faturas para Validar"
-=======
 msgstr "Faturas a Validar"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_payment__reconciled_invoice_ids
 msgid "Invoices whose journal items have been reconciled with this payment's."
-<<<<<<< HEAD
-msgstr ""
-"Faturas cujos itens de diário foram conciliados com os deste pagamento."
-=======
 msgstr "Faturas cujos itens do diário foram reconciliados com os deste pagamento."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.actions.report,name:account.account_invoices_without_payment
@@ -6048,11 +6019,7 @@ msgstr "É maior que"
 #: selection:account.reconcile.model,match_amount:0
 #: selection:account.reconcile.model.template,match_amount:0
 msgid "Is Lower Than"
-<<<<<<< HEAD
-msgstr "É Menor que"
-=======
 msgstr "É mais baixo que"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__printed
@@ -6102,13 +6069,8 @@ msgid ""
 "It indicates that the invoice has been paid and the journal entry of the "
 "invoice has been reconciled with one or several journal entries of payment."
 msgstr ""
-<<<<<<< HEAD
-"Indica que a fatura foi paga e a entrada do diário foi reconciliada com um "
-"ou mais diários de pagamentos."
-=======
 "Indica que a fatura foi paga e a entrada do diário foi conciliada com um "
 "ou mais diários de pagamentos"
->>>>>>> [IMP] Modifica labels "Reconciliar"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__sent
@@ -6291,11 +6253,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_import_wizard__journal_id
 msgid "Journal where to generate the bills"
-<<<<<<< HEAD
-msgstr "Diário onde gerar as contas"
-=======
 msgstr "Diário onde gerar as faturas"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__journal_currency_id
@@ -6338,11 +6296,7 @@ msgstr "Junho"
 #: selection:res.company,account_setup_coa_state:0
 #: selection:res.company,account_setup_fy_data_state:0
 msgid "Just done"
-<<<<<<< HEAD
-msgstr "Acabei de fazer"
-=======
 msgstr "Acabei de fazer."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_tax_adjustments_wizard__reason
@@ -6878,11 +6832,7 @@ msgstr ""
 #: code:addons/account/models/chart_template.py:932
 #, python-format
 msgid "Manually create a write-off on clicked button."
-<<<<<<< HEAD
-msgstr "Crie manualmente uma baixa no botão clicado."
-=======
 msgstr "Crie manualmente um write-off no botão clicado."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:res.company,fiscalyear_last_month:0
@@ -7053,11 +7003,7 @@ msgstr "Falta conta obrigatória na linha de fatura responsável."
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__moderator_id
 msgid "Moderated By"
-<<<<<<< HEAD
-msgstr "Moderado Por"
-=======
 msgstr "Moderado por"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__moderation_status
@@ -7239,11 +7185,7 @@ msgstr "Próximo Número"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__sequence_number_next_prefix
 msgid "Next Number Prefix"
-<<<<<<< HEAD
-msgstr "Prefixo de próximo número"
-=======
 msgstr "Prefixo do próximo número"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__blocked
@@ -7816,11 +7758,7 @@ msgstr "Mensagem Principal"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_group__parent_path
 msgid "Parent Path"
-<<<<<<< HEAD
-msgstr "Caminho Pai"
-=======
 msgstr "Caminho do Pai"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__parent_state
@@ -7864,11 +7802,7 @@ msgstr "Empresa Parceira"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__country_id
 msgid "Partner Company's Country"
-<<<<<<< HEAD
-msgstr "País da Empresa Parceira"
-=======
 msgstr "País da empresa parceira"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner__contract_ids
@@ -7880,11 +7814,7 @@ msgstr "Contratos de Parceiros"
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_partner
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_template__match_partner
 msgid "Partner Is Set"
-<<<<<<< HEAD
-msgstr "Parceiro está Definido"
-=======
 msgstr "Parceiro está definido"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_form
@@ -8004,11 +7934,7 @@ msgstr "Tipo de Método de Pagamento"
 #: model_terms:ir.ui.view,arch_db:account.view_account_bank_journal_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Payment Method Types"
-<<<<<<< HEAD
-msgstr "Tipos de Método de Pagamento"
-=======
 msgstr "Tipos de formas de pagamento"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #. openerp-web
@@ -8040,11 +7966,7 @@ msgstr "Recibo de Pagamento:"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__reference
 msgid "Payment Ref."
-<<<<<<< HEAD
-msgstr "Ref. Pagamento."
-=======
 msgstr "Ref. Pagamento"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_reference
@@ -8094,11 +8016,7 @@ msgstr "Prazos de pagamento: 15 Dias"
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term_2months
 msgid "Payment terms: 2 Months"
-<<<<<<< HEAD
-msgstr "Condições de pagamento: 2 meses"
-=======
 msgstr "Condições de pagamento: 2 Meses"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term_net
@@ -8113,11 +8031,7 @@ msgstr "Prazo de pagamento: 30% de Adiantamento no Fim do Mês Seguinte"
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term_45days
 msgid "Payment terms: 45 Days"
-<<<<<<< HEAD
-msgstr "Condições de pagamento: 45 dias"
-=======
 msgstr "Condições de pagamento: 45 Dias"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term
@@ -8564,11 +8478,7 @@ msgstr "Quantidade:"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__rating_value
 msgid "Rating Value"
-<<<<<<< HEAD
-msgstr "Valor de Classificação"
-=======
 msgstr "Valor de Avaliação"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_refund__description
@@ -8665,11 +8575,7 @@ msgstr "Conciliado"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__reconciled_invoice_ids
 msgid "Reconciled Invoices"
-<<<<<<< HEAD
-msgstr "Faturas Conciliadas"
-=======
 msgstr "Faturas reconciliadas"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -8692,13 +8598,9 @@ msgstr "Modelos de Conciliação"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_full_reconcile__partial_reconcile_ids
 msgid "Reconciliation Parts"
-<<<<<<< HEAD
-msgstr "Trechos de Reconciliação"
-=======
 msgstr ""
 "Trechos de Conciliação\n"
 " "
->>>>>>> [IMP] Modifica labels "Reconciliar"
 
 #. module: account
 #: model:ir.actions.client,name:account.action_bank_reconcile
@@ -8720,11 +8622,7 @@ msgstr "Gravar transações em moedas extrangeiras"
 #: code:addons/account/models/account.py:930
 #, python-format
 msgid "Recursion found for tax '%s'."
-<<<<<<< HEAD
-msgstr "Recursão encontrada para impostos '%s'."
-=======
 msgstr "Recurssão encontrada para impostos '%s'."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #. openerp-web
@@ -8804,22 +8702,14 @@ msgstr "Registrar Pagamento"
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_bank_statement_tree
 msgid "Register a bank statement"
-<<<<<<< HEAD
-msgstr "Registre um extrato bancário"
-=======
 msgstr "Registrar um extrato bancário"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_account_payments
 #: model_terms:ir.actions.act_window,help:account.action_account_payments_payable
 #: model_terms:ir.actions.act_window,help:account.action_account_payments_transfer
 msgid "Register a payment"
-<<<<<<< HEAD
-msgstr "Registre um pagamento"
-=======
 msgstr "Registrar um pagamento"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:account.account.type,type:0
@@ -8839,11 +8729,7 @@ msgstr "Modelo de Documento Relacionado"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__rating_ids
 msgid "Related ratings"
-<<<<<<< HEAD
-msgstr "Classificações relacionadas"
-=======
 msgstr "Avaliações relacionadas"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__residual_company_signed
@@ -8943,21 +8829,13 @@ msgstr "Usuário Responsável"
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_partner_category_ids
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_template__match_partner_category_ids
 msgid "Restrict Partner Categories to"
-<<<<<<< HEAD
-msgstr "Restringir Categorias de Parceiros para"
-=======
 msgstr "Restringir categorias de parceiros a"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_partner_ids
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_template__match_partner_ids
 msgid "Restrict Partners to"
-<<<<<<< HEAD
-msgstr "Restringir Parceiros para"
-=======
 msgstr "Restringir parceiros a"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_reconcile_model__match_same_currency
@@ -8985,11 +8863,7 @@ msgstr "Conta de receita/despesa"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move__reverse_date
 msgid "Reversal Date"
-<<<<<<< HEAD
-msgstr "Data de Estorno"
-=======
 msgstr "Data de estorno"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_reversal__date
@@ -9005,11 +8879,7 @@ msgstr "Reversão de: %s"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move__auto_reverse
 msgid "Reverse Automatically"
-<<<<<<< HEAD
-msgstr "Reverter Automaticamente"
-=======
 msgstr "Reverter automaticamente"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move__reverse_entry_id
@@ -9121,11 +8991,7 @@ msgstr "Imposto sobre Vendas"
 #. module: account
 #: model:ir.actions.act_window,name:account.action_open_account_onboarding_sale_tax
 msgid "Sales tax"
-<<<<<<< HEAD
-msgstr "Taxas sobre as vendas"
-=======
 msgstr "Imposto sobre vendas"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__user_id
@@ -9144,11 +9010,7 @@ msgstr "Correspondência da mesma moeda"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.onboarding_sample_invoice_step
 msgid "Sample Invoice"
-<<<<<<< HEAD
-msgstr "Fatura de Amostra"
-=======
 msgstr "Exemplo de Fatura"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/company.py:462
@@ -9310,11 +9172,7 @@ msgstr "Segundo Imposto Incluído no Preço"
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__second_amount
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_template__second_amount
 msgid "Second Write-off Amount"
-<<<<<<< HEAD
-msgstr "Segunda Baixa Montante"
-=======
 msgstr "Segundo Valor de Baixa"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:account.invoice.line,display_type:0
@@ -9350,11 +9208,7 @@ msgstr "Selecione um parceiro ou escolha uma contraparte"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_form
 msgid "Select an old vendor bill"
-<<<<<<< HEAD
-msgstr "Selecione uma conta de fornecedor antiga"
-=======
 msgstr "Selecione uma conta antiga do fornecedor"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_payment_term_line__value
@@ -9371,11 +9225,7 @@ msgid ""
 msgstr ""
 "Selecione esta opção se o imposto deve usar regime de caixa, o que irá criar"
 " uma entrada para este imposto sobre uma determinada conta durante a "
-<<<<<<< HEAD
-"reconciliação."
-=======
 "conciliação"
->>>>>>> [FIX] Corrige traduções erradas
 
 #. module: account
 #: code:addons/account/wizard/account_invoice_state.py:21
@@ -9420,11 +9270,7 @@ msgstr "Enviar E-mail"
 #: code:addons/account/wizard/account_invoice_send.py:76
 #, python-format
 msgid "Send Invoice"
-<<<<<<< HEAD
-msgstr "Enviar fatura"
-=======
 msgstr "Enviar Fatura"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:account.abstract.payment,payment_type:0
@@ -9451,11 +9297,7 @@ msgstr "Envie uma fatura para testar o portal do cliente."
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.onboarding_sample_invoice_step
 msgid "Send sample"
-<<<<<<< HEAD
-msgstr "Enviar exemplo"
-=======
 msgstr "Enviar amostra"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:account.payment,state:0
@@ -9492,11 +9334,7 @@ msgstr "Seqüência"
 #: code:addons/account/static/src/xml/account_reconciliation.xml:239
 #, python-format
 msgid "Set"
-<<<<<<< HEAD
-msgstr "Definir"
-=======
 msgstr "Conjunto"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
@@ -9599,11 +9437,7 @@ msgstr "Mostrar Todas as Funcionalidades de Contabilidade"
 #: model:ir.model.fields,field_description:account.field_account_payment__show_partner_bank_account
 #: model:ir.model.fields,field_description:account.field_account_register_payments__show_partner_bank_account
 msgid "Show Partner Bank Account"
-<<<<<<< HEAD
-msgstr "Mostrar Conta Bancária de Parceiro"
-=======
 msgstr "Mostrar conta bancária do parceiro"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_search
@@ -9845,11 +9679,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.onboarding_fiscal_year_step
 #: model_terms:ir.ui.view,arch_db:account.onboarding_sale_tax_step
 msgid "Step Completed!"
-<<<<<<< HEAD
-msgstr "Passo Completado!"
-=======
 msgstr "Passo Concluído!"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__subject
@@ -10037,11 +9867,7 @@ msgstr "Grupo de Imposto"
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_template__force_tax_included
 #, python-format
 msgid "Tax Included in Price"
-<<<<<<< HEAD
-msgstr "Imposto Incluído no Preço"
-=======
 msgstr "Impostos Incluídos no Preço"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__tax_line_ids
@@ -10111,11 +9937,7 @@ msgstr "Tipo de Imposto Domínio"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__amount_by_group
 msgid "Tax amount by group"
-<<<<<<< HEAD
-msgstr "Total de Impostos por grupo"
-=======
 msgstr "Valor do imposto por grupo"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__tax_calculation_rounding_method
@@ -10155,11 +9977,7 @@ msgstr "Imposto a Aplicar"
 #. module: account
 #: selection:res.config.settings,show_line_subtotals_tax_selection:0
 msgid "Tax-Excluded"
-<<<<<<< HEAD
-msgstr "Taxas Excluídas"
-=======
 msgstr "Excluído de impostos"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:res.config.settings,show_line_subtotals_tax_selection:0
@@ -10199,11 +10017,7 @@ msgstr "Mapear taxas"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__tax_ids
 msgid "Taxes that apply on the base amount"
-<<<<<<< HEAD
-msgstr "Impostos que se aplicam no valor base"
-=======
 msgstr "Impostos que se aplicam sobre o montante base"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_template_search
@@ -10362,13 +10176,8 @@ msgid ""
 "Technical field used to determine at which date this reconciliation needs to"
 " be shown on the aged receivable/payable reports."
 msgstr ""
-<<<<<<< HEAD
-"Campo Técnico usado para determinar em que data essa reconciliação precisa "
-"ser mostrada nos relatórios envelhecidos de recebíveis/pagáveis."
-=======
 "Campo Técnico usado para determinar em que data essa conciliação precisa "
 "ser mostrada nos relatórios envelhecidos de recebíveis/pagáveis"
->>>>>>> [IMP] Modifica labels "Reconciliar"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move__tax_type_domain
@@ -10520,11 +10329,7 @@ msgstr ""
 #: code:addons/account/models/account_move.py:1059
 #, python-format
 msgid "The account %s (%s) is deprecated."
-<<<<<<< HEAD
-msgstr "A conta %s (%s) esta depreciada."
-=======
 msgstr "A conta %s (%s) está depreciada."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:521
@@ -10533,11 +10338,7 @@ msgid ""
 "The account selected for payment does not belong to the same company as this"
 " invoice."
 msgstr ""
-<<<<<<< HEAD
-"A conta selecionada para pagamento não pertence à mesma empresa desta "
-=======
 "A conta selecionada para pagamento não pertence à mesma empresa que esta".
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 "fatura."
 
 #. module: account
@@ -10579,11 +10380,7 @@ msgstr ""
 #: code:addons/account/models/account_bank_statement.py:319
 #, python-format
 msgid "The amount of a cash transaction cannot be 0."
-<<<<<<< HEAD
-msgstr "A quantidade de uma transação em dinheiro não pode ser 0."
-=======
 msgstr "O valor de uma transação em dinheiro não pode ser 0."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account.py:932
@@ -10673,12 +10470,8 @@ msgid ""
 "The currency of the bank statement line must be different than the statement"
 " currency."
 msgstr ""
-<<<<<<< HEAD
-"A moeda da linha do extrato bancário deve ser diferente da moeda do extrato."
-=======
 "A moeda da linha do extrato bancário deve ser diferente da moeda do extrato"
 "moeda."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account.py:551
@@ -10709,11 +10502,7 @@ msgstr "A moeda utilizada para entradas no informe/demonstrativo"
 #: code:addons/account/models/account_invoice.py:1981
 #, python-format
 msgid "The day of the month used for this term must be stricly positive."
-<<<<<<< HEAD
-msgstr "O dia do mês usado para este termo deve ser estritamente positivo."
-=======
 msgstr "O dia do mês utilizado para este termo deve ser rigorosamente positivo."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_bank_statement.py:193
@@ -10759,12 +10548,7 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_res_users__property_account_position_id
 msgid ""
 "The fiscal position determines the taxes/accounts used for this contact."
-<<<<<<< HEAD
-msgstr ""
-"A posição fiscal determina os impostos/contas utilizados para este contato."
-=======
 msgstr "A posição fiscal determina os impostos/contas usados para este contato."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/wizard/account_invoice_send.py:59
@@ -11035,13 +10819,8 @@ msgid ""
 "The selected unit of measure has to be in the same category as the product "
 "unit of measure."
 msgstr ""
-<<<<<<< HEAD
-"A unidade de medida selecionada deve estar na mesma categoria que a unidade "
-"de produto da medida."
-=======
 "A unidade de medida seleccionada tem de estar na mesma categoria que o produto".
 "unidade de medida."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax__sequence
@@ -11430,13 +11209,8 @@ msgid ""
 "Those can be used to quickly create a journal items when reconciling\n"
 "                a bank statement or an account."
 msgstr ""
-<<<<<<< HEAD
-"Aquele que pode ser usado para criar rapidamente itens de diário quando reconciliar\n"
-"                um extrato bancário ou uma conta."
-=======
 "Aquele que pode ser usado para criar rapidamente itens de diário quando conciliar\n"
 "um extrato bancário ou uma conta."
->>>>>>> [IMP] Modifica labels "Reconciliar"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_invoice_report_search
@@ -11496,11 +11270,7 @@ msgstr "Valor Total"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tax_audit_tree
 msgid "Total Base Amount"
-<<<<<<< HEAD
-msgstr "Valor Total da Base"
-=======
 msgstr "Valor Base Total"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -11811,11 +11581,7 @@ msgstr "Enviar"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_invoice_import_wizard_form_view
 msgid "Upload Files"
-<<<<<<< HEAD
-msgstr "Enviar Arquivos"
-=======
 msgstr "Carregar arquivos"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_chart_template__use_anglo_saxon
@@ -11850,22 +11616,12 @@ msgstr "Usar contabilidade anglo-saxão"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__module_account_batch_payment
 msgid "Use batch payments"
-<<<<<<< HEAD
-msgstr "Use pagamentos em lote"
-=======
 msgstr "Utilizar pagamentos por lotes"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Use budgets to compare actual with expected revenues and costs"
-<<<<<<< HEAD
-msgstr ""
-"Usar Orçamentos para comparar O rendimento e os gastos atuais com os "
-"esperados"
-=======
 msgstr "Utilizar orçamentos para comparar receitas e custos reais com os previstos"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -11999,14 +11755,8 @@ msgstr "Validar Movimento de Conta"
 msgid ""
 "Validate the statement line automatically (reconciliation based on your "
 "rule)."
-<<<<<<< HEAD
-msgstr ""
-"Valide a linha de extrato automaticamente (reconciliação com base na sua "
-"regra)."
-=======
 msgstr ""Validar a linha de declaração automaticamente (reconciliação baseada na sua "
 "regra).""
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:account.bank.statement,state:0
@@ -12078,11 +11828,7 @@ msgstr "Nota de Crédito de fornecedor"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__vendor_display_name
 msgid "Vendor Display Name"
-<<<<<<< HEAD
-msgstr "Mostrar Nome Vendedor"
-=======
 msgstr "Nome de exibição do fornecedor"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_payment.py:774
@@ -12101,11 +11847,7 @@ msgstr "Termos de Pagamento do Fornecedor"
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
 msgid "Vendor Payments"
-<<<<<<< HEAD
-msgstr "Pagamentos do Fornecedor"
-=======
 msgstr "Pagamentos de fornecedores"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_form
@@ -12135,11 +11877,7 @@ msgstr "Visão"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
 msgid "View accounts detail"
-<<<<<<< HEAD
-msgstr "Ver detalhes das contas"
-=======
 msgstr "Ver detalhe de contas"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:res.partner,invoice_warn:0
@@ -12172,11 +11910,7 @@ msgstr "Aviso"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__group_warning_account
 msgid "Warnings in Invoices"
-<<<<<<< HEAD
-msgstr "Avisos em Faturas"
-=======
 msgstr "Avisos nas faturas"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/company.py:518
@@ -12195,13 +11929,8 @@ msgid ""
 "We cannot find any journal for this company. You should create one.\n"
 "Please go to Configuration > Journals."
 msgstr ""
-<<<<<<< HEAD
-"Não conseguimos encontrar nenhum diário para esta empresa. Você deve criar um.\n"
-"Por favor, vá para Configuração> Diários."
-=======
 "Não conseguimos encontrar nenhum diário para esta empresa. Você deveria criar um.\n"
 "Por favor, vá para Configuração > Periódicos."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__website_message_ids
@@ -12223,14 +11952,8 @@ msgid ""
 "When receiving an email with a bill, or uploading scanned bills, Odoo will "
 "parse them (OCR) and auto-complete (AI) Draft Bills to validate."
 msgstr ""
-<<<<<<< HEAD
-"Ao receber um e-mail com uma fatura ou ao carregar contas digitalizadas, o "
-"Formmicro ERP irá analisá-las (OCR) e preencher rascunhos de faturas (AI) "
-"para validar."
-=======
 "Não conseguimos encontrar nenhum diário para esta empresa. Você deveria criar um.\n"
 "Por favor, vá para Configuração > Periódicos."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__post_at_bank_rec
@@ -12256,11 +11979,7 @@ msgstr "Se este diário deve ser exibido no dashboard ou não"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_setup_bank_manual_config__new_journal_name
 msgid "Will be used to name the Journal related to this bank account"
-<<<<<<< HEAD
-msgstr "Será usado para nomear o Diário relacionado a esta conta bancária"
-=======
 msgstr "Será usado para nomear o Diário relacionada com esta conta bancária"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_common_journal_report__amount_currency
@@ -12284,22 +12003,14 @@ msgstr "Baixa"
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__amount
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_template__amount
 msgid "Write-off Amount"
-<<<<<<< HEAD
-msgstr "Valor da Baixa"
-=======
 msgstr "Valor de anulação"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #. openerp-web
 #: code:addons/account/static/src/xml/account_reconciliation.xml:217
 #, python-format
 msgid "Writeoff Date"
-<<<<<<< HEAD
-msgstr "Data de Baixa"
-=======
 msgstr "Data de anulação"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: sql_constraint:account.move.line:0
@@ -12324,11 +12035,7 @@ msgstr ""
 #, python-format
 msgid "You are trying to reconcile some entries that are already reconciled."
 msgstr ""
-<<<<<<< HEAD
-"Você está tentando conciliar algumas entradas que já estão reconciliadas."
-=======
 "Você está tentando reconciliar algumas entradas que já estão conciliadas!"
->>>>>>> [IMP] Modifica labels "Reconciliar"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__blocked
@@ -12388,15 +12095,9 @@ msgid ""
 "invoices, once validated, to help the customer to refer to that particular "
 "invoice when making the payment."
 msgstr ""
-<<<<<<< HEAD
-"Você pode definir aqui a comunicação padrão que aparecerá nas faturas do "
-"cliente, uma vez validadas, para ajudar o cliente a consultar essa fatura "
-"específica ao efetuar o pagamento."
-=======
 "Você pode definir aqui a comunicação padrão que aparecerá no cliente".
 "facturas, uma vez validadas, para ajudar o cliente a referir-se a esse particular".
 "factura ao fazer o pagamento."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_move.py:373
@@ -12444,13 +12145,8 @@ msgid ""
 "You cannot change the type of an invoice line. Instead you should delete the"
 " current line and create a new line of the proper type."
 msgstr ""
-<<<<<<< HEAD
-"Você não pode alterar o tipo de linha de fatura. Em vez disso, você deve "
-"excluir a linha atual e criar uma nova linha do tipo adequado."
-=======
 "Você não pode alterar o valor da conciliação nesta conta, uma vez que já "
 "tem alguns movimentos"
->>>>>>> [IMP] Modifica labels "Reconciliar"
 
 #. module: account
 #: code:addons/account/models/account_move.py:703
@@ -12459,13 +12155,8 @@ msgid ""
 "You cannot create journal items with a secondary currency without filling "
 "both 'currency' and 'amount currency' fields."
 msgstr ""
-<<<<<<< HEAD
-"Você não pode criar itens de diário com uma moeda secundária sem preencher "
-"os campos de \"moeda\" e \"moeda de valor\"."
-=======
 "Você não pode criar itens de diário com uma moeda secundária sem preencher"
 "ambos os campos 'moeda' e 'moeda do montante'."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/company.py:187
@@ -12482,11 +12173,7 @@ msgstr ""
 #: code:addons/account/models/account_payment.py:611
 #, python-format
 msgid "You cannot delete a payment that is already posted."
-<<<<<<< HEAD
-msgstr "Você não pode excluir um pagamento que já está postado."
-=======
 msgstr "Não é possível eliminar um pagamento que já tenha sido lançado."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:786
@@ -12583,13 +12270,7 @@ msgstr "Você não pode misturar itens de contas a receber e a pagar."
 #: code:addons/account/models/account_move.py:124
 #, python-format
 msgid "You cannot modify a journal entry linked to a posted payment."
-<<<<<<< HEAD
-msgstr ""
-"Você não pode modificar uma entrada de diário vinculada a um pagamento "
-"postado."
-=======
 msgstr "Você não pode modificar um lançamento contábil manual ligado a um pagamento lançado."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_move.py:331
@@ -12617,11 +12298,7 @@ msgstr ""
 msgid ""
 "You cannot perform this action on an account that contains journal items."
 msgstr ""
-<<<<<<< HEAD
-"Você não pode realizar essa ação em uma conta que contém itens de diário."
-=======
 "Você não pode executar esta ação em uma conta que contém itens de diário."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/wizard/pos_box.py:36
@@ -12638,13 +12315,8 @@ msgid ""
 "You cannot register payments for customer invoices and credit notes at the "
 "same time."
 msgstr ""
-<<<<<<< HEAD
-"Você não pode registrar pagamentos para faturas de clientes e notas de "
-"crédito ao mesmo tempo."
-=======
 "Você não pode registrar pagamentos para faturas de clientes e notas de crédito no "
 "ao mesmo tempo."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_payment.py:96
@@ -12653,23 +12325,14 @@ msgid ""
 "You cannot register payments for vendor bills and supplier refunds at the "
 "same time."
 msgstr ""
-<<<<<<< HEAD
-"Você não pode registrar pagamentos para contas de fornecedores e reembolsos "
-"de fornecedores ao mesmo tempo."
-=======
 "Você não pode registrar pagamentos para contas de fornecedores e reembolsos de fornecedores no"
 "ao mesmo tempo."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account.py:644
 #, python-format
 msgid "You cannot remove the bank account from the journal once set."
-<<<<<<< HEAD
-msgstr "Você não pode remover a conta bancária do diário uma vez definido."
-=======
 msgstr "Você não pode remover a conta bancária do diário uma vez definida."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account.py:332
@@ -12688,13 +12351,8 @@ msgid ""
 "You cannot set a currency on this account as it already has some journal "
 "entries having a different foreign currency."
 msgstr ""
-<<<<<<< HEAD
-"Você não pode definir uma moeda nesta conta, pois já tem algumas entradas de"
-" diários com uma moeda estrangeira diferente."
-=======
 "Você não pode definir uma moeda nesta conta, pois ela já tem algum diário".
 "entradas com uma moeda estrangeira diferente."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account.py:294
@@ -12753,33 +12411,20 @@ msgid ""
 "You have to define an 'Internal Transfer Account' in your cash register's "
 "journal."
 msgstr ""
-<<<<<<< HEAD
-"Você tem que definir uma 'Conta de Transferência Interna' no diário do seu "
-"caixa registrador."
-=======
 "Você tem que definir uma 'Conta de Transferência Interna' na sua caixa registadora".
 "Diário."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account.py:142
 #, python-format
 msgid "You must first define an opening move."
-<<<<<<< HEAD
-msgstr "Você deve primeiro definir um movimento de abertura."
-=======
 msgstr "É preciso primeiro definir um movimento de abertura."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:1683
 #, python-format
 msgid "You must first select a partner."
-<<<<<<< HEAD
-msgstr "Primeiro você deve selecionar um parceiro."
-=======
 msgstr "Você deve primeiro selecionar um parceiro."
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #. openerp-web
@@ -12875,20 +12520,12 @@ msgstr "código"
 #. module: account
 #: selection:account.payment.term.line,option:0
 msgid "day(s) after the end of the invoice month"
-<<<<<<< HEAD
-msgstr "dia(s) após o final do mês da factura"
-=======
 msgstr "dia(s) após o final do mês da fatura"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: selection:account.payment.term.line,option:0
 msgid "day(s) after the invoice date"
-<<<<<<< HEAD
-msgstr "dia(s) após a data da factura"
-=======
 msgstr "dia(s) após a data da fatura"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.setup_bank_account_wizard
@@ -12898,11 +12535,7 @@ msgstr "por exemplo, BE15001559627230"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.setup_bank_account_wizard
 msgid "e.g Bank of America"
-<<<<<<< HEAD
-msgstr "por exemplo, Banco Itaú"
-=======
 msgstr "por exemplo, Bank of America"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.setup_bank_account_wizard
@@ -12991,11 +12624,7 @@ msgstr "segundos por transação."
 #: code:addons/account/static/src/xml/account_reconciliation.xml:319
 #, python-format
 msgid "statement lines"
-<<<<<<< HEAD
-msgstr "linhas de extrato"
-=======
 msgstr "linhas de declaração"
->>>>>>> [MIG] Atualiza tradução de 'account' para 12.0
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
