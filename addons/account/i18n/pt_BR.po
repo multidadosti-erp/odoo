@@ -2769,8 +2769,12 @@ msgstr "Escolha contra-partida ou crie a baixa"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_refund__filter_refund
-msgid "Choose how you want to credit this invoice. You cannot Modify and Cancel if the invoice is already reconciled"
-msgstr "Escolha como quer creditar esta fatura. Você não pode Modificar e Cancelar se a fatura já está reconciliada"
+msgid ""
+"Choose how you want to credit this invoice. You cannot Modify and Cancel if "
+"the invoice is already reconciled"
+msgstr ""
+"Escolha como quer creditar esta fatura. Você não pode Modificar e Cancelar se "
+"a fatura já está reconciliada"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.actions_account_fiscal_year
@@ -3916,17 +3920,17 @@ msgstr "Grau de confiança que você tem neste devedor"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__auto_delete
 msgid "Delete Emails"
-msgstr "Exclua E-mails"
+msgstr "Apagar e-mails"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__auto_delete_message
 msgid "Delete Message Copy"
-msgstr "Excluir Cópia da Mensagem"
+msgstr "Apagar cópia da mensagem"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_send__auto_delete
 msgid "Delete sent emails (mass mailing only)"
-msgstr "Exclua e-mails enviados (somente envio em massa)"
+msgstr "Eliminar e-mails enviados (apenas envio em massa)"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__deprecated
@@ -3974,8 +3978,14 @@ msgstr "Detectar Automaticamente"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax__type_tax_use
 #: model:ir.model.fields,help:account.field_account_tax_template__type_tax_use
-msgid "Determines where the tax is selectable. Note : 'None' means a tax can't be used by itself, however it can still be used in a group. 'adjustment' is used to perform tax adjustment."
-msgstr "Determina onde o imposto é selecionável. Nota : 'Nenhum' significa que um imposto não pode ser usado por si mesmo, porém ainda pode ser usado em grupo. O 'ajuste' é\"usado para realizar o ajuste de impostos."
+msgid ""
+"Determines where the tax is selectable. Note : 'None' means a tax can't be "
+"used by itself, however it can still be used in a group. 'adjustment' is "
+"used to perform tax adjustment."
+msgstr ""
+"Determina onde o imposto é selecionável. Nota : 'Nenhum' significa que um imposto não pode ser "
+"usado por si mesmo, porém ainda pode ser usado em grupo. O 'ajuste' é".
+"usado para realizar o ajuste de impostos."
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__difference
