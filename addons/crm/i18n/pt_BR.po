@@ -917,6 +917,11 @@ msgid "Folded in Pipeline"
 msgstr "Dobrado no Pipeline"
 
 #. module: crm
+#: model:mail.activity.type,name:crm.mail_activity_demo_followup_quote
+msgid "Follow-up Quote"
+msgstr "Acompanhar Orçamento"
+
+#. module: crm
 #: model:ir.model.fields,field_description:crm.field_crm_lead__message_follower_ids
 msgid "Followers"
 msgstr "Seguidores"
@@ -1334,7 +1339,11 @@ msgid "Main Attachment"
 msgstr "Anexo Principal"
 
 #. module: crm
-#: model:ir.model.fields,field_description:crm.field_contact_config_settings__generate_lead_from_alias
+#: model:mail.activity.type,name:crm.mail_activity_demo_make_quote
+msgid "Make Quote"
+msgstr "Fazer Orçamento"
+
+#. module: crm
 #: model:ir.model.fields,field_description:crm.field_res_config_settings__generate_lead_from_alias
 msgid "Manual Assignation of Emails"
 msgstr "Atribuição Manual de Emails"
@@ -2587,7 +2596,7 @@ msgid "You will be able to plan meetings and log activities from\n"
 "                documents, track all discussions, and much more."
 msgstr ""
 "Você será capaz de planejar reuniões e atividades de registro a partir de\n"
-"                oportunidades, convertê-las em cotações, anexar relacionadas\n"
+"                oportunidades, convertê-las em orçamentos, anexar relacionadas\n"
 "                documentos, acompanhar todas as discussões, e muito mais."
 
 #. module: crm
@@ -2597,7 +2606,7 @@ msgid "You will be able to plan meetings and phone calls from\n"
 "                    documents, track all discussions, and much more."
 msgstr ""
 "Você será capaz de planejar reuniões e telefonemas a partir de\n"
-"                oportunidades, convertê-las em cotações, anexar relacionadas\n"
+"                oportunidades, convertê-las em orçamentos, anexar relacionadas\n"
 "                documentos, acompanhar todas as discussões, e muito mais."
 
 #. module: crm
@@ -2630,7 +2639,7 @@ msgstr "Ex: Preço do Produto"
 #: model_terms:ir.ui.view,arch_db:crm.crm_case_form_view_leads
 #: model_terms:ir.ui.view,arch_db:crm.crm_case_form_view_oppor
 msgid "e.g. https://www.odoo.com"
-msgstr "e.x. https://www.example.com"
+msgstr "Ex: https://multidadosti.com.br"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:970
