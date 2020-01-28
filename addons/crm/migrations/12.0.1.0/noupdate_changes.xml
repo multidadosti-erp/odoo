@@ -13,6 +13,7 @@
   </record>
   <record id="sales_team.team_sales_department" model="crm.team">
     <field name="dashboard_graph_model">crm.lead</field>
+    <field name="use_opportunities">True</field>
   </record>
   <record id="digest.digest_digest_default" model="digest.digest">
     <field name="kpi_crm_opportunities_won">True</field>

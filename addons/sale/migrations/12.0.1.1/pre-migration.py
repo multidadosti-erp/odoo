@@ -79,11 +79,21 @@ def fill_sale_order_line_sections(cr):
         INSERT INTO sale_order_line (order_id, layout_category_id,
             sequence, name,
             price_unit, product_uom_qty, customer_lead,
-            display_type, create_uid, create_date, write_uid, write_date)
+            display_type, create_uid, create_date, write_uid, write_date, product_type,
+            icms_tipo_base, icms_base_calculo, icms_valor, icms_st_tipo_base,
+            icms_st_valor, icms_st_base_calculo, issqn_tipo, issqn_aliquota,
+            issqn_valor, ipi_tipo, ipi_base_calculo, ipi_reducao_bc, ipi_valor,
+            ipi_aliquota, pis_tipo, pis_base_calculo, pis_valor, pis_aliquota,
+            cofins_tipo, ii_base_calculo, ii_aliquota, ii_valor, ii_valor_iof,
+            ii_valor_despesas, csll_base_calculo, csll_valor, csll_aliquota,
+            irrf_base_calculo, irrf_valor, irrf_aliquota, inss_base_calculo,
+            inss_valor, inss_aliquota)
         SELECT sol.order_id, sol.layout_category_id,
             min(sol.sequence) -1 as sequence, max(COALESCE(slc.name, ' ')),
             0, 0, 0, 'line_section', min(sol.create_uid), min(sol.create_date),
-            min(sol.write_uid), min(sol.write_date)
+            min(sol.write_uid), min(sol.write_date), 'product', '3', 0, 0, '4',
+            0, 0, 'N', 0, 0, 'percent', 0, 0, 0, 0, 'percent', 0, 0, 0,
+            'percent', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         FROM sale_order_line sol
         LEFT JOIN sale_layout_category slc ON slc.id = sol.layout_category_id
         WHERE sol.order_id IN (

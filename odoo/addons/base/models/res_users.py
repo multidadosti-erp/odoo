@@ -427,6 +427,8 @@ class Users(models.Model):
                     )
             """
             self.env.cr.execute(query, args)
+            print('Users %s' % self.ids)
+            print('Groups %s' % group_ids)
             return bool(self.env.cr.fetchall())
         else:
             return False
