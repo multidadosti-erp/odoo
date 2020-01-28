@@ -239,11 +239,7 @@ msgstr "Funcionário"
 #. module: hr_timesheet
 #: model:ir.model.fields,field_description:hr_timesheet.field_res_config_settings__timesheet_encode_uom_id
 msgid "Encoding Unit"
-<<<<<<< HEAD
-msgstr "Unidade de codificação"
-=======
 msgstr "Unidade de Codificação"
->>>>>>> [IMP] Atualiza tradução de 'hr_timesheet' para 12.0
 
 #. module: hr_timesheet
 #: model_terms:ir.ui.view,arch_db:hr_timesheet.res_config_settings_view_form
