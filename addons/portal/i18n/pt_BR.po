@@ -39,6 +39,8 @@ msgid ""
 "\n"
 "- Switch the internal users to portal manually"
 msgstr ""
+"\n"
+"- Alterne os usuários internos para o portal manualmente"
 
 #. module: portal
 #. openerp-web
