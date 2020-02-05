@@ -246,6 +246,7 @@ msgid ""
 "<span><i>Pending</i>... The order will be validated after the "
 "payment.</span>"
 msgstr ""
+"<span><i>Pendente</i>... O pedido será validado após o pagamento.</span>"
 
 #. module: payment
 #: code:addons/payment/models/account_invoice.py:72
@@ -1457,13 +1458,13 @@ msgstr ""
 #: model_terms:payment.acquirer,post_msg:payment.payment_acquirer_custom
 #: model_terms:payment.acquirer,post_msg:payment.payment_acquirer_transfer
 msgid "Please use the following transfer details"
-msgstr ""
+msgstr "Utilize os seguintes detalhes de transferência"
 
 #. module: payment
 #: model_terms:payment.acquirer,post_msg:payment.payment_acquirer_custom
 #: model_terms:payment.acquirer,post_msg:payment.payment_acquirer_transfer
 msgid "Please use the order name as communication reference."
-msgstr ""
+msgstr "Por favor utilize o nome da ordem como referência de comunicação."
 
 #. module: payment
 #. openerp-web
