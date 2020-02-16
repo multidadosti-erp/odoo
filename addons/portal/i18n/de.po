@@ -10,9 +10,6 @@
 # Chris Egal <sodaswed@web.de>, 2019
 # Robert Förster <hello@suppliot.eu>, 2020
 # Ermin Trevisan <trevi@twanda.com>, 2020
-# Max-Milan Stoyanov, 2020
-# EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2021
-# Friederike Fasterling-Nesselbosch, 2021
 #
 msgid ""
 msgstr ""
