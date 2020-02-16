@@ -6,7 +6,7 @@
 # Martin Trigaux, 2018
 # krnkris, 2018
 # Tamás Németh <ntomasz81@gmail.com>, 2019
-# Ákos Nagy <akos.nagy@oregional.hu>, 2020
+# A . <tiboreu@protonmail.com>, 2020
 #
 msgid ""
 msgstr ""
