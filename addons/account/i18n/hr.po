@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * account
-# 
+#
 # Translators:
 # Dalibor Ružić <Dalibor.Ruzic@storm.hr>, 2019
 # Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019
@@ -20,25 +20,16 @@
 # Milan Tribuson <one.mile.code@gmail.com>, 2019
 # Vojislav Opačić <vojislav.opacic@gmail.com>, 2019
 # Igor Krizanovic <krizanovic.igor@gmail.com>, 2019
-<<<<<<< HEAD
 # Miro Sertić, 2019
 # Bole <bole@dajmi5.com>, 2020
-=======
-# Bole <bole@dajmi5.com>, 2019
-# Miro Sertić <miro.sertic@notus.hr>, 2019
->>>>>>> [I18N] Update translation terms from Transifex
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-14 07:33+0000\n"
 "PO-Revision-Date: 2018-08-24 09:14+0000\n"
-<<<<<<< HEAD
 "Last-Translator: Bole <bole@dajmi5.com>, 2020\n"
-=======
-"Last-Translator: Miro Sertić <miro.sertic@notus.hr>, 2019\n"
->>>>>>> [I18N] Update translation terms from Transifex
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

@@ -40,13 +40,9 @@ msgstr ""
 msgid ""
 ".\n"
 "                Manual actions may be needed."
-<<<<<<< HEAD
 msgstr ""
 ".\n"
 "               Manuális akciók lehetnek szükségesek."
-=======
-msgstr "           Manuális műveletek lehetnek szükségesek."
->>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: sale_stock
 #: model_terms:ir.ui.view,arch_db:sale_stock.sale_order_portal_content_inherit_sale_stock
@@ -122,11 +118,7 @@ msgstr "<strong>Ügyfél hivatkozás:</strong>"
 #. module: sale_stock
 #: model_terms:ir.ui.view,arch_db:sale_stock.sale_order_portal_content_inherit_sale_stock
 msgid "<strong>Delivery Orders</strong>"
-<<<<<<< HEAD
 msgstr "<strong>Szállítási rendelések</strong>"
-=======
-msgstr "<strong>Szállítási rendelés</strong>"
->>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: sale_stock
 #: model_terms:ir.ui.view,arch_db:sale_stock.report_invoice_document_inherit_sale_stock

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base
-# 
+#
 # Translators:
 # picibucor <picibucor@gmail.com>, 2018
 # Tamás Dombos, 2018
@@ -15,7 +15,7 @@
 # Martin Trigaux, 2019
 # Tamás Németh <ntomasz81@gmail.com>, 2020
 # Ákos Nagy <akos.nagy@oregional.hu>, 2020
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -25823,14 +25823,11 @@ msgstr "hivatkozás"
 #: selection:ir.model.fields,ttype:0
 msgid "selection"
 msgstr "kiválasztás"
-<<<<<<< HEAD
 
 #. module: base
 #: selection:ir.model.fields,ttype:0
 msgid "serialized"
 msgstr "sorozatosított"
-=======
->>>>>>> [I18N] Update translation terms from Transifex
 
 #. module: base
 #: selection:ir.model.fields,ttype:0

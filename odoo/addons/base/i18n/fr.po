@@ -64,7 +64,6 @@
 # Eloïse Stilmant <est@odoo.com>, 2019
 # Olivier ANDRE <frsw194@gmail.com>, 2019
 # Martin Trigaux, 2019
-<<<<<<< HEAD
 # lcaodoo <lca@odoo.com>, 2019
 # Alexandra Jubert <aju@odoo.com>, 2020
 # Cécile Collart <cco@odoo.com>, 2020
@@ -75,22 +74,13 @@
 # Julien Goergen <jgo@odoo.com>, 2020
 # Priscilla Sanchez <prs@odoo.com>, 2020
 #
-=======
-# Cécile Collart <cco@odoo.com>, 2019
-# lcaodoo <lca@odoo.com>, 2019
-# 
->>>>>>> [I18N] Update translation terms from Transifex
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-10 14:44+0000\n"
 "PO-Revision-Date: 2018-08-24 09:14+0000\n"
-<<<<<<< HEAD
 "Last-Translator: Priscilla Sanchez <prs@odoo.com>, 2020\n"
-=======
-"Last-Translator: lcaodoo <lca@odoo.com>, 2019\n"
->>>>>>> [I18N] Update translation terms from Transifex
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

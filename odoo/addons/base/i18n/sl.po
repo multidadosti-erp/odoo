@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base
-# 
+#
 # Translators:
 # Dejan Sraka <dejan.sraka@picolabs.si>, 2019
 # 025aa31cb7deb4d52a7a587a91994bd9_c519582, 2019
@@ -14,24 +14,16 @@
 # Grega Vavtar <grega@hbs.si>, 2019
 # Martin Trigaux, 2019
 # Tadej Lupšina <tadej@hbs.si>, 2019
-<<<<<<< HEAD
 # Jasmina Macur <jasmina@hbs.si>, 2020
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2020
-=======
-# Matjaz Mozetic <m.mozetic@matmoz.si>, 2019
->>>>>>> [I18N] Update translation terms from Transifex
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-10 14:44+0000\n"
 "PO-Revision-Date: 2018-08-24 09:14+0000\n"
-<<<<<<< HEAD
 "Last-Translator: Matjaz Mozetic <m.mozetic@matmoz.si>, 2020\n"
-=======
-"Last-Translator: Matjaz Mozetic <m.mozetic@matmoz.si>, 2019\n"
->>>>>>> [I18N] Update translation terms from Transifex
 "Language-Team: Slovenian (https://www.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
