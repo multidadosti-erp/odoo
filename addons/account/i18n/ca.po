@@ -13,8 +13,7 @@
 # M Palau <mpalau@tda.ad>, 2019
 # Jesus Ramoneda <chusamo@gmail.com>, 2019
 # Arnau Ros, 2019
-# César López Ramírez <cesar.lopez@coopdevs.org>, 2020
-# Eugeni Chafert <eugeni@chafer.cat>, 2020
+# Carles Antoli <carlesantoli@hotmail.com>, 2020
 #
 msgid ""
 msgstr ""
