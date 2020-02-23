@@ -18,8 +18,6 @@
 # Léonie Bouchat <lbo@odoo.com>, 2018
 # Massimo Bianchi <bianchi.massimo@gmail.com>, 2020
 # Sergio Zanchetta <primes2h@gmail.com>, 2021
-# Friederike Fasterling-Nesselbosch, 2021
-# BigBlu <paolo.moroni@air-srl.com>, 2021
 #
 msgid ""
 msgstr ""

@@ -22,7 +22,6 @@
 # Martin Trigaux, 2020
 # Luis González <lgonzalez@vauxoo.com>, 2020
 # Jairo Llopis <yajo.sk8@gmail.com>, 2021
-# Susanna Pujol, 2021
 #
 msgid ""
 msgstr ""

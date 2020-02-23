@@ -9,7 +9,6 @@
 # Fredrik Ahlsen <fredrik@gdx.no>, 2020
 # Jens Nymoen <jens@nettimport.no>, 2021
 # Marius Stedjan <marius@stedjan.com>, 2021
-# Mads Søndergaard, 2021
 #
 msgid ""
 msgstr ""
