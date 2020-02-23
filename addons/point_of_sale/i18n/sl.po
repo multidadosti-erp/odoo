@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * point_of_sale
-# 
+#
 # Translators:
 # laznikd <laznik@mentis.si>, 2019
 # jl2035 <jaka.luthar@gmail.com>, 2019
