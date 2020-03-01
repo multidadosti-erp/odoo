@@ -43,7 +43,13 @@
 # Marcelo Costa <marcelo@comdesk.com.br>, 2019
 # Charles Fonseca <charlesjrfonseca@gmail.com>, 2019
 # Ramiro Pereira de Magalhães <ramiro.p.magalhaes@gmail.com>, 2019
-#
+# renato sabo <renato.sabo@bradootech.com>, 2020
+# Thiago Alves Cavalcante <thiagoalcav@gmail.com>, 2020
+# Marcel Savegnago <marcel.savegnago@gmail.com>, 2020
+# Luiz Fernando <lfpsgs@outlook.com>, 2020
+# Eduardo Aparicio <eduardo.caparica@gmail.com>, 2020
+# Guilherme Libardi <guilherme.libardig@gmail.com>, 2020
+# Fernando Colus <fcolus1@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -10206,7 +10212,6 @@ msgid ""
 " be shown on the aged receivable/payable reports."
 msgstr ""
 "Campo Técnico usado para determinar em que data essa conciliação precisa "
-"ser mostrada nos relatórios envelhecidos de recebíveis/pagáveis."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move__tax_type_domain
@@ -12073,8 +12078,7 @@ msgstr ""
 #: code:addons/account/models/account_move.py:944
 #, python-format
 msgid "You are trying to reconcile some entries that are already reconciled."
-msgstr ""
-"Você está tentando conciliar algumas entradas que já estão conciliadas."
+msgstr "Você está tentando conciliar algumas entradas que já estão conciliadas."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__blocked
