@@ -15,7 +15,6 @@
 # Jan Prokop, 2020
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2020
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2020
-# jprokop1 <jprokop@jackie.sk>, 2021
 #
 msgid ""
 msgstr ""

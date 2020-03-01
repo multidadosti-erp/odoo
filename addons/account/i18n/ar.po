@@ -37,7 +37,6 @@
 # Yazeed Dandashi <lay@odoo.com>, 2019
 # MOHAMMAD IBRAHIM <m.moamir@outlook.com>, 2020
 # Mustafa J. Kadhem <safi2266@gmail.com>, 2021
-# Samir Sellami <samorcool@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

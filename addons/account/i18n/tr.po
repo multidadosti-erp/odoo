@@ -24,7 +24,6 @@
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2020
 # Murat Durmuş <muratd@projetgrup.com>, 2020
 # Nadir Gazioglu <nadirgazioglu@gmail.com>, 2021
-# Ozlem Cikrikci <ozlemc@eskayazilim.com.tr>, 2021
 #
 msgid ""
 msgstr ""

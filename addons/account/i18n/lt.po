@@ -25,7 +25,6 @@
 # Andrius Laukavičius <andrius@focusate.eu>, 2019
 # Paulius Sladkevičius <paulius@versada.eu>, 2019
 # Arunas Vaitekunas <vaitekunas@gmail.com>, 2020
-# Arunas V. <arunas@devoro.com>, 2021
 #
 msgid ""
 msgstr ""

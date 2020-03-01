@@ -58,7 +58,6 @@
 # Dany Lopez <almustafa.net@gmail.com>, 2020
 # Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2021
 # Martin Trigaux, 2021
-# Xabi Spacebiker <xabispacebiker@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

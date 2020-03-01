@@ -14,7 +14,7 @@
 # Батболд <batbold.ts@gmail.com>, 2019
 # Minj P <pminj322@gmail.com>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2020
-# Munkhbaatar g <muuguu17@gmail.com>, 2020
+# Munkhbaatar Gombosuren <muuguu17@gmail.com>, 2020
 #
 msgid ""
 msgstr ""

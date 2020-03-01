@@ -27,7 +27,6 @@
 # PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020
 # Vanderlei P. Romera <vanderleiromera@gmail.com>, 2020
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2021
-# Éder Brito <britoederr@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

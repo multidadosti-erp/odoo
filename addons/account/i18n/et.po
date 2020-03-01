@@ -20,8 +20,6 @@
 # Eneli Õigus <enelioigus@gmail.com>, 2020
 # Piia Paurson <piia@avalah.ee>, 2021
 # Andre Roomet <andreroomet@gmail.com>, 2021
-# Triine Aavik <triine@avalah.ee>, 2021
-# Aveli Kannel <aveli@avalah.ee>, 2021
 #
 msgid ""
 msgstr ""

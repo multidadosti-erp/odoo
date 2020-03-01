@@ -46,8 +46,6 @@
 # Jérôme JEK <jek@odoo.com>, 2020
 # Ermin Trevisan <trevi@twanda.com>, 2020
 # EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2021
-# Chris Egal <sodaswed@web.de>, 2021
-# Friederike Fasterling-Nesselbosch, 2021
 #
 msgid ""
 msgstr ""

@@ -16,7 +16,6 @@
 # Chris Egal <sodaswed@web.de>, 2019
 # Malin Kienke <malin.kienke@initos.com>, 2020
 # Ermin Trevisan <trevi@twanda.com>, 2020
-# EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2021
 #
 msgid ""
 msgstr ""

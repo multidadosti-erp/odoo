@@ -53,7 +53,6 @@
 # Yann Papouin <ypa@decgroupe.com>, 2021
 # Anthony Chaussin <chaussin.anthony@gmail.com>, 2021
 # Benjamin Stienon <tsb@odoo.com>, 2021
-# Thomas Deleval <thd@odoo.com>, 2021
 #
 msgid ""
 msgstr ""

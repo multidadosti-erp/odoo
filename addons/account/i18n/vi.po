@@ -13,7 +13,7 @@
 # Nguyen Quang Toan <nqtoan@dqn.vn>, 2019
 # Trinh Tran Thi Phuong <trinhttp@trobz.com>, 2019
 # Duy BQ <duybq86@gmail.com>, 2020
-# thanhnguyen.icsc <thanhnguyen.icsc@gmail.com>, 2021
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

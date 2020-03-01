@@ -138,7 +138,7 @@ msgstr "-> Conciliar"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_form
 msgid "-> View partially reconciled entries"
-msgstr "-> Ver entradas parcialmente conciliadas."
+msgstr "-> Ver entradas parcialmente conciliadas"
 
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_15days
@@ -271,7 +271,7 @@ msgstr "<em>Fatura Rascunho</em>"
 #: model_terms:ir.ui.view,arch_db:account.account_move_line_view_kanban
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_kanban
 msgid "<i class=\"fa fa-clock-o\" aria-label=\"Date\" role=\"img\" title=\"Date\"/>"
-msgstr "<i class=“fa fa-clock-o” aria-label=“Date” role=“img” title=“Date”/>"
+msgstr "<i class=\"fa fa-clock-o\" aria-label=\"Date\" role=\"img\" title=\"Data”/>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_kanban
@@ -285,8 +285,12 @@ msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
-msgid "<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" title=\"Selection\"/>"
-msgstr "<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" title=\"Seleção\"/>"
+msgid ""
+"<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
+"title=\"Selection\"/>"
+msgstr ""
+"<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
+"title=\"Seleção”/>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_invoice_page
@@ -5644,7 +5648,7 @@ msgid ""
 "invoice has been reconciled with one or several journal entries of payment."
 msgstr ""
 "Indica que a fatura foi paga e a entrada do diário foi conciliada com um "
-"ou mais diários de pagamentos"
+"ou mais diários de pagamentos."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__sent
@@ -8080,9 +8084,7 @@ msgstr "Modelos de Conciliação"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_full_reconcile__partial_reconcile_ids
 msgid "Reconciliation Parts"
-msgstr ""
-"Trechos de Conciliação\n"
-" "
+msgstr "Trechos de Conciliação"
 
 #. module: account
 #: model:ir.actions.client,name:account.action_bank_reconcile
@@ -8690,7 +8692,7 @@ msgid ""
 msgstr ""
 "Selecione esta opção se o imposto deve usar regime de caixa, o que irá criar"
 " uma entrada para este imposto sobre uma determinada conta durante a "
-"conciliação"
+"conciliação."
 
 #. module: account
 #: code:addons/account/wizard/account_invoice_state.py:21
@@ -9578,7 +9580,7 @@ msgid ""
 " be shown on the aged receivable/payable reports."
 msgstr ""
 "Campo Técnico usado para determinar em que data essa conciliação precisa "
-"ser mostrada nos relatórios envelhecidos de recebíveis/pagáveis"
+"ser mostrada nos relatórios envelhecidos de recebíveis/pagáveis."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move__tax_type_domain
@@ -11115,7 +11117,7 @@ msgstr "Valor incorreto de crédito ou débito no lançamento contábil! Crédit
 #, python-format
 msgid "You are trying to reconcile some entries that are already reconciled."
 msgstr ""
-"Você está tentando reconciliar algumas entradas que já estão conciliadas!"
+"Você está tentando conciliar algumas entradas que já estão conciliadas."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__blocked
@@ -11188,8 +11190,8 @@ msgid ""
 "You cannot change the type of an invoice line. Instead you should delete the"
 " current line and create a new line of the proper type."
 msgstr ""
-"Você não pode alterar o valor da conciliação nesta conta, uma vez que já "
-"tem alguns movimentos"
+"Você não pode alterar o tipo de linha de fatura. Em vez disso, você deve "
+"excluir a linha atual e criar uma nova linha do tipo adequado."
 
 #. module: account
 #: code:addons/account/models/account_move.py:767

@@ -22,9 +22,6 @@
 # yotam katzuni, 2020
 # Roey Weiser <roey@laylinetech.com>, 2021
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2021
-# shaked <shaked@laylinetech.com>, 2021
-# david danilov, 2021
-# Jonathan Spier, 2021
 #
 msgid ""
 msgstr ""
