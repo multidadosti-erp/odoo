@@ -24,7 +24,6 @@
 # Lauro de Lima <lauro@ciclix.com>, 2019
 # Mateus Lopes <mateus1@gmail.com>, 2019
 # Martin Trigaux, 2019
-# Marcel Savegnago <marcel.savegnago@gmail.com>, 2019
 # Keli Brugalli <kbr@odoo.com>, 2019
 #
 msgid ""
