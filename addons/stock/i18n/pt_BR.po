@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * stock
-# 
+#
 # Translators:
 # Renato Lima <renatonlima@gmail.com>, 2018
 # Hendrix Costa <hendrixcosta@gmail.com>, 2018
@@ -27,7 +27,7 @@
 # Fábio Luna <fabiocluna@hotmail.com>, 2019
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2019
 # Ramiro Pereira de Magalhães <ramiro.p.magalhaes@gmail.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"%s --> UdM do Produto é %s (%s) - UdM de Mudança é %s (%s)"
+"%s --> Unidade do Produto é %s (%s) - Unidade de Mudança é %s (%s)"
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:342
@@ -1129,7 +1129,7 @@ msgstr "Consignação"
 #. module: stock
 #: selection:product.template,type:0
 msgid "Consumable"
-msgstr "Consumível"
+msgstr "Produto Consumível"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move_line__consume_line_ids
@@ -1249,7 +1249,7 @@ msgid ""
 "                        products later. Do not create a backorder if you will not\n"
 "                        process the remaining products."
 msgstr ""
-"Crie um pedido em atraso se você espera processar os produtos restantes\n" 
+"Crie um pedido em atraso se você espera processar os produtos restantes\n"
 "mais tarde. Não crie um pedido em atraso se não vai processar os restantes produtos."
 
 #. module: stock
@@ -5722,7 +5722,7 @@ msgstr "Relatório de regra de estoque"
 #. module: stock
 #: selection:product.template,type:0
 msgid "Storable Product"
-msgstr "Produto"
+msgstr "Produto Armazenável"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_res_config_settings__group_stock_multi_locations
