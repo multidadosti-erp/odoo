@@ -25,8 +25,6 @@
 # Osiris Anael Roman Eras <osiris.roman@yachaytech.edu.ec>, 2020
 # Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2021
 # VivianMontana23 <vivianpvm@gmail.com>, 2021
-# Lucia Pacheco <lpo@odoo.com>, 2021
-# jabelchi, 2021
 #
 msgid ""
 msgstr ""
