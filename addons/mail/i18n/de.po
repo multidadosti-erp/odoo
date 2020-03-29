@@ -23,7 +23,6 @@
 # Ermin Trevisan <trevi@twanda.com>, 2020
 # Felix Schubert <felix.schubert@go-erp.com>, 2020
 # Andreas Jonderko <a.jonderko@gastronovi.com>, 2021
-# Friederike Fasterling-Nesselbosch, 2021
 #
 msgid ""
 msgstr ""

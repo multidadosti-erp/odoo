@@ -23,7 +23,6 @@
 # Cécile Collart <cco@odoo.com>, 2020
 # Laura Piraux <lap@odoo.com>, 2020
 # Moka Tourisme <hello@mokatourisme.fr>, 2020
-# Jonathan Quique <jqu@odoo.com>, 2021
 #
 msgid ""
 msgstr ""

@@ -15,7 +15,6 @@
 # Marcelo Pereira <marcelo.pereira@arxi.pt>, 2019
 # Nuno Silva <nuno.silva@arxi.pt>, 2020
 # Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2021
-# Manuela Silva <mmsrs@sky.com>, 2021
 #
 msgid ""
 msgstr ""
