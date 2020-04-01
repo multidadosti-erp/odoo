@@ -1636,29 +1636,17 @@ msgstr "Excluir"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__auto_delete
 msgid "Delete Emails"
-<<<<<<< HEAD
-msgstr "Exclua E-mails"
-=======
 msgstr "Excluir e-mails"
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__auto_delete_message
 msgid "Delete Message Copy"
-<<<<<<< HEAD
-msgstr "Excluir Cópia da Mensagem"
-=======
 msgstr "Excluir cópia de mensagem"
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_compose_message__auto_delete
 msgid "Delete sent emails (mass mailing only)"
-<<<<<<< HEAD
-msgstr "Exclua e-mails enviados (somente envio em massa)"
-=======
 msgstr "Excluir e-mails enviados (apenas mala direta)"
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
 
 #. module: mail
 #: selection:mail.mail,state:0
@@ -2467,11 +2455,7 @@ msgstr "Possui anexos"
 #: model:ir.model.fields,help:mail.field_mail_mail__has_error
 #: model:ir.model.fields,help:mail.field_mail_message__has_error
 msgid "Has error"
-<<<<<<< HEAD
-msgstr "Possui erro"
-=======
 msgstr "Tem erro"
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__headers
@@ -3541,11 +3525,7 @@ msgstr "Moderar este canal"
 #: model:ir.model.fields,field_description:mail.field_mail_mail__moderator_id
 #: model:ir.model.fields,field_description:mail.field_mail_message__moderator_id
 msgid "Moderated By"
-<<<<<<< HEAD
-msgstr "Moderado Por"
-=======
 msgstr "Moderado por"
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__moderation_ids
