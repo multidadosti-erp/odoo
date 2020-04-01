@@ -2457,11 +2457,7 @@ msgstr "Possui anexos"
 #: model:ir.model.fields,help:mail.field_mail_mail__has_error
 #: model:ir.model.fields,help:mail.field_mail_message__has_error
 msgid "Has error"
-<<<<<<< HEAD
-msgstr "Possui erro"
-=======
 msgstr "Tem erro"
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__headers
@@ -2633,17 +2629,8 @@ msgid ""
 "If the email address is on the blacklist, the contact won't receive mass "
 "mailing anymore, from any list"
 msgstr ""
-<<<<<<< HEAD
-<<<<<<< HEAD
 "Se o endereço e-mail for na lista negra, o contato não receberá mais nenhum "
 "e-mail em massa de nenhuma lista"
-=======
-"Se definido, o gerenciador de filas enviará o email após a data. Se não definido,"
-=======
-"Se definido, o gerenciador de filas enviará o email após a data. Se não definido, "
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
-"o email será enviado o mais breve possível. Os placeholders do Jinja2 podem ser utilizados."
->>>>>>> [FIX] Traduz texto da tela "Convidar Seguidor"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_res_config_settings__alias_domain
@@ -3540,11 +3527,7 @@ msgstr "Moderar este canal"
 #: model:ir.model.fields,field_description:mail.field_mail_mail__moderator_id
 #: model:ir.model.fields,field_description:mail.field_mail_message__moderator_id
 msgid "Moderated By"
-<<<<<<< HEAD
-msgstr "Moderado Por"
-=======
 msgstr "Moderado por"
->>>>>>> [MIG] Atualiza tradução PT_BR ao modulo 'mail' do Core do Odoo 12
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__moderation_ids
