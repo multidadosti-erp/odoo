@@ -14,6 +14,7 @@
 # Mateus Lopes <mateus1@gmail.com>, 2018
 # Lauro de Lima <lauro@ciclix.com>, 2019
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2020
+# Luiz Fernando Gondin <lfpsgs@outlook.com>, 2020
 #
 msgid ""
 msgstr ""
