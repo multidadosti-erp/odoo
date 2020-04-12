@@ -13,6 +13,7 @@
 # Marcos Abreu <marcoos.abreu@gmail.com>, 2018
 # Silmar <pinheirosilmar@gmail.com>, 2018
 # Emanuel Martins <emanuel.breno@gmail.com>, 2018
+# Luiz Fernando Gondin <lfpsgs@outlook.com>, 2020
 #
 msgid ""
 msgstr ""
