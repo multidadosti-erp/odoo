@@ -30,7 +30,6 @@
 # Imbar Budiman <imbarbudiman@yahoo.com>, 2021
 # Altela Eleviansyah Pramardhika <altela_pramardhika@yahoo.com>, 2021
 # Daffi Prabowo <hammet217@gmail.com>, 2021
-# Abdul Munif Hanafi <amunifhanafi@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

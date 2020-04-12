@@ -25,7 +25,6 @@
 # Maurício Liell <mauricio@liell.com.br>, 2020
 # PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020
 # Tiago Rigo <tiagomrigo@gmail.com>, 2020
-# Éder Brito <britoederr@gmail.com>, 2021
 #
 msgid ""
 msgstr ""
