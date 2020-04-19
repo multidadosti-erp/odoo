@@ -13,8 +13,6 @@
 # Peter Ojaäär <peter.ojaaar@arbetsformedlingen.se>, 2020
 # Mikael Holm <mikael.holm@vertel.se>, 2020
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2021
-# Simon Strömberg <simon.stromberg@vertel.se>, 2021
-# STefan Rundgren <stefanrundgren@cellglas.com>, 2021
 #
 msgid ""
 msgstr ""

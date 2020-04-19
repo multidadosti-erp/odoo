@@ -13,8 +13,6 @@
 # Rivo Zängov <eraser@eraser.ee>, 2019
 # Piia Paurson <piia@avalah.ee>, 2020
 # Eneli Õigus <enelioigus@gmail.com>, 2020
-# Triine Aavik <triine@avalah.ee>, 2021
-# Algo Kärp <algokarp@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

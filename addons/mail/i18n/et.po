@@ -17,7 +17,6 @@
 # Piia Paurson <piia@avalah.ee>, 2021
 # Martin Talts <martin.t@avalah.ee>, 2021
 # Triine Aavik <triine@avalah.ee>, 2021
-# Eneli Õigus <enelioigus@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

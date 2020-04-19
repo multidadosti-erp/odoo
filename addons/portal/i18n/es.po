@@ -9,7 +9,8 @@
 # Efrem Jimenez <efj@odoo.com>, 2019
 # Mariana Santos Romo <msn@odoo.com>, 2019
 # Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2020
-# Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2021
+# Katherine Zaoral <katherine.zaoral@gmail.com>, 2020
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2021
 #
 msgid ""
 msgstr ""
