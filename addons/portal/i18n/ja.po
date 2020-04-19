@@ -8,13 +8,9 @@
 # Manami Hashi <manami@roomsfor.hk>, 2018
 # Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2018
 # Tim Siu Lai <tl@roomsfor.hk>, 2019
-<<<<<<< HEAD
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2020
 # Noma Yuki, 2020
 # Ryoko Tsuda <ryoko@quartile.co>, 2021
-=======
-# Yoshi Tashiro <tashiro@roomsfor.hk>, 2020
->>>>>>> [I18N] Update translation terms from Transifex
 #
 msgid ""
 msgstr ""
