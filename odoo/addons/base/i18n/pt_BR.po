@@ -37,7 +37,6 @@
 # Guilherme Libardi <guilherme.libardig@gmail.com>, 2020
 # Maurício Liell <mauricio@liell.com.br>, 2020
 # danimaribeiro <danimaribeiro@gmail.com>, 2020
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
