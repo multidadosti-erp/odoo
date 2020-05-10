@@ -15,7 +15,7 @@
 # Ricardo Santa Ana <ricardosantana@gmail.com>, 2019
 # Pedro Filipe <pedro2.10@hotmail.com>, 2019
 # Nuno Silva <nuno.silva@arxi.pt>, 2020
-# Manuela Silva <mmsrs@sky.com>, 2020
+# Manuela Silva <manuelarodsilva@gmail.com>, 2020
 #
 msgid ""
 msgstr ""

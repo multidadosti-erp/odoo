@@ -22,7 +22,6 @@
 # PAS IRVANUS <ipankbiz@gmail.com>, 2019
 # Muhammad Syarif <mhdsyarif.ms@gmail.com>, 2020
 # Gradien Foundation <gradien.co@gmail.com>, 2020
-# Abdul Munif Hanafi <amunifhanafi@gmail.com>, 2021
 #
 msgid ""
 msgstr ""
