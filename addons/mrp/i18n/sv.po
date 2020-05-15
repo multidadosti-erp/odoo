@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * mrp
-# 
+#
 # Translators:
 # Christelle Wehbe <libanon_cristelle@hotmail.com>, 2019
 # lasch a <bmail440@gmail.com>, 2019
