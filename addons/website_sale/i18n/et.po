@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * website_sale
-# 
+#
 # Translators:
 # Marek Pontus, 2018
 # Wanradt Koell <wanradt@gmail.com>, 2018
@@ -14,10 +14,7 @@
 # Maidu Targama <m.targama@gmail.com>, 2019
 # Indrek Linnas <indrek@estpos.ee>, 2019
 # Eneli Õigus <enelioigus@gmail.com>, 2020
-# Algo Kärp <algokarp@gmail.com>, 2020
-# Triine Aavik <triine@avalah.ee>, 2020
-# Piia Paurson <piia@avalah.ee>, 2020
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
