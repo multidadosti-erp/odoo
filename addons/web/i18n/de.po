@@ -34,7 +34,6 @@
 # philku79 <philip.kuss@gmx.de>, 2020
 # EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2021
 # Andreas Schmidt <schmigo@gmail.com>, 2021
-# Robert Förster <hello@suppliot.eu>, 2021
 #
 msgid ""
 msgstr ""

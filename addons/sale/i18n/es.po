@@ -46,7 +46,6 @@
 # Osiris Román <osiris.roman@yachaytech.edu.ec>, 2020
 # David Vidal <david.vidal@trespinos.es>, 2020
 # Jairo Llopis <yajo.sk8@gmail.com>, 2021
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2021
 #
 msgid ""
 msgstr ""
