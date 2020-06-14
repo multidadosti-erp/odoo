@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * website_event_track
-# 
+#
 # Translators:
 # Hans Henrik Gabelgaard <hhg@gabelgaard.org>, 2018
 # Morten Schou <ms@msteknik.dk>, 2018
@@ -15,7 +15,7 @@
 # JonathanStein <jstein@image.dk>, 2020
 # Walther Barnett <wba@miracle.dk>, 2020
 # Sanne Kristensen <sanne@vkdata.dk>, 2020
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"

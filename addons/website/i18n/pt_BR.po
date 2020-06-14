@@ -22,7 +22,10 @@
 # Marcelo Costa <marcelo@comdesk.com.br>, 2019
 # Eduardo Aparicio <eduardo.caparica@gmail.com>, 2019
 # Lauro de Lima <lauro@ciclix.com>, 2019
-# Marcel Savegnago <marcel.savegnago@gmail.com>, 2019
+# Rafael H L Moretti <rafael.moretti@gmail.com>, 2020
+# Marcel Savegnago <marcel.savegnago@gmail.com>, 2020
+# Luiz Fernando <lfpsgs@outlook.com>, 2020
+# Fernando Colus <fcolus1@gmail.com>, 2020
 #
 msgid ""
 msgstr ""
@@ -1918,7 +1921,7 @@ msgstr "Suporte de e-mail"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Enable billing on your Google Project"
-msgstr "Habilite o faturamento no seu Projeto Google"
+msgstr "Habilite o faturamento no seu Projeto do Google"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_page_ir_ui_view

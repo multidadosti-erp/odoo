@@ -18,6 +18,8 @@
 # Marcelo Costa <marcelo@comdesk.com.br>, 2018
 # Martin Trigaux, 2019
 # Luiz Carareto Alonso <Luiz.cararetoalonso@gmail.com>, 2019
+# renato sabo <renato.sabo@bradootech.com>, 2020
+# Maurício Liell <mauricio@liell.com.br>, 2020
 #
 msgid ""
 msgstr ""

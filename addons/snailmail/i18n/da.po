@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * snailmail
-# 
+#
 # Translators:
 # Martin Trigaux, 2018
 # Hans Henrik Gabelgaard <hhg@gabelgaard.org>, 2018
@@ -11,7 +11,7 @@
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2019
 # Sanne Kristensen <sanne@vkdata.dk>, 2020
 # Mads Søndergaard, 2020
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
