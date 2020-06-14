@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * event
-# 
+#
 # Translators:
 # peso <peer.sommerlund@gmail.com>, 2018
 # Jesper Carstensen <jc@danodoo.dk>, 2018
