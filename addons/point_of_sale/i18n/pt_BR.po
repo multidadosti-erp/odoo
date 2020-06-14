@@ -1,6 +1,31 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* point_of_sale
+# * point_of_sale
+#
+# Translators:
+# Munique Shih <muniqueshih@hotmail.com>, 2018
+# Diego Bittencourt <diegomb86@gmail.com>, 2018
+# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatica@protonmail.com>, 2018
+# Cesar Silveira <cesar.consultant@gmail.com>, 2018
+# falexandresilva <falexandresilva@gmail.com>, 2018
+# Ademílson F. Tonato <apraqueisso@gmail.com>, 2018
+# Hildeberto Abreu Magalhães <hildeberto@gmail.com>, 2018
+# danimaribeiro <danimaribeiro@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Mateus Lopes <mateus1@gmail.com>, 2018
+# Luiz Carlos de Lima <luiz.carlos@akretion.com.br>, 2018
+# Caio Leonardo Mendes de Sousa <caleozao@gmail.com>, 2018
+# André Augusto Firmino Cordeiro <a.cordeito@gmail.com>, 2018
+# Pablo Valentini <pablondrina@gmail.com>, 2018
+# Silmar <pinheirosilmar@gmail.com>, 2018
+# Gabriel Bortolotto Contesotto <gabrielbortolotto@gmail.com>, 2019
+# Luiz Carareto Alonso <Luiz.cararetoalonso@gmail.com>, 2019
+# Ramiro Pereira de Magalhães <ramiro.p.magalhaes@gmail.com>, 2019
+# grazziano <gra.negocia@gmail.com>, 2019
+# Fernando Colus <fcolus1@gmail.com>, 2020
+# Maurício Liell <mauricio@liell.com.br>, 2020
+# Vanderlei P. Romera <vanderleiromera@gmail.com>, 2020
+# Marcel Savegnago <marcel.savegnago@gmail.com>, 2021
 #
 msgid ""
 msgstr ""

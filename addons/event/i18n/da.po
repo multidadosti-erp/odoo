@@ -14,7 +14,6 @@
 # JonathanStein <jstein@image.dk>, 2020
 # walther_b <wba@miracle.dk>, 2020
 # Sanne Kristensen <sanne@vkdata.dk>, 2020
-# Mads Søndergaard <mads@vkdata.dk>, 2021
 #
 msgid ""
 msgstr ""

@@ -16,10 +16,6 @@
 # STefan Rundgren <stefanrundgren@cellglas.com>, 2021
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2021
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2021
-# Kim Asplund <kim.asplund@gmail.com>, 2021
-# Fredrik Arvas <fredrik.arvas@vertel.se>, 2021
-# Victor Ekström, 2021
-# Simon S, 2021
 #
 msgid ""
 msgstr ""
