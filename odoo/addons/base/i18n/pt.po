@@ -23,6 +23,7 @@
 # Manuela Silva <manuelarodsilva@gmail.com>, 2020
 # Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2020
 # Nuno Silva <nuno.silva@arxi.pt>, 2020
+# Marcelo Pereira <marcelo.pereira@arxi.pt>, 2020
 #
 msgid ""
 msgstr ""
