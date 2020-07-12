@@ -13,7 +13,9 @@
 # Marcos Abreu <marcoos.abreu@gmail.com>, 2018
 # Silmar <pinheirosilmar@gmail.com>, 2018
 # Emanuel Martins <emanuel.breno@gmail.com>, 2018
-# Luiz Fernando Gondin <lfpsgs@outlook.com>, 2020
+# Luiz Fernando <lfpsgs@outlook.com>, 2020
+# PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020
+# André Carvalho <and2carvalho@gmail.com>, 2020
 #
 msgid ""
 msgstr ""
@@ -738,14 +740,12 @@ msgid "Use PIN codes to check in in Kiosk Mode"
 msgstr "Use seu PIN para fazer check in no Autoatendimento"
 
 #. module: hr_attendance
-#: model:ir.ui.view,arch_db:hr_attendance.hr_attendance_view_filter
-msgid "Today"
-msgstr "Hoje"
-
-#. module: hr_attendance
-#: model:ir.ui.view,arch_db:hr_attendance.res_config_settings_view_form
-msgid "Use PIN codes to check in in Kiosk Mode"
-msgstr "Use códigos PIN para fazer check-in no modo quiosque"
+#. openerp-web
+#: code:addons/hr_attendance/static/src/xml/attendance.xml:44
+#: code:addons/hr_attendance/static/src/xml/attendance.xml:71
+#, python-format
+msgid "Want to check out?"
+msgstr "Deseja realizar o check out?"
 
 #. module: hr_attendance
 #. openerp-web
