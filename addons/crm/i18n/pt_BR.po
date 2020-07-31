@@ -371,7 +371,7 @@ msgid ""
 "Check this box to filter and qualify incoming requests as leads before "
 "converting them into opportunities and assigning them to a salesperson."
 msgstr ""
-"Marque esta caixa para filtrar e qualificar os pedidos recebidos como leads antes".
+"Marque esta caixa para filtrar e qualificar os pedidos recebidos como leads antes"
 "convertendo-os em oportunidades e atribuindo-os a um vendedor."
 
 #. module: crm
@@ -559,7 +559,7 @@ msgid ""
 "Convert visitors of your website into leads in the CRM. We do data "
 "enrichment based on their IP address."
 msgstr ""
-"Converta os visitantes do seu site em leads no CRM. Nós fazemos dados".
+"Converta os visitantes do seu site em leads no CRM. Nós fazemos dados"
 "enriquecimento com base no seu endereço IP."
 
 #. module: crm
@@ -969,7 +969,7 @@ msgid "Generate leads from incoming emails and assign them\n"
 "                                    to a Sales Team manually"
 msgstr ""
 "Gerar leads dos e-mails recebidos e atribuí-los\n"
-"                                    a uma equipa de vendas manualmente".
+"                                    manualmente a uma equipe de vendas"
 
 #. module: crm
 #: model:ir.model,name:crm.model_crm_lead_lost
@@ -1019,7 +1019,7 @@ msgid "Here is the list of your next activities. Those are linked to your opport
 "                   To set a next activity, go on an opportunity and add one. It will then appear in this list."
 msgstr ""
 "Aqui está a lista das suas próximas actividades. Estas estão ligadas às suas oportunidades."
-"                   Para definir uma próxima atividade, vá em uma oportunidade e acrescente uma. Ela então aparecerá nesta lista".
+"                   Para definir uma próxima atividade, vá em uma oportunidade e acrescente uma. Ela então aparecerá nesta lista."
 
 #. module: crm
 #: selection:crm.lead,priority:0
@@ -1297,7 +1297,7 @@ msgid ""
 "Linked partner (optional). Usually created when converting the lead. You can"
 " find a partner by its Name, TIN, Email or Internal Reference."
 msgstr ""
-"Parceiro vinculado (opcional). Normalmente criado ao converter o lead. Você pode".
+"Parceiro vinculado (opcional). Normalmente criado ao converter o lead. Você pode"
 "encontrar um parceiro pelo seu nome, TIN, e-mail ou referência interna."
 
 #. module: crm
@@ -1676,11 +1676,11 @@ msgid ""
 "mainly used by the sales manager in order to do the periodic review with the"
 " channels of the sales pipeline."
 msgstr ""
-"Análise de Oportunidades dá-lhe um acesso instantâneo às suas oportunidades".
-"com informações como a receita esperada, custo planejado, perdido"
-"prazos ou o número de interações por oportunidade. Este relatório é".
+"Análise de Oportunidades dá-lhe um acesso instantâneo às suas oportunidades "
+"com informações como a receita esperada, custo planejado, perdido "
+"prazos ou o número de interações por oportunidade. Este relatório é "
 "utilizado principalmente pelo gerente de vendas para fazer a revisão periódica com os"
-"canais do pipeline."
+" canais do pipeline."
 
 #. module: crm
 #: model:ir.model.fields,field_description:crm.field_crm_team__opportunities_amount
@@ -1863,8 +1863,8 @@ msgid "Pipeline Analysis gives you an instant access to\n"
 msgstr ""
 "Análise de Pipeline dá-lhe um acesso instantâneo a\n"
 "as suas oportunidades com informações como a receita esperada, o custo planejado,\n"
-"prazos perdidos ou o número de interacções por oportunidade. Este relatório é\n".
-"utilizado principalmente pelo gerente de vendas para rever periodicamente o pipeline\n".
+"prazos perdidos ou o número de interacções por oportunidade. Este relatório é\n"
+"utilizado principalmente pelo gerente de vendas para rever periodicamente o pipeline\n"
 "com a equipa de vendas."
 
 #. module: crm
@@ -2279,8 +2279,8 @@ msgid ""
 "This is a name that helps you keep track of your different campaign efforts,"
 " e.g. Fall_Drive, Christmas_Special"
 msgstr ""
-"Este é um nome que o ajuda a acompanhar os seus diferentes esforços de campanha".
-"por exemplo, Fall_Drive, Christmas_Special".
+"Este é um nome que o ajudará a acompanhar os seus diferentes esforços de campanha,"
+"por exemplo, Fall_Drive, Christmas_Special"
 
 #. module: crm
 #: model:ir.model.fields,help:crm.field_crm_lead__medium_id
@@ -2294,7 +2294,7 @@ msgid ""
 "of email list"
 msgstr ""
 "Esta é a fonte do link, por exemplo, motor de busca, outro domínio, ou nome "
-"da lista de emails".
+"da lista de emails"
 
 #. module: crm
 #. openerp-web
@@ -2424,7 +2424,7 @@ msgid "Use leads if you need a qualification step before creating an\n"
 msgstr ""
 "Use pistas se precisar de uma etapa de qualificação antes de criar uma\n"
 "                    oportunidade ou um cliente. Pode ser um cartão de visita que recebeu,\n"
-"                    um formulário de contato preenchido no seu site, ou um arquivo de perspectivas não\n".
+"                    um formulário de contato preenchido no seu site, ou um arquivo de perspectivas não\n"
 "                    qualificados que você importa, etc."
 
 #. module: crm
@@ -2437,8 +2437,8 @@ msgid ""
 "new customer in your address book."
 msgstr ""
 "Use leads se precisar de uma etapa de qualificação antes de criar uma oportunidade ou"
-" um cliente. Pode ser um cartão de visita que você recebeu, um formulário de contato preenchido".
-"em seu site, ou um arquivo de prospectos não qualificados que você importa, etc. Uma vez".
+" um cliente. Pode ser um cartão de visita que você recebeu, um formulário de contato preenchido"
+"em seu site, ou um arquivo de prospectos não qualificados que você importa, etc. Uma vez"
 "qualificado, o lead pode ser convertido em uma oportunidade de negócio e/ou um"
 "novo cliente na sua agenda de endereços."
 
@@ -2575,7 +2575,7 @@ msgid ""
 " content for the graph"
 msgstr ""
 "Você tem que habilitar o Pipeline na sua equipe de vendas para poder defini-lo como um"
-" conteúdo para o gráfico".
+" conteúdo para o gráfico"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:428
