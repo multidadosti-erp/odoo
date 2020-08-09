@@ -33,6 +33,7 @@
 # Maurício Liell <mauricio@liell.com.br>, 2020
 # André Carvalho <and2carvalho@gmail.com>, 2020
 # PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020
+# Luís Otávio Malta Conceição <luiso.malta@gmail.com>, 2020
 #
 msgid ""
 msgstr ""
@@ -40,7 +41,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-14 07:34+0000\n"
 "PO-Revision-Date: 2018-08-24 09:20+0000\n"
-"Last-Translator: PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020\n"
+"Last-Translator: Luís Otávio Malta Conceição <luiso.malta@gmail.com>, 2020\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -192,11 +193,11 @@ msgid ""
 "            Type <b>/command</b> to execute a command.<br>\n"
 "            Type <b>:shortcut</b> to insert canned responses in your message.<br>"
 msgstr ""
-"<br><br>\n "
-"            Você pode mencionar alguém digitando <b>@username</b>, isso chamará sua atenção.<br>\n"
-"            Você pode mencionar um canal digitando <b>#channel</b>.<br>\n"
-"            Você pode executar um comando digitando <b>/command</b>.\n"
-"            Você pode inserir respostas prontas em sua mensagem digitando <b>:atalho</b>."
+"<br><br>\n"
+"            Digite <b>@usuário</b> para mencionar alguém,  e chamar sua atenção.<br>\n"
+"            Digite <b>#canal</b> para mencionar um canal.<br>\n"
+"            Digite <b>/comando</b> para executar um comando.<br>\n"
+"            Digite <b>:atalho</b> para inserir respostas predeterminadas na sua mensagem .<br>"
 
 #. module: mail
 #: code:addons/mail/models/mail_channel.py:722
@@ -4589,7 +4590,7 @@ msgstr "Tipo de Atividade Recomendada"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_type__next_type_ids
 msgid "Recommended Next Activities"
-msgstr "Proximas Atividades Recomendadas"
+msgstr "Próximas Atividades Recomendadas"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_alias__alias_force_thread_id
@@ -5133,8 +5134,8 @@ msgid ""
 "Specify a model if the activity should be specific to a model and not "
 "available when managing activities for other models."
 msgstr ""
-"Especifique um modelo se a atividade deve ser específica para um modelo e não "
-"disponível ao gerenciar atividades para outros modelos. "
+"Especifique um modelo se a atividade deve ser específica para um modelo e "
+"não estar disponível ao gerenciar atividades para outros modelos."
 
 #. module: mail
 #. openerp-web
