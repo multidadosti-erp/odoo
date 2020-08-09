@@ -11,7 +11,9 @@
 # Mateus Lopes <mateus1@gmail.com>, 2018
 # Silmar <pinheirosilmar@gmail.com>, 2018
 # Luiz Carareto Alonso <Luiz.cararetoalonso@gmail.com>, 2019
-# Marcel Savegnago <marcel.savegnago@gmail.com>, 2019
+# Marcel Savegnago <marcel.savegnago@gmail.com>, 2020
+# Luiz Fernando <lfpsgs@outlook.com>, 2020
+# Luís Otávio Malta Conceição <luiso.malta@gmail.com>, 2020
 #
 msgid ""
 msgstr ""
