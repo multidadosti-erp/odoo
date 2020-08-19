@@ -27429,7 +27429,7 @@ msgstr "UK - Relatórios Contábeis"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_uk_reports_hmrc
 msgid "UK - Accounting Reports to HMRC"
-msgstr "Relatórios Contábeis para HMRC - UK"
+msgstr "UK - Relatórios Contábeis para HMRC"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_product_unspsc

@@ -5832,8 +5832,12 @@ msgstr "Itens de diário em que o número correspondente não está definido"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_res_company__account_opening_journal_id
-msgid "Journal where the opening entry of this company's accounting has been posted."
-msgstr "Diário onde a entrada de abertura financeira dessa empresa foi postada."
+msgid ""
+"Journal where the opening entry of this company's accounting has been "
+"posted."
+msgstr ""
+"Diário onde a entrada de abertura financeira dessa empresa foi "
+"postada."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_import_wizard__journal_id
@@ -7000,8 +7004,13 @@ msgstr "Uma vez que as faturas provisórias são confirmados, você não será c
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid "Once installed, set 'Bank Feeds' to 'File Import' in bank account settings.This adds a button to import from the Accounting dashboard."
-msgstr "Uma vez instalados, define 'Retornos Bancários' para 'Importação de Arquivo' em configuração de conta bancária. Isso adiciona um botão para importar para o Painel Financeiro."
+msgid ""
+"Once installed, set 'Bank Feeds' to 'File Import' in bank account "
+"settings.This adds a button to import from the Accounting dashboard."
+msgstr ""
+"Uma vez instalados, define 'Retornos Bancários' para 'Importação de Arquivo'"
+" em configuração de conta bancária. Isso adiciona um botão para importar "
+"para o Painel Financeiro."
 
 #. module: account
 #: code:addons/account/models/account_payment.py:675
@@ -9763,7 +9772,11 @@ msgstr "A conta bancária de um diário bancário deve pertencer à mesma empres
 msgid "The bank reconciliation widget won't ask to reconcile payments older than this date.\n"
 "                                                                                                       This is useful if you install accounting after having used invoicing for some time and\n"
 "                                                                                                       don't want to reconcile all the past payments with bank statements."
-msgstr "A ferramenta de conciliação bancária não solicitará a conciliação de pagamentos anteriores a esta data. Isso é útil se você instalar o financeiro após ter usado o faturamento por algum tempo e não deseja conciliar todos os pagamentos anteriores com extratos bancários."
+msgstr ""
+"A ferramenta de conciliação bancária não solicitará a conciliação de "
+"pagamentos anteriores a esta data. Isso é útil se você instalar o "
+"financeiro após ter usado o faturamento por algum tempo e não deseja "
+"conciliar todos os pagamentos anteriores com extratos bancários."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_contact_config_settings__account_bank_reconciliation_start
@@ -9771,9 +9784,11 @@ msgstr "A ferramenta de conciliação bancária não solicitará a conciliação
 msgid "The bank reconciliation widget won't ask to reconcile payments older than this date.\n"
 "               This is useful if you install accounting after having used invoicing for some time and\n"
 "               don't want to reconcile all the past payments with bank statements."
-msgstr "O widget de reconciliação bancária não solicitará a reconciliação de pagamentos anteriores a essa data.\n"
-"               Isso é útil se você instalar a contabilidade depois de ter usado o faturamento por algum tempo e\n"
-"               não quer reconciliar todos os pagamentos anteriores com extratos bancários."
+msgstr ""
+"A ferramenta de conciliação bancária não solicitará a conciliação de "
+"pagamentos anteriores a esta data. Isso é útil se você instalar o "
+"financeiro após ter usado o faturamento por algum tempo e não deseja "
+"reconciliar todos os pagamentos anteriores com extratos bancários."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
@@ -10138,7 +10153,8 @@ msgstr "Não há itens de diário em estado de rascunho para postar."
 #, python-format
 msgid "There is no tax cash basis journal defined for this company: \"%s\" \n"
 "Configure it in Accounting/Configuration/Settings"
-msgstr "Não há diário de regime de caixa fiscal definido para esta empresa: \"%s\"\n"
+msgstr ""
+"Não há diário de regime de caixa fiscal definido para esta empresa: \"%s\"\n"
 "Configure-o em Financeiro/Configuração/Ajustes"
 
 #. module: account
@@ -10160,8 +10176,12 @@ msgstr "Esses impostos são definidos em qualquer novo produto criado."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_account_template__user_type_id
-msgid "These types are defined according to your country. The type contains more information about the account and its specificities."
-msgstr "Esses tipos são definidos de acordo com seu País. O tipo contêm mais informação sobra a contabilidade e suas especificidades."
+msgid ""
+"These types are defined according to your country. The type contains more "
+"information about the account and its specificities."
+msgstr ""
+"Esses tipos são definidos de acordo com seu País. O tipo contêm mais "
+"informação sobre a contabilidade e suas especificidades."
 
 #. module: account
 #: code:addons/account/models/account_journal_dashboard.py:101
@@ -11426,8 +11446,14 @@ msgstr "Você deve configurar a 'Conta de Perda de Câmbio' nas configurações 
 #. module: account
 #: code:addons/account/models/account_move.py:1866
 #, python-format
-msgid "You should configure the 'Gain Exchange Rate Account' in the accounting settings, to manage automatically the booking of accounting entries related to differences between exchange rates."
-msgstr "Você deve configurar a \"Conta de ganho com Taxa de câmbio\" nas configurações financeiras, para gerenciar automaticamente o ganho nas entradas contábeis relacionadas às diferenças entre as taxas de câmbio."
+msgid ""
+"You should configure the 'Gain Exchange Rate Account' in the accounting "
+"settings, to manage automatically the booking of accounting entries related "
+"to differences between exchange rates."
+msgstr ""
+"Você deve configurar a \"Conta de ganho com Taxa de câmbio\" nas "
+"configurações financeiras, para gerenciar automaticamente o ganho nas "
+"entradas contábeis relacionadas às diferenças entre as taxas de câmbio."
 
 #. module: account
 #: code:addons/account/models/account_move.py:1868
