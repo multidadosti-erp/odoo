@@ -2018,7 +2018,10 @@ class Selection(Field):
             if 'selection_add' in field.args:
                 # use an OrderedDict to update existing values
                 selection_add = field.args['selection_add']
-                self.selection = list(OrderedDict(self.selection + selection_add).items())
+                if not self.selection:
+                    self.selection = list(OrderedDict(selection_add).items())
+                else:
+                    self.selection = list(OrderedDict(self.selection + selection_add).items())
 
     def _description_selection(self, env):
         """ return the selection list (pairs (value, label)); labels are
