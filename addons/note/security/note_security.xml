@@ -12,7 +12,7 @@
     <record id="note_note_create_unlink_global" model="ir.rule">
         <field name="name">note: create / unlink: responsible</field>
         <field name="model_id" ref="model_note_note"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="domain_force">[(1, '=', 1)]</field>
         <field name="global" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_read" eval="False"/>
