@@ -1143,7 +1143,7 @@ msgstr "Última atualização em"
 #: model_terms:ir.ui.view,arch_db:crm.view_crm_case_leads_filter
 #: model_terms:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
 msgid "Late Activities"
-msgstr "Últimas Atividades"
+msgstr "Atividades Atrasadas"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:937
