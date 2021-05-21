@@ -138,8 +138,8 @@ class TestWebsiteSaleProductAttributeValueConfig(TestSaleProductAttributeValueSe
         pricelist = current_website.get_current_pricelist()
         (self.env['product.pricelist'].search([]) - pricelist).write({'active': False})
         # Add 10% tax on product
-        tax10 = self.env['account.tax'].create({'name': "Test tax 10", 'amount': 10, 'price_include': True, 'amount_type': 'percent'})
-        tax0 = self.env['account.tax'].create({'name': "Test tax 0", 'amount': 0, 'price_include': True, 'amount_type': 'percent'})
+        tax10 = self.env['account.tax'].create({'name': "Test tax 10", 'amount': 10, 'price_include': True, 'amount_type': 'division'})
+        tax0 = self.env['account.tax'].create({'name': "Test tax 0", 'amount': 0, 'price_include': True, 'amount_type': 'division'})
 
         test_product = self.env['product.template'].create({
             'name': 'Test Product',
