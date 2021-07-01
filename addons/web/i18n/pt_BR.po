@@ -255,23 +255,15 @@ msgstr "<i class=\"fa fa-phone\" role=\"img\" aria-label=\"Telefone\" title=\"Te
 #. openerp-web
 #: code:addons/web/static/src/js/chrome/action_manager.js:574
 #, python-format
-msgid ""
-"A popup window has been blocked. You may need to change your browser "
-"settings to allow popup windows for this page."
-msgstr ""
-"Uma janela pop-up foi bloqueada. Pode ser necessário alterar seu navegador "
-"em configurações para permitir janelas pop-up para esta página."
+msgid "A popup window has been blocked. You may need to change your browser settings to allow popup windows for this page."
+msgstr "Uma janela pop-up foi bloqueada. Pode ser necessário alterar seu navegador em configurações para permitir janelas pop-up para esta página."
 
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/chrome/action_manager_report.js:66
 #, python-format
-msgid ""
-"A popup window with your report was blocked. You may need to change your "
-"browser settings to allow popup windows for this page."
-msgstr ""
-"Uma janela pop-up com seu relatório foi bloqueada. Pode ser necessário alterar suas "
-"configurações do navegador para permitir janelas pop-up para esta página."
+msgid "A popup window with your report was blocked. You may need to change your browser settings to allow popup windows for this page."
+msgstr "Uma janela pop-up com seu relatório foi bloqueada. Pode ser necessário alterar suas configurações do navegador para permitir janelas pop-up para esta página."
 
 #. module: web
 #. openerp-web
@@ -530,14 +522,8 @@ msgstr "Ocorreu um error"
 #. openerp-web
 #: code:addons/web/static/src/js/chrome/abstract_web_client.js:205
 #, python-format
-msgid ""
-"An unknown CORS error occured. The error probably originates from a "
-"JavaScript file served from a different origin. (Opening your browser "
-"console might give you a hint on the error.)"
-msgstr ""
-"Ocorreu um erro desconhecido do CORS. O erro provavelmente se origina de um "
-"Arquivo JavaScript exibido de uma origem diferente. (Abrindo seu navegador "
-"o console pode dar uma dica sobre o erro.)"
+msgid "An unknown CORS error occured. The error probably originates from a JavaScript file served from a different origin. (Opening your browser console might give you a hint on the error.)"
+msgstr "Ocorreu um erro desconhecido do CORS. O erro provavelmente se origina de um Arquivo JavaScript exibido de uma origem diferente. (Abrindo seu navegador o console pode dar uma dica sobre o erro.)"
 
 #. module: web
 #. openerp-web
@@ -589,10 +575,8 @@ msgstr "Arquivado"
 #. openerp-web
 #: code:addons/web/static/src/js/views/kanban/kanban_column.js:382
 #, python-format
-msgid ""
-"Are you sure that you want to archive all the records from this column?"
-msgstr ""
-"Tem certeza de que deseja arquivar todos os registros desta coluna ?"
+msgid "Are you sure that you want to archive all the records from this column?"
+msgstr "Tem certeza de que deseja arquivar todos os registros desta coluna ?"
 
 #. module: web
 #. openerp-web
@@ -682,12 +666,8 @@ msgstr "Torne-se Superusuário"
 #. module: web
 #: code:addons/web/controllers/main.py:1554
 #, python-format
-msgid ""
-"Binary fields can not be exported to Excel unless their content is "
-"base64-encoded. That does not seem to be the case for %s."
-msgstr ""
-"Os campos binários não podem ser exportados para o Excel, a menos que seu conteúdo seja "
-"codificado em base64. Esse não parece ser o caso de %s."
+msgid "Binary fields can not be exported to Excel unless their content is base64-encoded. That does not seem to be the case for %s."
+msgstr "Os campos binários não podem ser exportados para o Excel, a menos que seu conteúdo seja codificado em base64. Esse não parece ser o caso de %s."
 
 #. module: web
 #. openerp-web
@@ -1612,8 +1592,7 @@ msgstr "Seguido por"
 msgid "For Excel compatibility, data cannot be exported if there are more than 256 columns.\n"
 "\n"
 "Tip: try to flip axis, filter further or reduce the number of measures."
-msgstr ""
-"Para compatibilidade com o Excel, os dados não podem ser exportados se houver mais de 256 colunas.\n"
+msgstr "Para compatibilidade com o Excel, os dados não podem ser exportados se houver mais de 256 colunas.\n"
 "\n"
 "Dica: tente inverter o eixo, filtrar mais ou reduzir o número de medidas."
 
@@ -2456,10 +2435,8 @@ msgstr "Somente o valor inteiro ou flutuante deve ser válido."
 #. module: web
 #: code:addons/web/controllers/main.py:503
 #, python-format
-msgid ""
-"Only employee can access this database. Please contact the administrator."
-msgstr ""
-"Somente funcionários podem acessar este banco de dados. Entre em contato com o administrador."
+msgid "Only employee can access this database. Please contact the administrator."
+msgstr "Somente funcionários podem acessar este banco de dados. Entre em contato com o administrador."
 
 #. module: web
 #. openerp-web
@@ -2666,10 +2643,8 @@ msgstr "Atualize as traduções de :"
 #. openerp-web
 #: code:addons/web/static/src/xml/base.xml:150
 #, python-format
-msgid ""
-"Please use the copy button to report the error to your support service."
-msgstr ""
-"Por favor, use o botão copiar para relatar o erro ao seu serviço de suporte."
+msgid "Please use the copy button to report the error to your support service."
+msgstr "Por favor, use o botão copiar para relatar o erro ao seu serviço de suporte."
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.login_layout
@@ -3242,12 +3217,8 @@ msgstr "O domínio que você digitou não está formado corretamente"
 #. openerp-web
 #: code:addons/web/static/src/js/widgets/model_field_selector.js:410
 #, python-format
-msgid ""
-"The field chain is not valid. Did you maybe use a non-existing field name or"
-" followed a non-relational field?"
-msgstr ""
-"A cadeia de campos não é válida. Você talvez usou um nome de campo inexistente ou"
-" seguiu um campo não relacional ?"
+msgid "The field chain is not valid. Did you maybe use a non-existing field name or followed a non-relational field?"
+msgstr "A cadeia de campos não é válida. Você talvez usou um nome de campo inexistente ou seguiu um campo não relacional ?"
 
 #. module: web
 #. openerp-web
