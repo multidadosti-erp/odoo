@@ -53,16 +53,8 @@ msgstr "Uma única coluna foi encontrada no arquivo, isso muitas vezes significa
 #. openerp-web
 #: code:addons/base_import/static/src/js/import_action.js:586
 #, python-format
-msgid ""
-"An unknown issue occurred during import (possibly lost connection, data "
-"limit exceeded or memory limits exceeded). Please retry in case the issue is"
-" transient. If the issue still occurs, try to split the file rather than "
-"import it at once."
-msgstr ""
-"Ocorreu um problema desconhecido durante a importação (possível perda de conexão, dados"
-"limite excedido ou limites de memória excedidos). Tente novamente caso o problema seja"
-"transitório. Se o problema persistir, tente dividir o arquivo em vez de"
-"importe-o imediatamente."
+msgid "An unknown issue occurred during import (possibly lost connection, data limit exceeded or memory limits exceeded). Please retry in case the issue is transient. If the issue still occurs, try to split the file rather than import it at once."
+msgstr "Ocorreu um problema desconhecido durante a importação (possível perda de conexão, dadoslimite excedido ou limites de memória excedidos). Tente novamente caso o problema sejatransitório. Se o problema persistir, tente dividir o arquivo em vez deimporte-o imediatamente."
 
 #. module: base_import
 #: model:ir.model,name:base_import.model_base
@@ -114,12 +106,8 @@ msgstr "Vírgula"
 #. module: base_import
 #: code:addons/base_import/models/base_import.py:856
 #, python-format
-msgid ""
-"Could not retrieve URL: %(url)s [%(field_name)s: L%(line_number)d]: "
-"%(error)s"
-msgstr ""
-"Não foi possível recuperar a URL: %(url)s [%(field_name)s: L%(line_number)d]: "
-"%(error)s"
+msgid "Could not retrieve URL: %(url)s [%(field_name)s: L%(line_number)d]: %(error)s"
+msgstr "Não foi possível recuperar a URL: %(url)s [%(field_name)s: L%(line_number)d]: %(error)s"
 
 #. module: base_import
 #. openerp-web
@@ -174,14 +162,8 @@ msgstr "Criado em"
 #. openerp-web
 #: code:addons/base_import/static/src/xml/base_import.xml:106
 #, python-format
-msgid ""
-"Creates new records if they can't be found (instead of failing to import). "
-"Note that the value in the column will be used as the new record's 'name', "
-"and assumes this is sufficient to create the record."
-msgstr ""
-"Cria novos registros se eles não puderem ser encontrados (em vez de falhar na importação). "
-"Observe que o valor na coluna será usado como o 'nome' do novo registro, "
-"e assume que isso é suficiente para criar o registro."
+msgid "Creates new records if they can't be found (instead of failing to import). Note that the value in the column will be used as the new record's 'name', and assumes this is sufficient to create the record."
+msgstr "Cria novos registros se eles não puderem ser encontrados (em vez de falhar na importação). Observe que o valor na coluna será usado como o 'nome' do novo registro, e assume que isso é suficiente para criar o registro."
 
 #. module: base_import
 #: model:ir.model.fields,field_description:base_import.field_base_import_tests_models_complex__currency_id
@@ -358,6 +340,12 @@ msgid "Formatting Options…"
 msgstr "Opções de formatação…"
 
 #. module: base_import
+#: code:addons/base_import/models/base_import.py:791
+#, python-format
+msgid "Found invalid image data, images should be imported as either URLs or base64-encoded data."
+msgstr "Dados de imagem inválidos encontrados, as imagens devem ser importadas como URLs ou dados codificados em base64."
+
+#. module: base_import
 #. openerp-web
 #: code:addons/base_import/static/src/js/import_action.js:676
 #, python-format
@@ -424,14 +412,8 @@ msgstr "Se o modelo usa diálogo aberto, acompanhamento de histórico definirá 
 #. openerp-web
 #: code:addons/base_import/static/src/xml/base_import.xml:54
 #, python-format
-msgid ""
-"If the model uses parent/child relations, computing the                     "
-"parent / child relation occurs on every line, and lead to a slower import."
-"                     Defering it can speed up import."
-msgstr ""
-"Se o modelo usa relações pai / filho, calculando o                          "
-"a relação pai / filho ocorre em todas as linhas e leva a uma importação mais lenta."
-"                     Adiar pode acelerar a importação."
+msgid "If the model uses parent/child relations, computing the                     parent / child relation occurs on every line, and lead to a slower import.                     Defering it can speed up import."
+msgstr "Se o modelo usa relações pai / filho, calculando o                          a relação pai / filho ocorre em todas as linhas e leva a uma importação mais lenta.                     Adiar pode acelerar a importação."
 
 #. module: base_import
 #. openerp-web
