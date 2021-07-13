@@ -2632,7 +2632,7 @@ msgstr "Fornecedor deste produto"
 #: model:ir.model.fields,field_description:product.field_product_product__seller_ids
 #: model:ir.model.fields,field_description:product.field_product_template__seller_ids
 msgid "Vendors"
-msgstr "Parceiros"
+msgstr "Fornecedores"
 
 #. module: product
 #: model:product.product,name:product.product_product_2
