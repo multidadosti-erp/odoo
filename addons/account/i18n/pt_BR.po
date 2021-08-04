@@ -72,8 +72,7 @@ msgid " * The 'Draft' status is used when a user is encoding a new and unconfirm
 " * The 'In Payment' status is used when payments have been registered for the entirety of the invoice in a journal configured to post entries at bank reconciliation only, and some of them haven't been reconciled with a bank statement line yet.\n"
 " * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
 " * The 'Cancelled' status is used when user cancel invoice."
-msgstr ""
-"* O estado 'Rascunho' é usado quando um usuário está preparando uma fatura nova e ainda não confirmada.\n"
+msgstr "* O estado 'Rascunho' é usado quando um usuário está preparando uma fatura nova e ainda não confirmada.\n"
 "* O estado 'Aberta' é usado quando o usuário cria a fatura e um número é gerado para ela. A fatura é mantida neste estado até ela ser paga. \n"
 "* O estado 'Paga' é definido automaticamente quando a fatura é paga. Os registros no livro Diário relacionados à fatura podem ser conciliadas ou não.\n"
 "* O estado 'Cancelado' é usado quando o usuário cancela a fatura."
@@ -285,12 +284,8 @@ msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
-msgid ""
-"<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
-"title=\"Selection\"/>"
-msgstr ""
-"<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
-"title=\"Seleção\"/>"
+msgid "<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" title=\"Selection\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" title=\"Seleção\"/>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_invoice_page
@@ -757,16 +752,8 @@ msgstr "Um diário é usado para registrar as transações de todos os dados fin
 #. module: account
 #: code:addons/account/models/account_move.py:377
 #, python-format
-msgid ""
-"A payment journal entry generated in a journal configured to post entries "
-"only when payments are reconciled with a bank statement cannot be manually "
-"posted. Those will be posted automatically after performing the bank "
-"reconciliation."
-msgstr ""
-"Uma entrada de diário de pagamento gerada em um diário configurado para "
-"lançar entradas somente quando os pagamentos são conciliados com um "
-"extrato bancário não pode ser lançada manualmente. Esses serão lançados "
-"automaticamente após a realização da conciliação bancária."
+msgid "A payment journal entry generated in a journal configured to post entries only when payments are reconciled with a bank statement cannot be manually posted. Those will be posted automatically after performing the bank reconciliation."
+msgstr "Uma entrada de diário de pagamento gerada em um diário configurado para lançar entradas somente quando os pagamentos são conciliados com um extrato bancário não pode ser lançada manualmente. Esses serão lançados automaticamente após a realização da conciliação bancária."
 
 #. module: account
 #: code:addons/account/models/reconciliation_widget.py:769
@@ -790,9 +777,7 @@ msgstr "Uma linha de movimento selecionada já foi conciliada."
 #: code:addons/account/models/account_bank_statement.py:615
 #, python-format
 msgid "A selected statement line was already reconciled with an account move."
-msgstr ""
-"Uma linha de declaração selecionada já foi conciliada com um movimento de "
-"conta."
+msgstr "Uma linha de declaração selecionada já foi conciliada com um movimento de conta."
 
 #. module: account
 #: sql_constraint:account.fiscal.position.tax:0
@@ -984,11 +969,6 @@ msgstr "Estatisticas da conta"
 #: model:ir.model,name:account.model_account_account_tag
 msgid "Account Tag"
 msgstr "Etiqueta de Conta"
-
-#. module: account
-#: model:ir.actions.act_window,name:base.action_partner_supplier_form
-msgid "Vendors"
-msgstr "Fornecedores"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.account_tag_action
@@ -2769,12 +2749,8 @@ msgstr "Escolha contra-partida ou crie a baixa"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_refund__filter_refund
-msgid ""
-"Choose how you want to credit this invoice. You cannot Modify and Cancel if "
-"the invoice is already reconciled"
-msgstr ""
-"Escolha como quer creditar esta fatura. Você não pode Modificar e Cancelar se "
-"a fatura já está reconciliada"
+msgid "Choose how you want to credit this invoice. You cannot Modify and Cancel if the invoice is already reconciled"
+msgstr "Escolha como quer creditar esta fatura. Você não pode Modificar e Cancelar se a fatura já está reconciliada"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.actions_account_fiscal_year
@@ -3709,12 +3685,8 @@ msgstr "Data em que a primeira entrada de contabilidade dessa compania foi posta
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_financial_year_op__opening_date
-msgid ""
-"Date from which the accounting is managed in Odoo. It is the date of the "
-"opening entry."
-msgstr ""
-"Data em que a contabilidade é gerenciada pelo Sistema. Esta é a data da "
-"primeira entrada."
+msgid "Date from which the accounting is managed in Odoo. It is the date of the opening entry."
+msgstr "Data em que a contabilidade é gerenciada pelo Sistema. Esta é a data da primeira entrada."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move__reverse_date
@@ -3920,17 +3892,17 @@ msgstr "Grau de confiança que você tem neste devedor"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__auto_delete
 msgid "Delete Emails"
-msgstr "Apagar e-mails"
+msgstr "Exclua E-mails"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__auto_delete_message
 msgid "Delete Message Copy"
-msgstr "Apagar cópia da mensagem"
+msgstr "Excluir Cópia da Mensagem"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_send__auto_delete
 msgid "Delete sent emails (mass mailing only)"
-msgstr "Eliminar e-mails enviados (apenas envio em massa)"
+msgstr "Exclua e-mails enviados (somente envio em massa)"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__deprecated
@@ -3978,14 +3950,8 @@ msgstr "Detectar Automaticamente"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax__type_tax_use
 #: model:ir.model.fields,help:account.field_account_tax_template__type_tax_use
-msgid ""
-"Determines where the tax is selectable. Note : 'None' means a tax can't be "
-"used by itself, however it can still be used in a group. 'adjustment' is "
-"used to perform tax adjustment."
-msgstr ""
-"Determina onde o imposto é selecionável. Nota : 'Nenhum' significa que um imposto não pode ser "
-"usado por si mesmo, porém ainda pode ser usado em grupo. O 'ajuste' é".
-"usado para realizar o ajuste de impostos."
+msgid "Determines where the tax is selectable. Note : 'None' means a tax can't be used by itself, however it can still be used in a group. 'adjustment' is used to perform tax adjustment."
+msgstr "Determina onde o imposto é selecionável. Nota : 'Nenhum' significa que um imposto não pode ser usado por si mesmo, porém ainda pode ser usado em grupo. O 'ajuste' é\"usado para realizar o ajuste de impostos."
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__difference
@@ -5661,12 +5627,8 @@ msgstr "Cria uma fatura de fornecedor de rascunho enviando um email."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__reconciled
-msgid ""
-"It indicates that the invoice has been paid and the journal entry of the "
-"invoice has been reconciled with one or several journal entries of payment."
-msgstr ""
-"Indica que a fatura foi paga e a entrada do diário foi conciliada com um "
-"ou mais diários de pagamentos"
+msgid "It indicates that the invoice has been paid and the journal entry of the invoice has been reconciled with one or several journal entries of payment."
+msgstr "Indica que a fatura foi paga e a entrada do diário foi conciliada com um ou mais diários de pagamentos"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__sent
@@ -5832,12 +5794,8 @@ msgstr "Itens de diário em que o número correspondente não está definido"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_res_company__account_opening_journal_id
-msgid ""
-"Journal where the opening entry of this company's accounting has been "
-"posted."
-msgstr ""
-"Diário onde a entrada de abertura financeira dessa empresa foi "
-"postada."
+msgid "Journal where the opening entry of this company's accounting has been posted."
+msgstr "Diário onde a entrada de abertura financeira dessa empresa foi postada."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_import_wizard__journal_id
@@ -6155,27 +6113,13 @@ msgstr "Última atualização em"
 #. module: account
 #: model:ir.model.fields,help:account.field_res_partner__last_time_entries_checked
 #: model:ir.model.fields,help:account.field_res_users__last_time_entries_checked
-msgid ""
-"Last time the invoices & payments matching was performed for this partner. "
-"It is set either if there's not at least an unreconciled debit and an "
-"unreconciled credit or if you click the \"Done\" button."
-msgstr ""
-"A última vez em que a correspondência de faturas e pagamentos foi realizada "
-"para este parceiro. Ele é definido se não houver pelo menos um débito não "
-"conciliado e um crédito não conciliado ou se você clicar no botão "
-"\"Concluído\"."
+msgid "Last time the invoices & payments matching was performed for this partner. It is set either if there's not at least an unreconciled debit and an unreconciled credit or if you click the \"Done\" button."
+msgstr "A última vez em que a correspondência de faturas e pagamentos foi realizada para este parceiro. Ele é definido se não houver pelo menos um débito não conciliado e um crédito não conciliado ou se você clicar no botão \"Concluído\"."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_account__last_time_entries_checked
-msgid ""
-"Last time the invoices & payments matching was performed on this account. It"
-" is set either if there's not at least an unreconciled debit and an "
-"unreconciled credit Or if you click the \"Done\" button."
-msgstr ""
-"A última vez em que a correspondência de faturas & pagamentos foi executada "
-"nesta conta. Ela é definido tanto se não houver pelo menos um débito não "
-"conciliada e um crédito não conciliada Ou se você clicar no botão "
-"\"Concluído\"."
+msgid "Last time the invoices & payments matching was performed on this account. It is set either if there's not at least an unreconciled debit and an unreconciled credit Or if you click the \"Done\" button."
+msgstr "A última vez em que a correspondência de faturas & pagamentos foi executada nesta conta. Ela é definido tanto se não houver pelo menos um débito não conciliada e um crédito não conciliada Ou se você clicar no botão \"Concluído\"."
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
@@ -6374,8 +6318,7 @@ msgstr "Impostos de fatura manual"
 msgid "Manual: Get paid by cash, check or any other method outside of Odoo.\n"
 "Electronic: Get paid automatically through a payment acquirer by requesting a transaction on a card saved by the customer when buying or subscribing online (payment token).\n"
 "Batch Deposit: Encase several customer checks at once by generating a batch deposit to submit to your bank. When encoding the bank statement in Odoo,you are suggested to reconcile the transaction with the batch deposit. Enable this option from the settings."
-msgstr ""
-"Manual: Seja pago em dinheiro, cheque ou lqualquer outro método fora do Sistema.\n"
+msgstr "Manual: Seja pago em dinheiro, cheque ou lqualquer outro método fora do Sistema.\n"
 "Eletrônico: Seja pago automaticamente através de um adquiridor de pagamentos requerendo uma transação em um cartão salvo pelo cliente quando comprando ou subscrição online(token de pagamento).\n"
 "Depósito em Lote: Engloba vários cheques de clientes de uma vez gerando um depósito em lote para submeter ao seu banco. quando encodificando o extrato bancário no Sistema, você é sugerido a conciliar a transação com o depósito em lote. Habilite essa opção nas configurações."
 
@@ -6388,8 +6331,7 @@ msgid "Manual: Get paid by cash, check or any other method outside of Odoo.\n"
 "Check: Pay bill by check and print it from Odoo.\n"
 "Batch Deposit: Encase several customer checks at once by generating a batch deposit to submit to your bank. When encoding the bank statement in Odoo, you are suggested to reconcile the transaction with the batch deposit.To enable batch deposit, module account_batch_payment must be installed.\n"
 "SEPA Credit Transfer: Pay bill from a SEPA Credit Transfer file you submit to your bank. To enable sepa credit transfer, module account_sepa must be installed "
-msgstr ""
-"Manual: Seja pago em dinheiro, cheque ou lqualquer outro método fora do Sistema.\n"
+msgstr "Manual: Seja pago em dinheiro, cheque ou lqualquer outro método fora do Sistema.\n"
 "Eletrônico: Seja pago automaticamente através de um adquiridor de pagamentos requerendo uma transação em um cartão salvo pelo cliente quando comprando ou subscrição online(token de pagamento).\n"
 "Cheque: Pague a conta com cheque e imprima isso do Sistema\n"
 "Depósito em Lote: Engloba vários cheques de clientes de uma vez gerando um depósito em lote para submeter ao seu banco. quando encodificando o extrato bancário no Sistema, você é sugerido a conciliar a transação com o depósito em lote. Para habilitar depósitos em lote, módulo account_batch_deposit deve estar instalado.\n"
@@ -6400,8 +6342,7 @@ msgstr ""
 msgid "Manual:Pay bill by cash or any other method outside of Odoo.\n"
 "Check:Pay bill by check and print it from Odoo.\n"
 "SEPA Credit Transfer: Pay bill from a SEPA Credit Transfer file you submit to your bank. Enable this option from the settings."
-msgstr ""
-"Manual:Pague conta em dinheiro ou qualquer outro método fora do Sistema.\n"
+msgstr "Manual:Pague conta em dinheiro ou qualquer outro método fora do Sistema.\n"
 "Cheque:Pague conta com cheque e imprima isso do Sistema.\n"
 "Transferência de crédito SEPA: Pqgue conta com um arquivo de Transferência de Crédito SEPA que você envia ao banco. Habilite essa opção nas configurações."
 
@@ -6970,16 +6911,14 @@ msgstr "Outubro"
 #: model_terms:ir.actions.act_window,help:account.action_bank_statement_line
 msgid "Odoo allows you to reconcile a statement line directly with\n"
 "                the related sale or puchase invoice(s)."
-msgstr ""
-"Sistema permite conciliar uma linha de extrato diretamente com\n"
+msgstr "Sistema permite conciliar uma linha de extrato diretamente com\n"
 "a venda ou fatura(s) de compra(s) relacionada(s)."
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_bank_statement_tree
 msgid "Odoo allows you to reconcile a statement line directly with\n"
 "                the related sale or puchase invoices."
-msgstr ""
-"Sistema permite conciliar uma linha de extrato diretamente com\n"
+msgstr "Sistema permite conciliar uma linha de extrato diretamente com\n"
 "faturas de venda ou compra relacionadas."
 
 #. module: account
@@ -7004,13 +6943,8 @@ msgstr "Uma vez que as faturas provisórias são confirmados, você não será c
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid ""
-"Once installed, set 'Bank Feeds' to 'File Import' in bank account "
-"settings.This adds a button to import from the Accounting dashboard."
-msgstr ""
-"Uma vez instalados, define 'Retornos Bancários' para 'Importação de Arquivo'"
-" em configuração de conta bancária. Isso adiciona um botão para importar "
-"para o Painel Financeiro."
+msgid "Once installed, set 'Bank Feeds' to 'File Import' in bank account settings.This adds a button to import from the Accounting dashboard."
+msgstr "Uma vez instalados, define 'Retornos Bancários' para 'Importação de Arquivo' em configuração de conta bancária. Isso adiciona um botão para importar para o Painel Financeiro."
 
 #. module: account
 #: code:addons/account/models/account_payment.py:675
@@ -7118,16 +7052,8 @@ msgstr "Modelos de Operação"
 #. module: account
 #: code:addons/account/models/account_bank_statement.py:717
 #, python-format
-msgid ""
-"Operation not allowed. Since your statement line already received a number "
-"(%s), you cannot reconcile it entirely with existing journal entries "
-"otherwise it would make a gap in the numbering. You should book an entry and"
-" make a regular revert of it in case you want to cancel it."
-msgstr ""
-"Operação não permitida. Como a linha do seu extrato já recebeu um número "
-"(%s), não é possível conciliá-lo totalmente com os lançamentos contábeis "
-"existentes, caso contrário, isso deixaria uma lacuna na numeração. Você deve"
-" reservar uma entrada e fazer uma reversão regular caso queira cancelá-la."
+msgid "Operation not allowed. Since your statement line already received a number (%s), you cannot reconcile it entirely with existing journal entries otherwise it would make a gap in the numbering. You should book an entry and make a regular revert of it in case you want to cancel it."
+msgstr "Operação não permitida. Como a linha do seu extrato já recebeu um número (%s), não é possível conciliá-lo totalmente com os lançamentos contábeis existentes, caso contrário, isso deixaria uma lacuna na numeração. Você deve reservar uma entrada e fazer uma reversão regular caso queira cancelá-la."
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -8712,13 +8638,8 @@ msgstr "Selecione aqui o tipo de avaliação relacionada a esta linha do prazo d
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
-msgid ""
-"Select this if the taxes should use cash basis, which will create an entry "
-"for such taxes on a given account during reconciliation."
-msgstr ""
-"Selecione esta opção se o imposto deve usar regime de caixa, o que irá criar"
-" uma entrada para este imposto sobre uma determinada conta durante a "
-"conciliação."
+msgid "Select this if the taxes should use cash basis, which will create an entry for such taxes on a given account during reconciliation."
+msgstr "Selecione esta opção se o imposto deve usar regime de caixa, o que irá criar uma entrada para este imposto sobre uma determinada conta durante a conciliação."
 
 #. module: account
 #: code:addons/account/wizard/account_invoice_state.py:21
@@ -9539,15 +9460,8 @@ msgstr "Campo técnico, fixando o número dado à fatura, definido automaticamen
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__move_name
 #: model:ir.model.fields,help:account.field_account_payment__move_name
-msgid ""
-"Technical field holding the number given to the journal entry, automatically"
-" set when the statement line is reconciled then stored to set the same "
-"number again if the line is cancelled, set to draft and re-processed again."
-msgstr ""
-"Campo técnico que contém o número atribuído ao lançamento contábil, definido"
-" automaticamente quando a linha de declaração é conciliada e armazenada "
-"para definir novamente o mesmo número se a linha for cancelada, ajustada "
-"para rascunho e novamente processada."
+msgid "Technical field holding the number given to the journal entry, automatically set when the statement line is reconciled then stored to set the same number again if the line is cancelled, set to draft and re-processed again."
+msgstr "Campo técnico que contém o número atribuído ao lançamento contábil, definido automaticamente quando a linha de declaração é conciliada e armazenada para definir novamente o mesmo número se a linha for cancelada, ajustada para rascunho e novamente processada."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_abstract_payment__multi
@@ -9601,11 +9515,8 @@ msgstr "Campo técnico usado para adaptar a interface com o tipo de pagamento se
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_partial_reconcile__max_date
-msgid ""
-"Technical field used to determine at which date this reconciliation needs to"
-" be shown on the aged receivable/payable reports."
-msgstr ""
-"Campo Técnico usado para determinar em que data essa conciliação precisa "
+msgid "Technical field used to determine at which date this reconciliation needs to be shown on the aged receivable/payable reports."
+msgstr "Campo Técnico usado para determinar em que data essa conciliação precisa "
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move__tax_type_domain
@@ -9621,14 +9532,8 @@ msgstr "Campo técnico usado para esconder o método de pagamento se o diário s
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move__tax_cash_basis_rec_id
-msgid ""
-"Technical field used to keep track of the tax cash basis reconciliation. "
-"This is needed when cancelling the source: it will post the inverse journal "
-"entry to cancel that part too."
-msgstr ""
-"Campo técnico usado para manter o controle da conciliação de regime de "
-"caixa fiscal. Isto é necessário quando do cancelamento da fonte: isto vai "
-"postar uma entrada de diário inversa para cancelar essa parte também."
+msgid "Technical field used to keep track of the tax cash basis reconciliation. This is needed when cancelling the source: it will post the inverse journal entry to cancel that part too."
+msgstr "Campo técnico usado para manter o controle da conciliação de regime de caixa fiscal. Isto é necessário quando do cancelamento da fonte: isto vai postar uma entrada de diário inversa para cancelar essa parte também."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__recompute_tax_line
@@ -9772,11 +9677,7 @@ msgstr "A conta bancária de um diário bancário deve pertencer à mesma empres
 msgid "The bank reconciliation widget won't ask to reconcile payments older than this date.\n"
 "                                                                                                       This is useful if you install accounting after having used invoicing for some time and\n"
 "                                                                                                       don't want to reconcile all the past payments with bank statements."
-msgstr ""
-"A ferramenta de conciliação bancária não solicitará a conciliação de "
-"pagamentos anteriores a esta data. Isso é útil se você instalar o "
-"financeiro após ter usado o faturamento por algum tempo e não deseja "
-"conciliar todos os pagamentos anteriores com extratos bancários."
+msgstr "A ferramenta de conciliação bancária não solicitará a conciliação de pagamentos anteriores a esta data. Isso é útil se você instalar o financeiro após ter usado o faturamento por algum tempo e não deseja conciliar todos os pagamentos anteriores com extratos bancários."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_contact_config_settings__account_bank_reconciliation_start
@@ -9784,11 +9685,9 @@ msgstr ""
 msgid "The bank reconciliation widget won't ask to reconcile payments older than this date.\n"
 "               This is useful if you install accounting after having used invoicing for some time and\n"
 "               don't want to reconcile all the past payments with bank statements."
-msgstr ""
-"A ferramenta de conciliação bancária não solicitará a conciliação de "
-"pagamentos anteriores a esta data. Isso é útil se você instalar o "
-"financeiro após ter usado o faturamento por algum tempo e não deseja "
-"reconciliar todos os pagamentos anteriores com extratos bancários."
+msgstr "O widget de reconciliação bancária não solicitará a reconciliação de pagamentos anteriores a essa data.\n"
+"               Isso é útil se você instalar a contabilidade depois de ter usado o faturamento por algum tempo e\n"
+"               não quer reconciliar todos os pagamentos anteriores com extratos bancários."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__statement_id
@@ -9985,12 +9884,8 @@ msgstr "A conta do parceiro usada para esta fatura."
 #. module: account
 #: model:ir.model.fields,help:account.field_res_partner__has_unreconciled_entries
 #: model:ir.model.fields,help:account.field_res_users__has_unreconciled_entries
-msgid ""
-"The partner has at least one unreconciled debit and credit since last time "
-"the invoices & payments matching was performed."
-msgstr ""
-"O parceiro tem pelo menos um débito e crédito não conciliado desde última "
-"vez que a correspondência de faturas e pagamentos foi realizada."
+msgid "The partner has at least one unreconciled debit and credit since last time the invoices & payments matching was performed."
+msgstr "O parceiro tem pelo menos um débito e crédito não conciliado desde última vez que a correspondência de faturas e pagamentos foi realizada."
 
 #. module: account
 #: code:addons/account/models/account.py:684
@@ -10153,8 +10048,7 @@ msgstr "Não há itens de diário em estado de rascunho para postar."
 #, python-format
 msgid "There is no tax cash basis journal defined for this company: \"%s\" \n"
 "Configure it in Accounting/Configuration/Settings"
-msgstr ""
-"Não há diário de regime de caixa fiscal definido para esta empresa: \"%s\"\n"
+msgstr "Não há diário de regime de caixa fiscal definido para esta empresa: \"%s\"\n"
 "Configure-o em Financeiro/Configuração/Ajustes"
 
 #. module: account
@@ -10176,12 +10070,8 @@ msgstr "Esses impostos são definidos em qualquer novo produto criado."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_account_template__user_type_id
-msgid ""
-"These types are defined according to your country. The type contains more "
-"information about the account and its specificities."
-msgstr ""
-"Esses tipos são definidos de acordo com seu País. O tipo contêm mais "
-"informação sobre a contabilidade e suas especificidades."
+msgid "These types are defined according to your country. The type contains more information about the account and its specificities."
+msgstr "Esses tipos são definidos de acordo com seu País. O tipo contêm mais informação sobra a contabilidade e suas especificidades."
 
 #. module: account
 #: code:addons/account/models/account_journal_dashboard.py:101
@@ -10332,15 +10222,8 @@ msgstr "Este termo de pagamento será usado no lugar do padrão, para pedidos de
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__account_id
-msgid ""
-"This technical field can be used at the statement line creation/import time "
-"in order to avoid the reconciliation process on it later on. The statement "
-"line will simply create a counterpart on this account"
-msgstr ""
-"Este campo técnico pode ser usado na linha do demonstrativo na hora de "
-"criação / importação, a fim de evitar o processo de conciliação sobre ele "
-"mais tarde. A linha do demonstrativo irá simplesmente criar uma "
-"contrapartida desta conta"
+msgid "This technical field can be used at the statement line creation/import time in order to avoid the reconciliation process on it later on. The statement line will simply create a counterpart on this account"
+msgstr "Este campo técnico pode ser usado na linha do demonstrativo na hora de criação / importação, a fim de evitar o processo de conciliação sobre ele mais tarde. A linha do demonstrativo irá simplesmente criar uma contrapartida desta conta"
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:1584
@@ -10357,8 +10240,7 @@ msgstr "Este assistente irá validar todos os lançamentos de diário selecionad
 #: model_terms:ir.actions.act_window,help:account.action_account_reconcile_model
 msgid "Those can be used to quickly create a journal items when reconciling\n"
 "                a bank statement or an account."
-msgstr ""
-"Aquele que pode ser usado para criar rapidamente itens de diário quando conciliar\n"
+msgstr "Aquele que pode ser usado para criar rapidamente itens de diário quando conciliar\n"
 "                um extrato bancário ou uma conta."
 
 #. module: account
@@ -10794,9 +10676,8 @@ msgid "Use this option if you want to cancel an invoice and create a new\n"
 "                                one. The credit note will be created, validated and reconciled\n"
 "                                with the current invoice. A new draft invoice will be created\n"
 "                                so that you can edit it."
-msgstr ""
-"Use esta opção se você deseja cancelar uma fatura e criar uma nova.\n"
-"                                     A nota de crédito será criada, validada e conciliada\n"
+msgstr "Use esta opção se você deseja cancelar uma fatura e criar uma nova.\n"
+"                                     A nota de devolução será criada, validada e conciliada\n"
 "                                     com a fatura atual. A nova fatura, provisória, será criada\n"
 "                                     para que você possa editá-la."
 
@@ -11221,12 +11102,8 @@ msgstr "Você não pode alterar a empresa proprietária de uma conta que já con
 #. module: account
 #: code:addons/account/models/account_invoice.py:1972
 #, python-format
-msgid ""
-"You cannot change the type of an invoice line. Instead you should delete the"
-" current line and create a new line of the proper type."
-msgstr ""
-"Você não pode alterar o tipo de linha de fatura. Em vez disso, você deve "
-"excluir a linha atual e criar uma nova linha do tipo adequado."
+msgid "You cannot change the type of an invoice line. Instead you should delete the current line and create a new line of the proper type."
+msgstr "Você não pode alterar o tipo de linha de fatura. Em vez disso, você deve excluir a linha atual e criar uma nova linha do tipo adequado."
 
 #. module: account
 #: code:addons/account/models/account_move.py:767
@@ -11277,19 +11154,14 @@ msgstr "Você não pode fazer esta modificação em uma entrada de diário publi
 #, python-format
 msgid "You cannot do this modification on a reconciled entry. You can just change some non legal fields or you must unreconcile first.\n"
 "%s."
-msgstr ""
-"Você não pode fazer esta modificação em uma entrada conciliada. Você pode apenas alterar alguns campos não legais ou você deve desconciliar primeiro. \n"
+msgstr "Você não pode fazer esta modificação em uma entrada conciliada. Você pode apenas alterar alguns campos não legais ou você deve desconciliar primeiro. \n"
 "%s."
 
 #. module: account
 #: code:addons/account/models/account.py:68
 #, python-format
-msgid ""
-"You cannot have a receivable/payable account that is not reconcilable. "
-"(account code: %s)"
-msgstr ""
-"Você não pode ter uma conta recebível/pagáve que não seja conciliável. "
-"(código de conta: %s)"
+msgid "You cannot have a receivable/payable account that is not reconcilable. (account code: %s)"
+msgstr "Você não pode ter uma conta recebível/pagáve que não seja conciliável. (código de conta: %s)"
 
 #. module: account
 #: code:addons/account/models/account.py:79
@@ -11326,12 +11198,8 @@ msgstr ""
 #. module: account
 #: code:addons/account/models/account_invoice.py:1002
 #, python-format
-msgid ""
-"You cannot pay an invoice which is partially paid. You need to reconcile "
-"payment entries first."
-msgstr ""
-"Não é possível pagar uma fatura parcialmente paga. Você precisa conciliar "
-"as entradas de pagamento primeiro."
+msgid "You cannot pay an invoice which is partially paid. You need to reconcile payment entries first."
+msgstr "Não é possível pagar uma fatura parcialmente paga. Você precisa conciliar as entradas de pagamento primeiro."
 
 #. module: account
 #: code:addons/account/models/account.py:346
@@ -11446,14 +11314,8 @@ msgstr "Você deve configurar a 'Conta de Perda de Câmbio' nas configurações 
 #. module: account
 #: code:addons/account/models/account_move.py:1866
 #, python-format
-msgid ""
-"You should configure the 'Gain Exchange Rate Account' in the accounting "
-"settings, to manage automatically the booking of accounting entries related "
-"to differences between exchange rates."
-msgstr ""
-"Você deve configurar a \"Conta de ganho com Taxa de câmbio\" nas "
-"configurações financeiras, para gerenciar automaticamente o ganho nas "
-"entradas contábeis relacionadas às diferenças entre as taxas de câmbio."
+msgid "You should configure the 'Gain Exchange Rate Account' in the accounting settings, to manage automatically the booking of accounting entries related to differences between exchange rates."
+msgstr "Você deve configurar a \"Conta de ganho com Taxa de câmbio\" nas configurações financeiras, para gerenciar automaticamente o ganho nas entradas contábeis relacionadas às diferenças entre as taxas de câmbio."
 
 #. module: account
 #: code:addons/account/models/account_move.py:1868
