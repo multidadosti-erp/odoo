@@ -128,7 +128,7 @@ msgstr "&amp;nbsp;<span>em</span>"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_invoice_chatter
 msgid "&amp;times;"
-msgstr "&amp;vezes;"
+msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_form
@@ -11054,19 +11054,17 @@ msgid "You can not have an overlap between two fiscal years, please correct the 
 msgstr "Você não pode ter uma sobreposição entre dois anos fiscais, por favor corrija as datas de início e/ou término de seus anos fiscais."
 
 #. module: account
-<<<<<<< HEAD
 #: code:addons/account/models/partner.py:441
 #, python-format
 msgid ""
 "You can't change the company of a partner if the latter already has some "
 "invoices."
 msgstr ""
+"Você não pode mudar a empresa de um parceiro se este já tiver Notas "
+"Fiscais emitidas."
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:1784
-=======
-#: code:addons/account/models/account_invoice.py:1943
->>>>>>> [IMP] Atualiza tradução pt_br modulo 'account'
 #, python-format
 msgid "You can only delete an invoice line if the invoice is in draft state."
 msgstr "Você só pode excluir uma linha de fatura se a fatura estiver em estado de rascunho."
