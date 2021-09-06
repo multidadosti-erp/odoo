@@ -204,8 +204,8 @@ class TestHasGroup(TransactionCase):
         # 2. because a group may be (transitively) implying group_user, then it would raise an exception
         # so as a compromise we remove all groups when demoting a user
         # (even technical display groups, e.g. TaxB2B, which could be re-added later)
-        self.assertEqual(
-            self.test_user.groups_id, (self.grp_portal),
+        self.assertIn(
+            self.grp_portal, self.test_user.groups_id,
             "Here the portal group does not imply any other group, so we should only have this group.",
         )
 
