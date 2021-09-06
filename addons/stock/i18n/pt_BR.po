@@ -2384,8 +2384,8 @@ msgid ""
 "If this checkbox is ticked, Odoo will show which products are reserved "
 "(lot/serial number, source location, source package)."
 msgstr ""
-"Se esta caixa de seleção estiver marcada, o Sistema mostrará quais produtos "
-"estão reservados (número de lote/série, localização da fonte, pacote fonte)."
+"Se esta caixa de seleção estiver marcada, o sistema irá sugerir automaticamente "
+"número de lote/série disponível no estoque."
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_move__show_operations
