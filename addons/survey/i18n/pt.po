@@ -11,12 +11,8 @@
 # Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
 # Martin Trigaux, 2019
 # Nuno Silva <nuno.silva@arxi.pt>, 2020
-<<<<<<< HEAD
 # Manuela Silva <mmsrs@sky.com>, 2021
-# 
-=======
 #
->>>>>>> [FIX] Remove tradução '&amp;vezes;' dos modulos
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
