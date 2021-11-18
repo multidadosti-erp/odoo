@@ -116,7 +116,6 @@ GROUP BY channel_moderator.res_users_id""", [tuple(self.ids)])
                     FROM mail_activity AS act
                     JOIN ir_model AS m ON act.res_model_id = m.id
                     WHERE user_id = %(user_id)s
-                      AND act.status = 'active'
                     GROUP BY m.id, states, act.res_model;
                     """
         self.env.cr.execute(query, {
