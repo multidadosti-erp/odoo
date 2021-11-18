@@ -1075,11 +1075,6 @@ msgid "Created on"
 msgstr "Criado em"
 
 #. module: point_of_sale
-#: selection:barcode.rule,type:0
-msgid "Credit Card"
-msgstr "Cartão de Crédito"
-
-#. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
 msgid "Credit Card Reader"
 msgstr "Leitor de cartão de crédito"
@@ -2509,6 +2504,13 @@ msgstr "Categoria superior(pai)"
 #, python-format
 msgid "Partner"
 msgstr "Cliente"
+
+#. module: point_of_sale
+#. openerp-web
+#: code:addons/point_of_sale/static/src/js/screens.js:1368
+#, python-format
+msgid "Partner Created !"
+msgstr "Parceiro Criado !"
 
 #. module: point_of_sale
 #. openerp-web
