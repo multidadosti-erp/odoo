@@ -590,7 +590,7 @@ class MailActivityMixin(models.AbstractModel):
                 record.activity_state = 'planned'
 
     def get_activities_states(self):
-        return self.activity_ids.mapped('state')
+        return self.activity_ids.filtered(lambda x: x.status == 'active').mapped('state')
 
     @api.depends('activity_ids.date_deadline')
     def _compute_activity_date_deadline(self):
