@@ -1136,9 +1136,15 @@ class Field(MetaField('DummyField', (object,), {})):
                 self._compute_value(records)
             except (AccessError, MissingError):
                 # some record is forbidden or missing, retry record by record
+
+                # TOFIX: Multidados/Augusto
+                #        Adicionado SUDO() para forçar o recalculo de registros
+                #        sem acesso pelo usuário logado.
+                # Motivo: account_move_backup (ajustar no futuro)
+                #         campos estavam causando erros de permissão.
                 for record in records:
                     try:
-                        self._compute_value(record)
+                        self._compute_value(record.sudo())
                     except Exception as exc:
                         record.env.cache.set_failed(record, [self], exc)
 
