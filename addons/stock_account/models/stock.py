@@ -356,7 +356,8 @@ class StockMove(models.Model):
             }
             vals['remaining_qty'] = valued_quantity if quantity is None else self.remaining_qty + quantity
 
-            if self.product_id.cost_method == 'standard':
+            # Multidados: Ajusta para não regravar o price_unit stock_move caso tenha valor
+            if self.product_id.cost_method == 'standard' and price_unit == 0:
                 value = self.product_id.standard_price * (quantity or valued_quantity)
                 value_to_return = value if quantity is None or not self.value else self.value
                 vals.update({
