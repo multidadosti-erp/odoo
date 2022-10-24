@@ -289,11 +289,11 @@ class IrAttachment(models.Model):
     datas_fname = fields.Char('Filename')
     description = fields.Text('Description')
     res_name = fields.Char('Resource Name', compute='_compute_res_name', store=True)
-    res_model = fields.Char('Resource Model', readonly=True, help="The database object this attachment will be attached to.")
+    res_model = fields.Char('Resource Model', readonly=True, index=True, help="The database object this attachment will be attached to.")
     res_model_name = fields.Char(compute='_compute_res_model_name', store=True, index=True)
     res_field = fields.Char('Resource Field', readonly=True)
-    res_id = fields.Integer('Resource ID', readonly=True, help="The record id this is attached to.")
-    company_id = fields.Many2one('res.company', string='Company', change_default=True,
+    res_id = fields.Integer('Resource ID', readonly=True, index=True, help="The record id this is attached to.")
+    company_id = fields.Many2one('res.company', string='Company', change_default=True, index=True,
                                  default=lambda self: self.env['res.company']._company_default_get('ir.attachment'))
     type = fields.Selection([('url', 'URL'), ('binary', 'File')],
                             string='Type', required=True, default='binary', change_default=True,
