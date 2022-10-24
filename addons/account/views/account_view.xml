@@ -2312,8 +2312,8 @@
             <field name="model">account.group</field>
             <field name="arch" type="xml">
                 <tree string="Account Group">
-                    <field name="code_prefix"/>
                     <field name="name"/>
+                    <field name="code_prefix"/>
                 </tree>
             </field>
         </record>
