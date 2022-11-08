@@ -1246,6 +1246,11 @@ class Menu(models.Model):
                 same_url_ids = self.get_same_url_menus(vals)
                 for menu_id in same_url_ids:
                     vals['parent_id'] = menu_id
+
+        # remove da gravação, campo compute
+        if 'is_homepage' in vals:
+            vals.pop('is_homepage')
+
         return super(Menu, self).write(vals)
 
     # Criado pela Multidados
