@@ -202,6 +202,7 @@ class TestSaleService(TestCommonSaleTimesheetNoChart):
 
         # remove the only timesheet
         timesheet1.unlink()
+        so_line_deliver_new_task_project._compute_qty_delivered()
         self.assertEqual(so_line_deliver_new_task_project.qty_delivered, 0.0, 'Delivered quantity should be reset to zero, since there is no more timesheet.')
 
         # log 2 new timesheets
@@ -219,10 +220,12 @@ class TestSaleService(TestCommonSaleTimesheetNoChart):
             'unit_amount': 2,
             'employee_id': self.employee_user.id,
         })
+        so_line_deliver_new_task_project._compute_qty_delivered()
         self.assertEqual(so_line_deliver_new_task_project.qty_delivered, timesheet2.unit_amount + timesheet3.unit_amount, 'Delivered quantity should be the sum of the 2 timesheets unit amounts.')
 
         # remove timesheet2
         timesheet2.unlink()
+        so_line_deliver_new_task_project._compute_qty_delivered()
         self.assertEqual(so_line_deliver_new_task_project.qty_delivered, timesheet3.unit_amount, 'Delivered quantity should be reset to the sum of remaining timesheets unit amounts.')
 
     def test_sale_create_task(self):
