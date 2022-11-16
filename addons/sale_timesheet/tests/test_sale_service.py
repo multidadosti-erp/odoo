@@ -201,7 +201,10 @@ class TestSaleService(TestCommonSaleTimesheetNoChart):
         self.assertEqual(so_line_deliver_new_task_project.qty_delivered, timesheet1.unit_amount, 'Delivered quantity should be the same then its only related timesheet.')
 
         # remove the only timesheet
-        timesheet1.unlink()
+        # 'skip_check_test' flag utilizada para manter compatibilidade
+        # com o novo codigo unlink do br_hr_timesheet
+        timesheet1.with_context(skip_check_test=True).unlink()
+
         self.assertEqual(so_line_deliver_new_task_project.qty_delivered, 0.0, 'Delivered quantity should be reset to zero, since there is no more timesheet.')
 
         # log 2 new timesheets
