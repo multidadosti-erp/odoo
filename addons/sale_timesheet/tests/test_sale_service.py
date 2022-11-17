@@ -225,7 +225,7 @@ class TestSaleService(TestCommonSaleTimesheetNoChart):
         self.assertEqual(so_line_deliver_new_task_project.qty_delivered, timesheet2.unit_amount + timesheet3.unit_amount, 'Delivered quantity should be the sum of the 2 timesheets unit amounts.')
 
         # remove timesheet2
-        timesheet2.unlink()
+        timesheet2.with_context(skip_check_test=True).unlink()
         self.assertEqual(so_line_deliver_new_task_project.qty_delivered, timesheet3.unit_amount, 'Delivered quantity should be reset to the sum of remaining timesheets unit amounts.')
 
     def test_sale_create_task(self):
