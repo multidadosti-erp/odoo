@@ -314,12 +314,16 @@ var ListRenderer = BasicRenderer.extend({
         var name = node.attrs.name;
         var field = this.state.fields[name];
         var value = record.data[name];
-        var formattedValue = field_utils.format[field.type](value, field, {
-            data: record.data,
-            escape: true,
-            isPassword: 'password' in node.attrs,
-            digits: node.attrs.digits ? JSON.parse(node.attrs.digits) : undefined,
-        });
+        if (field && field.type) {
+            var formattedValue = field_utils.format[field.type](value, field, {
+                data: record.data,
+                escape: true,
+                isPassword: 'password' in node.attrs,
+                digits: node.attrs.digits ? JSON.parse(node.attrs.digits) : undefined,
+            });
+        } else {
+            var formattedValue = value
+        }
         this._handleAttributes($td, node);
         return $td.html(formattedValue);
     },
