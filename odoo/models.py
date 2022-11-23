@@ -3079,6 +3079,24 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         return self.env['ir.model.access'].check(self._name, operation, raise_exception)
 
     @api.multi
+    def check_access_rule_bool(self, operation):
+        """ Método Criado pela Multidados para Retornar True ou False
+            de Acordo com o método original do Core (check_access_rule)
+
+        Args:
+            operation (str): :param operation: one of ``write``, ``unlink``
+
+        Returns:
+            bool: True - Tem Acesso
+                  False - Sem Acesso
+        """
+        try:
+            self.check_access_rule(operation)
+            return True
+        except:
+            return False
+
+    @api.multi
     def check_access_rule(self, operation):
         """ Verifies that the operation given by ``operation`` is allowed for
             the current user according to ir.rules.
