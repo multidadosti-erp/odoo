@@ -124,7 +124,7 @@ class SaleOrder(models.Model):
     def _get_default_team(self):
         return self.env['crm.team']._get_default_team_id()
 
-    @api.onchange('fiscal_position_id')
+    # @api.onchange('fiscal_position_id') # Remove onchange para que o mesmo seja tratado no br_sale
     def _compute_tax_id(self):
         """
         Trigger the recompute of the taxes if the fiscal position is changed on the SO.
