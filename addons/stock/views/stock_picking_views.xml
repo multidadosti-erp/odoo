@@ -279,7 +279,7 @@
                     <notebook>
                         <page string="Detailed Operations" attrs="{'invisible': [('show_operations', '=', False)]}">
                             <field name="move_line_ids_without_package" attrs="{'readonly': ['|', '|', ('show_operations', '=', False), ('state', '=', 'cancel'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}" context="{'default_picking_id': id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id}">
-                                <tree editable="bottom" decoration-muted="(state == 'done' and is_locked == True)" decoration-danger="qty_done&gt;product_uom_qty and state!='done'" decoration-success="qty_done==product_uom_qty and state!='done' and not result_package_id">
+                                <tree editable="bottom" limit="500" decoration-muted="(state == 'done' and is_locked == True)" decoration-danger="qty_done&gt;product_uom_qty and state!='done'" decoration-success="qty_done==product_uom_qty and state!='done' and not result_package_id">
                                     <field name="product_id" required="1" attrs="{'readonly': ['|', ('state', '=', 'done'), ('move_id', '!=', False)]}"/>
                                     <field name="move_id" invisible="1"/>
                                     <field name="product_uom_id" force_save="1" attrs="{'readonly': [('state', '!=', 'draft'), ('id', '!=', False)]}" groups="uom.group_uom"/>
@@ -305,7 +305,7 @@
                             <field name="id" invisible="1"/>
                             <field name="immediate_transfer" invisible="1"/>
                             <field name="move_ids_without_package" attrs="{'readonly': ['|', '&amp;', ('show_operations', '=', True), '|', ('is_locked', '=', True), ('state', '=', 'done'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)]}" context="{'picking_type_code': picking_type_code, 'default_picking_id': id, 'form_view_ref':'stock.view_move_picking_form', 'address_in_id': partner_id, 'default_picking_type_id': picking_type_id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id}">
-                                <tree decoration-danger="not parent.immediate_transfer and state != 'done' and quantity_done > reserved_availability and show_reserved_availability" decoration-muted="scrapped == True or state == 'cancel' or (state == 'done' and is_locked == True)" string="Stock Moves" editable="bottom">
+                                <tree limit="500" decoration-danger="not parent.immediate_transfer and state != 'done' and quantity_done > reserved_availability and show_reserved_availability" decoration-muted="scrapped == True or state == 'cancel' or (state == 'done' and is_locked == True)" string="Stock Moves" editable="bottom">
                                     <field name="name" invisible="1"/>
                                     <field name="date_expected" invisible="1"/>
                                     <field name="state" invisible="1" readonly="0"/>
