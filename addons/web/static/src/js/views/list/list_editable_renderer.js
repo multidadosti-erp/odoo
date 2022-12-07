@@ -483,6 +483,16 @@ ListRenderer.include({
         return !this.state.groupedBy.length && this.editable;
     },
     /**
+     * Returns true iff the list is createtable.
+     *  Multidados/Augusto
+     *
+     * @private
+     * @returns {boolean}
+     */
+    _isCreatetable: function () {
+        return this.addCreateLine;
+    },
+    /**
      * Move the cursor on the end of the previous line, if possible.
      * If there is no previous line, then we create a new record.
      *
@@ -515,9 +525,11 @@ ListRenderer.include({
                 self._selectCell(self.currentRow + 1, 0);
             } else {
                 self.unselectRow().then(function () {
-                    self.trigger_up('add_record', {
-                        onFail: self._selectCell.bind(self, 0, 0, {}),
-                    });
+                    if (self._isCreatetable()) {
+                        self.trigger_up('add_record', {
+                            onFail: self._selectCell.bind(self, 0, 0, {}),
+                        });
+                    }
                 });
             }
         });
