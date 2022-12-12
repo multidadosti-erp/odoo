@@ -137,6 +137,10 @@ var Dialog = Widget.extend({
             $button.on('click', function (e) {
                 var def;
                 if (buttonData.click) {
+                    // Multidados: Esconde o botão OK para evitar clicar 2 vezes
+                    // enquanto aguarda o processamento.
+                    this.disabled = true
+
                     def = buttonData.click.call(self, e);
                 }
                 if (buttonData.close) {
