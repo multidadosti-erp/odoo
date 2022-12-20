@@ -3233,7 +3233,7 @@ msgstr "Gerenciar Pacotes"
 #. module: stock
 #: model:res.groups,name:stock.group_adv_location
 msgid "Manage Push and Pull inventory flows"
-msgstr "Gerenciar Fluxos de Inventário"
+msgstr "Gerenciar Fluxos Estoque: Inventários/Transferências"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
