@@ -28,7 +28,7 @@ class Warehouse(models.Model):
         index=True, readonly=True, required=True,
         help='The company is automatically set from your user preferences.')
     partner_id = fields.Many2one('res.partner', 'Address')
-    view_location_id = fields.Many2one('stock.location', 'View Location', domain=[('usage', '=', 'view')], required=True)
+    view_location_id = fields.Many2one('stock.location', 'View Location', domain=[('usage', '=', 'view')], ondelete='restrict')
     lot_stock_id = fields.Many2one('stock.location', 'Location Stock', domain=[('usage', '=', 'internal')], required=True)
     code = fields.Char('Short Name', required=True, size=5, help="Short name used to identify your warehouse")
     route_ids = fields.Many2many(
@@ -69,10 +69,20 @@ class Warehouse(models.Model):
         help="Routes will be created for these resupply warehouses and you can select them on products and product categories")
     warehouse_count = fields.Integer(compute='_compute_warehouse_count')
     show_resupply = fields.Boolean(compute="_compute_show_resupply")
+    view_location_ids = fields.Many2many(string='View Locations', comodel_name='stock.location', compute='_compute_location_ids', store=True)
+
     _sql_constraints = [
         ('warehouse_name_uniq', 'unique(name, company_id)', 'The name of the warehouse must be unique per company!'),
         ('warehouse_code_uniq', 'unique(code, company_id)', 'The code of the warehouse must be unique per company!'),
     ]
+
+    @api.depends('view_location_id', 'view_location_id.child_ids')
+    def _compute_location_ids(self):
+        for lot in self:
+            if lot.view_location_id and lot.view_location_id.child_ids:
+                lot.view_location_ids = lot.view_location_id.child_ids.ids
+            else:
+                lot.view_location_ids = False
 
     @api.depends('name')
     def _compute_warehouse_count(self):
