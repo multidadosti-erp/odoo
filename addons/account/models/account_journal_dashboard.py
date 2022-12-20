@@ -168,9 +168,11 @@ class account_journal(models.Model):
                 amount_field = 'aml.balance' if (not self.currency_id or self.currency_id == self.company_id.currency_id) else 'aml.amount_currency'
                 query = """SELECT sum(%s) FROM account_move_line aml
                            LEFT JOIN account_move move ON aml.move_id = move.id
+                           LEFT JOIN account_journal journal ON move.journal_id = journal.id
                            WHERE aml.account_id in %%s
+                           AND move.journal_id = %%s
                            AND move.date <= %%s AND move.state = 'posted';""" % (amount_field,)
-                self.env.cr.execute(query, (account_ids, fields.Date.context_today(self),))
+                self.env.cr.execute(query, (account_ids, self.id, fields.Date.context_today(self),))
                 query_results = self.env.cr.dictfetchall()
                 if query_results and query_results[0].get('sum') != None:
                     account_sum = query_results[0].get('sum')
