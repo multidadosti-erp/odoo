@@ -82,7 +82,7 @@ class IrModelField(models.Model):
     _inherit = 'ir.model.fields'
 
     track_visibility = fields.Selection(
-        [('onchange', "On Change"), ('always', "Always")], string="Tracking",
+        [('onchange', "On Change"), ('always', "Always"), ('never', "Never")], string="Tracking",
         help="When set, every modification to this field will be tracked in the chatter.",
     )
 
