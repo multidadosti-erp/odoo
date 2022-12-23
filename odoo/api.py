@@ -869,6 +869,76 @@ class Environment(Mapping):
         return self(user=SUPERUSER_ID)['res.users'].browse(self.uid)
 
     @property
+    def company(self):
+        """Return the current company (as an instance).
+
+        If not specified in the context (`allowed_company_ids`),
+        fallback on current user main company.
+
+        :raise AccessError: invalid or unauthorized `allowed_company_ids` context key content.
+        :return: current company (default=`self.user.company_id`)
+        :rtype: res.company
+
+        .. warning::
+
+            No sanity checks applied in sudo mode !
+            When in sudo mode, a user can access any company,
+            even if not in his allowed companies.
+
+            This allows to trigger inter-company modifications,
+            even if the current user doesn't have access to
+            the targeted company.
+        """
+        company_ids = self.context.get('allowed_company_ids', [])
+        if company_ids:
+            if not self.su:
+                user_company_ids = self.user.company_ids.ids
+                if any(cid not in user_company_ids for cid in company_ids):
+                    raise AccessError(_("Access to unauthorized or invalid companies."))
+            return self['res.company'].browse(company_ids[0])
+        return self.user.company_id
+
+    @property
+    def companies(self):
+        """Return a recordset of the enabled companies by the user.
+
+        If not specified in the context(`allowed_company_ids`),
+        fallback on current user companies.
+
+        :raise AccessError: invalid or unauthorized `allowed_company_ids` context key content.
+        :return: current companies (default=`self.user.company_ids`)
+        :rtype: res.company
+
+        .. warning::
+
+            No sanity checks applied in sudo mode !
+            When in sudo mode, a user can access any company,
+            even if not in his allowed companies.
+
+            This allows to trigger inter-company modifications,
+            even if the current user doesn't have access to
+            the targeted company.
+        """
+        company_ids = self.context.get('allowed_company_ids', [])
+        if company_ids:
+            if not self.su:
+                user_company_ids = self.user.company_ids.ids
+                if any(cid not in user_company_ids for cid in company_ids):
+                    raise AccessError(_("Access to unauthorized or invalid companies."))
+            return self['res.company'].browse(company_ids)
+        # By setting the default companies to all user companies instead of the main one
+        # we save a lot of potential trouble in all "out of context" calls, such as
+        # /mail/redirect or /web/image, etc. And it is not unsafe because the user does
+        # have access to these other companies. The risk of exposing foreign records
+        # (wrt to the context) is low because all normal RPCs will have a proper
+        # allowed_company_ids.
+        # Examples:
+        #   - when printing a report for several records from several companies
+        #   - when accessing to a record from the notification email template
+        #   - when loading an binary image on a template
+        return self.user.company_ids
+
+    @property
     def lang(self):
         """ return the current language code """
         return self.context.get('lang')
