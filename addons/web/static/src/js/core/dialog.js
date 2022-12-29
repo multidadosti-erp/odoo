@@ -139,7 +139,9 @@ var Dialog = Widget.extend({
                 if (buttonData.click) {
                     // Multidados: Esconde o botão OK para evitar clicar 2 vezes
                     // enquanto aguarda o processamento.
-                    this.disabled = true
+                    if (( buttonData.text == _t('Save') || buttonData.text == _t('Save & New')) == false){
+                        this.disabled = true
+                    }
 
                     def = buttonData.click.call(self, e);
                 }
