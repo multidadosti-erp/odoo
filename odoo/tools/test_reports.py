@@ -64,6 +64,8 @@ def try_report(cr, uid, rname, ids, data=None, context=None, our_module=None, re
             # TODO more checks, what else can be a sign of a faulty report?
     elif res_format == 'html':
         pass
+    elif res_format == 'xlsx':
+        pass
     else:
         _logger.warning("Report %s produced a \"%s\" chunk, cannot examine it", rname, res_format)
         return False
