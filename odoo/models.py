@@ -3443,6 +3443,11 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         columns = []                    # list of (column_name, format, value)
         updated = []                    # list of updated or translated columns
         other_fields = []               # list of non-column fields
+
+        # Multidados
+        # force_uid_log para gravar corretamente o Usuário com SUDO()
+        _uid = self._context.get('force_uid_log', self._uid)
+
         single_lang = len(self.env['res.lang'].get_installed()) <= 1
         has_translation = self.env.lang and self.env.lang != 'en_US'
 
@@ -3464,7 +3469,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
         if self._log_access:
             if 'write_uid' not in vals:
-                columns.append(('write_uid', '%s', self._uid))
+                columns.append(('write_uid', '%s', _uid))
                 updated.append('write_uid')
             if 'write_date' not in vals:
                 columns.append(('write_date', '%s', AsIs("(now() at time zone 'UTC')")))
@@ -3696,12 +3701,16 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         other_fields = set()            # non-column fields
         translated_fields = set()       # translated fields
 
+        # Multidados
+        # force_uid_log para gravar corretamente o Usuário com SUDO()
+        _uid = self._context.get('force_uid_log', self._uid)
+
         # column names, formats and values (for common fields)
         columns0 = [('id', "nextval(%s)", self._sequence)]
         if self._log_access:
-            columns0.append(('create_uid', "%s", self._uid))
+            columns0.append(('create_uid', "%s", _uid))
             columns0.append(('create_date', "%s", AsIs("(now() at time zone 'UTC')")))
-            columns0.append(('write_uid', "%s", self._uid))
+            columns0.append(('write_uid', "%s", _uid))
             columns0.append(('write_date', "%s", AsIs("(now() at time zone 'UTC')")))
 
         for data in data_list:
