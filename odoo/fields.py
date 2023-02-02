@@ -339,7 +339,7 @@ class Field(MetaField('DummyField', (object,), {})):
         'related_sudo': True,           # whether related fields should be read as admin
         'company_dependent': False,     # whether ``self`` is company-dependent (property field)
         'default': None,                # default(recs) returns the default value
-
+        'dynamic_default': False,       # Multidados: Criado esse parametro para Default por Registro na Criação do Campo
         'string': None,                 # field label
         'help': None,                   # field tooltip
         'readonly': False,              # whether the field is readonly
@@ -805,6 +805,7 @@ class Field(MetaField('DummyField', (object,), {})):
     _description_states = property(attrgetter('states'))
     _description_groups = property(attrgetter('groups'))
     _description_change_default = property(attrgetter('change_default'))
+    _description_dynamic_default = property(attrgetter('dynamic_default'))
     _description_deprecated = property(attrgetter('deprecated'))
     _description_group_operator = property(attrgetter('group_operator'))
 
