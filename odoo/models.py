@@ -2368,23 +2368,47 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         # get the default value; ideally, we should use default_get(), but it
         # fails due to ir.default not being ready
         field = self._fields[column_name]
-        if field.default:
-            value = field.default(self)
-            value = field.convert_to_cache(value, self, validate=False)
-            value = field.convert_to_record(value, self)
-            value = field.convert_to_write(value, self)
-            value = field.convert_to_column(value, self)
+
+        if field.default and field.dynamic_default:
+            # Multidados: Criado a Flag dynamic_default para processar registro por registro
+            # o valor default na criação do campo.
+            query = 'SELECT id FROM "%s" WHERE "%s" IS NULL' % (self._table, column_name)
+
+            self._cr.execute(query)
+            for row in self._cr.fetchall():
+                value = field.default(self)
+                value = field.convert_to_cache(value, self, validate=False)
+                value = field.convert_to_record(value, self)
+                value = field.convert_to_write(value, self)
+                value = field.convert_to_column(value, self)
+
+                necessary = (value is not None) if field.type != 'boolean' else value
+                if necessary:
+                    _logger.debug("Table '%s': setting default value of new column %s to %r",
+                                self._table, column_name, value)
+                    query = 'UPDATE "%s" SET "%s"=%s WHERE id=%s' % (
+                        self._table, column_name, field.column_format, row[0])
+
+                    self._cr.execute(query, (value,))
         else:
-            value = None
-        # Write value if non-NULL, except for booleans for which False means
-        # the same as NULL - this saves us an expensive query on large tables.
-        necessary = (value is not None) if field.type != 'boolean' else value
-        if necessary:
-            _logger.debug("Table '%s': setting default value of new column %s to %r",
-                          self._table, column_name, value)
-            query = 'UPDATE "%s" SET "%s"=%s WHERE "%s" IS NULL' % (
-                self._table, column_name, field.column_format, column_name)
-            self._cr.execute(query, (value,))
+            if field.default:
+                value = field.default(self)
+                value = field.convert_to_cache(value, self, validate=False)
+                value = field.convert_to_record(value, self)
+                value = field.convert_to_write(value, self)
+                value = field.convert_to_column(value, self)
+            else:
+                value = None
+
+            # Write value if non-NULL, except for booleans for which False means
+            # the same as NULL - this saves us an expensive query on large tables.
+            necessary = (value is not None) if field.type != 'boolean' else value
+            if necessary:
+                _logger.debug("Table '%s': setting default value of new column %s to %r",
+                            self._table, column_name, value)
+                query = 'UPDATE "%s" SET "%s"=%s WHERE "%s" IS NULL' % (
+                    self._table, column_name, field.column_format, column_name)
+                self._cr.execute(query, (value,))
 
     @ormcache()
     def _table_has_rows(self):
