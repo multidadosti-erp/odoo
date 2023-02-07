@@ -982,7 +982,7 @@ class AccountInvoice(models.Model):
         to_open_invoices = self.filtered(lambda inv: inv.state != 'open')
         if to_open_invoices.filtered(lambda inv: not inv.partner_id):
             raise UserError(_("The field Vendor is required, please complete it to validate the Vendor Bill."))
-        if to_open_invoices.filtered(lambda inv: inv.state != 'draft'):
+        if to_open_invoices.filtered(lambda inv: inv.state not in ('draft', 'processing')):
             raise UserError(_("Invoice must be in draft state in order to validate it."))
         if to_open_invoices.filtered(lambda inv: float_compare(inv.amount_total, 0.0, precision_rounding=inv.currency_id.rounding) == -1):
             raise UserError(_("You cannot validate an invoice with a negative total amount. You should create a credit note instead."))
