@@ -1092,7 +1092,7 @@ class AccountInvoice(models.Model):
     def _get_aml_for_register_payment(self):
         """ Get the aml to consider to reconcile in register payment """
         self.ensure_one()
-        return self.move_id.line_ids.filtered(lambda r: not r.reconciled and r.account_id.internal_type in ('payable', 'receivable'))
+        return self.move_id.sudo().line_ids.filtered(lambda r: not r.reconciled and r.account_id.internal_type in ('payable', 'receivable'))
 
     @api.multi
     def register_payment(self, payment_line, writeoff_acc_id=False, writeoff_journal_id=False):
@@ -1647,6 +1647,8 @@ class AccountInvoice(models.Model):
         return super(AccountInvoice, self)._track_subtype(init_values)
 
     def _amount_by_group(self):
+        self = self.sudo()
+
         for invoice in self:
             currency = invoice.currency_id or invoice.company_id.currency_id
             fmt = partial(formatLang, invoice.with_context(lang=invoice.partner_id.lang).env, currency_obj=currency)

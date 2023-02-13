@@ -56,7 +56,7 @@ class AccountMove(models.Model):
             total_amount = 0.0
             total_reconciled = 0.0
             for line in move.line_ids:
-                if line.account_id.user_type_id.type in ('receivable', 'payable'):
+                if line.sudo().account_id.user_type_id.type in ('receivable', 'payable'):
                     amount = abs(line.balance)
                     total_amount += amount
             precision_currency = move.currency_id or move.company_id.currency_id
@@ -65,7 +65,7 @@ class AccountMove(models.Model):
                 move.matched_percentage = 1.0
             else:
                 for line in move.line_ids:
-                    if line.account_id.user_type_id.type in ('receivable', 'payable'):
+                    if line.sudo().account_id.user_type_id.type in ('receivable', 'payable'):
                         for partial_line in (line.matched_debit_ids + line.matched_credit_ids):
                             total_reconciled += partial_line.amount
                 move.matched_percentage = precision_currency.round(total_reconciled) / precision_currency.round(total_amount)
@@ -336,6 +336,8 @@ class AccountMove(models.Model):
 
     @api.multi
     def post(self, invoice=False):
+        user_id = self._context.get('uid', self.env.user.id)
+
         self._post_validate()
         # Create the analytic lines in batch is faster as it leads to less cache invalidation.
         self.mapped('line_ids').create_analytic_lines()
@@ -369,7 +371,7 @@ class AccountMove(models.Model):
                 # installing Accounting- with bank statements)
                 move.company_id.account_bank_reconciliation_start = move.date
 
-        return self.write({'state': 'posted'})
+        return self.sudo().with_context(force_uid_log=user_id).write({'state': 'posted'})
 
     @api.multi
     def action_post(self):
@@ -953,7 +955,7 @@ class AccountMoveLine(models.Model):
 
             if cash_basis:
                 tmp_set = debit_move | credit_move
-                cash_basis_percentage_before_rec.update(tmp_set._get_matched_percentage())
+                cash_basis_percentage_before_rec.update(tmp_set.sudo()._get_matched_percentage())
 
             to_create.append({
                 'debit_move_id': debit_move.id,
@@ -1346,6 +1348,8 @@ class AccountMoveLine(models.Model):
         Note that this function is used only by the tax cash basis module since we want to consider the matched_percentage only
         based on the company currency amounts in reports.
         """
+        self = self.sudo()
+
         matched_percentage_per_move = {}
         for line in self:
             if not matched_percentage_per_move.get(line.move_id.id, False):
