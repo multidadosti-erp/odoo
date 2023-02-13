@@ -457,7 +457,7 @@ class account_payment(models.Model):
     def _get_move_reconciled(self):
         for payment in self:
             rec = True
-            for aml in payment.move_line_ids.filtered(lambda x: x.account_id.reconcile):
+            for aml in payment.move_line_ids.sudo().filtered(lambda x: x.account_id.reconcile):
                 if not aml.reconciled:
                     rec = False
             payment.move_reconciled = rec
@@ -733,6 +733,7 @@ class account_payment(models.Model):
         """ Create a journal entry corresponding to a payment, if the payment references invoice(s) they are reconciled.
             Return the journal entry.
         """
+        user_id = self._context.get('uid', self.env.user.id)
         aml_obj = self.env['account.move.line'].with_context(check_move_validity=False)
         debit, credit, amount_currency, currency_id = aml_obj.with_context(date=self.payment_date)._compute_amount_fields(amount, self.currency_id, self.company_id.currency_id)
 
@@ -767,7 +768,9 @@ class account_payment(models.Model):
                 amount_currency = 0
             liquidity_aml_dict = self._get_shared_move_line_vals(credit, debit, -amount_currency, move.id, False)
             liquidity_aml_dict.update(self._get_liquidity_move_line_vals(-amount))
-            aml_obj.create(liquidity_aml_dict)
+
+            # Multidados: Adicionando SUDO para forçar a criação.
+            aml_obj.sudo().with_context(force_uid_log=user_id).create(liquidity_aml_dict)
 
         #validate the payment
         if not self.journal_id.post_at_bank_rec:
