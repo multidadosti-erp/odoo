@@ -21,7 +21,7 @@
                              <field name="group_id"/>
                              <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                              <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency"/>
-                             <field name="internal_type" invisible="1" readonly="1"/>
+                             <field name="internal_type" invisible="0" readonly="1"/>
                              <label for="reconcile" attrs="{'invisible': [('internal_type','=','liquidity')]}"/>
                              <div attrs="{'invisible': [('internal_type','=','liquidity')]}">
                                 <field name="reconcile"/>
