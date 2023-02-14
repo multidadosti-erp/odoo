@@ -10721,7 +10721,7 @@ msgstr "Usado para registrar um lucro quando o saldo final em caixa difere do qu
 #: model:ir.model.fields,field_description:account.field_account_account_template__user_type_id
 #: model:ir.model.fields,field_description:account.field_account_move_line__user_type_id
 msgid "User Type"
-msgstr "Tipo de usuário"
+msgstr "Tipo Conta"
 
 #. module: account
 #: model:ir.model,name:account.model_res_users
