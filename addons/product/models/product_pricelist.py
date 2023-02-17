@@ -161,6 +161,7 @@ class Pricelist(models.Model):
         item_ids = [x[0] for x in self._cr.fetchall()]
         items = self.env['product.pricelist.item'].browse(item_ids)
         results = {}
+
         for product, qty, partner in products_qty_partner:
             results[product.id] = 0.0
             suitable_rule = False
@@ -183,9 +184,22 @@ class Pricelist(models.Model):
             price = product.price_compute('list_price')[product.id]
 
             price_uom = self.env['uom.uom'].browse([qty_uom_id])
+
             for rule in items:
+
+                # Em casos onde a tag 'uom_qty_change' esta presente no contexto (indica
+                # que o metodo foi chamado devido ao onchange de campo de quantidade) e
+                # a quantidade minima do produto na lista de preço é zero, nós mantemos
+                # o valor original do preço unitario. Isso impede que o valor de preco
+                # unitario inserido pelo usuario seja sobrescrito pelo valor da lista de
+                # preco quando a quantidade do produto e alterada no orçamento.
+                if not rule.min_quantity and self.env.context.get('uom_qty_change', False):
+                    price = self.env.context.get('old_price', 0)
+                    continue
+
                 if rule.min_quantity and qty_in_product_uom < rule.min_quantity:
                     continue
+
                 if is_product_template:
                     if rule.product_tmpl_id and product.id != rule.product_tmpl_id.id:
                         continue
@@ -226,6 +240,7 @@ class Pricelist(models.Model):
                 else:
                     cur = product.currency_id
                 price = cur._convert(price, self.currency_id, self.env.user.company_id, date, round=False)
+
 
             results[product.id] = (price, suitable_rule and suitable_rule.id or False)
 
