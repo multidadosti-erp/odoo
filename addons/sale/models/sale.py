@@ -1506,6 +1506,7 @@ class SaleOrderLine(models.Model):
 
         if self.order_id.pricelist_id.discount_policy == 'with_discount':
             return product.with_context(pricelist=self.order_id.pricelist_id.id, uom=self.product_uom.id).price
+
         product_context = dict(self.env.context, partner_id=self.order_id.partner_id.id, date=self.order_id.date_order, uom=self.product_uom.id)
 
         final_price, rule_id = self.order_id.pricelist_id.with_context(product_context).get_product_price_rule(product or self.product_id, self.product_uom_qty or 1.0, self.order_id.partner_id)
@@ -1558,6 +1559,7 @@ class SaleOrderLine(models.Model):
 
         if self.order_id.pricelist_id and self.order_id.partner_id:
             vals['price_unit'] = self.env['account.tax']._fix_tax_included_price_company(self._get_display_price(product), product.taxes_id, self.tax_id, self.company_id)
+
         self.update(vals)
 
         title = False
@@ -1587,7 +1589,9 @@ class SaleOrderLine(models.Model):
                 date=self.order_id.date_order,
                 pricelist=self.order_id.pricelist_id.id,
                 uom=self.product_uom.id,
-                fiscal_position=self.env.context.get('fiscal_position')
+                fiscal_position=self.env.context.get('fiscal_position'),
+                uom_qty_change=self.env.context.get('uom_qty_change', False),  # flag vem do campo de quantidade da view
+                old_price=self.price_unit,  # valor original, em caso onde nao desejamos alterar o preco unitario
             )
             self.price_unit = self.env['account.tax']._fix_tax_included_price_company(self._get_display_price(product), product.taxes_id, self.tax_id, self.company_id)
 
