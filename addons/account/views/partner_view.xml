@@ -13,63 +13,64 @@
                                 options='{"terminology": "archive"}'/>
                             </button>
                         </div>
-                    <group>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                         <group>
-                            <field name="name"/>
-                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            <group>
+                                <field name="name"/>
+                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            </group>
+                            <group>
+                                <field name="auto_apply"/>
+                                <field name="states_count" invisible="1"/>
+                                <field name="vat_required" attrs="{'invisible': [('auto_apply', '!=', True)]}"/>
+                                <field name="country_group_id" attrs="{'invisible': [('auto_apply', '!=', True)]}"/>
+                                <field name="country_id" attrs="{'invisible': [('auto_apply', '!=', True)]}"/>
+                                <field name="state_ids" widget="many2many_tags" domain="[('country_id', '=', country_id)]"
+                                    attrs="{'invisible': ['|', '|', ('auto_apply', '!=', True), ('country_id', '=', False), ('states_count', '=', 0)]}"/>
+                                <label for="zip_from" string="Zip Range"
+                                    attrs="{'invisible': ['|', ('auto_apply', '!=', True), ('country_id', '=', False)]}"/>
+                                <div attrs="{'invisible': ['|', ('auto_apply', '!=', True), ('country_id', '=', False)]}">
+                                    <span> From </span>
+                                    <field name="zip_from" class="oe_inline"/>
+                                    <div class="oe_edit_only"/>
+                                    <span> To </span>
+                                    <field name="zip_to" class="oe_inline"/>
+                                </div>
+                            </group>
                         </group>
-                        <group>
-                            <field name="auto_apply"/>
-                            <field name="states_count" invisible="1"/>
-                            <field name="vat_required" attrs="{'invisible': [('auto_apply', '!=', True)]}"/>
-                            <field name="country_group_id" attrs="{'invisible': [('auto_apply', '!=', True)]}"/>
-                            <field name="country_id" attrs="{'invisible': [('auto_apply', '!=', True)]}"/>
-                            <field name="state_ids" widget="many2many_tags" domain="[('country_id', '=', country_id)]"
-                                attrs="{'invisible': ['|', '|', ('auto_apply', '!=', True), ('country_id', '=', False), ('states_count', '=', 0)]}"/>
-                            <label for="zip_from" string="Zip Range"
-                                attrs="{'invisible': ['|', ('auto_apply', '!=', True), ('country_id', '=', False)]}"/>
-                            <div attrs="{'invisible': ['|', ('auto_apply', '!=', True), ('country_id', '=', False)]}">
-                                <span> From </span>
-                                <field name="zip_from" class="oe_inline"/>
-                                <div class="oe_edit_only"/>
-                                <span> To </span>
-                                <field name="zip_to" class="oe_inline"/>
-                            </div>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page name="tax_mapping" string="Tax Mapping">
-                        <group>
-                            <field name="tax_ids" widget="one2many_list" nolabel="1">
-                                <tree name="tax_map_tree" string="Tax Mapping" editable="bottom">
-                                    <field name="tax_src_id" domain="[('type_tax_use', '!=', 'none')]"/>
-                                    <field name="tax_dest_id" domain="[('type_tax_use', '!=', 'none')]"/>
-                                </tree>
-                                <form name="tax_map_form" string="Tax Mapping">
-                                    <group>
+                        <notebook>
+                            <page name="tax_mapping" string="Tax Mapping">
+                            <group>
+                                <field name="tax_ids" widget="one2many_list" nolabel="1">
+                                    <tree name="tax_map_tree" string="Tax Mapping" editable="bottom">
                                         <field name="tax_src_id" domain="[('type_tax_use', '!=', 'none')]"/>
-                                        <field name="tax_dest_id" domain="[('type_tax_use', '!=','none')]"/>
-                                    </group>
-                                </form>
-                            </field>
-                        </group>
-                        </page>
-                        <page name="account_mapping" string="Account Mapping" groups="account.group_account_user">
-                        <group>
-                            <field name="account_ids" widget="one2many_list" nolabel="1">
-                                <tree string="Account Mapping" editable="bottom">
-                                    <field name="account_src_id"/>
-                                    <field name="account_dest_id"/>
-                                </tree>
-                                <form string="Account Mapping">
-                                    <field name="account_src_id"/>
-                                    <field name="account_dest_id"/>
-                                </form>
-                            </field>
-                        </group>
-                        </page>
-                    </notebook>
-                    <field name="note" placeholder="Legal Notes..."/>
+                                        <field name="tax_dest_id" domain="[('type_tax_use', '!=', 'none')]"/>
+                                    </tree>
+                                    <form name="tax_map_form" string="Tax Mapping">
+                                        <group>
+                                            <field name="tax_src_id" domain="[('type_tax_use', '!=', 'none')]"/>
+                                            <field name="tax_dest_id" domain="[('type_tax_use', '!=','none')]"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </group>
+                            </page>
+                            <page name="account_mapping" string="Account Mapping" groups="account.group_account_user">
+                            <group>
+                                <field name="account_ids" widget="one2many_list" nolabel="1">
+                                    <tree string="Account Mapping" editable="bottom">
+                                        <field name="account_src_id"/>
+                                        <field name="account_dest_id"/>
+                                    </tree>
+                                    <form string="Account Mapping">
+                                        <field name="account_src_id"/>
+                                        <field name="account_dest_id"/>
+                                    </form>
+                                </field>
+                            </group>
+                            </page>
+                        </notebook>
+                        <field name="note" placeholder="Legal Notes..."/>
                     </sheet>
                 </form>
             </field>
