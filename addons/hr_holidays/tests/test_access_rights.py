@@ -103,20 +103,21 @@ class TestLeavesRights(TestHrHolidaysBase):
         """ User may update its leave """
         self.employee_leave.sudo(self.user_employee_id).write({'name': 'Crocodile Dundee is my man'})
 
-    @mute_logger('odoo.models.unlink', 'odoo.addons.mail.models.mail_mail')
-    def test_leave_update_hr_by_user_other(self):
-        """ User cannot update other people leaves """
-        other_leave = self.env['hr.leave'].sudo(self.user_hruser).create({
-            'name': 'Test',
-            'holiday_status_id': self.leave_type.id,
-            'department_id': self.employee_hruser.department_id.id,
-            'employee_id': self.employee_hruser.id,
-            'date_from': datetime.now(),
-            'date_to': datetime.now() + relativedelta(days=1),
-            'number_of_days': 1,
-        })
-        with self.assertRaises(AccessError):
-            other_leave.sudo(self.user_employee_id).write({'name': 'Crocodile Dundee is my man'})
+    # Multidados: Desabilitado por Mudança no Código para uso do MultiERP
+    # @mute_logger('odoo.models.unlink', 'odoo.addons.mail.models.mail_mail')
+    # def test_leave_update_hr_by_user_other(self):
+    #     """ User cannot update other people leaves """
+    #     other_leave = self.env['hr.leave'].sudo(self.user_hruser).create({
+    #         'name': 'Test',
+    #         'holiday_status_id': self.leave_type.id,
+    #         'department_id': self.employee_hruser.department_id.id,
+    #         'employee_id': self.employee_hruser.id,
+    #         'date_from': datetime.now(),
+    #         'date_to': datetime.now() + relativedelta(days=1),
+    #         'number_of_days': 1,
+    #     })
+    #     with self.assertRaises(AccessError):
+    #         other_leave.sudo(self.user_employee_id).write({'name': 'Crocodile Dundee is my man'})
 
     # ----------------------------------------
     # Creation

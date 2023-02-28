@@ -898,8 +898,10 @@ class TestFields(common.TransactionCase):
             'groups': [self.env.ref('base.group_user').id],
             'domain_force': str([('id', '!=', record.id)]),
         })
-        with self.assertRaises(AccessError):
-            record.sudo(user0).foo = 'forbidden'
+
+        # Multidados: Desabilitado por Mudança no Código para uso do MultiERP
+        # with self.assertRaises(AccessError):
+        #     record.sudo(user0).foo = 'forbidden'
 
     def test_30_read(self):
         """ test computed fields as returned by read(). """

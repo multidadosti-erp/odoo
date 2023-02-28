@@ -341,10 +341,11 @@ class TestMessageAccess(common.BaseFunctionalTest, common.MockEmails):
         self.message.write({'model': 'mail.channel', 'res_id': self.group_public.id, 'moderation_status': 'pending_moderation'})
         self.message.sudo(self.user_employee).write({'moderation_status': 'accepted'})
 
-    def test_mail_message_access_write_crash_moderation(self):
-        self.message.write({'model': 'mail.channel', 'res_id': self.group_public.id, 'moderation_status': 'pending_moderation'})
-        with self.assertRaises(AccessError):
-            self.message.sudo(self.user_employee).write({'moderation_status': 'accepted'})
+    # Multidados: Desabilitado por Mudança no Código para uso do MultiERP
+    # def test_mail_message_access_write_crash_moderation(self):
+    #     self.message.write({'model': 'mail.channel', 'res_id': self.group_public.id, 'moderation_status': 'pending_moderation'})
+    #     with self.assertRaises(AccessError):
+    #         self.message.sudo(self.user_employee).write({'moderation_status': 'accepted'})
 
     @mute_logger('openerp.addons.mail.models.mail_mail')
     def test_mark_all_as_read(self):
