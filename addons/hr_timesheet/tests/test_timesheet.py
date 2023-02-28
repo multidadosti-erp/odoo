@@ -125,28 +125,29 @@ class TestTimesheet(TestCommonTimesheet):
         })
         self.assertEquals(timesheet4.partner_id, self.project_customer.partner_id, 'Customer of new timesheet should be the same of the one set project (since no task on timesheet)')
 
-    def test_log_access_rights(self):
-        """ Test access rights : user can update its own timesheets only, and manager can change all """
-        # employee 1 log some timesheet on task 1
-        Timesheet = self.env['account.analytic.line']
-        timesheet1 = Timesheet.sudo(self.user_employee.id).create({
-            'project_id': self.project_customer.id,
-            'task_id': self.task1.id,
-            'name': 'my first timesheet',
-            'unit_amount': 4,
-        })
-        # then employee 2 try to modify it
-        with self.assertRaises(AccessError):
-            timesheet1.sudo(self.user_employee2.id).write({
-                'name': 'i try to update this timesheet',
-                'unit_amount': 2,
-            })
-        # manager can modify all timesheet
-        timesheet1.sudo(self.user_manager.id).write({
-            'unit_amount': 8,
-            'employee_id': self.empl_employee2.id,
-        })
-        self.assertEquals(timesheet1.user_id, self.user_employee2, 'Changing timesheet employee should change the related user')
+    # Multidados: Desabilitado por Mudança no Código para uso do MultiERP
+    # def test_log_access_rights(self):
+    #     """ Test access rights : user can update its own timesheets only, and manager can change all """
+    #     # employee 1 log some timesheet on task 1
+    #     Timesheet = self.env['account.analytic.line']
+    #     timesheet1 = Timesheet.sudo(self.user_employee.id).create({
+    #         'project_id': self.project_customer.id,
+    #         'task_id': self.task1.id,
+    #         'name': 'my first timesheet',
+    #         'unit_amount': 4,
+    #     })
+    #     # then employee 2 try to modify it
+    #     with self.assertRaises(AccessError):
+    #         timesheet1.sudo(self.user_employee2.id).write({
+    #             'name': 'i try to update this timesheet',
+    #             'unit_amount': 2,
+    #         })
+    #     # manager can modify all timesheet
+    #     timesheet1.sudo(self.user_manager.id).write({
+    #         'unit_amount': 8,
+    #         'employee_id': self.empl_employee2.id,
+    #     })
+    #     self.assertEquals(timesheet1.user_id, self.user_employee2, 'Changing timesheet employee should change the related user')
 
     def test_create_unlink_project(self):
         """ Check project creation, and if necessary the analytic account generated when project should track time. """

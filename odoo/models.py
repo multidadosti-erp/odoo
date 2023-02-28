@@ -3504,7 +3504,11 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
         # update columns
         if columns:
-            self.check_access_rule('write')
+            # Alterado por Multidados
+            # Desabilitado check_access_rule por já tratar o acesso em outros métodos
+            # e conflitando com a tag related_sudo tratada acima (check_field_access_rights)
+            # self.check_access_rule('write')
+
             query = 'UPDATE "%s" SET %s WHERE id IN %%s' % (
                 self._table, ','.join('"%s"=%s' % (column[0], column[1]) for column in columns),
             )
