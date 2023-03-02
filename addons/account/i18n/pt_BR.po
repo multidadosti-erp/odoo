@@ -61,7 +61,7 @@ msgstr "%s (Cópia)"
 #: code:addons/account/models/account.py:634
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (cópia)"
 
 #. module: account
 #: code:addons/account/models/account.py:724
@@ -97,11 +97,6 @@ msgstr "15 dias"
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_2months
 msgid "2x"
-msgstr ""
-
-#. module: account
-#: model:account.payment.term,name:account.account_payment_term_net
-msgid "30 dias"
 msgstr ""
 
 #. module: account
@@ -289,12 +284,12 @@ msgstr "<span class=\"badge badge-pill badge-warning\"><i class=\"fa fa-fw fa-re
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
-msgstr ""
+msgstr "<span class=\"fa fa-lg fa-building-o\" title=\"Os valores definidos aqui são específicos da empresa.\" aria-label=\"Os valores definidos aqui são específicos da empresa.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\"/>"
-msgstr ""
+msgstr "<span class=\"fa fa-lg fa-building-o\" title=\"Os valores definidos aqui são específicos da empresa.\"/>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_form
@@ -2736,7 +2731,7 @@ msgstr "Clique para Renomear"
 #: code:addons/account/static/src/xml/account_reconciliation.xml:346
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #. module: account
 #. openerp-web
@@ -4032,7 +4027,7 @@ msgstr "Exibir em Faturas"
 #: code:addons/account/models/digest.py:16
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
-msgstr ""
+msgstr "Não tem acesso, pule esses dados para o resumo do e-mail do usuário"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_send__auto_delete_message
@@ -4136,7 +4131,7 @@ msgstr "Devido a"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move__dummy_account_id
 msgid "Dummy Account"
-msgstr ""
+msgstr "Conta Fictícia"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
@@ -4591,7 +4586,7 @@ msgstr "Força todos os movimentos dessa conta a ter esta moeda secundária."
 #: code:addons/account/report/account_journal.py:101
 #, python-format
 msgid "Form content is missing, this report cannot be printed."
-msgstr ""
+msgstr "Falta o conteúdo do formulário, este relatório não pode ser impresso."
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__email_from
@@ -5500,7 +5495,7 @@ msgstr "Faturas sem Pagamento"
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
 msgid "Invoicing"
-msgstr "Faturamento"
+msgstr "Financeiro"
 
 #. module: account
 #: selection:account.reconcile.model,match_amount:0
@@ -6841,12 +6836,6 @@ msgid "OFX Import"
 msgstr "Importar OFX"
 
 #. module: account
-#: model:ir.model.fields,field_description:account.field_account_fiscal_position__note
-#: model:ir.model.fields,field_description:account.field_account_fiscal_position_template__note
-msgid "Observações"
-msgstr ""
-
-#. module: account
 #: selection:res.company,fiscalyear_last_month:0
 msgid "October"
 msgstr "Outubro"
@@ -7575,13 +7564,13 @@ msgstr "Defina uma sequência para os notas de devolução"
 #: code:addons/account/models/account_move.py:362
 #, python-format
 msgid "Please define a sequence on the journal."
-msgstr ""
+msgstr "Por favor, defina uma sequência no diário."
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:1278
 #, python-format
 msgid "Please define sequence on the journal related to this invoice."
-msgstr ""
+msgstr "Por favor, defina a sequência no diário relacionado a esta fatura."
 
 #. module: account
 #: code:addons/account/models/company.py:357
@@ -7692,7 +7681,7 @@ msgstr "Predefinido para criar entradas de diário durante uma correspondência 
 #: code:addons/account/static/src/xml/account_reconciliation.xml:174
 #, python-format
 msgid "Presets config"
-msgstr ""
+msgstr "Configuração de predefinições"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_form
@@ -8822,16 +8811,11 @@ msgid "Show line subtotals without taxes (B2B)"
 msgstr "Mostrar subtotais de linha sem impostos (B2B)"
 
 #. module: account
-#: selection:account.journal,type:0
-msgid "Simples Remessa"
-msgstr ""
-
-#. module: account
 #. openerp-web
 #: code:addons/account/static/src/xml/account_reconciliation.xml:113
 #, python-format
 msgid "Skip"
-msgstr ""
+msgstr "Pular"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_send__author_avatar
@@ -9573,7 +9557,7 @@ msgstr "A conta %s (%s) esta depreciada."
 #: code:addons/account/models/account_invoice.py:572
 #, python-format
 msgid "The account selected for payment does not belong to the same company as this invoice."
-msgstr ""
+msgstr "A conta selecionada para pagamento não pertence à mesma empresa desta fatura."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_setup_bank_manual_config__journal_id
@@ -9744,7 +9728,9 @@ msgstr "A(s) seguinte(s) fatura(s) não serão enviadas por email, porque os cli
 msgid "The holder of the bank account of a \"Bank\" type journal must be the company (%s).\n"
 "However, the holder of \"%s\" is \"%s\".\n"
 "Please select another bank account or change the holder of \"%s\"."
-msgstr ""
+msgstr "O titular da conta bancária de um diário do tipo \"Banco\" deve ser a empresa (%s).\n"
+"No entanto, o titular da \"%s\" é \"%s\".\n"
+"Selecione outra conta bancária ou altere o titular da \"%s\"."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_line__account_id
@@ -10437,7 +10423,7 @@ msgstr "Unidade de Medida"
 #: code:addons/account/report/account_aged_partner_balance.py:228
 #, python-format
 msgid "Unknown Partner"
-msgstr ""
+msgstr "Parceiro Desconhecido"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.act_account_journal_2_account_invoice_opened
@@ -10711,19 +10697,9 @@ msgid "Validated"
 msgstr "Validado"
 
 #. module: account
-#: model:ir.model.fields,field_description:account.field_account_invoice_line__price_total
-msgid "Valor Líquido"
-msgstr ""
-
-#. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term_line__value_amount
 msgid "Value"
 msgstr "Valor"
-
-#. module: account
-#: selection:account.journal,type:0
-msgid "Venda (sem financeiro)"
-msgstr ""
 
 #. module: account
 #: selection:account.abstract.payment,partner_type:0
@@ -10848,7 +10824,7 @@ msgstr "Aviso"
 #: code:addons/account/models/account_invoice.py:864
 #, python-format
 msgid "Warning for %s"
-msgstr ""
+msgstr ""Aviso para %s"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.partner_view_buttons
@@ -10860,12 +10836,12 @@ msgstr "Aviso na Fatura"
 #: code:addons/account/models/account_invoice.py:1923
 #, python-format
 msgid "Warning!"
-msgstr ""
+msgstr "Aviso!"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Warnings"
-msgstr "Aviso"
+msgstr "Avisos"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_contact_config_settings__group_warning_account
@@ -11132,7 +11108,8 @@ msgstr "Você não pode modificar uma entrada de diário vinculada a um pagament
 #, python-format
 msgid "You cannot modify a posted entry of this journal.\n"
 "First you should set the journal to allow cancelling entries."
-msgstr ""
+msgstr "Você não pode modificar uma entrada lançada deste diário.\n"
+"Primeiro você deve configurar o diário para permitir o cancelamento de lançamentos."
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:1002
@@ -11430,7 +11407,7 @@ msgstr "transações em"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__amount_by_group
 msgid "type: [(name, amount, base, formated amount, formated base)]"
-msgstr ""
+msgstr "tipo: [(nome, valor, base, valor formatado, base formatada)]"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_bank_statement_form
