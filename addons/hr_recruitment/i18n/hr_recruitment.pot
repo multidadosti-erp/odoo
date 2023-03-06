@@ -1816,7 +1816,7 @@ msgstr ""
 
 #. module: hr_recruitment
 #: model:ir.model.fields,help:hr_recruitment.field_hr_recruitment_stage__fold
-msgid "This stage is folded in the kanban view when there are no records in that stage to display."
+msgid "This stage is folded in the kanban view."
 msgstr ""
 
 #. module: hr_recruitment
