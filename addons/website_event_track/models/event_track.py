@@ -40,7 +40,7 @@ class TrackStage(models.Model):
         help="If set an email will be sent to the customer when the track reaches this step.")
     fold = fields.Boolean(
         string='Folded in Kanban',
-        help='This stage is folded in the kanban view when there are no records in that stage to display.')
+        help='This stage is folded in the kanban view.')
     is_done = fields.Boolean(string='Accepted Stage')
     is_cancel = fields.Boolean(string='Canceled Stage')
 
