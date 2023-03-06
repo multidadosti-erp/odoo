@@ -60,7 +60,7 @@ class RecruitmentStage(models.Model):
         help="If set, a message is posted on the applicant using the template when the applicant is set to the stage.")
     fold = fields.Boolean(
         "Folded in Recruitment Pipe",
-        help="This stage is folded in the kanban view when there are no records in that stage to display.")
+        help="This stage is folded in the kanban view.")
     legend_blocked = fields.Char(
         'Red Kanban Label', default=lambda self: _('Blocked'), translate=True, required=True)
     legend_done = fields.Char(
@@ -167,7 +167,7 @@ class Applicant(models.Model):
     legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked', readonly=False)
     legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid', readonly=False)
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing', readonly=False)
-    
+
 
     @api.depends('date_open', 'date_closed')
     @api.one
