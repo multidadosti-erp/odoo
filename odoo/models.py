@@ -252,6 +252,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
     _parent_store = False       # set to True to compute parent_path field
     _date_name = 'date'         # field to use for default calendar view
     _fold_name = 'fold'         # field to determine folded groups in kanban views
+    _auto_fold = 'fold_is_empty' # Multidados: field to determine folded groups is empty in kanban views
 
     _needaction = False         # whether the model supports "need actions" (see mail)
     _translate = True           # False disables translations export for this model
@@ -1804,8 +1805,16 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         if field.relational and groups._fold_name in groups._fields:
             fold = {group.id: group[groups._fold_name]
                     for group in groups.browse([key for key in result if key])}
+
+            if groups._auto_fold in groups._fields:
+                auto_fold = {group.id: group[groups._auto_fold]
+                             for group in groups.browse([key for key in result if key])}
+            else:
+                auto_fold = {}
+
             for key, line in result.items():
                 line['__fold'] = fold.get(key, False)
+                line['__auto_fold'] = auto_fold.get(key, False)
 
         return list(result.values())
 

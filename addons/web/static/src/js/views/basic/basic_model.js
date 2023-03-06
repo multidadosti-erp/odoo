@@ -4239,6 +4239,13 @@ var BasicModel = AbstractModel.extend({
                     } else {
                         newGroup.isOpen = '__fold' in group ? !group.__fold : true;
                     }
+
+                    // Multidados
+                    // Dobra Estágio sem Registro, se configurado o estágio para isso
+                    if ('__auto_fold' in group && group.__auto_fold && 'stage_id_count' in group) {
+                        newGroup.isOpen = group.stage_id_count > 0;
+                    }
+
                     list.data.push(newGroup.id);
                     list.count += newGroup.count;
                     if (newGroup.isOpen && newGroup.count > 0) {
