@@ -2683,7 +2683,7 @@ msgstr "Este relatório permite analisar o desempenho de seus projetos e usuári
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_task_type__fold
-msgid "This stage is folded in the kanban view when there are no records in that stage to display."
+msgid "This stage is folded in the kanban view."
 msgstr "Este estágio fica dobrado na visão kanban quando não tem nenhum registro para mostrar neste estágio."
 
 #. module: project
