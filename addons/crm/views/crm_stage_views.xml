@@ -23,6 +23,8 @@
                 <field name="name"/>
                 <field name="probability"/>
                 <field name="team_id"/>
+                <field name="fold_is_empty"/>
+                <field name="fold"/>
             </tree>
         </field>
     </record>
@@ -38,6 +40,7 @@
                     <group>
                         <field name="name"/>
                         <field name="team_id" options='{"no_open": True, "no_create": True}' attrs="{'invisible': [('team_count', '&lt;=', 1)]}"/>
+                        <field name="fold_is_empty"/>
                         <field name="fold"/>
                     </group>
                     <group>
