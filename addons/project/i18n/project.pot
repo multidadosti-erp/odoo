@@ -2673,7 +2673,7 @@ msgstr ""
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_task_type__fold
-msgid "This stage is folded in the kanban view when there are no records in that stage to display."
+msgid "This stage is folded in the kanban view."
 msgstr ""
 
 #. module: project

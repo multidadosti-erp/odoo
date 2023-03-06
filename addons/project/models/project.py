@@ -40,7 +40,7 @@ class ProjectTaskType(models.Model):
         domain=[('model', '=', 'project.task')],
         help="If set an email will be sent to the customer when the task or issue reaches this step.")
     fold = fields.Boolean(string='Folded in Kanban',
-        help='This stage is folded in the kanban view when there are no records in that stage to display.')
+        help='This stage is folded in the kanban view.')
     rating_template_id = fields.Many2one(
         'mail.template',
         string='Rating Email Template',
