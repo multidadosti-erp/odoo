@@ -334,7 +334,7 @@
 
             > .btn {
                 flex: 0 0 auto;
-                padding: 0 10px;
+                padding: 0 2px;
             }
         }
 
@@ -362,7 +362,7 @@
     // Separators
     .o_horizontal_separator {
         font-size: $h2-font-size;
-        margin: $o-form-spacing-unit 0;
+        margin: $o-form-spacing-unit - 3 0;
         &:empty {
             height: $o-form-spacing-unit * 2;
         }
@@ -374,7 +374,7 @@
         margin-top: $o-form-spacing-unit * 2;
 
         .tab-content > .tab-pane {
-            padding: $o-horizontal-padding 0;
+            padding: $o-horizontal-padding - 8 0;
         }
     }
 
