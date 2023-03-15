@@ -2385,6 +2385,9 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
             self._cr.execute(query)
             for row in self._cr.fetchall():
+                # Adicionando ID por Context
+                self.env.context = dict(self.env.context, id=row[0])
+
                 value = field.default(self)
                 value = field.convert_to_cache(value, self, validate=False)
                 value = field.convert_to_record(value, self)
