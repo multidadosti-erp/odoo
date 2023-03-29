@@ -1069,7 +1069,7 @@ msgstr "Parceiro"
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet_register_payment_wizard__amount
 msgid "Payment Amount"
-msgstr "Quantidade de Pagamento"
+msgstr "Valor de Pagamento"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet_register_payment_wizard__payment_date
