@@ -7272,26 +7272,26 @@ msgstr "Contas a Pagar"
 #: model:ir.model.fields,field_description:account.field_res_partner__debit_limit
 #: model:ir.model.fields,field_description:account.field_res_users__debit_limit
 msgid "Payable Limit"
-msgstr "Limite pagável"
+msgstr "Limite Pagável"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.product_template_form_view
 msgid "Payables"
-msgstr "Contas de pagamento"
+msgstr "Contas de Pagamento"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__amount
 #: model:ir.model.fields,field_description:account.field_account_payment__amount
 #: model:ir.model.fields,field_description:account.field_account_register_payments__amount
 msgid "Payment Amount"
-msgstr "Quantidade de Pagamento"
+msgstr "Valor de Pagamento"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__payment_date
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_date
 #: model:ir.model.fields,field_description:account.field_account_register_payments__payment_date
 msgid "Payment Date"
-msgstr "Data de pagamento"
+msgstr "Data de Pagamento"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__payment_difference
