@@ -689,12 +689,7 @@ const ListActivity = KanbanActivity.extend({
         this.$('.o_activity_btn > span').prop('special_click', true);
         if (this.value.count) {
             let text;
-            if (this.recordData.activity_exception_decoration) {
-                text = _t('Warning');
-            } else {
-                text = this.recordData.activity_summary ||
-                          this.recordData.activity_type_id.data.display_name;
-            }
+            text = this.recordData.activity_summary || this.recordData.activity_type_id.data.display_name;
             this.$('.o_activity_summary').text(text);
         }
         if (this.recordData.activity_type_icon) {
