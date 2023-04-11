@@ -10,6 +10,12 @@
     </div>
 </t>
 
+<t t-name="mail.ListActivity" t-extend="mail.KanbanActivity">
+    <t t-jquery=".o_mail_activity" t-operation="append">
+        <span class="o_activity_summary"/>
+    </t>
+</t>
+
 <t t-name="mail.KanbanActivityLoading">
     <div class="dropdown-item text-center o_no_activity">
         <span class="fa fa-spinner fa-spin fa-2x" role="img" aria-label="Loading..." title="Loading..."/>
