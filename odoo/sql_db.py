@@ -695,7 +695,7 @@ def connection_info_for(db_or_uri):
 
 _Pool = None
 
-def db_connect(to, allow_uri=False):
+def db_connect(to, allow_uri=False, db_port=False):
     global _Pool
     if _Pool is None:
         _Pool = ConnectionPool(int(tools.config['db_maxconn']))
@@ -703,6 +703,12 @@ def db_connect(to, allow_uri=False):
     db, info = connection_info_for(to)
     if not allow_uri and db != to:
         raise ValueError('URI connections not allowed')
+
+    # Multidados: Adicionado db_port para forçar a conexão a porta principal
+    # do postgre em alguns momentos, por exemplo: criação do banco de dados
+    if db_port:
+        info['port'] = db_port
+
     return Connection(_Pool, db, info)
 
 def close_db(db_name):
