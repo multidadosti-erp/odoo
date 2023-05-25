@@ -281,6 +281,16 @@ var py = {};
         var name_pattern = new RegExp('^' + Name + '$');
         var strip = new RegExp('^' + Whitespace);
         return function tokenize(s) {
+            // Multidados: Trata Filtro diferente de string
+            // para evitar erros.
+            if (typeof(s) != 'string') {
+                if (Array.isArray(s) && s[0].length == 3) {
+                    s = '[["' + s[0][0] + '", "' + s[0][1] + '", "' + s[0][2] + '"]]'
+                } else {
+                    s = s.toString()
+                }
+            }
+
             var max=s.length, tokens = [], start, end;
             // /g flag makes repeated exec() have memory
             var pseudoprog = new RegExp(PseudoToken, 'g');
@@ -467,7 +477,7 @@ var py = {};
 
             if (n in out) {
                 throw new Error(
-                    "TypeError: function got multiple values " + 
+                    "TypeError: function got multiple values " +
                     "for keyword argument '" + kwarg + "'");
             }
             if (/^\*\*\w/.test(n)) {
@@ -510,7 +520,7 @@ var py = {};
             // Set default value
             out[n] = spec[1];
         }
-        
+
         return out;
     };
 
