@@ -376,7 +376,12 @@
         /-->
 
         <!-- Action confirm_payments for multi -->
-        <record id="action_account_confirm_payments" model="ir.actions.server">
+
+        <!-- MultidadosTI:
+            Comentado por não funcionar no MultiERP devidas as mudanças que fizemos ref
+            ao funcinamento do Financeiro.
+        -->
+        <!-- <record id="action_account_confirm_payments" model="ir.actions.server">
             <field name="name">Confirm Payments</field>
             <field name="type">ir.actions.server</field>
             <field name="state">code</field>
@@ -385,7 +390,6 @@
             <field name="code">
 records.post()
             </field>
-        </record>
-
+        </record> -->
     </data>
 </odoo>

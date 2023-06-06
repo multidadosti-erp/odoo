@@ -2484,7 +2484,7 @@ msgstr "Operações de Caixa"
 #. module: account
 #: model:ir.actions.act_window,name:account.action_view_bank_statement_tree
 msgid "Cash Registers"
-msgstr "Caixa Registradoras"
+msgstr "Extratos: Banco e Dinheiro"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_contact_config_settings__group_cash_rounding
@@ -5229,13 +5229,13 @@ msgstr "Anotações Internas"
 #: selection:account.payment,payment_type:0
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Internal Transfer"
-msgstr "Transferência interna"
+msgstr "Transferência"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_account_payments_transfer
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Internal Transfers"
-msgstr "Transferências Internas"
+msgstr "Transferências"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__internal_type
@@ -7402,7 +7402,7 @@ msgstr "Linha da condição de pagamento"
 #: model:ir.model.fields,field_description:account.field_account_payment_method__payment_type
 #: model:ir.model.fields,field_description:account.field_account_register_payments__payment_type
 msgid "Payment Type"
-msgstr "Tipo de pagamento"
+msgstr "Tipo Movimentação"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_form
@@ -7897,7 +7897,7 @@ msgstr "Recebíveis"
 #: selection:account.payment,payment_type:0
 #: selection:account.register.payments,payment_type:0
 msgid "Receive Money"
-msgstr "Receber Dinheiro"
+msgstr "Entrada"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__partner_bank_account_id
@@ -8617,7 +8617,7 @@ msgstr "Enviar Fatura"
 #: selection:account.payment,payment_type:0
 #: selection:account.register.payments,payment_type:0
 msgid "Send Money"
-msgstr "Enviar Dinheiro"
+msgstr "Saída"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.account_send_payment_receipt_by_email_action
