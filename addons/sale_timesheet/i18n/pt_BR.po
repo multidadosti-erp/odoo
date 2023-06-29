@@ -613,7 +613,7 @@ msgstr "Serviços Marco"
 #. module: sale_timesheet
 #: selection:product.template,service_policy:0
 msgid "Milestones (manually set quantities on order)"
-msgstr "Marcos (definir quantidades manualmente no pedido)"
+msgstr "Definir quantidades a faturar manualmente no pedido"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.project_profitability_report_view_search
