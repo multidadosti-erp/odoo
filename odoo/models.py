@@ -1138,9 +1138,10 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     # atualização do odoo de campo e XML, por exemplo:
                     # - Na exclusão de campo e XML
                     # - Na mudança de campos e XML de módulos
-
-                    # raise ValidationError("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
-                    _logger.error("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
+                    if 'ir.ui.view' in str(e) or 'xml_id' in str(e):
+                        _logger.error("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
+                    else:
+                        raise ValidationError("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
 
     @api.model
     def default_get(self, fields_list):
