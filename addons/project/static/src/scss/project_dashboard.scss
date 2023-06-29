@@ -2,6 +2,7 @@
     .o_project_kanban_boxes {
         display: flex;
         flex-flow: row nowrap;
+        background-color: #f8f5f5;
 
         .o_project_kanban_box {
             position: relative;
