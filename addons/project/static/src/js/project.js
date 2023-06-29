@@ -18,11 +18,12 @@ KanbanRecord.include({
      * @private
      */
     _openRecord: function () {
-        if (this.modelName === 'project.project' && this.$(".o_project_kanban_boxes a").length) {
-            this.$('.o_project_kanban_boxes a').first().click();
-        } else {
+        // Multidados: Comentado por Clicar no kanban do Projeto ele direciona para as Tarefas
+        // if (this.modelName === 'project.project' && this.$(".o_project_kanban_boxes a").length) {
+        //     this.$('.o_project_kanban_boxes a').first().click();
+        // } else {
             this._super.apply(this, arguments);
-        }
+        // }
     },
 
     //--------------------------------------------------------------------------

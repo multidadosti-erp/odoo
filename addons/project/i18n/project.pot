@@ -386,6 +386,11 @@ msgid "All"
 msgstr ""
 
 #. module: project
+#: model:ir.ui.menu,name:project.menu_all_projects
+msgid "All Projects"
+msgstr ""
+
+#. module: project
 #: model:ir.ui.menu,name:project.menu_project_management
 msgid "All Tasks"
 msgstr ""
