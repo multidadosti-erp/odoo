@@ -1134,7 +1134,13 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 except ValidationError as e:
                     raise
                 except Exception as e:
-                    raise ValidationError("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
+                    # Multidados: Comentado o erro para evitar erros de
+                    # atualização do odoo de campo e XML, por exemplo:
+                    # - Na exclusão de campo e XML
+                    # - Na mudança de campos e XML de módulos
+
+                    # raise ValidationError("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
+                    _logger.error("%s\n\n%s" % (_("Error while validating constraint"), tools.ustr(e)))
 
     @api.model
     def default_get(self, fields_list):
