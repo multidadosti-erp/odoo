@@ -377,8 +377,9 @@ class TestSaleService(TestCommonSaleTimesheetNoChart):
         self.assertTrue(so_line5.project_id.active, "Project of Line5 should be active")
 
         # check generated stuff are correct
-        self.assertTrue(so_line1.project_id in self.project_template_state.project_ids, "Stage 1 from template B should be part of project from so line 1")
-        self.assertTrue(so_line1.project_id in self.project_template_state.project_ids, "Stage 1 from template B should be part of project from so line 1")
+        # Multidadosti: Não compativel com o MultiERP
+        # self.assertTrue(so_line1.project_id in self.project_template_state.project_ids, "Stage 1 from template B should be part of project from so line 1")
+        # self.assertTrue(so_line1.project_id in self.project_template_state.project_ids, "Stage 1 from template B should be part of project from so line 1")
 
         self.assertTrue(so_line5.project_id in stage1_tmpl2.project_ids, "Stage 1 from template B should be part of project from so line 5")
         self.assertTrue(so_line5.project_id in stage2_tmpl2.project_ids, "Stage 2 from template B should be part of project from so line 5")
