@@ -568,15 +568,22 @@ class account_payment(models.Model):
     @api.model
     def default_get(self, fields):
         rec = super(account_payment, self).default_get(fields)
-        invoice_defaults = self.resolve_2many_commands('invoice_ids', rec.get('invoice_ids'))
-        if invoice_defaults and len(invoice_defaults) == 1:
-            invoice = invoice_defaults[0]
-            rec['communication'] = invoice['reference'] or invoice['name'] or invoice['number']
-            rec['currency_id'] = invoice['currency_id'][0]
-            rec['payment_type'] = invoice['type'] in ('out_invoice', 'in_refund') and 'inbound' or 'outbound'
-            rec['partner_type'] = MAP_INVOICE_TYPE_PARTNER_TYPE[invoice['type']]
-            rec['partner_id'] = invoice['partner_id'][0]
-            rec['amount'] = invoice['residual']
+
+        invoice_ids = rec.get('invoice_ids')
+
+        if invoice_ids and isinstance(invoice_ids[0], tuple) and len(invoice_ids[0][2]) == 1:
+            invoice = self.env['account.invoice'].browse(invoice_ids[0][2])
+        else:
+            invoice = False
+
+        if invoice:
+            rec['communication'] = invoice.reference or invoice.name or invoice.number
+            rec['currency_id'] = invoice.currency_id.id
+            rec['payment_type'] = invoice.type in ('out_invoice', 'in_refund') and 'inbound' or 'outbound'  # noqa
+            rec['partner_type'] = MAP_INVOICE_TYPE_PARTNER_TYPE[invoice.type]
+            rec['partner_id'] = invoice.partner_id.id
+            rec['amount'] = invoice.residual
+
         return rec
 
     @api.model
