@@ -150,35 +150,66 @@ class account_journal(models.Model):
         title = ''
         number_draft = number_waiting = number_late = 0
         sum_draft = sum_waiting = sum_late = 0.0
+
         if self.type in ['bank', 'cash']:
-            last_bank_stmt = self.env['account.bank.statement'].search([('journal_id', 'in', self.ids)], order="date desc, id desc", limit=1)
-            last_balance = last_bank_stmt and last_bank_stmt[0].balance_end or 0
-            #Get the number of items to reconcile for that bank journal
-            self.env.cr.execute("""SELECT COUNT(DISTINCT(line.id))
-                            FROM account_bank_statement_line AS line
-                            LEFT JOIN account_bank_statement AS st
-                            ON line.statement_id = st.id
-                            WHERE st.journal_id IN %s AND st.state = 'open' AND line.amount != 0.0 AND line.account_id IS NULL
-                            AND not exists (select 1 from account_move_line aml where aml.statement_line_id = line.id)
-                        """, (tuple(self.ids),))
-            number_to_reconcile = self.env.cr.fetchone()[0]
-            # optimization to read sum of balance from account_move_line
-            account_ids = tuple(ac for ac in [self.default_debit_account_id.id, self.default_credit_account_id.id] if ac)
+            last_bank_stmt = self.env['account.bank.statement'].search([
+                ('journal_id', 'in', self.ids)
+            ], order="date desc, id desc", limit=1)
+
+            # saldo do último Extrato
+            last_balance = last_bank_stmt and last_bank_stmt[0].balance_end or 0 # noqa
+
+            # Obtenha o número de itens a reconciliar para esse diário bancário
+            # Qtde de Lançamentos a Conciliar
+            self.env.cr.execute("""
+                SELECT COUNT(DISTINCT(line.id))
+                FROM account_bank_statement_line AS line
+                  JOIN account_bank_statement AS st ON line.statement_id = st.id
+                WHERE st.journal_id IN %s
+                  AND st.state = 'open'
+                  AND line.amount != 0.0
+                  AND line.account_id IS NULL
+                  AND not exists (select 1 from account_move_line aml where aml.statement_line_id = line.id)
+            """, (tuple(self.ids),))
+            res_query = self.env.cr.fetchone()
+            if res_query is not None and res_query[0] is not None:
+                number_to_reconcile = res_query[0]
+
+            # Obtenha Saldo da Conta: journal_id baseado
+            #   account_bank_statement_line
+            self.env.cr.execute("""
+                SELECT sum(line.amount)
+                FROM account_bank_statement_line AS line
+                  JOIN account_bank_statement AS st ON line.statement_id = st.id
+                WHERE st.journal_id = %s
+            """ % (self.id,))
+            res_query = self.env.cr.fetchone()
+            if res_query is not None and res_query[0] is not None:
+                sum_late = res_query[0]
+
+            # Calculando o Saldo Financeiro: Baseado no account_move
+            account_ids = tuple(ac for ac in [self.default_debit_account_id.id, self.default_credit_account_id.id] if ac) # noqa
             if account_ids:
-                amount_field = 'aml.balance' if (not self.currency_id or self.currency_id == self.company_id.currency_id) else 'aml.amount_currency'
-                query = """SELECT sum(%s) FROM account_move_line aml
-                           LEFT JOIN account_move move ON aml.move_id = move.id
-                           LEFT JOIN account_journal journal ON move.journal_id = journal.id
-                           WHERE aml.account_id in %%s
-                           AND move.journal_id = %%s
-                           AND move.date <= %%s AND move.state = 'posted';""" % (amount_field,)
-                self.env.cr.execute(query, (account_ids, self.id, fields.Date.context_today(self),))
+                amount_field = 'aml.balance' if (not self.currency_id or self.currency_id == self.company_id.currency_id) else 'aml.amount_currency' # noqa
+                query = """
+                    SELECT sum(%s)
+                    FROM account_move_line aml
+                      JOIN account_move move ON aml.move_id = move.id
+                      JOIN account_journal journal ON move.journal_id = journal.id
+                    WHERE aml.account_id in %%s
+                      AND move.journal_id = %%s
+                      AND move.date <= %%s
+                      AND move.state = 'posted'
+                """ % (amount_field,)
+                self.env.cr.execute(query, (account_ids, self.id, fields.Date.context_today(self),)) # noqa
                 query_results = self.env.cr.dictfetchall()
-                if query_results and query_results[0].get('sum') != None:
+                if query_results and query_results[0].get('sum') is not None:
                     account_sum = query_results[0].get('sum')
-        #TODO need to check if all invoices are in the same currency than the journal!!!!
+
+        # TODO need to check if all invoices are in the same currency than
+        # the journal!!!!
         elif self.type in ['sale', 'purchase']:
-            title = _('Bills to pay') if self.type == 'purchase' else _('Invoices owed to you')
+            title = _('Bills to pay') if self.type == 'purchase' else _('Invoices owed to you') # noqa
 
             (query, query_args) = self._get_open_bills_to_pay_query()
             self.env.cr.execute(query, query_args)
@@ -189,15 +220,26 @@ class account_journal(models.Model):
             query_results_drafts = self.env.cr.dictfetchall()
 
             today = fields.Date.today()
-            query = """SELECT residual_signed as amount_total, currency_id AS currency, type, date_invoice, company_id FROM account_invoice WHERE journal_id = %s AND date <= %s AND state = 'open';"""
+            query = """
+                SELECT residual_signed as amount_total,
+                       currency_id AS currency,
+                       type,
+                       date_invoice,
+                       company_id
+                FROM account_invoice
+                WHERE journal_id = %s
+                  AND date <= %s
+                  AND state = 'open'
+            """
             self.env.cr.execute(query, (self.id, today))
             late_query_results = self.env.cr.dictfetchall()
             curr_cache = {}
-            (number_waiting, sum_waiting) = self._count_results_and_sum_amounts(query_results_to_pay, currency, curr_cache=curr_cache)
-            (number_draft, sum_draft) = self._count_results_and_sum_amounts(query_results_drafts, currency, curr_cache=curr_cache)
-            (number_late, sum_late) = self._count_results_and_sum_amounts(late_query_results, currency, curr_cache=curr_cache)
+            (number_waiting, sum_waiting) = self._count_results_and_sum_amounts(query_results_to_pay, currency, curr_cache=curr_cache) # noqa
+            (number_draft, sum_draft) = self._count_results_and_sum_amounts(query_results_drafts, currency, curr_cache=curr_cache) # noqa
+            (number_late, sum_late) = self._count_results_and_sum_amounts(late_query_results, currency, curr_cache=curr_cache) # noqa
 
         difference = currency.round(last_balance-account_sum) + 0.0
+
         return {
             'number_to_reconcile': number_to_reconcile,
             'account_balance': formatLang(self.env, currency.round(account_sum) + 0.0, currency_obj=currency),
