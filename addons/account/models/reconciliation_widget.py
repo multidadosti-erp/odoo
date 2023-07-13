@@ -88,6 +88,7 @@ class AccountReconciliation(models.AbstractModel):
         ir_rules_query = self.env['res.partner.bank']._where_calc([])
         self.env['res.partner.bank']._apply_ir_rules(ir_rules_query, 'read')
         from_clause, where_clause, where_clause_params = ir_rules_query.get_sql()
+
         if where_clause:
             where_bank = ('AND %s' % where_clause).replace('res_partner_bank', 'bank')
             params += where_clause_params
@@ -100,7 +101,7 @@ class AccountReconciliation(models.AbstractModel):
         self.env['res.partner']._apply_ir_rules(ir_rules_query, 'read')
         from_clause, where_clause, where_clause_params = ir_rules_query.get_sql()
         if where_clause:
-            where_partner = ('AND %s' % where_clause).replace('res_partner', 'p3')
+            where_partner = ('AND %s' % where_clause).replace('"res_partner"', 'p3')
             params += where_clause_params
         else:
             where_partner = ''
@@ -111,8 +112,8 @@ class AccountReconciliation(models.AbstractModel):
                 COALESCE(p1.id,p2.id,p3.id)         AS partner_id
             FROM account_bank_statement_line st_line
         '''
-        query += 'LEFT JOIN res_partner_bank bank ON bank.id = st_line.bank_account_id OR bank.acc_number = st_line.account_number %s\n' % (where_bank)
-        query += 'LEFT JOIN res_partner p1 ON st_line.partner_id=p1.id \n'
+        query += 'JOIN res_partner_bank bank ON bank.id = st_line.bank_account_id OR bank.acc_number = st_line.account_number %s\n' % (where_bank)
+        query += 'JOIN res_partner p1 ON st_line.partner_id=p1.id \n'
         query += 'LEFT JOIN res_partner p2 ON bank.partner_id=p2.id \n'
         # By definition the commercial partner_id doesn't have a parent_id set
         query += 'LEFT JOIN res_partner p3 ON p3.name ILIKE st_line.partner_name %s AND p3.parent_id is NULL \n' % (where_partner)
