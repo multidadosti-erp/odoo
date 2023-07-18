@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="view_account_payment_tree" model="ir.ui.view">
             <field name="name">account.payment.tree</field>
             <field name="model">account.payment</field>
             <field name="arch" type="xml">
-                <tree decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']" edit="false">
+                <tree decoration-info="state == ['posted', 'sent']"
+                      decoration-danger="state == 'cancelled'"
+                      decoration-success="state == 'reconciled'"
+                      default_order='create_date desc' edit="false">
                     <field name="payment_date"/>
                     <field name="name"/>
                     <field name="journal_id"/>
                     <field name="payment_method_id"/>
                     <field name="partner_id" string="Customer"/>
-                    <field name="amount" sum="Amount"/>
+                    <field name="amount" string="Amount" sum="Amount"/>
                     <field name="state"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <field name="currency_id" invisible="1"/>
@@ -99,7 +101,7 @@
                     <filter string="Draft" domain="[('state','=','draft')]" name='state_draft'/>
                     <filter string="Posted" domain="[('state','=','posted')]" name='state_posted'/>
                     <filter string="Sent" domain="[('state','=','sent')]" name='state_sent'/>
-                    <filter string="Reconciled" name="reconciled" domain="[('state','=','reconciled')]"/>
+                    <filter string="Reconciled" domain="[('state','=','reconciled')]" name="reconciled"/>
                     <separator/>
                     <filter string="Partner" name="partner" domain="[]" context="{'group_by': 'partner_id'}"/>
                     <filter string="Journal" name="journal" domain="[]" context="{'group_by': 'journal_id'}"/>
