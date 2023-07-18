@@ -8901,7 +8901,7 @@ msgstr "Caixa Físico Inicial"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
 msgid "State"
-msgstr "Estado"
+msgstr "Status"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company__account_dashboard_onboarding_state
@@ -9002,7 +9002,7 @@ msgstr "Contar Estados"
 #: model_terms:ir.ui.view,arch_db:account.view_bank_statement_search
 #, python-format
 msgid "Status"
-msgstr "Situação"
+msgstr "Status"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__activity_state
