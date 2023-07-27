@@ -71,6 +71,21 @@ class AccountInvoice(models.Model):
         self.amount_total_signed = self.amount_total * sign
         self.amount_untaxed_signed = amount_untaxed_signed * sign
 
+        self.total_tax = 0
+        self.total_bruto = 0
+
+    total_tax = fields.Float(string='Impostos ( + )',
+                             readonly=True,
+                             compute='_compute_amount',
+                             digits=dp.get_precision('Account'),
+                             store=True)
+
+
+    total_bruto = fields.Float(string='Total Bruto ( = )',
+                               store=True,
+                               digits=dp.get_precision('Account'),
+                               compute='_compute_amount')
+
     def _compute_sign_taxes(self):
         for invoice in self:
             sign = invoice.type in ['in_refund', 'out_refund'] and -1 or 1

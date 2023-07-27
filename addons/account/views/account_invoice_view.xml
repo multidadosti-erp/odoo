@@ -360,8 +360,10 @@
                                     </div>
                                 </group>
                                 <group class="oe_subtotal_footer oe_right" name="total_amounts">
+                                    <!-- <field name="total_bruto"/> -->
                                     <field name="amount_untaxed"/>
                                     <field name="amount_tax"/>
+                                    <!-- <field name="total_tax"/> -->
                                     <field name="amount_total" class="oe_subtotal_footer_separator"/>
                                     <field name="payments_widget" colspan="2" nolabel="1" widget="payment"/>
                                     <field name="residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/>
@@ -574,8 +576,10 @@
                                 </kanban>
                             </field>
                             <group class="oe_subtotal_footer oe_right">
+                                <!-- <field name="total_bruto"/> -->
                                 <field name="amount_untaxed"/>
                                 <field name="amount_tax"/>
+                                <!-- <field name="total_tax"/> -->
                                 <field name="amount_total" class="oe_subtotal_footer_separator"/>
                                 <field name="payments_widget" colspan="2" nolabel="1" widget="payment"/>
                                 <field name="residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/>
