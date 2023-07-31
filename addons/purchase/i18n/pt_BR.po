@@ -592,7 +592,7 @@ msgstr "Moeda"
 #. module: purchase
 #: model:ir.model.fields,help:purchase.field_purchase_order__access_url
 msgid "Customer Portal URL"
-msgstr "Endereço do Portal do Consumidor"
+msgstr "Endereço do Portal do Cliente"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_bill_union__date
