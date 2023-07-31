@@ -463,10 +463,10 @@
                         <page name="extra_info" string="Extra Info">
                             <group>
                                 <group>
-                                    <field name="sequence" groups="base.group_no_one"/>
+                                    <field name="sequence"/>
                                     <field name="partner_id" attrs="{'readonly': [('parent_id', '!=', False)]}"/>
                                     <field name="email_from" attrs="{'readonly': [('parent_id', '!=', False)]}"/>
-                                    <field name="email_cc" groups="base.group_no_one"/>
+                                    <field name="email_cc"/>
                                     <field
                                         name="parent_id"
                                         domain="[('parent_id', '=', False)]"
@@ -476,11 +476,11 @@
                                     <field name="child_ids" invisible="1" />
                                     <field name="subtask_project_id" invisible="1" />
                                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
-                                    <field name="displayed_image_id" groups="base.group_no_one"/>
+                                    <field name="displayed_image_id"/>
                                 </group>
                                 <group>
-                                    <field name="date_assign" groups="base.group_no_one"/>
-                                    <field name="date_last_stage_update" groups="base.group_no_one"/>
+                                    <field name="date_assign"/>
+                                    <field name="date_last_stage_update"/>
                                 </group>
                                 <group string="Working Time to Assign" attrs="{'invisible': [('working_hours_open', '=', 0.0)]}">
                                     <field name="working_hours_open" string="Hours"/>
