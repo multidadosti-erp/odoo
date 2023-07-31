@@ -415,7 +415,7 @@ msgstr "Criado em"
 #. module: portal
 #: model:ir.model.fields,help:portal.field_portal_mixin__access_url
 msgid "Customer Portal URL"
-msgstr "Endereço do Portal do Consumidor"
+msgstr "Endereço do Portal do Cliente"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_template
