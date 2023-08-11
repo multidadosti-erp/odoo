@@ -2231,7 +2231,7 @@ msgstr "Se desmarcado, permitirá que você oculte a regra sem removê-la."
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_inventory__filter
 msgid "If you do an entire inventory, you can choose 'All Products' and it will prefill the inventory with the current stock.  If you only do some products  (e.g. Cycle Counting) you can choose 'Manual Selection of Products' and the system won't propose anything.  You can also let the system propose for a single product / lot /... "
-msgstr "Se você fazer um inventário inteiro, você pode escolher 'Todos os produtos' e ele vai prefill o inventário com o estoque atual. Se você só fazer alguns produtos (por exemplo Ciclo de Contagem), você pode escolher 'Seleção Manual de Produtos \"e que o sistema não irá propor qualquer coisa. Você também pode deixar que o sistema propõe para um único produto / lote / ... "
+msgstr "Se você fizer um inventário inteiro, você pode escolher 'Todos os produtos' e ele vai prefill o inventário com o estoque atual. Se você só fizer alguns produtos (por exemplo Ciclo de Contagem), você pode escolher 'Seleção Manual de Produtos \"e que o sistema não irá propor qualquer coisa. Você também pode deixar que o sistema propõe para um único produto / lote / ... "
 
 #. module: stock
 #: model:ir.model,name:stock.model_stock_immediate_transfer
@@ -3438,7 +3438,7 @@ msgstr "Apenas um produto"
 #: model_terms:ir.ui.view,arch_db:stock.view_pickingtype_filter
 #, python-format
 msgid "Operation Type"
-msgstr "Tipo de operação"
+msgstr "Tipo de Operação"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type__return_picking_type_id
