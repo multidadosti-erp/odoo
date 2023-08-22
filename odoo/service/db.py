@@ -91,8 +91,7 @@ def _initialize_db(id, db_name, demo, lang, user_password, login='admin', countr
         _logger.exception('CREATE DATABASE failed:')
 
 def _create_empty_database(name):
-    # Multidados: forçando a porta para evitar erro do pg_bouncer
-    db = odoo.sql_db.db_connect('postgres', db_port='5432')
+    db = odoo.sql_db.db_connect('postgres')
     with closing(db.cursor()) as cr:
         chosen_template = odoo.tools.config['db_template']
         cr.execute("SELECT datname FROM pg_database WHERE datname = %s",
