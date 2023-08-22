@@ -398,7 +398,7 @@ class Product(models.Model):
         self.env['stock.quant']._unlink_zero_quants()
         action = self.env.ref('stock.product_open_quants').read()[0]
         action['domain'] = [('product_id', '=', self.id)]
-        action['context'] = {'search_default_internal_loc': 1}
+        action['context'] = {'search_default_internal_loc': 1, 'search_default_with_stock': 1} # noqa
         return action
 
     def action_open_product_lot(self):
@@ -627,7 +627,7 @@ class ProductTemplate(models.Model):
         products = self.mapped('product_variant_ids')
         action = self.env.ref('stock.product_open_quants').read()[0]
         action['domain'] = [('product_id', 'in', products.ids)]
-        action['context'] = {'search_default_internal_loc': 1}
+        action['context'] = {'search_default_internal_loc': 1, 'search_default_with_stock': 1} # noqa
         return action
 
     def action_view_orderpoints(self):
