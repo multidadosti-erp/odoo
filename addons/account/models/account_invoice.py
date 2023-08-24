@@ -1815,11 +1815,21 @@ class AccountInvoiceLine(models.Model):
         self.invoice_line_tax_ids = fp_taxes = self.invoice_id.fiscal_position_id.map_tax(taxes, self.product_id, self.invoice_id.partner_id)
 
         fix_price = self.env['account.tax']._fix_tax_included_price
+
         if self.invoice_id.type in ('in_invoice', 'in_refund'):
             prec = self.env['decimal.precision'].precision_get('Product Price')
             if not self.price_unit or float_compare(self.price_unit, self.product_id.standard_price, precision_digits=prec) == 0:
                 self.price_unit = fix_price(self.product_id.standard_price, taxes, fp_taxes)
                 self._set_currency()
+
+        # ha casos (quando o preço unitario foi negociado e alterado) que não
+        # é interessante alterar o 'price_unit'. Sendo assim, adicionamos a flag
+        # 'keep_price_unit' para que seja possivel escolher se desejamos ou nao
+        # que o 'price_unit' seja sobrescrito
+        elif self.env.context.get('keep_price_unit', False):
+            self.price_unit = fix_price(self.price_unit, taxes, fp_taxes)
+            self._set_currency()
+
         else:
             self.price_unit = fix_price(self.product_id.lst_price, taxes, fp_taxes)
             self._set_currency()
