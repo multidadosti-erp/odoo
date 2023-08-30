@@ -1196,6 +1196,7 @@ class AccountInvoice(models.Model):
     @api.model
     def tax_line_move_line_get(self):
         res = []
+
         # keep track of taxes already processed
         # loop the invoice.tax.line in reversal sequence
         for tax_line in sorted(self.tax_line_ids, key=lambda x: -x.sequence):
@@ -1219,7 +1220,8 @@ class AccountInvoice(models.Model):
                 }
 
                 if tax.include_base_amount:
-                    affected_taxes = []
+                    following_taxes = False
+                    # affected_taxes = []
                     for invoice_line in tax_line.invoice_id.invoice_line_ids:
                         if tax in invoice_line.invoice_line_tax_ids or tax in invoice_line.invoice_line_tax_ids.mapped('children_tax_ids'):
                             all_taxes = invoice_line.invoice_line_tax_ids.filtered(lambda x: x.amount_type != 'group') \
