@@ -1215,6 +1215,7 @@ class AccountInvoice(models.Model):
                     'account_analytic_id': tax_line.account_analytic_id.id,
                     'analytic_tag_ids': analytic_tag_ids,
                     'invoice_id': self.id,
+                    'tax_ids': False,
                 }
 
                 if tax.include_base_amount:
@@ -1225,8 +1226,8 @@ class AccountInvoice(models.Model):
                                         + invoice_line.invoice_line_tax_ids.mapped('children_tax_ids')
                             following_taxes = all_taxes.filtered(lambda x: x.sequence > tax.sequence
                                                                            or (x.sequence == tax.sequence and x.id > tax.id))
-
-                    tax_line_vals['tax_ids'] = [(6, 0, following_taxes.ids)]
+                    if following_taxes:
+                        tax_line_vals['tax_ids'] = [(6, 0, following_taxes.ids)]
 
                 res.append(tax_line_vals)
         return res
