@@ -397,6 +397,13 @@ var KanbanRecord = Widget.extend({
         this.db_id = recordState.id;
         this.recordData = recordState.data;
         this.record = this._transformRecord(recordState.data);
+
+        //  Multidados - Adiciona no widget, os campos 'now' e 'today',
+        //  para facilitar a obtenção do dia de hoje e o horário.
+        this.now = new moment();
+        this.today = this.now.hour(0).minute(0).second(0).millisecond(0);
+        //
+
         this.qweb_context = {
             kanban_image: this._getImageURL.bind(this),
             kanban_color: this._getColorClassname.bind(this),
@@ -453,6 +460,10 @@ var KanbanRecord = Widget.extend({
             var r = _.clone(self.fields[name] || {});
 
             if ((r.type === 'date' || r.type === 'datetime') && value) {
+                //  Multidados - Acerto na Formatação da Data e Data e Hora
+                if(r.type === 'date'){
+                    value = moment(value._i).utc(false);}
+                r.moment = moment(value.toDate());
                 r.raw_value = value.toDate();
             } else if (r.type === 'one2many' || r.type === 'many2many') {
                 r.raw_value = value.count ? value.res_ids : [];
