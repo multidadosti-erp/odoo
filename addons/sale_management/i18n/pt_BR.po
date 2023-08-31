@@ -244,9 +244,7 @@ msgstr "Fornece a ordem da sequência ao exibir uma lista de produtos opcionais.
 #. module: sale_management
 #: model:ir.model.fields,help:sale_management.field_sale_order_template_line__sequence
 msgid "Gives the sequence order when displaying a list of sale quote lines."
-msgstr ""
-"Obtenha a ordem sequencial quando exibir uma lista de linhas de cotação de "
-"venda."
+msgstr "Obtenha a ordem sequencial quando exibir uma lista de linhas de orçamento."
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__id
@@ -383,7 +381,7 @@ msgstr "Quotation Builder"
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template__number_of_days
 msgid "Quotation Duration"
-msgstr "Duração da Cotação"
+msgstr "Duração do Orçamento"
 
 #. module: sale_management
 #: model:ir.model,name:sale_management.model_sale_order_template
@@ -392,28 +390,28 @@ msgstr "Duração da Cotação"
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_tree
 msgid "Quotation Template"
-msgstr "Modelo de orçamento"
+msgstr "Modelo de Orçamento"
 
 #. module: sale_management
 #: model:ir.model,name:sale_management.model_sale_order_template_line
 msgid "Quotation Template Line"
-msgstr "Linhas do modelo de cotação"
+msgstr "Linhas do Modelo de Orçamento"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
 msgid "Quotation Template Lines"
-msgstr "Linhas do modelo de cotação"
+msgstr "Linhas do Modelo de Orçamento"
 
 #. module: sale_management
 #: model:ir.model,name:sale_management.model_sale_order_template_option
 msgid "Quotation Template Option"
-msgstr "Opção de modelo de cotação"
+msgstr "Opção de Modelo de Orçamento"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template_line__sale_order_template_id
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template_option__sale_order_template_id
 msgid "Quotation Template Reference"
-msgstr "Referência do modelo de cotação"
+msgstr "Referência do Modelo de Orçamento"
 
 #. module: sale_management
 #: model:ir.actions.act_window,name:sale_management.sale_order_template_action
@@ -422,7 +420,7 @@ msgstr "Referência do modelo de cotação"
 #: model_terms:ir.ui.view,arch_db:sale_management.res_config_settings_view_form
 #: model:res.groups,name:sale_management.group_sale_order_template
 msgid "Quotation Templates"
-msgstr "Modelos de cotação"
+msgstr "Modelos de Orçamento"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
@@ -485,12 +483,12 @@ msgstr "Referência do Pedido de Venda"
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_form_quote
 msgid "Sales Quotation Template Lines"
-msgstr "Linhas de Modelo de Cotação de Vendas"
+msgstr "Linhas de Modelo de Orçamento"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_search
 msgid "Search Quotation Template"
-msgstr "Modelo de orçamento de pesquisa"
+msgstr "Modelo de Orçamento de Pesquisa"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
@@ -521,7 +519,7 @@ msgid ""
 "Terms set here will show up instead if you select this quotation template."
 msgstr ""
 "O administrador pode definir termos e condições padrão nas configurações de vendas. "
-"Os termos definidos aqui serão exibidos se você selecionar este modelo de cotação."
+"Os termos definidos aqui serão exibidos se você selecionar este modelo de orçamento."
 
 #. module: sale_management
 #: model:ir.model.fields,help:sale_management.field_sale_order_template__mail_template_id
