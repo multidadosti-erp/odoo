@@ -587,7 +587,9 @@ form: module.record_id""" % (xml_id,)
         # in update mode, the record won't be updated if the data node explicitly
         # opt-out using @noupdate="1". A second check will be performed in
         # model._load_records() using the record's ir.model.data `noupdate` field.
-        if self.isnoupdate(data_node) and self.mode != 'init':
+        #
+        # Multidados: Adicionado isnoupdate do rec para verificar se atualiza
+        if (self.isnoupdate(data_node) or self.isnoupdate(rec)) and self.mode != 'init':
             # check if the xml record has no id, skip
             if not rec_id:
                 return None
@@ -690,7 +692,7 @@ form: module.record_id""" % (xml_id,)
             'id': tpl_id,
             'model': model,
         }
-        for att in ['forcecreate', 'context']:
+        for att in ['forcecreate', 'context', 'noupdate']:
             if att in el.attrib:
                 record_attrs[att] = el.attrib.pop(att)
 
@@ -847,7 +849,7 @@ def convert_csv_import(cr, module, fname, csvcontent, idref=None, mode='init',
 def convert_xml_import(cr, module, xmlfile, idref=None, mode='init', noupdate=False, report=None):
     doc = etree.parse(xmlfile)
     relaxng = etree.RelaxNG(
-        etree.parse(os.path.join(config['root_path'],'import_xml.rng' )))
+        etree.parse(os.path.join(config['root_path'], 'import_xml.rng')))
     try:
         relaxng.assert_(doc)
     except Exception:
