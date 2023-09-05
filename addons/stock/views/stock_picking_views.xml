@@ -51,7 +51,9 @@
                                 <field name="code"/>
                                 <field attrs='{"invisible": [("code", "not in", ["incoming", "outgoing", "internal"])]}' name="return_picking_type_id"/>
                                 <field name="show_operations"/>
-                                <field name="show_reserved" attrs="{'invisible': [('show_operations', '!=', False)]}"/>
+                                <!--field name="show_reserved" attrs="{'invisible': [('show_operations', '!=', False)]}"/-->
+                                <!-- Multidados: Alerado para desvincular campo 'show_reserved' do 'show_operations'-->
+                                <field name="show_reserved"/>
                             </group>
                         </group>
                         <group>
