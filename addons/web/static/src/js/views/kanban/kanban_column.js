@@ -104,7 +104,11 @@ var KanbanColumn = Widget.extend({
         }
         this.$header.find('.o_kanban_header_title').tooltip();
 
-        if (!config.device.isMobile) {
+        // Multidados:
+        // Adiicona verificação do campo draggable para indicar se os registros
+        // devem poder ser arrastados
+        if (!config.device.isMobile && this.draggable) {
+
             // deactivate sortable in mobile mode.  It does not work anyway,
             // and it breaks horizontal scrolling in kanban views.  Someday, we
             // should find a way to use the touch events to make sortable work.
