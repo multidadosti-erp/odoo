@@ -295,7 +295,7 @@
     .o_group {
         display: inline-block;
         width: 100%;
-        margin: 5px 0;
+        margin: 1px 0;
 
         // o_group contains nested groups
         @for $i from 1 through $o-form-group-cols {
