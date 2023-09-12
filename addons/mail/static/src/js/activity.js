@@ -83,7 +83,7 @@ var setDelayLabel = function (activities){
     var today = moment().startOf('day');
     var activities_to_show = [];
     _.each(activities, function (activity){
-        if (activity.status == 'active'){
+        if (activity.status == 'active' || activity.status === undefined){
             var toDisplay = '';
             var diff = activity.date_deadline.diff(today, 'days', true); // true means no rounding
             if (diff === 0){
