@@ -1413,7 +1413,13 @@ class AccountInvoice(models.Model):
             inv.move_id.line_ids.filtered(lambda x: x.account_id.reconcile).remove_move_reconcile()
 
         # First, set the invoices as cancelled and detach the move ids
-        self.write({'state': 'cancel', 'move_id': False})
+        # Multidados: adicionado campo 'reference' para limpar o conteudo
+        self.write({
+            'state': 'cancel',
+            'move_id': False,
+            'reference': False,
+        })
+
         if moves:
             # second, invalidate the move(s)
             moves.button_cancel()
