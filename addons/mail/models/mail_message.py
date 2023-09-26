@@ -322,7 +322,7 @@ class Message(models.Model):
         attachments = self.env['ir.attachment']
         message_ids = list(message_tree.keys())
         # By rebrowsing all the messages at once, we ensure all the messages
-        # to be on the same prefetch group, enhancing that way the performances 
+        # to be on the same prefetch group, enhancing that way the performances
         for message in self.sudo().browse(message_ids):
             if message.author_id:
                 partners |= message.author_id
@@ -448,6 +448,24 @@ class Message(models.Model):
             messages = messages.sorted(key='id', reverse=True)[:limit]
         return messages.message_format()
 
+    def _message_format_fields(self):
+        """ Adicionado pela Multidados.
+        Retorna campos a serem lidos na formatação das mensagens
+        pelo widget thread. Foi criada a função para facilitar a
+        herança na hora de adicionar um campo.
+
+        Returns:
+            list: lista de campos a serem lidos pela função 'message_format'
+        """
+        return [
+            'id', 'body', 'date', 'author_id', 'email_from',  # base message fields
+            'message_type', 'subtype_id', 'subject',  # message specific
+            'model', 'res_id', 'record_name',  # document related
+            'channel_ids', 'partner_ids',  # recipients
+            'starred_partner_ids',  # list of partner ids for whom the message is starred
+            'moderation_status',
+        ]
+
     @api.multi
     def message_format(self):
         """ Get the message values in the format for web client. Since message values can be broadcasted,
@@ -491,14 +509,7 @@ class Message(models.Model):
                     'moderation_status': 'pending_moderation'
                 }
         """
-        message_values = self.read([
-            'id', 'body', 'date', 'author_id', 'email_from',  # base message fields
-            'message_type', 'subtype_id', 'subject',  # message specific
-            'model', 'res_id', 'record_name',  # document related
-            'channel_ids', 'partner_ids',  # recipients
-            'starred_partner_ids',  # list of partner ids for whom the message is starred
-            'moderation_status',
-        ])
+        message_values = self.read(self._message_format_fields())
         message_tree = dict((m.id, m) for m in self.sudo())
         self._message_read_dict_postprocess(message_values, message_tree)
 
