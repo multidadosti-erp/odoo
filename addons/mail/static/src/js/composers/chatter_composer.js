@@ -35,6 +35,11 @@ var ChatterComposer = BasicComposer.extend({
             this.options.sendText = _t("Log");
         }
         this.notInline = true;
+
+        // Multidados
+        // Adicionado o atributo '_noteSubtype' para indicar qual será
+        // o tipo definido para anotações
+        this._noteSubtype = 'mail.mt_note'
     },
 
     //--------------------------------------------------------------------------
@@ -201,7 +206,11 @@ var ChatterComposer = BasicComposer.extend({
 
             // Subtype
             if (self.options.isLog) {
-                message.subtype = 'mail.mt_note';
+                /* Alterado pela Multidados
+                Altera o subtipo para pegar o atributo da classe do Composer.
+                Herdado no br_mail para utilizar outro subtipo para anotações.
+                */
+                message.subtype = self._noteSubtype;
             }
 
             // Partner_ids
