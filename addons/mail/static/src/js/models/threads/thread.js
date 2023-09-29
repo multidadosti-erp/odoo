@@ -16,7 +16,7 @@ var ServicesMixin = require('web.ServicesMixin');
  */
 var Thread = AbstractThread.extend(ServicesMixin, {
     // max number of fetched messages from the server
-    _FETCH_LIMIT: 30,
+    _FETCH_LIMIT: 60,
     /**
      * @override
      * @param {Object} params
