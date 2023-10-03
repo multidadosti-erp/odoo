@@ -82,6 +82,7 @@ var AbstractThreadWindow = Widget.extend({
             areMessageAttachmentsDeletable: false,
             displayMarkAsRead: false,
             displayStars: this.options.displayStars,
+            dontCollapseSubtype: true,
         });
 
         if (this.isFolded()) {
