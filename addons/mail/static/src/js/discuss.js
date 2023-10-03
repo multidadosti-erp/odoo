@@ -717,6 +717,7 @@ var Discuss = AbstractAction.extend(ControlPanelMixin, {
         this._threadWidget = new ThreadWidget(this, {
             areMessageAttachmentsDeletable: false,
             loadMoreOnScroll: true,
+            dontCollapseSubtype: true,
         });
 
         this._threadWidget
