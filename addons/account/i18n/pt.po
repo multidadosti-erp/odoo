@@ -7792,7 +7792,7 @@ msgstr "Valor do Pagamento"
 #: model:ir.model.fields,field_description:account.field_account_payment__payment_date
 #: model:ir.model.fields,field_description:account.field_account_register_payments__payment_date
 msgid "Payment Date"
-msgstr "Data de Pagamento"
+msgstr "Data Pagamento"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__payment_difference
