@@ -448,6 +448,75 @@ class Message(models.Model):
             messages = messages.sorted(key='id', reverse=True)[:limit]
         return messages.message_format()
 
+    def get_thread_subtypes_ids(self):
+        """ Developed by Multidados
+
+        Get Messages Subtypes (mail.message.subtype) IDs
+        grouped by generic subtype.
+
+        Returns:
+            dict: Message Subtype (mail.message.subtype) IDs list
+                grouped by some generic subtype in ['note',
+                                                    'discussion',
+                                                    'log']
+        """
+        ModelData = self.env['ir.model.data'].sudo()
+        subtypes = {
+            'discussion': [ModelData.xmlid_to_res_id('mail.mt_comment')],
+            'note': [ModelData.xmlid_to_res_id('mail.mt_activities')],
+            'log': [ModelData.xmlid_to_res_id('mail.mt_note')],
+        }
+        return subtypes
+
+    def group_by_thread_subtype(self, ids=[]):
+        """ Developed by Multidados
+        Group Messages by Subtype category used in Thread Widged.
+
+        [help] - Check 'get_thread_subtypes_ids' function to see how
+        thread widget separates messages subtypes.
+
+        Args:
+            ids (list): Messages IDs to group. Self has priority on
+                getting message ids, this param will be used if 'self'
+                recordset has no records
+
+        Returns:
+            dict: IDs lists grouped by thread subtype division
+        """
+        # Obtém os ids de mensagens a agrupar. Considera IDs do 'self'
+        # como preferência, e depois olha para o parâmetro 'ids'
+        ids = self.ids or ids
+        grouped_messages_ids = {
+            'all': ids, 'logs': [],
+            'notes': [], 'discussions': [],
+        }
+        # Sem mensagens para agrupar retorna o dicionário de
+        # agrupamento com as listas de IDs zeradas
+        if not ids:
+            return grouped_messages_ids
+
+        # Get Messages IDs and Subtypes of 'ids' list
+        query = "SELECT id, subtype_id FROM mail_message " \
+                "WHERE id in %s"
+        self._cr.execute(query, [tuple(ids)])
+        fetch_results = self._cr.dictfetchall()
+
+        # Get message Subtypes used in thread division
+        mt_thread_subtypes = self.get_thread_subtypes_ids()
+        for result in fetch_results:
+            subtype_id = result['subtype_id']
+
+            if subtype_id in mt_thread_subtypes['log']:
+                grouped_messages_ids['logs'].append(result['id'])
+
+            elif subtype_id in mt_thread_subtypes['note']:
+                grouped_messages_ids['notes'].append(result['id'])
+
+            elif subtype_id in mt_thread_subtypes['discussion']:
+                grouped_messages_ids['discussions'].append(result['id'])
+
+        return grouped_messages_ids
+
     def _message_format_fields(self):
         """ Adicionado pela Multidados.
         Retorna campos a serem lidos na formatação das mensagens
