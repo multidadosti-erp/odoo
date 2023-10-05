@@ -2237,6 +2237,17 @@ class MailThread(models.AbstractModel):
         message = self.env['mail.message'].sudo().create(message_values)
         return message
 
+    @api.multi
+    def fetch_messages_by_subtype(self):
+        """ Developed by Multidados
+        Método para obter as mensagens do registro, divididas
+        pelos subtipos utilizados pelo thread widget.
+        """
+        MailMessage = self.env['mail.message']
+        message_ids = [] if not self else self.read(['message_ids'])[0]['message_ids']  # noqa
+        grouped_messages = MailMessage.group_by_thread_subtype(message_ids)
+        return grouped_messages
+
     # ------------------------------------------------------
     # Followers API
     # ------------------------------------------------------
@@ -2415,7 +2426,7 @@ class MailThread(models.AbstractModel):
 
         new_partners, new_channels = dict(), dict()
 
-        # return data related to auto subscription based on subtype matching (aka: 
+        # return data related to auto subscription based on subtype matching (aka:
         # default task subtypes or subtypes from project triggering task subtypes)
         updated_relation = dict()
         child_ids, def_ids, all_int_ids, parent, relation = self.env['mail.message.subtype']._get_auto_subscription_subtypes(self._name)

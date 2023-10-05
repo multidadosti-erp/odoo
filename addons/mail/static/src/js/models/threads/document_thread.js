@@ -190,11 +190,12 @@ var DocumentThread = Thread.extend({
      * Useful in order to handle message history of the document thread,
      * in particular to fetch messages when necessary and/or display 'load more'.
      *
-     * @param {integer[]} messageIDs
+     * @param {Object} messagesGrouped
+     * @param {integer[]} messagesGrouped.all
      */
-    setMessageIDs: function (messageIDs) {
+    setMessageIDs: function (messagesGrouped) {
         this._mustFetchMessageIDs = false;
-        this._messageIDs = messageIDs;
+        this._messageIDs = messagesGrouped.all;
     },
     /**
      * Set the name of this document thread
@@ -257,15 +258,25 @@ var DocumentThread = Thread.extend({
         if (!resID || !this._mustFetchMessageIDs) {
             return $.when();
         }
+        /** Alterado pela Multidados
+         * Ao inves de chamar o RPC na função read, chama o método
+         * 'fetch_messages_by_subtype' definido no mixin 'mail.thread'
+         * para obter as mensagens separadamente pelo subtipo separado
+         * no Widget Thread.
+         *
+         * O método setMessageIDs também foi alterado para agir de
+         * acordo com o novo retorno do RPC.
+         */
         return this._rpc({
             model: this.getDocumentModel(),
-            method: 'read',
-            args: [[resID], ['message_ids']],
+            method: 'fetch_messages_by_subtype',
+            args: [[resID]],
         }).then(function (result) {
-            self.setMessageIDs(result[0].message_ids);
+            self.setMessageIDs(result);
         });
     },
     /**
+     * @Multidados No módulo 'br_mail' a função foi sobrescrita
      * @override
      * @private
      * @param {Object} options

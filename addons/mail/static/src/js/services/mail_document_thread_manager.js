@@ -113,7 +113,12 @@ MailManager.include({
             this._threads.push(thread);
         } else {
             if ('messageIDs' in params) {
-                thread.setMessageIDs(params.messageIDs);
+                /* Alterado pela Multidados
+                 * Altera parâmetro passado para a função 'setMessageIDs'. Após a alteração
+                 * no widget thread, não é mais passado a lista com os IDs para a função, e
+                 * sim listas agrupadas com os ids, sendo a lista geral passada no atributo 'all'.
+                 */
+                thread.setMessageIDs({all: params.messageIDs});
             }
             if ('name' in params && params.name) {
                 // document thread may have a change of name
