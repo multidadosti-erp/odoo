@@ -506,14 +506,13 @@ class Message(models.Model):
         for result in fetch_results:
             subtype_id = result['subtype_id']
 
-            if subtype_id in mt_thread_subtypes['log']:
-                grouped_messages_ids['logs'].append(result['id'])
-
-            elif subtype_id in mt_thread_subtypes['note']:
+            if subtype_id in mt_thread_subtypes['note']:
                 grouped_messages_ids['notes'].append(result['id'])
 
             elif subtype_id in mt_thread_subtypes['discussion']:
                 grouped_messages_ids['discussions'].append(result['id'])
+            else:
+                grouped_messages_ids['logs'].append(result['id'])
 
         return grouped_messages_ids
 
