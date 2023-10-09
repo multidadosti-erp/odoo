@@ -497,7 +497,7 @@ class Message(models.Model):
 
         # Get Messages IDs and Subtypes of 'ids' list
         query = "SELECT id, subtype_id FROM mail_message " \
-                "WHERE id in %s"
+                "WHERE id in %s ORDER BY id desc"
         self._cr.execute(query, [tuple(ids)])
         fetch_results = self._cr.dictfetchall()
 
