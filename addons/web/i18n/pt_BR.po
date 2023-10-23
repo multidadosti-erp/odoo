@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-20 20:08+0000\n"
-"PO-Revision-Date: 2022-12-20 20:08+0000\n"
+"POT-Creation-Date: 2023-10-23 16:59+0000\n"
+"PO-Revision-Date: 2023-10-23 16:59+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr " ou "
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/fields/field_utils.js:296
-#: code:addons/web/static/src/js/views/kanban/kanban_column.js:165
+#: code:addons/web/static/src/js/views/kanban/kanban_column.js:169
 #, python-format
 msgid " records"
 msgstr " registros"
@@ -431,7 +431,7 @@ msgstr "Busca Avançada..."
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/core/dialog.js:323
+#: code:addons/web/static/src/js/core/dialog.js:325
 #, python-format
 msgid "Alert"
 msgstr "Alerta"
@@ -543,7 +543,7 @@ msgstr "Arquivado"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/views/kanban/kanban_column.js:382
+#: code:addons/web/static/src/js/views/kanban/kanban_column.js:386
 #, python-format
 msgid "Are you sure that you want to archive all the records from this column?"
 msgstr "Tem certeza de que deseja arquivar todos os registros desta coluna ?"
@@ -557,7 +557,7 @@ msgstr "Tem certeza de que deseja arquivar todos os registros selecionados ?"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/views/kanban/kanban_column.js:320
+#: code:addons/web/static/src/js/views/kanban/kanban_column.js:324
 #, python-format
 msgid "Are you sure that you want to remove this column ?"
 msgstr "Você tem certeza que quer remover esta coluna ?"
@@ -711,13 +711,13 @@ msgstr "A visão de calendário não definiu o atributo 'date_start'"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/core/dialog.js:337
-#: code:addons/web/static/src/js/core/dialog.js:390
+#: code:addons/web/static/src/js/core/dialog.js:339
+#: code:addons/web/static/src/js/core/dialog.js:392
 #: code:addons/web/static/src/js/fields/relational_fields.js:66
 #: code:addons/web/static/src/js/fields/upgrade_fields.js:75
 #: code:addons/web/static/src/js/services/crash_manager.js:229
 #: code:addons/web/static/src/js/views/calendar/calendar_quick_create.js:56
-#: code:addons/web/static/src/js/views/kanban/kanban_column.js:314
+#: code:addons/web/static/src/js/views/kanban/kanban_column.js:318
 #: code:addons/web/static/src/js/views/view_dialogs.js:405
 #: code:addons/web/static/src/xml/base.xml:181
 #, python-format
@@ -733,7 +733,7 @@ msgstr "Não é possível renderizar gráfico com o modo : "
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/views/kanban/kanban_record.js:421
+#: code:addons/web/static/src/js/views/kanban/kanban_record.js:428
 #, python-format
 msgid "Card color: %s"
 msgstr "Cor do cartão: %s"
@@ -838,8 +838,8 @@ msgstr "Confirmar a nova senha:"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/core/dialog.js:349
-#: code:addons/web/static/src/js/core/dialog.js:399
+#: code:addons/web/static/src/js/core/dialog.js:351
+#: code:addons/web/static/src/js/core/dialog.js:401
 #, python-format
 msgid "Confirmation"
 msgstr "Confirmação"
@@ -1252,7 +1252,7 @@ msgstr "Baixar xls"
 #: code:addons/web/static/src/xml/base.xml:1562
 #, python-format
 msgid "Dropdown menu"
-msgstr "Menu dropdown"
+msgstr "Menu Dropdown"
 
 #. module: web
 #. openerp-web
@@ -1282,7 +1282,7 @@ msgstr "Editar Ação"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/views/kanban/kanban_column.js:333
+#: code:addons/web/static/src/js/views/kanban/kanban_column.js:337
 #, python-format
 msgid "Edit Column"
 msgstr "Editar Coluna"
@@ -1424,7 +1424,7 @@ msgstr "Exportar para Arquivo"
 #: code:addons/web/static/src/js/widgets/data_export.js:483
 #, python-format
 msgid "External ID"
-msgstr "ID Externo"
+msgstr "Id. Externo"
 
 #. module: web
 #. openerp-web
@@ -1705,7 +1705,7 @@ msgstr "Tonalidade"
 
 #. module: web
 #. openerp-web
-#: code:addons/web/static/src/js/core/dialog.js:365
+#: code:addons/web/static/src/js/core/dialog.js:367
 #, python-format
 msgid "I am sure about this."
 msgstr "Eu tenho certeza disso."
@@ -2365,10 +2365,10 @@ msgstr ""
 #. module: web
 #. openerp-web
 #: code:addons/web/static/src/js/core/dialog.js:64
-#: code:addons/web/static/src/js/core/dialog.js:312
-#: code:addons/web/static/src/js/core/dialog.js:331
-#: code:addons/web/static/src/js/core/dialog.js:383
-#: code:addons/web/static/src/js/views/kanban/kanban_column.js:309
+#: code:addons/web/static/src/js/core/dialog.js:314
+#: code:addons/web/static/src/js/core/dialog.js:333
+#: code:addons/web/static/src/js/core/dialog.js:385
+#: code:addons/web/static/src/js/views/kanban/kanban_column.js:313
 #: code:addons/web/static/src/xml/base.xml:1449
 #, python-format
 msgid "Ok"
@@ -2862,6 +2862,7 @@ msgstr "% de Saturação"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/js/core/dialog.js:142
 #: code:addons/web/static/src/js/views/view_dialogs.js:137
 #: code:addons/web/static/src/js/widgets/domain_selector_dialog.js:28
 #: code:addons/web/static/src/xml/base.xml:392
@@ -2881,6 +2882,7 @@ msgstr "Salvar & Fechar"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/js/core/dialog.js:142
 #: code:addons/web/static/src/js/views/view_dialogs.js:146
 #, python-format
 msgid "Save & New"
