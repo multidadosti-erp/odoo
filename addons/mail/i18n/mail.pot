@@ -1707,6 +1707,7 @@ msgstr ""
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:101
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
 #: selection:mail.activity,state:0
 #, python-format
 msgid "Done"

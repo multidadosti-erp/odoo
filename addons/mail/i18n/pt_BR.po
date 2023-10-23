@@ -1723,14 +1723,6 @@ msgstr "Documento não baixável"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/activity.xml:101
-#: selection:mail.activity,state:0
-#, python-format
-msgid "Done"
-msgstr "Concluído"
-
-#. module: mail
-#. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:105
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
 #, python-format
@@ -1744,6 +1736,15 @@ msgstr "Concluído e iniciar Próximo"
 #, python-format
 msgid "Done & Schedule Next"
 msgstr "Pronto e Programar Próximo"
+
+#. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/xml/activity.xml:101
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
+#: selection:mail.activity,state:0
+#, python-format
+msgid "Done"
+msgstr "Concluído"
 
 #. module: mail
 #. openerp-web
