@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 21:06+0000\n"
-"PO-Revision-Date: 2022-12-23 21:06+0000\n"
+"POT-Creation-Date: 2023-10-23 13:51+0000\n"
+"PO-Revision-Date: 2023-10-23 13:51+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -430,6 +430,13 @@ msgid "Activity Type"
 msgstr ""
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: mail
 #: model:ir.actions.act_window,name:mail.mail_activity_type_action
 #: model:ir.ui.menu,name:mail.menu_mail_activity_type
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
@@ -709,11 +716,6 @@ msgstr ""
 #: code:addons/mail/static/src/js/followers.js:359
 #, python-format
 msgid "Apply"
-msgstr ""
-
-#. module: mail
-#: selection:mail.activity.type,category:0
-msgid "Appointment"
 msgstr ""
 
 #. module: mail
@@ -1256,7 +1258,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/discuss.js:946
+#: code:addons/mail/static/src/js/discuss.js:947
 #, python-format
 msgid "Congratulations, your inbox is empty!"
 msgstr ""
@@ -1329,11 +1331,6 @@ msgstr ""
 #. module: mail
 #: selection:ir.actions.server,state:0
 msgid "Create a new Record"
-msgstr ""
-
-#. module: mail
-#: model:ir.model,name:mail.model_mail_channel
-msgid "Create new ticket with using /ticket command in the channel"
 msgstr ""
 
 #. module: mail
@@ -1449,7 +1446,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:46
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:52
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 #, python-format
 msgid "Deadline"
@@ -1611,6 +1608,11 @@ msgstr ""
 #: model:ir.ui.menu,name:mail.menu_root_discuss
 #: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
 msgid "Discuss"
+msgstr ""
+
+#. module: mail
+#: model:ir.model,name:mail.model_mail_channel
+msgid "Discussion Channel"
 msgstr ""
 
 #. module: mail
@@ -2187,7 +2189,10 @@ msgstr ""
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity__icon
+#: model:ir.model.fields,help:mail.field_mail_activity_mixin__activity_type_icon
 #: model:ir.model.fields,help:mail.field_mail_activity_type__icon
+#: model:ir.model.fields,help:mail.field_res_partner__activity_type_icon
+#: model:ir.model.fields,help:mail.field_res_users__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
@@ -2621,7 +2626,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/discuss.js:1190
+#: code:addons/mail/static/src/js/discuss.js:1191
 #, python-format
 msgid "Invite people to #%s"
 msgstr ""
@@ -2854,11 +2859,6 @@ msgid "Listeners of a Channel"
 msgstr ""
 
 #. module: mail
-#: selection:mail.channel,channel_type:0
-msgid "Livechat Conversation"
-msgstr ""
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/thread.xml:56
 #, python-format
@@ -2874,7 +2874,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:15
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:21
 #, python-format
 msgid "Loading..."
 msgstr ""
@@ -2882,7 +2882,7 @@ msgstr ""
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/js/composers/chatter_composer.js:35
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:41
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:47
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
 #, python-format
 msgid "Log"
@@ -2928,7 +2928,7 @@ msgstr ""
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:68
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:51
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:57
 #: model:ir.model.fields,field_description:mail.field_mail_notification__mail_id
 #, python-format
 msgid "Mail"
@@ -3072,7 +3072,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:71
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:77
 #, python-format
 msgid "Mark as done"
 msgstr ""
@@ -3168,7 +3168,7 @@ msgid "Message Type"
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/models/mail_message.py:1337
+#: code:addons/mail/models/mail_message.py:1416
 #, python-format
 msgid "Message are pending moderation"
 msgstr ""
@@ -3554,6 +3554,13 @@ msgid "Next Activities"
 msgstr ""
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/js/activity.js:674
+#, python-format
+msgid "Next Activity"
+msgstr ""
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_date_deadline
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_date_deadline
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_date_deadline
@@ -3588,7 +3595,7 @@ msgstr ""
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/systray.xml:68
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:20
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:26
 #, python-format
 msgid "No activities planned."
 msgstr ""
@@ -3826,13 +3833,13 @@ msgid "Online"
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/models/mail_message.py:1053
+#: code:addons/mail/models/mail_message.py:1132
 #, python-format
 msgid "Only administrators are allowed to export mail message"
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/models/mail_message.py:1044
+#: code:addons/mail/models/mail_message.py:1123
 #, python-format
 msgid "Only administrators are allowed to use grouped read on message model"
 msgstr ""
@@ -4133,7 +4140,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/composers/chatter_composer.js:124
+#: code:addons/mail/static/src/js/composers/chatter_composer.js:129
 #, python-format
 msgid "Please complete customer's informations"
 msgstr ""
@@ -4215,7 +4222,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:70
 #: code:addons/mail/static/src/xml/discuss.xml:276
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:54
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:60
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 #, python-format
 msgid "Preview"
@@ -4261,7 +4268,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/discuss.js:1354
+#: code:addons/mail/static/src/js/discuss.js:1355
 #, python-format
 msgid "Public Channels"
 msgstr ""
@@ -4343,8 +4350,8 @@ msgstr ""
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:244
-#: code:addons/mail/models/mail_message.py:731
-#: code:addons/mail/models/mail_message.py:902
+#: code:addons/mail/models/mail_message.py:810
+#: code:addons/mail/models/mail_message.py:981
 #, python-format
 msgid "Records:"
 msgstr ""
@@ -4599,7 +4606,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:82
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:88
 #, python-format
 msgid "Schedule an activity"
 msgstr ""
@@ -4698,7 +4705,7 @@ msgstr ""
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:72
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:56
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:62
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
 #, python-format
@@ -5072,8 +5079,8 @@ msgstr ""
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:243
-#: code:addons/mail/models/mail_message.py:730
-#: code:addons/mail/models/mail_message.py:901
+#: code:addons/mail/models/mail_message.py:809
+#: code:addons/mail/models/mail_message.py:980
 #, python-format
 msgid "The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n"
 "\n"
@@ -5292,7 +5299,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/thread_windows/abstract_thread_window.js:163
+#: code:addons/mail/static/src/js/thread_windows/abstract_thread_window.js:164
 #, python-format
 msgid "Undefined"
 msgstr ""
@@ -5455,7 +5462,7 @@ msgstr ""
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity__display_name
-msgid "Used to diplay a name for the activity based on partner or lead's name."
+msgid "Used to diplay a name for the activity based on partner's name."
 msgstr ""
 
 #. module: mail
@@ -5465,7 +5472,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:61
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:67
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_alias_search
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
@@ -5512,8 +5519,8 @@ msgstr ""
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:244
-#: code:addons/mail/models/mail_message.py:731
-#: code:addons/mail/models/mail_message.py:902
+#: code:addons/mail/models/mail_message.py:810
+#: code:addons/mail/models/mail_message.py:981
 #, python-format
 msgid "User:"
 msgstr ""
@@ -5782,7 +5789,7 @@ msgid "You do not have the rights to modify fields related to moderation on one 
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/models/mail_thread.py:2386
+#: code:addons/mail/models/mail_thread.py:2397
 #, python-format
 msgid "You have been assigned to %s"
 msgstr ""
@@ -6060,7 +6067,7 @@ msgstr ""
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:71
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:55
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:61
 #, python-format
 msgid "or"
 msgstr ""

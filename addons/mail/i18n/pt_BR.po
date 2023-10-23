@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 21:07+0000\n"
-"PO-Revision-Date: 2022-12-23 21:07+0000\n"
+"POT-Creation-Date: 2023-10-23 14:05+0000\n"
+"PO-Revision-Date: 2023-10-23 14:05+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -443,13 +443,20 @@ msgstr "Atividade Mixin"
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_state
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_state
 msgid "Activity State"
-msgstr "Estado de Atividade"
+msgstr "Estado da Atividade"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_activity_type
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 msgid "Activity Type"
 msgstr "Tipo de Atividade"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Ícone de Tipo de Atividade"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.mail_activity_type_action
@@ -1151,7 +1158,7 @@ msgstr "Canais/Parceiro"
 #: code:addons/mail/static/src/xml/systray.xml:35
 #, python-format
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #. module: mail
 #: selection:mail.channel,channel_type:0
@@ -1266,7 +1273,7 @@ msgstr "Parabéns, sua caixa de entrada está vazia"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/discuss.js:946
+#: code:addons/mail/static/src/js/discuss.js:947
 #, python-format
 msgid "Congratulations, your inbox is empty!"
 msgstr "Parabéns, sua caixa de entrada está vazia!"
@@ -1304,7 +1311,7 @@ msgstr "A conversa é minimizada"
 #: code:addons/mail/static/src/xml/systray.xml:9
 #, python-format
 msgid "Conversations"
-msgstr "Conversações"
+msgstr "Conversas"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_res_partner__message_bounce
@@ -1340,11 +1347,6 @@ msgstr "Criar um novo %(document)s enviando um e-mail para %(email_link)s"
 #: selection:ir.actions.server,state:0
 msgid "Create a new Record"
 msgstr "Criar um novo Registro"
-
-#. module: mail
-#: model:ir.model,name:mail.model_mail_channel
-msgid "Create new ticket with using /ticket command in the channel"
-msgstr "Criar um novo ticket usando o comando /ticket no chat"
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
@@ -1459,7 +1461,7 @@ msgstr "Dias"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:46
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:52
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 #, python-format
 msgid "Deadline"
@@ -1626,6 +1628,11 @@ msgid "Discuss"
 msgstr "Mensagens"
 
 #. module: mail
+#: model:ir.model,name:mail.model_mail_channel
+msgid "Discussion Channel"
+msgstr "Canal de Discussão"
+
+#. module: mail
 #: model:mail.message.subtype,name:mail.mt_comment
 msgid "Discussions"
 msgstr "Discussões"
@@ -1759,13 +1766,13 @@ msgstr "Menu dropdown - Seguidores"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__date_deadline
 msgid "Due Date"
-msgstr "Data Vencimento"
+msgstr "Data Limite"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_date_deadline_range
 #: model:ir.model.fields,field_description:mail.field_ir_cron__activity_date_deadline_range
 msgid "Due Date In"
-msgstr "Vencimento em"
+msgstr "Vence em"
 
 #. module: mail
 #. openerp-web
@@ -2082,7 +2089,7 @@ msgstr "Adotado como favorito por"
 #: model:ir.model.fields,field_description:mail.field_mail_activity__feedback
 #, python-format
 msgid "Feedback"
-msgstr ""
+msgstr "Enviar Opiniões"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_email_template_preview__model_object_field
@@ -2199,7 +2206,10 @@ msgstr "Os convites a seguir são inválidos porque os grupos de usuários não 
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity__icon
+#: model:ir.model.fields,help:mail.field_mail_activity_mixin__activity_type_icon
 #: model:ir.model.fields,help:mail.field_mail_activity_type__icon
+#: model:ir.model.fields,help:mail.field_res_partner__activity_type_icon
+#: model:ir.model.fields,help:mail.field_res_users__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Ícone do Font Awesome. Ex: fa-tasks"
 
@@ -2385,7 +2395,7 @@ msgstr "Esconder o subtipo nas opções dos seguidores"
 #: model:ir.model.fields,field_description:mail.field_mail_wizard_invite__id
 #: model:ir.model.fields,field_description:mail.field_publisher_warranty_contract__id
 msgid "ID"
-msgstr ""
+msgstr "Id."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_alias__alias_parent_thread_id
@@ -2619,7 +2629,7 @@ msgstr "Seguir pessoa"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/discuss.js:1190
+#: code:addons/mail/static/src/js/discuss.js:1191
 #, python-format
 msgid "Invite people to #%s"
 msgstr "Convidar pessoas para #%s"
@@ -2852,11 +2862,6 @@ msgid "Listeners of a Channel"
 msgstr "Ouvintes de um Canal"
 
 #. module: mail
-#: selection:mail.channel,channel_type:0
-msgid "Livechat Conversation"
-msgstr "Conversa on-line"
-
-#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/thread.xml:56
 #, python-format
@@ -2872,7 +2877,7 @@ msgstr "Carregando mensagens anteriores..."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:15
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:21
 #, python-format
 msgid "Loading..."
 msgstr "Carregando..."
@@ -2880,11 +2885,11 @@ msgstr "Carregando..."
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/js/composers/chatter_composer.js:35
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:41
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:47
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
 #, python-format
 msgid "Log"
-msgstr ""
+msgstr "Registrar"
 
 #. module: mail
 #. openerp-web
@@ -2897,7 +2902,7 @@ msgstr "Registrar uma nota. Seguidores não serão notificados."
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
 #: model_terms:ir.ui.view,arch_db:mail.view_server_action_form_template
 msgid "Log a note..."
-msgstr "Registrar uma nota.."
+msgstr "Registar uma nota..."
 
 #. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
@@ -2926,7 +2931,7 @@ msgstr "Registrar ou agendar uma atividade"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:68
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:51
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:57
 #: model:ir.model.fields,field_description:mail.field_mail_notification__mail_id
 #, python-format
 msgid "Mail"
@@ -3070,7 +3075,7 @@ msgstr "Marcar como Para Fazer"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:71
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:77
 #, python-format
 msgid "Mark as done"
 msgstr "Marcar como Completo"
@@ -3166,7 +3171,7 @@ msgid "Message Type"
 msgstr "Tipo de Mensagem"
 
 #. module: mail
-#: code:addons/mail/models/mail_message.py:1337
+#: code:addons/mail/models/mail_message.py:1416
 #, python-format
 msgid "Message are pending moderation"
 msgstr "A mensagem está com moderação pendente"
@@ -3553,6 +3558,13 @@ msgid "Next Activities"
 msgstr "Próximas Atividades"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/js/activity.js:674
+#, python-format
+msgid "Next Activity"
+msgstr "Próxima Atividade"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_date_deadline
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_date_deadline
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_date_deadline
@@ -3571,7 +3583,7 @@ msgstr "Resumo da Próxima Atividade"
 #: model:ir.model.fields,field_description:mail.field_res_partner__activity_type_id
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_type_id
 msgid "Next Activity Type"
-msgstr "Tipo da Atividade Seguinte"
+msgstr "Tipo da Próxima Atividade"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__has_recommended_activities
@@ -3587,7 +3599,7 @@ msgstr "Sem erro"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/systray.xml:68
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:20
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:26
 #, python-format
 msgid "No activities planned."
 msgstr "Nenhuma atividade agendada"
@@ -3825,13 +3837,13 @@ msgid "Online"
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/models/mail_message.py:1053
+#: code:addons/mail/models/mail_message.py:1132
 #, python-format
 msgid "Only administrators are allowed to export mail message"
 msgstr "Apenas administradores possuem permissão para exportar mensagens de e-mail"
 
 #. module: mail
-#: code:addons/mail/models/mail_message.py:1044
+#: code:addons/mail/models/mail_message.py:1123
 #, python-format
 msgid "Only administrators are allowed to use grouped read on message model"
 msgstr "Apenas administradores possuem permissão para usar leitura agrupada no modelo de mensagem"
@@ -4134,7 +4146,7 @@ msgstr "Planejado em"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/composers/chatter_composer.js:124
+#: code:addons/mail/static/src/js/composers/chatter_composer.js:129
 #, python-format
 msgid "Please complete customer's informations"
 msgstr "Por favor, preencha as informações do cliente"
@@ -4222,7 +4234,7 @@ msgstr "Endereço de resposta preferido (placeholders podem ser usados aqui)"
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:70
 #: code:addons/mail/static/src/xml/discuss.xml:276
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:54
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:60
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 #, python-format
 msgid "Preview"
@@ -4268,7 +4280,7 @@ msgstr "Canais Privados"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/discuss.js:1354
+#: code:addons/mail/static/src/js/discuss.js:1355
 #, python-format
 msgid "Public Channels"
 msgstr "Canais Públicos"
@@ -4350,8 +4362,8 @@ msgstr "Id do Registro do Tópico"
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:244
-#: code:addons/mail/models/mail_message.py:731
-#: code:addons/mail/models/mail_message.py:902
+#: code:addons/mail/models/mail_message.py:810
+#: code:addons/mail/models/mail_message.py:981
 #, python-format
 msgid "Records:"
 msgstr "Registros:"
@@ -4606,7 +4618,7 @@ msgstr "Agendar uma atividade"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:82
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:88
 #, python-format
 msgid "Schedule an activity"
 msgstr "Agendar uma atividade"
@@ -4706,7 +4718,7 @@ msgstr "Enviar E-mail (%s)"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:72
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:56
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:62
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
 #, python-format
@@ -4818,7 +4830,7 @@ msgstr "Atalho"
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 #: model_terms:ir.ui.view,arch_db:mail.res_partner_view_search_inherit_mail
 msgid "Show all records which has next action date is before today"
-msgstr "Mostrar todas as gravações em que a próxima data de ação seja antes de hoje"
+msgstr "Mostrar todas as gravações em que a próxima data de ação seja antes de hoje."
 
 #. module: mail
 #: code:addons/mail/models/mail_channel.py:975
@@ -5083,8 +5095,8 @@ msgstr "O parceiro não pode entrar neste canal"
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:243
-#: code:addons/mail/models/mail_message.py:730
-#: code:addons/mail/models/mail_message.py:901
+#: code:addons/mail/models/mail_message.py:809
+#: code:addons/mail/models/mail_message.py:980
 #, python-format
 msgid "The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n"
 "\n"
@@ -5313,7 +5325,7 @@ msgstr "Não foi possível postar a mensagem, configure o endereço de e-mail do
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/thread_windows/abstract_thread_window.js:163
+#: code:addons/mail/static/src/js/thread_windows/abstract_thread_window.js:164
 #, python-format
 msgid "Undefined"
 msgstr "Indefinido"
@@ -5476,8 +5488,8 @@ msgstr "Use seus próprios servidores de email"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_activity__display_name
-msgid "Used to diplay a name for the activity based on partner or lead's name."
-msgstr "Usado para mostrar um nome para a atividade baseado no nome do parceiro ou do prospecto."
+msgid "Used to diplay a name for the activity based on partner's name."
+msgstr "Usado para exibir um nome para a atividade com base no nome do parceiro."
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_subtype__sequence
@@ -5486,7 +5498,7 @@ msgstr "Utilizar para os demais subtipos"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:61
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:67
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_alias_search
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
@@ -5533,8 +5545,8 @@ msgstr "Nome de usuário"
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:244
-#: code:addons/mail/models/mail_message.py:731
-#: code:addons/mail/models/mail_message.py:902
+#: code:addons/mail/models/mail_message.py:810
+#: code:addons/mail/models/mail_message.py:981
 #, python-format
 msgid "User:"
 msgstr "Usuário:"
@@ -5806,7 +5818,7 @@ msgid "You do not have the rights to modify fields related to moderation on one 
 msgstr "Você não tem o direito de modificar campos relacionados à moderação em um dos os canais que você está modificando."
 
 #. module: mail
-#: code:addons/mail/models/mail_thread.py:2386
+#: code:addons/mail/models/mail_thread.py:2397
 #, python-format
 msgid "You have been assigned to %s"
 msgstr "Você foi atribuído a %s"
@@ -6074,7 +6086,7 @@ msgstr "ligado"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:71
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:55
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:61
 #, python-format
 msgid "or"
 msgstr "ou"
