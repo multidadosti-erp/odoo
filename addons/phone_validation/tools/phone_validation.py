@@ -36,7 +36,11 @@ try:
             :rtype: str
         """
         try:
-            phone_nbr = phone_parse(number, country_code)
+            if country_code:
+                phone_nbr = phone_parse(number, country_code)
+            else:
+                return number
+
         except (phonenumbers.phonenumberutil.NumberParseException, UserError) as e:
             if raise_exception:
                 raise
