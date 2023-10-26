@@ -2185,15 +2185,15 @@ var FieldBooleanButton = AbstractField.extend({
         var text, hover;
         switch (this.nodeOptions.terminology) {
             case "active":
-                text = this.value ? _t("Active") : _t("Inactive");
+                text = this.value ? _t("Active Record") : _t("Inactive");
                 hover = this.value ? _t("Deactivate") : _t("Activate");
                 break;
             case "archive":
-                text = this.value ? _t("Active") : _t("Archived");
+                text = this.value ? _t("Active Record") : _t("Archived");
                 hover = this.value ? _t("Archive") : _t("Restore");
                 break;
             case "close":
-                text = this.value ? _t("Active") : _t("Closed");
+                text = this.value ? _t("Active Record") : _t("Closed");
                 hover = this.value ? _t("Close") : _t("Open");
                 break;
             default:

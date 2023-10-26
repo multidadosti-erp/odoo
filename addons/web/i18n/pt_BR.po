@@ -304,7 +304,7 @@ msgstr "Ativar depuração de ativos"
 #: code:addons/web/static/src/js/fields/basic_fields.js:2192
 #: code:addons/web/static/src/js/fields/basic_fields.js:2196
 #, python-format
-msgid "Active"
+msgid "Active Record"
 msgstr "Ativo"
 
 #. module: web
