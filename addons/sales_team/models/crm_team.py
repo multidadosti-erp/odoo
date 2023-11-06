@@ -31,15 +31,20 @@ class CrmTeam(models.Model):
         ], limit=1)
         if not team_id and 'default_team_id' in self.env.context:
             team_id = self.env['crm.team'].browse(self.env.context.get('default_team_id'))
-        if not team_id:
-            default_team_id = self.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
-            if default_team_id:
-                try:
-                    default_team_id.check_access_rule('read')
-                except AccessError:
-                    return self.env['crm.team']
-                if (self.env.context.get('default_type') != 'lead' or default_team_id.use_leads) and default_team_id.active:
-                    team_id = default_team_id
+
+        # Comentado pela Multidados ...
+        # Não é correto pegar a equipe criada por padrão 'sales_team.team_sales_department'
+        # devido a utilização de multi empresas.
+        #
+        # if not team_id:
+        #     default_team_id = self.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
+        #     if default_team_id:
+        #         try:
+        #             default_team_id.check_access_rule('read')
+        #         except AccessError:
+        #             return self.env['crm.team']
+        #         if (self.env.context.get('default_type') != 'lead' or default_team_id.use_leads) and default_team_id.active:
+        #             team_id = default_team_id
         return team_id
 
     def _get_default_favorite_user_ids(self):
