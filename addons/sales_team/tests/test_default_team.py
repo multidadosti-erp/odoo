@@ -41,8 +41,12 @@ class TestDefaultTeam(common.SavepointCase):
         self.team_1.member_ids = [(5,)]
         # Case 1.
         team = self.CrmTeam.sudo(self.user)._get_default_team_id()
-        self.assertEqual(team, self.team_2)
+        self.assertEqual(team, self.CrmTeam)
         # Case 2.
+        self.team_2.member_ids |= self.user
+        team = self.CrmTeam.sudo(self.user)._get_default_team_id()
+        self.assertEqual(team, self.team_2)
+        # Case 3.
         self.team_2.active = False
         team = self.CrmTeam.sudo(self.user)._get_default_team_id()
         self.assertEqual(team, self.CrmTeam)
