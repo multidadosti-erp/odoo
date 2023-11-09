@@ -546,6 +546,8 @@ var ListRenderer = BasicRenderer.extend({
         var order = this.state.orderedBy;
         var isNodeSorted = order[0] && order[0].name === name;
         var field = this.state.fields[name];
+        var fieldsInfo = this.state.fieldsInfo['list'] || {};
+        var fieldInfo = fieldsInfo[name] || {options: {}};
         var $th = $('<th>');
         if (!field) {
             return $th;
@@ -557,11 +559,15 @@ var ListRenderer = BasicRenderer.extend({
         if (description === undefined) {
             description = node.attrs.string || field.string;
         }
+        
+        var is_sortable = fieldInfo.options.sortable === undefined ? true : fieldInfo.options.sortable;
+        is_sortable = is_sortable && field.sortable;
+
         $th.text(description)
             .data('name', name)
             .toggleClass('o-sort-down', isNodeSorted ? !order[0].asc : false)
             .toggleClass('o-sort-up', isNodeSorted ? order[0].asc : false)
-            .addClass(field.sortable && 'o_column_sortable');
+            .addClass(is_sortable && 'o_column_sortable');
 
         if (isNodeSorted) {
             $th.attr('aria-sort', order[0].asc ? 'ascending' : 'descending');
