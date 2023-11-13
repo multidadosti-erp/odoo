@@ -473,17 +473,27 @@ var AbstractWebClient = Widget.extend(ServiceProviderMixin, KeyboardNavigationMi
     _onShowEffect: function (e) {
         var data = e.data || {};
         var type = data.type || 'rainbow_man';
+
+        // Adicionado pela Multidados:
+        // Permite que retornos de funções com 'effect' com type == 'notification'
+        // lançem uma notificação para o usuário.
+        function effectNotification(self, effect_data){
+            self.call('notification', 'notify', {
+                title: effect_data.title || '',
+                message: effect_data.message,
+                sticky: !!(effect_data.sticky)
+            });
+        }
         if (type === 'rainbow_man') {
             if (session.show_effect) {
                 new RainbowMan(data).appendTo(this.$el);
             } else {
                 // For instance keep title blank, as we don't have title in data
-                this.call('notification', 'notify', {
-                    title: "",
-                    message: data.message,
-                    sticky: false
-                });
+                effectNotification(this, data);
             }
+        } else if (type === 'notification') {
+            // Adicionado pela Multidados
+            effectNotification(this, data);
         } else {
             throw new Error('Unknown effect type: ' + type);
         }
