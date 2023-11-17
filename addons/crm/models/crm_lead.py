@@ -393,7 +393,7 @@ class Lead(models.Model):
         self.ensure_one()
         self.action_set_won()
 
-        if self.user_id and self.team_id and self.planned_revenue:
+        if self.user_id and self.team_id:
             query = """
                 SELECT
                     SUM(CASE WHEN user_id = %(user_id)s THEN 1 ELSE 0 END) as total_won,
@@ -428,6 +428,10 @@ class Lead(models.Model):
                 message = _('You just beat your personal record for the past 30 days.')
             elif query_result['max_user_7'] == self.planned_revenue:
                 message = _('You just beat your personal record for the past 7 days.')
+            else:
+                message = _(
+                    'Congratulations! You just beat %s opportunities won!'
+                ) % query_result['total_won']
 
             if message:
                 return {

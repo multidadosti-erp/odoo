@@ -419,6 +419,12 @@ msgid "Configuration options are available in the Settings app."
 msgstr ""
 
 #. module: crm
+#: code:addons/crm/models/crm_lead.py:432
+#, python-format
+msgid "Congratulations! You just beat %s opportunities won!"
+msgstr ""
+
+#. module: crm
 #: model:ir.model,name:crm.model_res_partner
 msgid "Contact"
 msgstr ""
