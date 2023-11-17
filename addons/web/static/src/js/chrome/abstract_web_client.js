@@ -478,11 +478,13 @@ var AbstractWebClient = Widget.extend(ServiceProviderMixin, KeyboardNavigationMi
         // Permite que retornos de funções com 'effect' com type == 'notification'
         // lançem uma notificação para o usuário.
         function effectNotification(self, effect_data){
-            self.call('notification', 'notify', {
-                title: effect_data.title || '',
-                message: effect_data.message,
-                sticky: !!(effect_data.sticky)
-            });
+            self.call('notification', 'notify', _.extend(
+                {}, effect_data, {
+                    title: effect_data.title || '',
+                    message: effect_data.message,
+                    sticky: !!(effect_data.sticky),
+                    icon: effect_data.icon || false,
+            }));
         }
         if (type === 'rainbow_man') {
             if (session.show_effect) {
