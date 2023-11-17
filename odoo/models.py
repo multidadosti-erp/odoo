@@ -5783,7 +5783,7 @@ class Model(AbstractModel):
         else:
             return self[field_name]
 
-    def effect_notify(self, title='', message=''):
+    def effect_notify(self, title='', message='', **kwargs):
         """ Utilizado para obter o retorno de efeito JS para
         notificar usuários a partir do WebClient.
 
@@ -5803,6 +5803,7 @@ class Model(AbstractModel):
                     'type': 'notification',
                     'title': title,
                     'message': message,
+                    **kwargs
                 }}
 
 

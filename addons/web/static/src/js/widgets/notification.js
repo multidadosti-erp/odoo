@@ -49,7 +49,7 @@ var Notification = Widget.extend({
         this.type = params.type || 'notification';
         this.className = params.className || '';
         this._closeCallback = params.onClose;
-        this.icon = 'fa-lightbulb-o';
+        this.icon = params.icon || 'fa-lightbulb-o';
         if (this.buttons && this.buttons.length) {
             this.icon = 'fa-question-circle-o';
         }
