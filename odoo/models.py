@@ -5783,6 +5783,29 @@ class Model(AbstractModel):
         else:
             return self[field_name]
 
+    def effect_notify(self, title='', message=''):
+        """ Utilizado para obter o retorno de efeito JS para
+        notificar usuários a partir do WebClient.
+
+        OBS: Alteração JS feita para permitir a notificação é
+        encontrada no arquivo 'web/static/src/js/chrome/abstract_web_client.js'
+
+        Args:
+            title (str): Título da notificação.
+            message (str): Mensagem da notificação.
+
+        Returns:
+            dict: valores para efeito de notificação
+        """
+        title = title or _('Notification')
+
+        return { 'effect': {
+                    'type': 'notification',
+                    'title': title,
+                    'message': message,
+                }}
+
+
 class TransientModel(Model):
     """ Model super-class for transient records, meant to be temporarily
     persisted, and regularly vacuum-cleaned.
