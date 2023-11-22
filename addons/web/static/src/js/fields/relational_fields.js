@@ -121,6 +121,7 @@ var FieldMany2One = AbstractField.extend({
 
         // should normally also be set, except in standalone M20
         var can_create = ('can_create' in this.attrs ? JSON.parse(this.attrs.can_create) : true)
+        var no_open = 'noOpen' in (options || {}) ? options.noOpen : this.nodeOptions.no_open;
 
         /** Alterado pela Multidados
          * Muda forma de obter o 'no_create' de um campo many2one, antes era observado os valores
@@ -140,7 +141,16 @@ var FieldMany2One = AbstractField.extend({
         this.nodeOptions = _.defaults(this.nodeOptions, {
             quick_create: true,
         });
-        this.noOpen = 'noOpen' in (options || {}) ? options.noOpen : this.nodeOptions.no_open;
+
+        if (typeof(this.nodeOptions.no_open) === "object"){
+            // Caso o valor da opção 'no_create' seja um domínio
+            no_open = no_open && new Domain(this.nodeOptions.no_open, record.data).compute(record.data)
+        } else if (this.nodeOptions.no_open != undefined) {
+            // Caso o valor da opção seja 'bool' ou 'number'
+            no_open = no_open && this.nodeOptions.no_open;
+        }
+        this.noOpen = no_open;
+
         this.m2o_value = this._formatValue(this.value);
         // 'recordParams' is a dict of params used when calling functions
         // 'getDomain' and 'getContext' on this.record
