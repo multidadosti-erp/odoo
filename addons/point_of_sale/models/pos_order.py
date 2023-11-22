@@ -639,6 +639,21 @@ class PosOrder(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
+    origin_order_id = fields.Many2one(
+        comodel_name='pos.order',
+        string='Origin Order',
+        readonly=True,
+        help="If some order had been refunded, it will be referenced here "
+             "to the return order."
+    )
+    return_order_id = fields.Many2one(
+        comodel_name='pos.order',
+        string='Return Order',
+        readonly=True,
+        help="If some order had been refunded, order created for returning "
+             "will be referenced here."
+    )
+
 
     @api.onchange('statement_ids', 'lines')
     def _onchange_amount_all(self):
@@ -1069,7 +1084,9 @@ class PosOrder(models.Model):
                 'amount_tax': -order.amount_tax,
                 'amount_total': -order.amount_total,
                 'amount_paid': 0,
+                'origin_order_id': order.id,
             })
+            order.return_order_id = clone
             for line in order.lines:
                 clone_line = line.copy({
                     # required=True, copy=False
