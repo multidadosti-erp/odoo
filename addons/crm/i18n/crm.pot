@@ -1681,6 +1681,12 @@ msgid "Opportunity Won"
 msgstr ""
 
 #. module: crm
+#: code:addons/crm/models/res_partner.py:74
+#, python-format
+msgid "Opportunity(s)"
+msgstr ""
+
+#. module: crm
 #: model:mail.message.subtype,description:crm.mt_lead_create
 msgid "Opportunity created"
 msgstr ""

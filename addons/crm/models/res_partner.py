@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class Partner(models.Model):
@@ -56,3 +56,39 @@ class Partner(models.Model):
             'default_partner_ids': partner_ids,
         }
         return action
+
+    def action_show_opportunity(self):
+        """ Open kanban view to display opportunity.
+            :return dict: dictionary value for created kanban view
+        """
+        self.ensure_one()
+
+        form_view = self.env.ref('crm.crm_case_form_view_oppor')
+        tree_view = self.env.ref('crm.crm_case_tree_view_leads')
+
+        # the opportunity count should counts the opportunities of this
+        # company and all its contacts
+        operator = 'child_of' if self.is_company else '='
+
+        return {
+            'name': _('Opportunity(s)'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'crm.lead',
+            'view_id': False,
+            'domain': [
+                ('partner_id', operator, self.id),
+                ('type', '=', 'opportunity')
+            ],
+            'context': {
+                'create': False,
+                'edit': False,
+            },
+            'views': [
+                (tree_view.id, 'tree'),
+                (form_view.id, 'form'),
+                (False, 'calendar'),
+                (False, 'graph')
+            ],
+        }
