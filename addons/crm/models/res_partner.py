@@ -63,32 +63,28 @@ class Partner(models.Model):
         """
         self.ensure_one()
 
+        action = self.env.ref('crm.crm_lead_opportunities').read()[0]
+
         form_view = self.env.ref('crm.crm_case_form_view_oppor')
         tree_view = self.env.ref('crm.crm_case_tree_view_leads')
+
+        # Define as views manualmente
+        action_views = []
+        for view_id, view_type in action['views']:
+            if view_type == 'tree':
+                view_id = tree_view.id
+            elif view_type == 'form':
+                view_id = form_view.id
+            action_views.append((view_id, view_type))
+        action['views'] = action_views
 
         # the opportunity count should counts the opportunities of this
         # company and all its contacts
         operator = 'child_of' if self.is_company else '='
 
-        return {
-            'name': _('Opportunity(s)'),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'crm.lead',
-            'view_id': False,
-            'domain': [
-                ('partner_id', operator, self.id),
-                ('type', '=', 'opportunity')
-            ],
-            'context': {
-                'create': False,
-                'edit': False,
-            },
-            'views': [
-                (tree_view.id, 'tree'),
-                (form_view.id, 'form'),
-                (False, 'calendar'),
-                (False, 'graph')
-            ],
-        }
+        # define o domain manualmente
+        domain = [('partner_id', operator, self.id)]
+        domain += eval(action['domain'])
+        action['domain'] = domain
+
+        return action
