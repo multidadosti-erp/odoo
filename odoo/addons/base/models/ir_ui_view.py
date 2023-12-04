@@ -1002,6 +1002,9 @@ actual arch.
             'parent',
             'id',
             'uid',
+            'user', # Adicionado pela Multidados:
+                    # Objetivo é poder usar o 'user' que adicionamos os
+                    # valores do usuário no contexto com a função 'session_info'
             'context',
             'context_today',
             'active_id',
