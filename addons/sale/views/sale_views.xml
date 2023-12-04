@@ -1059,7 +1059,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//field[@name='user_id']" position="after">
-                        <field name="team_id"/>
+                        <field name="team_id" options="{'no_create': True, 'no_open': True, 'no_edit': True}"/>
                     </xpath>
                     <xpath expr="//field[@name='partner_id']" position="after">
                        <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"/>
