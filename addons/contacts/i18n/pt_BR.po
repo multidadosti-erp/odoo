@@ -34,12 +34,12 @@ msgstr "Configuração"
 #. module: contacts
 #: model:ir.ui.menu,name:contacts.menu_partner_category_form
 msgid "Contact Tags"
-msgstr "Tags do Contato"
+msgstr "Marcadores"
 
 #. module: contacts
 #: model:ir.ui.menu,name:contacts.menu_partner_title_contact
 msgid "Contact Titles"
-msgstr "Tratamento para o contato"
+msgstr "Tratamento para o Parceiro"
 
 #. module: contacts
 #: model:ir.actions.act_window,name:contacts.action_contacts
