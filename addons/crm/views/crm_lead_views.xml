@@ -883,9 +883,14 @@ for rec in records:
             action="sales_team.crm_team_salesteams_act"
             sequence="4"/>
 
+        <menuitem id="crm_partner_categ"
+            name="Partners"
+            parent="crm_menu_root"
+            sequence="5"/>
+
         <menuitem id="res_partner_menu_customer"
             name="Customers"
-            parent="crm_menu_sales"
+            parent="crm_partner_categ"
             action="base.action_partner_form"
             sequence="5"/>
 
