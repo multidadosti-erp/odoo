@@ -565,7 +565,8 @@
 
         > tfoot > tr > td {
             padding: 3px;
-            color: $o-main-text-color;
+            color: #fff;
+            // color: $o-main-text-color;
         }
     }
     &.o_form_readonly .o_field_widget .o_list_view .o_row_handle {
