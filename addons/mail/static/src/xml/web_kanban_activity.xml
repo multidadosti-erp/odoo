@@ -4,7 +4,9 @@
 <t t-name="mail.KanbanActivity">
     <div class="o_kanban_inline_block dropdown o_kanban_selection o_mail_activity">
         <a class="dropdown-toggle o-no-caret o_activity_btn" data-toggle="dropdown" role="button">
-            <span class="fa fa-clock-o fa-lg fa-fw" t-att-title="widget.selection[widget.activityState]" role="img" t-att-aria-label="widget.selection[widget.activity_state]"/>
+            <span class="fa fa-clock-o fa-lg fa-fw" role="img"
+                  t-att-title="widget.selection[widget.activityState] || 'No Activities'"
+                  t-att-aria-label="widget.selection[widget.activity_state] || 'No Activities'"/>
         </a>
         <div class="dropdown-menu o_activity" role="menu"/>
     </div>
