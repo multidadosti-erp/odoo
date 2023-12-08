@@ -98,6 +98,43 @@
             </field>
         </record>
 
+        <record id="view_picking_details_move_tree" model="ir.ui.view">
+            <field name="name">stock.picking.details.move.tree</field>
+            <field name="model">stock.move</field>
+            <field eval="90" name="priority"/>
+            <field name="arch" type="xml">
+                <tree limit="500"
+                      create="0" delete="0"
+                      string="Stock Moves" editable="bottom"
+                      decoration-danger="not parent.immediate_transfer and state != 'done' and quantity_done > reserved_availability and show_reserved_availability"
+                      decoration-muted="scrapped == True or state == 'cancel' or (state == 'done' and is_locked == True)">
+                    <field name="name" invisible="1"/>
+                    <field name="date_expected" invisible="1"/>
+                    <field name="state" invisible="1" readonly="0"/>
+                    <field name="picking_type_id" invisible="1"/>
+                    <field name="location_id" invisible="1"/>
+                    <field name="location_dest_id" invisible="1"/>
+                    <field name="scrapped" invisible="1"/>
+                    <field name="picking_code" invisible="1"/>
+                    <field name="product_type" invisible="1"/>
+                    <field name="show_details_visible" invisible="1"/>
+                    <field name="show_reserved_availability" invisible="1"/>
+                    <field name="show_operations" invisible="1" readonly="1"/>
+                    <field name="additional" invisible="1"/>
+                    <field name="has_move_lines" invisible="1"/>
+                    <field name="is_locked" invisible="1"/>
+                    <field name="product_id" required="1" invisible="1"/>
+                    <field name="is_initial_demand_editable" invisible="1"/>
+                    <field name="is_quantity_done_editable" invisible="1"/>
+                    <field name="product_uom_qty" string="Initial Demand" attrs="{'column_invisible': ['&amp;',('parent.immediate_transfer', '=', True), ('parent.is_locked', '=', True)], 'readonly': [('is_initial_demand_editable', '=', False)]}"/>
+                    <field name="reserved_availability" string="Reserved" attrs="{'column_invisible': (['|','|', ('parent.state','=', 'done'), ('parent.picking_type_code', '=', 'incoming'),'&amp;',('parent.immediate_transfer', '=', True), ('parent.is_locked', '=', True)])}"/>
+                    <field name="quantity_done" string="Done" attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+                    <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft'), ('id', '!=', False)]}" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                    <button name="action_show_details" string="Register lots, packs, location" type="object" icon="fa-list"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="view_move_kandan" model="ir.ui.view">
             <field name="name">stock.move.kanban</field>
             <field name="model">stock.move</field>
