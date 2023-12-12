@@ -35,21 +35,33 @@
         <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <form string="Stage">
-                <group>
-                    <field name="team_count" invisible="1"/>
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
                     <group>
-                        <field name="name"/>
-                        <field name="team_id" options='{"no_open": True, "no_create": True}' attrs="{'invisible': [('team_count', '&lt;=', 1)]}"/>
-                        <field name="fold_is_empty"/>
-                        <field name="fold"/>
+                        <field name="team_count" invisible="1"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="team_id" options='{"no_open": True, "no_create": True}' attrs="{'invisible': [('team_count', '&lt;=', 1)]}"/>
+                            <field name="fold_is_empty"/>
+                            <field name="fold"/>
+                        </group>
+                        <group>
+                            <field name="on_change"/>
+                            <field name="probability" attrs="{'invisible': [('on_change', '=', False)]}"/>
+                        </group>
                     </group>
-                    <group>
-                        <field name="on_change"/>
-                        <field name="probability" attrs="{'invisible': [('on_change', '=', False)]}"/>
-                    </group>
-                </group>
-                <separator string="Requirements"/>
-                <field name="requirements" nolabel="1" placeholder="Give your team the requirements to move an opportunity to this stage."/>
+                    <separator string="Requirements"/>
+                    <field name="requirements" nolabel="1" placeholder="Give your team the requirements to move an opportunity to this stage."/>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>

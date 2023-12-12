@@ -18,6 +18,7 @@ class Stage(models.Model):
         Stages are for example used to display the kanban view of records.
     """
     _name = "crm.stage"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "CRM Stages"
     _rec_name = 'name'
     _order = "sequence, name, id"
@@ -32,16 +33,17 @@ class Stage(models.Model):
             ctx.pop('default_team_id')
         return super(Stage, self.with_context(ctx)).default_get(fields)
 
-    name = fields.Char('Stage Name', required=True, translate=True)
+    name = fields.Char('Stage Name', required=True, translate=True, track_visibility='onchange',)
     sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
-    probability = fields.Float('Probability (%)', required=True, default=10.0, help="This percentage depicts the default/average probability of the Case for this stage to be a success")
+    probability = fields.Float('Probability (%)', required=True, default=10.0, track_visibility='onchange', help="This percentage depicts the default/average probability of the Case for this stage to be a success")
     on_change = fields.Boolean('Change Probability Automatically', help="Setting this stage will change the probability automatically on the opportunity.")
-    requirements = fields.Text('Requirements', help="Enter here the internal requirements for this stage (ex: Offer sent to customer). It will appear as a tooltip over the stage's name.")
-    team_id = fields.Many2one('crm.team', string='Sales Team', ondelete='set null',
+    requirements = fields.Text('Requirements', track_visibility='onchange', help="Enter here the internal requirements for this stage (ex: Offer sent to customer). It will appear as a tooltip over the stage's name.")
+    team_id = fields.Many2one('crm.team', string='Sales Team', ondelete='set null', track_visibility='onchange',
         help='Specific team that uses this stage. Other teams will not be able to see or use this stage.')
     legend_priority = fields.Text('Priority Management Explanation', translate=True,
         help='Explanation text to help users using the star and priority mechanism on stages or issues that are in this stage.')
     fold = fields.Boolean('Folded in Pipeline',
+        track_visibility='onchange',
         help='This stage is folded in the kanban view.')
 
     # Multidados
