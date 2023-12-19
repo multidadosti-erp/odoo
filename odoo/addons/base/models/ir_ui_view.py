@@ -1177,6 +1177,11 @@ actual arch.
                         not self._context.get(action, True) and is_base_model):
                     node.set(action, 'false')
 
+        if node.tag in ('tree',):
+            if not node.get('list_dynamic') and \
+              (not self.env.context.get('list_dynamic', True) and is_base_model):
+                node.set('list_dynamic', 'false')
+
         if node.tag in ('kanban',):
             group_by_name = node.get('default_group_by')
             if group_by_name in Model._fields:
