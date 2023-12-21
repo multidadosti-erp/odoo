@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-23 14:05+0000\n"
-"PO-Revision-Date: 2023-10-23 14:05+0000\n"
+"POT-Creation-Date: 2023-12-21 18:15+0000\n"
+"PO-Revision-Date: 2023-12-21 18:15+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -768,6 +768,13 @@ msgid "Assigned user %s has no access to the document and is not able to handle 
 msgstr "O usuário atribuído %s não tem acesso ao documento e não pode lidar com esta atividade."
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/xml/systray.xml:94
+#, python-format
+msgid "Atrasado"
+msgstr ""
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
 msgid "Attach a file"
 msgstr "Anexar um arquivo"
@@ -806,11 +813,6 @@ msgstr "Anexos"
 #: model:ir.model.fields,help:mail.field_mail_message__attachment_ids
 msgid "Attachments are linked to a document through model / res_id and to the message through this field."
 msgstr "Anexos estão ligados a um documento através de modelo / res_id e à mensagem através deste campo."
-
-#. module: mail
-#: selection:mail.alias,alias_contact:0
-msgid "Authenticated Employees"
-msgstr "Funcionários Autenticados"
 
 #. module: mail
 #: selection:mail.alias,alias_contact:0
@@ -1284,6 +1286,11 @@ msgid "Connection failed (outgoing mail server problem)"
 msgstr "Falha na conexão (problema no servidor de saída)"
 
 #. module: mail
+#: model:ir.model,name:mail.model_res_partner
+msgid "Contact"
+msgstr "Contato"
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 #: model_terms:ir.ui.view,arch_db:mail.view_message_search
 msgid "Content"
@@ -1428,18 +1435,6 @@ msgid "Current user is a moderator of the channel"
 msgstr "O usuário atual é um moderador do canal"
 
 #. module: mail
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Custom Info"
-msgstr "Informação Personalizada"
-
-#. module: mail
-#: selection:ir.actions.act_window.view,view_mode:0
-#: selection:ir.ui.view,type:0
-msgid "Dashboard"
-msgstr "Painel"
-
-#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__date
 #: model:ir.model.fields,field_description:mail.field_mail_mail__date
 #: model:ir.model.fields,field_description:mail.field_mail_message__date
@@ -1461,7 +1456,7 @@ msgstr "Dias"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:52
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:54
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 #, python-format
 msgid "Deadline"
@@ -1723,6 +1718,13 @@ msgstr "Documento não baixável"
 
 #. module: mail
 #. openerp-web
+#: code:addons/mail/static/src/xml/activity.xml:101
+#, python-format
+msgid "Done"
+msgstr "Concluído"
+
+#. module: mail
+#. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:105
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
 #, python-format
@@ -1736,15 +1738,6 @@ msgstr "Concluído e iniciar Próximo"
 #, python-format
 msgid "Done & Schedule Next"
 msgstr "Pronto e Programar Próximo"
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/xml/activity.xml:101
-#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
-#: selection:mail.activity,state:0
-#, python-format
-msgid "Done"
-msgstr "Concluído"
 
 #. module: mail
 #. openerp-web
@@ -2243,6 +2236,13 @@ msgid "Future Activities"
 msgstr "Atividades Futuras"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/xml/systray.xml:98
+#, python-format
+msgid "Futuro"
+msgstr ""
+
+#. module: mail
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Gantt"
@@ -2369,6 +2369,13 @@ msgid "Hide the subtype in the follower options"
 msgstr "Esconder o subtipo nas opções dos seguidores"
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/xml/systray.xml:96
+#, python-format
+msgid "Hoje"
+msgstr ""
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_email_template_preview__id
 #: model:ir.model.fields,field_description:mail.field_mail_activity__id
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__id
@@ -2396,7 +2403,7 @@ msgstr "Esconder o subtipo nas opções dos seguidores"
 #: model:ir.model.fields,field_description:mail.field_mail_wizard_invite__id
 #: model:ir.model.fields,field_description:mail.field_publisher_warranty_contract__id
 msgid "ID"
-msgstr "Id."
+msgstr ""
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_alias__alias_parent_thread_id
@@ -2878,7 +2885,7 @@ msgstr "Carregando mensagens anteriores..."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:21
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:23
 #, python-format
 msgid "Loading..."
 msgstr "Carregando..."
@@ -2886,7 +2893,7 @@ msgstr "Carregando..."
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/js/composers/chatter_composer.js:35
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:47
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:49
 #: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
 #, python-format
 msgid "Log"
@@ -2932,7 +2939,7 @@ msgstr "Registrar ou agendar uma atividade"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:68
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:57
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:59
 #: model:ir.model.fields,field_description:mail.field_mail_notification__mail_id
 #, python-format
 msgid "Mail"
@@ -3076,7 +3083,7 @@ msgstr "Marcar como Para Fazer"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:77
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:79
 #, python-format
 msgid "Mark as done"
 msgstr "Marcar como Completo"
@@ -3104,7 +3111,6 @@ msgid "Medium-sized photo of the group. It is automatically resized as a 128x128
 msgstr "Foto de tamanho médio para o grupo. Ela será automaticamente redimensionada para 128x128 pixels, com a relação de aspecto preservada. Utilize este campo nas visões de formulário ou em algumas visões kanban."
 
 #. module: mail
-#: selection:mail.activity.type,category:0
 #: model:mail.activity.type,name:mail.mail_activity_data_meeting
 msgid "Meeting"
 msgstr "Reunião"
@@ -3600,7 +3606,7 @@ msgstr "Sem erro"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/systray.xml:68
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:26
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:28
 #, python-format
 msgid "No activities planned."
 msgstr "Nenhuma atividade agendada"
@@ -3778,7 +3784,7 @@ msgstr "MultiERP"
 #: code:addons/mail/static/src/xml/discuss.xml:158
 #, python-format
 msgid "Offline"
-msgstr ""
+msgstr "Desligado"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_tracking_value__old_value_char
@@ -4040,7 +4046,6 @@ msgid "Parent subtype, used for automatic subscription. This field is not correc
 msgstr "Subtipo pai, usado para a subscrição automática. Este campo não está corretamente identificado. Por exemplo, em um projeto, o parent_id dos subtipos do projeto refere-se a subtipos relacionados a tarefas."
 
 #. module: mail
-#: model:ir.model,name:mail.model_res_partner
 #: model:ir.model.fields,field_description:mail.field_mail_resend_partner__partner_id
 msgid "Partner"
 msgstr "Parceiro"
@@ -4235,7 +4240,7 @@ msgstr "Endereço de resposta preferido (placeholders podem ser usados aqui)"
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:70
 #: code:addons/mail/static/src/xml/discuss.xml:276
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:60
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:62
 #: model_terms:ir.ui.view,arch_db:mail.email_template_form
 #, python-format
 msgid "Preview"
@@ -4375,11 +4380,6 @@ msgid "References"
 msgstr "Referências"
 
 #. module: mail
-#: selection:ir.actions.server,state:0
-msgid "Refresh Views"
-msgstr "Atualizar Visualizações"
-
-#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.mail_bounce_catchall
 msgid "Regards,"
 msgstr "Saudações,"
@@ -4451,11 +4451,6 @@ msgstr "Parceiro Relacionado"
 #: model:ir.model.fields,field_description:mail.field_mail_message_subtype__relation_field
 msgid "Relation field"
 msgstr "Campo da relação"
-
-#. module: mail
-#: selection:mail.activity.type,category:0
-msgid "Reminder"
-msgstr "Lembrar"
 
 #. module: mail
 #. openerp-web
@@ -4619,7 +4614,7 @@ msgstr "Agendar uma atividade"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:88
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:90
 #, python-format
 msgid "Schedule an activity"
 msgstr "Agendar uma atividade"
@@ -4719,7 +4714,7 @@ msgstr "Enviar E-mail (%s)"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:72
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:62
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:64
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
 #, python-format
@@ -5488,18 +5483,13 @@ msgid "Use your own email servers"
 msgstr "Use seus próprios servidores de email"
 
 #. module: mail
-#: model:ir.model.fields,help:mail.field_mail_activity__display_name
-msgid "Used to diplay a name for the activity based on partner's name."
-msgstr "Usado para exibir um nome para a atividade com base no nome do parceiro."
-
-#. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_subtype__sequence
 msgid "Used to order subtypes."
 msgstr "Utilizar para os demais subtipos"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:67
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:69
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_alias_search
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
@@ -5938,6 +5928,11 @@ msgid "assigned you an activity"
 msgstr "atribuiu a você uma atividade"
 
 #. module: mail
+#: model:mail.channel,name:mail.channel_2
+msgid "board-meetings"
+msgstr ""
+
+#. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:43
 #: model_terms:ir.ui.view,arch_db:mail.message_notification_email
@@ -6087,7 +6082,7 @@ msgstr "ligado"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/activity.xml:71
-#: code:addons/mail/static/src/xml/web_kanban_activity.xml:61
+#: code:addons/mail/static/src/xml/web_kanban_activity.xml:63
 #, python-format
 msgid "or"
 msgstr "ou"
@@ -6103,6 +6098,11 @@ msgstr "postar uma mensagem sem modelo deve ser com um res_id nulo (mensagem pri
 #, python-format
 msgid "posting a message without model should be with a parent_id (private message)"
 msgstr "postar uma mensagem sem modelo deve ser com um parent_id (mensagem privada)"
+
+#. module: mail
+#: model:mail.channel,name:mail.channel_3
+msgid "rd"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -6160,6 +6160,11 @@ msgid "restricted to known authors"
 msgstr "restrito a autores conhecidos"
 
 #. module: mail
+#: model:mail.channel,name:mail.channel_1
+msgid "sales"
+msgstr ""
+
+#. module: mail
 #: code:addons/mail/models/mail_thread.py:1039
 #: code:addons/mail/models/mail_thread.py:1057
 #: code:addons/mail/models/mail_thread.py:1060
@@ -6215,3 +6220,4 @@ msgstr "usando"
 #: selection:mail.activity.type,delay_unit:0
 msgid "weeks"
 msgstr "semanas"
+
