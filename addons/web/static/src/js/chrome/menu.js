@@ -104,6 +104,11 @@ var Menu = Widget.extend({
         this.$menu_sections[primary_menu_id].appendTo(this.$section_placeholder);
         this.current_primary_menu = primary_menu_id;
 
+        // Adicionado pela Multidados
+        // Foi adicionado para corrigir o problema de clicar em um
+        // app e o menu não fechar.
+        this.$menu_apps.find('.show').removeClass('show');
+
         core.bus.trigger('resize');
     },
     _trigger_menu_clicked: function (menu_id, action_id) {
