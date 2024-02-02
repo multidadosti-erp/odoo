@@ -724,16 +724,29 @@ var ProductCategoriesWidget = PosBaseWidget.extend({
             self.clear_search();
         };
 
+        // Alterações da Multidados:
+        // Adiciona timeout para dar um tempo entre os cliques das teclas
         var search_timeout  = null;
+        var timeouts_object  = {};
         this.search_handler = function(event){
             if(event.type == "keypress" || event.keyCode === 46 || event.keyCode === 8){
+                // Caso a função seja executada novamente antes do período do
+                // timeout, remove os timeouts criados anteriormente para não
+                // serem executados novamente.
                 clearTimeout(search_timeout);
+                clearTimeout(timeouts_object.fetch_timeout || null);
+                timeouts_object.fetch_timeout = null;
 
                 var searchbox = this;
 
                 search_timeout = setTimeout(function(){
-                    self.perform_search(self.category, searchbox.value, event.which === 13);
-                },70);
+                    self.perform_search(     // * args names *
+                        self.category,       //  category
+                        searchbox.value,     //  query
+                        event.which === 13,  //  buy_result
+                        timeouts_object      //  timeouts
+                    );
+                }, 70);
             }
         };
     },
@@ -858,7 +871,12 @@ var ProductCategoriesWidget = PosBaseWidget.extend({
             input.value = '';
             input.focus();
     },
-    perform_search: function(category, query, buy_result){
+    perform_search: function(category, query, buy_result, timeouts){
+        /* Adicionado pela multidados:
+         *  - Adiciona parâmetro timeouts para tratar a atualização dos
+         *    produtos na função 'search_handler'
+         *  - Adiciona retorno dos produtos obtidos para atualizar o estoque
+        */
         var products;
         if(query){
             products = this.pos.db.search_product_in_category(category.id,query);
@@ -872,6 +890,7 @@ var ProductCategoriesWidget = PosBaseWidget.extend({
             products = this.pos.db.get_product_by_category(this.category.id);
             this.product_list_widget.set_product_list(products);
         }
+        return products
     },
 
 });
