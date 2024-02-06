@@ -1511,7 +1511,7 @@ msgstr "Nenhum assento disponível para este evento."
 #: model:ir.model.fields,field_description:event.field_event_event__message_needaction_counter
 #: model:ir.model.fields,field_description:event.field_event_registration__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Número de ações"
+msgstr "Número de Ações"
 
 #. module: event
 #: model:ir.model.fields,field_description:event.field_event_event__seats_expected

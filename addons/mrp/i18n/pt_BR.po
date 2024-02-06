@@ -2234,7 +2234,7 @@ msgstr "Observações"
 #: model:ir.model.fields,field_description:mrp.field_mrp_unbuild__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Número de ações"
+msgstr "Número de Ações"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_stock_picking_type__count_mo_late
