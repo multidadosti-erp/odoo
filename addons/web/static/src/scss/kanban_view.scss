@@ -379,6 +379,10 @@
         &.o_kanban_small_column .o_kanban_group:not(.o_column_folded) {
             width: $o-kanban-small-record-width + 2*$o-kanban-group-padding;
         }
+
+        &.o_kanban_large_column .o_kanban_group:not(.o_column_folded) {
+            width: $o-kanban-large-record-width + 2*$o-kanban-group-padding;
+        }
     }
 
     // Kanban Grouped Layout - Column default
@@ -542,6 +546,10 @@
             flex: 1 1 auto;
             width: $o-kanban-default-record-width;
             margin: ($o-kanban-record-margin * 0.5) $o-kanban-record-margin;
+
+            &.oe_kanban_large {
+                width: $o-kanban-large-record-width;
+            }
 
             @include media-breakpoint-down(sm) {
                 margin: 0 0 -1px 0;
