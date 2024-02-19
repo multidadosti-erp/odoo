@@ -38,7 +38,8 @@ var UserMenu = Widget.extend({
                 $avatar.attr('src', $avatar.data('default-src'));
                 return $.when();
             }
-            var topbar_name = session.name;
+            var topbar_name = session.name.split(' ').slice(0, 2).join(' ');
+
             if (session.debug) {
                 topbar_name = _.str.sprintf("%s (%s)", topbar_name, session.db);
             }
