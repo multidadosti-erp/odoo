@@ -445,16 +445,18 @@ class GettextAlias(object):
                     env = odoo.api.Environment(cr, odoo.SUPERUSER_ID, {})
                     res = env['ir.translation']._get_source(None, ('code','sql_constraint'), lang, source)
 
-                    # Adicionado pela Multidados por Erro de Tradução do Odoo
-                    # nas Categorias, acertando o Parametro para Localização
-                    # nas Traduções
+                    # Adicionado pela Multidados por Erro de Tradução do Odoo nas
+                    # Categorias, acertando o Parametro para Localização nas Traduções
                     if lang and res == source:
-                        res = env['ir.translation']._get_source(
-                            'ir.module.category,name', ('model'), lang, source)
+                        res = env['ir.translation']._get_source('ir.module.category,name', ('model'), lang, source)
+
+                    if lang and res == source:
+                        res = env['ir.translation']._get_source(None, ('selection'), lang, source)
                 else:
                     _logger.debug('no context cursor detected, skipping translation for "%r"', source)
             else:
                 _logger.debug('no translation language detected, skipping translation for "%r" ', source)
+
         except Exception:
             _logger.debug('translation went wrong for "%r", skipped', source)
                 # if so, double-check the root/base translations filenames
