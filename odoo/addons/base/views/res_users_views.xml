@@ -162,12 +162,14 @@
                     </header>
                     <sheet>
                         <field name="id" invisible="1"/>
+                        <field name="active_partner" required="0" readonly="1" invisible="1"/>
+
                         <div class="oe_button_box" name="button_box">
                             <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-check">
                                 <field name="active" widget="boolean_button" options='{"terminology": "active"}'/>
                             </button>
                         </div>
-                        <field name="active_partner" required="0" readonly="1" invisible="1"/>
+
                         <div class="alert alert-info text-center o_form_header"
                             attrs="{'invisible': [
                                 '|', '|',
@@ -176,33 +178,35 @@
                                 '&amp;', ('active', '=', True), ('active_partner', '=', False),
                             ]}"
                             role="alert">
-                          <a class="close" data-dismiss="alert" href="#">x</a>
-                          <div>
-                            <strong>The contact linked to this user is still active</strong>
-                          </div>
-                          <div>You can archive the contact
-                            <field name="partner_id" required="0" readonly="1"/>
-                          </div>
+                            <a class="close" data-dismiss="alert" href="#">x</a>
+                            <div>
+                                <strong>The contact linked to this user is still active</strong>
+                            </div>
+                            <div>You can archive the contact
+                                <field name="partner_id" required="0" readonly="1"/>
+                            </div>
                         </div>
-                        <field name="image" widget='image' class="oe_avatar" options='{"preview_image": "image_medium"}'/>
+
+                        <field name="image" nolabel="1" widget='image' class="oe_avatar"/>
+
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
                             <h1><field name="name" required="1"/></h1>
                             <field name="email" invisible="1"/>
                             <label for="login" class="oe_edit_only" string="Email Address"/>
                             <h2><field name="login"/></h2>
-                            <group>
-                                <field name="partner_id" readonly="1" required="0" groups="base.group_no_one"
-                                        attrs="{'invisible': [('id', '=', False)]}"/>
-                            </group>
                         </div>
-                        <notebook colspan="4">
+
+                        <field name="partner_id" nolabel="1" readonly="1" required="0" attrs="{'invisible': [('id', '=', False)]}"/>
+
+                        <notebook>
                             <page name="access_rights" string="Access Rights">
-                                <group string="Multi Companies" attrs="{'invisible': [('companies_count', '&lt;=', 1)]}">
+                                <group name="multi_companies" string="Multi Companies" attrs="{'invisible': [('companies_count', '&lt;=', 1)]}">
                                     <field string="Allowed Companies" name="company_ids" widget="many2many_tags" options="{'no_create': True}"/>
                                     <field string="Current Company" name="company_id" context="{'user_preference': 0}"/>
                                     <field string="Companies count" name="companies_count" invisible="1"/>
                                 </group>
+
                                 <field name="groups_id"/>
                             </page>
                             <page string="Preferences">
