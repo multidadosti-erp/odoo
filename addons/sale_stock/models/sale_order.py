@@ -205,7 +205,7 @@ class SaleOrderLine(models.Model):
         super(SaleOrderLine, self)._compute_qty_delivered()
 
         for line in self:  # TODO: maybe one day, this should be done in SQL for performance sake
-            if line.qty_delivered_method == 'stock_move':
+            if line.qty_delivered_method == 'stock_move' and line.product_id.type in ('product', 'consu'):
                 qty = 0.0
                 for move in line.move_ids.filtered(lambda r: r.state == 'done' and not r.scrapped and line.product_id == r.product_id):
                     if move.location_dest_id.usage == "customer":
