@@ -106,13 +106,17 @@ class IrAttachment(models.Model):
     def _file_read(self, fname, bin_size=False):
         full_path = self._full_path(fname)
         r = ''
-        try:
-            if bin_size:
-                r = human_size(os.path.getsize(full_path))
-            else:
-                r = base64.b64encode(open(full_path,'rb').read())
-        except (IOError, OSError):
-            _logger.info("_read_file reading %s", full_path, exc_info=True)
+        # Adiciona verificação se existe o arquivo
+        # Evitando erro do Odoo desnecessário
+        # FileNotFoundError: [Errno 2] No such file or directory:
+        if os.path.isfile(full_path):
+            try:
+                if bin_size:
+                    r = human_size(os.path.getsize(full_path))
+                else:
+                    r = base64.b64encode(open(full_path,'rb').read())
+            except (IOError, OSError):
+                _logger.info("_read_file reading %s", full_path, exc_info=True)
         return r
 
     @api.model
