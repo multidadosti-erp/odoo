@@ -191,11 +191,20 @@ class PurchaseOrder(models.Model):
             'company_id': self.company_id.id,
         }
 
+    def _return_product_type_create_picking(self):
+        """ Método Criado para Poder ser Herdado e Adicionar
+           novos Type nos Produtos.
+
+        Returns:
+            list: Type dos Produtos para Criação Picking
+        """
+        return ['product', 'consu']
+
     @api.multi
     def _create_picking(self):
         StockPicking = self.env['stock.picking']
         for order in self:
-            if any([ptype in ['product', 'consu'] for ptype in order.order_line.mapped('product_id.type')]):
+            if any([ptype in self._return_product_type_create_picking() for ptype in order.order_line.mapped('product_id.type')]):
                 pickings = order.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
                 if not pickings:
                     res = order._prepare_picking()
@@ -250,7 +259,7 @@ class PurchaseOrderLine(models.Model):
     @api.multi
     def _create_or_update_picking(self):
         for line in self:
-            if line.product_id.type in ('product', 'consu'):
+            if line.product_id.type in line.order_id._return_product_type_create_picking():
                 # Prevent decreasing below received quantity
                 if float_compare(line.product_qty, line.qty_received, line.product_uom.rounding) < 0:
                     raise UserError(_('You cannot decrease the ordered quantity below the received quantity.\n'
@@ -353,7 +362,7 @@ class PurchaseOrderLine(models.Model):
         for move in self.move_ids.filtered(lambda x: x.state != 'cancel' and not x.location_dest_id.usage == "supplier"):
             qty += move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom, rounding_method='HALF-UP')
         return qty
-    
+
     @api.multi
     def _create_stock_moves(self, picking):
         values = []
