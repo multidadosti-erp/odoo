@@ -113,6 +113,11 @@ class HrExpense(models.Model):
                 amount = expense.currency_id._convert(
                     expense.total_amount, expense.company_currency_id,
                     expense.company_id or expense.sheet_id.company_id, date_expense or fields.Date.today())
+
+            # Adicionado pela Multidados:
+            #  - condição para não zerar o valor.
+            else:
+                amount = expense.total_amount
             expense.total_amount_company = amount
 
     @api.multi
