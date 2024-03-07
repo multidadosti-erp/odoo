@@ -281,11 +281,69 @@
             </field>
         </record>
 
-        <record id="hr_expense_actions_all" model="ir.actions.act_window">
+        <!-- Alterado pela Multidados:
+         - Altera id para diferenciar action de Análise da de todas as Despesas
+        -->
+        <record id="hr_expense_actions_expenses_analysis" model="ir.actions.act_window">
+            <field name="name">Expenses Analysis</field>
+            <field name="res_model">hr.expense</field>
+            <field name="view_mode">graph,pivot,tree,kanban,form</field>
+            <field name="search_view_id" ref="view_hr_expense_filter"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No expenses to show
+              </p>
+            </field>
+        </record>
+
+        <!-- Adicionado pela Multidados:
+         - Adiciona action de todas as Despesas
+        -->
+        <record id="hr_expense_actions_all_expenses" model="ir.actions.act_window">
             <field name="name">All Expenses</field>
             <field name="res_model">hr.expense</field>
-            <field name="view_mode">graph,pivot,tree,kanban,form,activity</field>
+            <field name="view_mode">tree,kanban,form,activity</field>
             <field name="search_view_id" ref="view_hr_expense_filter"/>
+            <field name="context">{'search_default_payment_mode': 1, 'search_default_no_report': 1, 'search_default_no_report_invoice': 1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new expense
+              </p>
+            </field>
+        </record>
+
+        <!-- Adicionado pela Multidados:
+         - Adiciona action de Despesas pagas por funcionários
+        -->
+        <record id="hr_expense_actions_employee_expenses" model="ir.actions.act_window">
+            <field name="name">Employee Expenses</field>
+            <field name="res_model">hr.expense</field>
+            <field name="view_mode">tree,kanban,form,activity</field>
+            <field name="search_view_id" ref="view_hr_expense_filter"/>
+            <field name="context">{'default_payment_mode': 'own_account',
+                                   'search_default_no_report': 1,
+                                   'search_default_no_report_invoice': 1}
+            </field>
+            <field name="domain">[('payment_mode', '=', 'own_account')]</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new expense
+              </p>
+            </field>
+        </record>
+
+        <!-- Adicionado pela Multidados:
+         - Adiciona action de Despesas pagas pela empresa
+        -->
+        <record id="hr_expense_actions_company_expenses" model="ir.actions.act_window">
+            <field name="name">Company Expenses</field>
+            <field name="res_model">hr.expense</field>
+            <field name="view_mode">tree,kanban,form,activity</field>
+            <field name="search_view_id" ref="view_hr_expense_filter"/>
+            <field name="context">{'default_payment_mode': 'company_account',
+                                   'search_default_no_report_invoice': 1}
+            </field>
+            <field name="domain">[('payment_mode', '=', 'company_account')]</field>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
                 Create a new expense
