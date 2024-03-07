@@ -627,9 +627,114 @@ class HrExpenseSheet(models.Model):
             if len(employee_ids) > 1 or (len(employee_ids) == 1 and employee_ids != sheet.employee_id):
                 raise ValidationError(_('You cannot add expenses of another employee.'))
 
+    # Adicionado pela Multidados
+    def _get_expense_sheet_fieldname(self):
+        """ Método criado para facilitar herança na hora de
+        atualizar o campo referenciando o relatório de despesas.
+        No módulo 'br_hr_expense' foi adicionado o campo tipo
+        fiscal, aonde o campo de relatório na despesa pode ser
+        outro para relatórios do tipo fiscal de faturamento.
+           'invoice_sheet_id'.
+
+        Returns:
+            str: fieldname to relate sheet to expenses
+        """
+        return 'sheet_id'
+
+    # Adicionado pela Multidados
+    def _sync_related_expenses(self, x2m_operations, fieldname='sheet_id'):
+        """ Sicroniza operações X2Many, agrupando os registros que devem
+        ter o campo que relaciona com o relatório de despesas atualizado.
+
+        OBS: O métoto teve que ser adicionado para manter a sincronização
+          do campo Many2one da despesa com o Relatório. Anteriormente a
+          sincronização era feita de forma automática a partir de um campo
+          One2many.
+
+        Args:
+            x2m_operations (list): Lista com operações x2many.
+                                   ex: [(6, 0, [32, 43, 54]), (4, 56), (3, 67), (0, 0, {...}), (5, [])]
+            fieldname (str): Campo da Despesa que referencía ao relatório.
+
+        Returns:
+            dict: despesas a adicionar e a remover no relacionamento
+                ao relatório. utiliza as chaves 'add' e 'remove' para
+                identificação.
+        """
+        add, remove = [], []
+        for x2m_op in x2m_operations:
+            op = x2m_op[0]
+            if op == 4:  # Single add expense
+                add.append(x2m_op[1])
+            elif op == 3:  # Single unlink relation
+                remove.append(x2m_op[1])
+            elif op == 6:  # Batch adding
+                self._cr.execute("SELECT id FROM hr_expense "
+                                 f"WHERE {fieldname} = {self.id}")
+                for exp_id in self._cr.dictfetchall():
+                    if exp_id['id'] not in x2m_op[2]:
+                        remove.append(exp_id['id'])
+                add.extend(x2m_op[2])
+            elif op == 5:  # Batch unlinking relations
+                remove.extend(self.expense_line_ids.ids)
+            elif op == 0:  # Add value on creating
+                x2m_op[2][fieldname] = self.id
+
+        return {'add': add, 'remove': remove}
+
+    # Adicionado pela Multidados
+    def update_sync_related_expenses(self, values):
+        """ Atualiza registros de despesas a incluir e a remover
+        do relacionamento com 'self' a partir do campo obtido pela
+        função '_get_expense_sheet_fieldname'
+
+        Args:
+            values (dict): Valores de criação/atualização do sheet
+        """
+        expense_operations = values.get('expense_line_ids')
+        if not expense_operations:
+            # Não deve executar a função caso não tenham
+            # despesas nos valores de atualização
+            return
+
+        # Obtém nome do campo da despesa que relaciona com o relatório
+        # 'self'
+        fieldname = self._get_expense_sheet_fieldname()
+
+        # Obtém despesas a relacionar ou cortar o relacionamento com o
+        # expense.sheet 'self'
+        add_remove = self._sync_related_expenses(x2m_operations=expense_operations,
+                                                 fieldname=fieldname)
+
+        HrExpense = self.env['hr.expense']
+        # Atualiza campos de relacionamento
+        if add_remove.get('add'):
+            HrExpense.browse(add_remove['add']).write({fieldname: self.id})
+        if add_remove.get('remove'):
+            HrExpense.browse(add_remove['remove']).write({fieldname: False})
+
+    # Adicionado pela Multidados:
+    # - Adiciona sincronização dos campos many2one da despesa
+    #   com o relatório de despesas, caso o campo de despesas no
+    #   relatório tenha sido alterado
+    @api.multi
+    def write(self, vals):
+        res = super(HrExpenseSheet, self).write(vals)
+
+        # Atualiza na despesa, campo Many2one relacionando o relatório
+        if 'expense_line_ids' in vals:
+            for rec in self:
+                rec.update_sync_related_expenses(vals)
+
+        return res
+
+    # Adicionado pela Multidados:
+    # - Adiciona sincronização dos campos many2one da despesa
+    #   com o relatório de despesas.
     @api.model
     def create(self, vals):
         sheet = super(HrExpenseSheet, self.with_context(mail_create_nosubscribe=True)).create(vals)
+        sheet.update_sync_related_expenses(vals)
         sheet.activity_update()
         return sheet
 
