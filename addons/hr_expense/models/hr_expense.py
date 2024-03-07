@@ -151,7 +151,7 @@ class HrExpense(models.Model):
     @api.multi
     def unlink(self):
         for expense in self:
-            if expense.state in ['done', 'approved']:
+            if expense.state in ['done', 'approved', 'post']:
                 raise UserError(_('You cannot delete a posted or approved expense.'))
         return super(HrExpense, self).unlink()
 
@@ -539,7 +539,18 @@ class HrExpenseSheet(models.Model):
         return self.env['account.journal'].search([('type', 'in', ['cash', 'bank'])], limit=1)
 
     name = fields.Char('Expense Report Summary', required=True)
-    expense_line_ids = fields.One2many('hr.expense', 'sheet_id', string='Expense Lines', states={'approve': [('readonly', True)], 'done': [('readonly', True)], 'post': [('readonly', True)]}, copy=False)
+
+    # Altera tipo do campo de despesas para Many2many
+    # ao inves de One2many.
+    expense_line_ids = fields.Many2many(
+        comodel_name='hr.expense',
+        string='Expense Lines',
+        states={'approve': [('readonly', True)], 'done': [('readonly', True)], 'post': [('readonly', True)]},
+        copy=False,
+        help="Expenses related to the sheet. Changes on this field "
+             "are managed on 'create' and 'write' methods to keep, expenses "
+             "with right values for sheet fields on expenses.")
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('submit', 'Submitted'),
@@ -550,7 +561,17 @@ class HrExpenseSheet(models.Model):
     ], string='Status', index=True, readonly=True, track_visibility='onchange', copy=False, default='draft', required=True, help='Expense Report State')
     employee_id = fields.Many2one('hr.employee', string="Employee", required=True, readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1))
     address_id = fields.Many2one('res.partner', string="Employee Home Address")
-    payment_mode = fields.Selection([("own_account", "Employee (to reimburse)"), ("company_account", "Company")], related='expense_line_ids.payment_mode', default='own_account', readonly=True, string="Paid By")
+
+    # Aleterado pela multidados:
+    #  - faz com que o campo não seja related.
+    payment_mode = fields.Selection(
+        [("own_account", "Employee (to refund)"),
+         ("company_account", "Company")],
+        # related='expense_line_ids.payment_mode',
+        default='own_account',
+        readonly=True,
+        string="Paid By")
+
     user_id = fields.Many2one('res.users', 'Manager', readonly=True, copy=False, states={'draft': [('readonly', False)]}, track_visibility='onchange', oldname='responsible_id')
     total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, digits=dp.get_precision('Account'))
     company_id = fields.Many2one('res.company', string='Company', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.user.company_id)
