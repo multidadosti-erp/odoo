@@ -909,25 +909,88 @@ if records:
             </field>
         </record>
 
+        <!--  Expenses root menu -->
         <menuitem id="menu_hr_expense_root" name="Expenses" sequence="100" web_icon="hr_expense,static/description/icon.png"/>
 
-        <menuitem id="menu_hr_expense_my_expenses" name="My Expenses" sequence="1" parent="menu_hr_expense_root" groups="base.group_user"/>
-        <menuitem id="menu_hr_expense_my_expenses_to_submit" sequence="1" parent="menu_hr_expense_my_expenses" action="hr_expense_actions_my_unsubmitted"/>
-        <menuitem id="menu_hr_expense_sheet_my_reports" sequence="3" parent="menu_hr_expense_my_expenses" action="action_hr_expense_sheet_my_all"/>
+        <!-- My Expenses Menu -->
+        <menuitem id="menu_hr_expense_my_expenses"
+                  name="My Expenses" sequence="1"
+                  parent="menu_hr_expense_root"
+                  groups="base.group_user"/>
 
-        <menuitem id="menu_hr_expense_report" name="Expense Reports" sequence="2" parent="menu_hr_expense_root" groups="hr_expense.group_hr_expense_user"/>
-        <menuitem id="menu_hr_expense_sheet_all_to_approve" name="To Approve" sequence="1" parent="menu_hr_expense_report"
-            action="action_hr_expense_sheet_all_to_approve"/>
-        <menuitem id="menu_hr_expense_sheet_all_to_post" name="To Post" sequence="2" parent="menu_hr_expense_report"
-            action="action_hr_expense_sheet_all_to_post" groups="account.group_account_user"/>
-        <menuitem id="menu_hr_expense_sheet_all_to_pay" name="To Pay" sequence="3" parent="menu_hr_expense_report"
-            action="action_hr_expense_sheet_all_to_pay" groups="account.group_account_user"/>
+        <menuitem id="menu_hr_expense_my_expenses_to_submit"
+                  sequence="1"
+                  parent="menu_hr_expense_my_expenses"
+                  action="hr_expense_actions_my_unsubmitted"/>
 
-        <menuitem id="menu_hr_expense_reports" name="Reporting" sequence="4" parent="menu_hr_expense_root" groups="hr_expense.group_hr_expense_manager"/>
-        <menuitem id="menu_hr_expense_all_expenses" name="Expenses Analysis" sequence="0" parent="menu_hr_expense_reports" action="hr_expense_actions_all"/>
+        <menuitem id="menu_hr_expense_sheet_my_reports"
+                  sequence="3"
+                  parent="menu_hr_expense_my_expenses"
+                  action="action_hr_expense_sheet_my_all"/>
 
-        <menuitem id="menu_hr_expense_configuration" name="Configuration" parent="menu_hr_expense_root"
-            sequence="100"/>
-        <menuitem id="menu_hr_product" name="Expense Products" parent="menu_hr_expense_configuration"
-            action="hr_expense_product" groups="hr_expense.group_hr_expense_manager" sequence="10"/>
+        <!-- 'hr.expense' Menus -->
+        <menuitem id="menu_hr_expense_expenses"
+                  name="Expenses" sequence="2"
+                  parent="menu_hr_expense_root"
+                  groups="base.group_user"/>
+
+        <menuitem id="menu_hr_expense_all_expenses"
+                  sequence="1"
+                  parent="menu_hr_expense_expenses"
+                  action="hr_expense_actions_all_expenses"/>
+
+        <menuitem id="menu_hr_expense_employee_expenses"
+                  sequence="2"
+                  parent="menu_hr_expense_expenses"
+                  action="hr_expense_actions_employee_expenses"/>
+
+        <menuitem id="menu_hr_expense_company_expenses"
+                  sequence="3"
+                  parent="menu_hr_expense_expenses"
+                  action="hr_expense_actions_company_expenses"/>
+
+        <!-- 'hr.expense.sheet' Menus -->
+        <menuitem id="menu_hr_expense_report"
+                  name="Expense Reports" sequence="3"
+                  parent="menu_hr_expense_root"
+                  groups="hr_expense.group_hr_expense_user"/>
+
+        <menuitem id="menu_hr_expense_sheet_all_to_approve"
+                  name="To Approve" sequence="1"
+                  parent="menu_hr_expense_report"
+                  action="action_hr_expense_sheet_all_to_approve"/>
+
+        <menuitem id="menu_hr_expense_sheet_all_to_post"
+                  name="To Post" sequence="2"
+                  parent="menu_hr_expense_report"
+                  action="action_hr_expense_sheet_all_to_post"
+                  groups="account.group_account_user"/>
+
+        <menuitem id="menu_hr_expense_sheet_all_to_pay"
+                  name="To Pay" sequence="3"
+                  parent="menu_hr_expense_report"
+                  action="action_hr_expense_sheet_all_to_pay"
+                  groups="account.group_account_user"/>
+
+        <!-- Report menus -->
+        <menuitem id="menu_hr_expense_reports"
+                  name="Reporting" sequence="4"
+                  parent="menu_hr_expense_root"
+                  groups="hr_expense.group_hr_expense_manager"/>
+
+        <menuitem id="menu_hr_expense_expenses_analysis"
+                  name="Expenses Analysis" sequence="0"
+                  parent="menu_hr_expense_reports"
+                  action="hr_expense_actions_expenses_analysis"/>
+
+        <!-- Configs menus -->
+        <menuitem id="menu_hr_expense_configuration"
+                  name="Configuration" sequence="100"
+                  parent="menu_hr_expense_root"/>
+
+        <menuitem id="menu_hr_product"
+                  name="Expense Products" sequence="10"
+                  action="hr_expense_product"
+                  parent="menu_hr_expense_configuration"
+                  groups="hr_expense.group_hr_expense_manager"/>
 </odoo>
