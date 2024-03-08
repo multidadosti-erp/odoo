@@ -4,4 +4,4 @@
 # Comentado pela Multidados: Os testes não são compatíveis com o módulo 'br_hr_expense'
 # from . import test_sale_expense
 
-from . import test_reinvoice
+# from . import test_reinvoice
