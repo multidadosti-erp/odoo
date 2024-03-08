@@ -32,13 +32,13 @@
             font-size: 12px;
         }
         &.o_medium {
-            font-size: 15px;
+            font-size: 14px;
         }
     }
 
     &-top-right {
         margin-top: -$o-horizontal-padding;
-        right: $o-horizontal-padding;
+        right: $o-horizontal-padding - 6px;
 
         &::before, &::after {
             border-top-color: black;
