@@ -81,21 +81,31 @@ class account_abstract_payment(models.AbstractModel):
     @api.model
     def default_get(self, fields):
         rec = super(account_abstract_payment, self).default_get(fields)
-        active_ids = self._context.get('active_ids')
-        active_model = self._context.get('active_model')
 
-        # Check for selected invoices ids
-        if not active_ids or active_model != 'account.invoice':
-            return rec
+        invoice_ids = rec.get('invoice_ids')
+        if invoice_ids and isinstance(invoice_ids[0], tuple) and len(invoice_ids[0][2]) == 1:
+            invoices = self.env['account.invoice'].browse(invoice_ids[0][2])
+        else:
+            invoices = False
 
-        invoices = self.env['account.invoice'].browse(active_ids)
+        if not invoices:
+            active_ids = self._context.get('active_ids')
+            active_model = self._context.get('active_model')
+
+            # Check for selected invoices ids
+            if not active_ids or active_model != 'account.invoice':
+                return rec
+
+            invoices = self.env['account.invoice'].browse(active_ids)
 
         # Check all invoices are open
         if any(invoice.state != 'open' for invoice in invoices):
             raise UserError(_("You can only register payments for open invoices"))
+
         # Check all invoices have the same currency
         if any(inv.currency_id != invoices[0].currency_id for inv in invoices):
             raise UserError(_("In order to pay multiple invoices at once, they must use the same currency."))
+
         # Check if, in batch payments, there are not negative invoices and positive invoices
         dtype = invoices[0].type
         for inv in invoices[1:]:
@@ -109,9 +119,7 @@ class account_abstract_payment(models.AbstractModel):
 
         # Look if we are mixin multiple commercial_partner or customer invoices with vendor bills
         multi = self.is_multi(invoices)
-
         currency = invoices[0].currency_id
-
         total_amount = self._compute_payment_amount(invoices=invoices, currency=currency)
 
         rec.update({
@@ -124,6 +132,7 @@ class account_abstract_payment(models.AbstractModel):
             'invoice_ids': [(6, 0, invoices.ids)],
             'multi': multi or (len(invoices.mapped('partner_id')) == 1 and len(invoices) > 1),
         })
+
         return rec
 
     @api.one
@@ -731,9 +740,10 @@ class account_payment(models.Model):
         It is called by the "validate" button of the popup window
         triggered on invoice form by the "Register Payment" button.
         """
-        if any(len(record.invoice_ids) != 1 for record in self):
+        if any(len(record.invoice_ids) > 1 for record in self):
             # For multiple invoices, there is account.register.payments wizard
             raise UserError(_("This method should only be called to process a single invoice's payment."))
+
         return self.post()
 
     def _create_payment_entry(self, amount):
