@@ -42,12 +42,28 @@
             <field name="arch" type="xml">
                 <form string="Expenses" class="o_expense_form">
                 <header>
-                  <button name="action_submit_expenses" string="Create Report" type="object" class="oe_highlight o_expense_submit" attrs="{'invisible': ['|', ('attachment_number', '&lt;=', 0), ('sheet_id', '!=', False)]}"/>
-                  <widget name="attach_document" string="Attach Document" action="message_post" attrs="{'invisible': ['|', ('attachment_number', '&lt;', 1), ('id','=',False)]}"/>
-                  <widget name="attach_document" string="Attach Document" action="message_post" highlight="1" attrs="{'invisible': ['|',('attachment_number', '&gt;=', 1), ('id','=',False)]}"/>
-                  <button name="action_submit_expenses" string="Create Report" type="object" class="o_expense_submit" attrs="{'invisible': ['|', ('attachment_number', '&gt;=', 1), ('sheet_id', '!=', False)]}"/>
+                  <widget name="attach_document" string="Attach Document"
+                          action="message_post"
+                          attrs="{'invisible': [('id','=',False)]}"/>
+
+                <!-- Alterado pela Multidados:
+                  - Adiciona atributos para deixar claro e explícito que o botão funciona para criar
+                    um relatório de reembolso da despesa selecionada.
+                  - remove botão de anexar documento com classe 'oe_highlight'
+                  - remove duplicidade dos botões para destaque de classe
+                -->
+                  <button name="action_submit_expenses"
+                          string="Create Refund Report" type="object"
+                          class="oe_highlight o_expense_submit"
+                          context="{'fiscal_type': 'refund'}"
+                          attrs="{'invisible': ['|', ('sheet_id', '!=', False), ('payment_mode', '!=', 'own_account')]}"/>
+
                   <field name="state" widget="statusbar" statusbar_visible="draft,reported,approved,done,refused"/>
+
+                <!-- Alterado pela Multidados:
+                  - Altera botão para o estilo de 'button_box'
                   <button name="action_view_sheet" type="object" string="View Report" class="oe_highlight" attrs="{'invisible': [('sheet_id', '=', False)]}"/>
+                -->
                 </header>
                 <sheet>
                     <div class="oe_button_box">
@@ -57,6 +73,18 @@
                             type="object"
                             attrs="{'invisible': [('attachment_number', '=', 0)]}">
                             <field name="attachment_number" widget="statinfo" string="Documents" options="{'reload_on_button': true}"/>
+                        </button>
+                        <!-- Alterado pela Multidados:
+                         - Altera botão para o estilo de 'button_box'
+                         - Adiciona atributos para deixar claro e explícito que o botão funciona para visualização
+                            do relatório de despesas de reembolso relacionado.
+                        -->
+                        <button name="action_view_sheet" type="object"
+                                class="oe_stat_button"
+                                icon="fa-hand-holding-usd"
+                                context="{'fiscal_type': 'refund'}"
+                                attrs="{'invisible': ['|', ('sheet_id', '=', False), ('payment_mode', '!=', 'own_account')]}">
+                                <span>Refund Report</span>
                         </button>
                     </div>
                     <div class="oe_title">
@@ -75,6 +103,7 @@
                                 <field name="product_uom_id" widget="selection" class="oe_inline" groups="uom.group_uom"/>
                             </div>
                             <field name="tax_ids" domain="[('type_tax_use', '=', 'purchase')]" widget="many2many_tags" groups="account.group_account_user"/>
+                            <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                         </group><group>
                             <field name="reference"/>
                             <field name="date"/>
@@ -82,7 +111,6 @@
                             <field name="employee_id" groups="hr_expense.group_hr_expense_user"/>
                             <field name="sheet_id" invisible="1"/>
                             <field name="currency_id" groups="base.group_multi_currency"/>
-                            <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                             <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group><group>
@@ -441,7 +469,10 @@
                     <button name="action_submit_sheet" states="draft" string="Submit to Manager" type="object" class="oe_highlight o_expense_sheet_submit"/>
                     <button name="approve_expense_sheets" states="submit" string="Approve" type="object" groups="hr_expense.group_hr_expense_user" class="oe_highlight o_expense_sheet_approve"/>
                     <button name="action_sheet_move_create" states="approve" string="Post Journal Entries" type="object" groups="account.group_account_manager" class="oe_highlight o_expense_sheet_post"/>
-                    <button name="%(hr_expense.hr_expense_sheet_register_payment_wizard_action)d" type="action" string="Register Payment" class="oe_highlight o_expense_sheet_pay" attrs="{'invisible': [('state', '!=', 'post')]}" context="{'default_amount': total_amount, 'partner_id': address_id}" groups="account.group_account_manager"/>
+                    <!-- Alterado pela Multidados:
+                    - Remove botão descontinuado
+                    -->
+                    <!--button name="%(hr_expense.hr_expense_sheet_register_payment_wizard_action)d" type="action" string="Register Payment" class="oe_highlight o_expense_sheet_pay" attrs="{'invisible': [('state', '!=', 'post')]}" context="{'default_amount': total_amount, 'partner_id': address_id}" groups="account.group_account_manager"/-->
                     <button name="reset_expense_sheets" string="Reset to Draft" type="object" attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['submit', 'cancel'])]}"/>
                     <button name="%(hr_expense.hr_expense_refuse_wizard_action)d" states="submit,approve" context="{'hr_expense_refuse_model':'hr.expense.sheet'}" string="Refuse" type="action" groups="hr_expense.group_hr_expense_user" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,post,done"/>
@@ -476,8 +507,8 @@
                         <page string="Expense">
                         <field name="expense_line_ids" nolabel="1" widget="many2many" domain="[('state', '=', 'draft')]" options="{'reload_on_button': True}" context="{'form_view_ref' : 'hr_expense.hr_expense_view_form_without_header', 'expense_adding_line': True}">
                             <tree decoration-danger="is_refused">
-                                <field name="date"/>
-                                <field name="name"/>
+                                <field name="date" readonly="1"/>
+                                <field name="name" readonly="1"/>
                                 <field name="state" invisible="1"/>
                                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                                 <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"/>
