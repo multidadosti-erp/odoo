@@ -57,6 +57,7 @@ class MailActivityType(models.Model):
         domain=['&', ('is_mail_thread', '=', True), ('transient', '=', False)],
         help='Specify a model if the activity should be specific to a model'
              ' and not available when managing activities for other models.')
+    res_model = fields.Char('Document Model Name', related='res_model_id.model', readonly=True, store=True)
     default_next_type_id = fields.Many2one('mail.activity.type', 'Default Next Activity',
         domain="['|', ('res_model_id', '=', False), ('res_model_id', '=', res_model_id)]")
     force_next = fields.Boolean("Auto Schedule Next Activity", default=False)
