@@ -158,6 +158,17 @@ class Attendee(models.Model):
     def copy(self, default=None):
         raise UserError(_('You cannot duplicate a calendar attendee.'))
 
+    def can_send_email(self):
+        """ Método para retornar se envio ou não o e-mai
+
+        Returns:
+            bool : True or False
+        """
+        if self.email or self.partner_id.email:
+            return True
+
+        return False
+
     @api.multi
     def _send_mail_to_attendees(self, template_xmlid, force_send=False, force_event_id=None):
         """ Send mail for event invitation to event attendees.
@@ -195,7 +206,7 @@ class Attendee(models.Model):
         # send email with attachments
         mails_to_send = self.env['mail.mail']
         for attendee in self:
-            if attendee.email or attendee.partner_id.email:
+            if attendee.can_send_email():
                 # FIXME: is ics_file text or bytes?
                 event_id = force_event_id.id if force_event_id else attendee.event_id.id
                 ics_file = ics_files.get(event_id)
@@ -212,6 +223,12 @@ class Attendee(models.Model):
                 current_mail = self.env['mail.mail'].browse(mail_id)
                 current_mail.mail_message_id.write(vals)
                 mails_to_send |= current_mail
+
+                # Gravando log do envio
+                attendee.event_id.message_post(
+                    body=_("E-Mail sent to: %s (%s)") % (attendee.common_name,  (attendee.email or attendee.partner_id.email)),
+                    subtype="calendar.subtype_invitation"
+                )
 
         if force_send and mails_to_send:
             res = mails_to_send.send()
