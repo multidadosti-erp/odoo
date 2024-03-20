@@ -174,6 +174,30 @@ var FormController = BasicController.extend({
         this._super($node, options);
     },
     /**
+     * Criada função para poder herdar e adicionar novas funcionalidades a AÇÃO
+     * Sets this.sidebar
+     *   inserted
+     **/
+    get_otherItems: function() {
+        var otherItems = [];
+
+        if (this.is_action_enabled('delete')) {
+            otherItems.push({
+                label: _t('Delete'),
+                callback: this._onDeleteRecord.bind(this),
+            });
+        }
+
+        if (this.is_action_enabled('create') && this.is_action_enabled('duplicate')) {
+            otherItems.push({
+                label: _t('Duplicate'),
+                callback: this._onDuplicateRecord.bind(this),
+            });
+        }
+
+        return otherItems;
+    },
+    /**
      * Instantiate and render the sidebar if a sidebar is requested
      * Sets this.sidebar
      * @param {jQuery} [$node] a jQuery node where the sidebar should be
@@ -181,19 +205,8 @@ var FormController = BasicController.extend({
      **/
     renderSidebar: function ($node) {
         if (this.hasSidebar) {
-            var otherItems = [];
-            if (this.is_action_enabled('delete')) {
-                otherItems.push({
-                    label: _t('Delete'),
-                    callback: this._onDeleteRecord.bind(this),
-                });
-            }
-            if (this.is_action_enabled('create') && this.is_action_enabled('duplicate')) {
-                otherItems.push({
-                    label: _t('Duplicate'),
-                    callback: this._onDuplicateRecord.bind(this),
-                });
-            }
+            var otherItems = this.get_otherItems();
+
             this.sidebar = new Sidebar(this, {
                 editable: this.is_action_enabled('edit'),
                 viewType: 'form',
