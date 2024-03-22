@@ -205,6 +205,7 @@ class Attendee(models.Model):
 
         # send email with attachments
         mails_to_send = self.env['mail.mail']
+
         for attendee in self:
             if attendee.can_send_email():
                 # FIXME: is ics_file text or bytes?
@@ -214,10 +215,11 @@ class Attendee(models.Model):
 
                 vals = {}
                 if ics_file:
-                    vals['attachment_ids'] = [(0, 0, {'name': 'invitation.ics',
-                                                      'mimetype': 'text/calendar',
-                                                      'datas_fname': 'invitation.ics',
+                    vals['attachment_ids'] = [(0, 0, {'name': 'invite.ics',
+                                                      'mimetype': 'text/calendar;method=REQUEST',
+                                                      'datas_fname': 'invite.ics',
                                                       'datas': base64.b64encode(ics_file)})]
+
                 vals['model'] = None  # We don't want to have the mail in the tchatter while in queue!
                 vals['res_id'] = False
                 current_mail = self.env['mail.mail'].browse(mail_id)
@@ -1016,6 +1018,7 @@ class Meeting(models.Model):
         result = {}
 
         def ics_datetime(idate, allday=False):
+
             if idate:
                 if allday:
                     return idate
@@ -1032,39 +1035,102 @@ class Meeting(models.Model):
 
         for meeting in self:
             cal = vobject.iCalendar()
+
+            cal.add('calscale').value = 'GREGORIAN'
+            cal.add('method').value = 'REQUEST'
+
+            # nome da timezone do usuario
+            user_tz = meeting.user_id.tz
+
+            vtimezone = cal.add('vtimezone')
+            vtimezone.add('tzid').value = user_tz
+            vtimezone.add('x-lic-location').value = user_tz
+
+            vstandard = vtimezone.add('standard')
+
+            # Calculamos a diferenca de horas entre a timezone do usuario e UTC
+            hour_diff = datetime.datetime.now(pytz.timezone(user_tz)).strftime('%z')
+
+            vstandard.add('tzoffsetfrom').value = hour_diff
+            vstandard.add('tzoffsetto').value = hour_diff
+            vstandard.add('tzname').value = hour_diff[:3]
+            vstandard.add('dtstart').value = datetime.datetime(1970, 1, 1, tzinfo=vobject.icalendar.utc)
+
             event = cal.add('vevent')
 
             if not meeting.start or not meeting.stop:
                 raise UserError(_("First you have to specify the date of the invitation."))
-            event.add('created').value = ics_datetime(fields.Datetime.now())
-            event.add('dtstart').value = ics_datetime(meeting.start, meeting.allday)
-            event.add('dtend').value = ics_datetime(meeting.stop, meeting.allday)
-            event.add('summary').value = meeting.name
-            if meeting.description:
-                event.add('description').value = meeting.description
-            if meeting.location:
-                event.add('location').value = meeting.location
-            if meeting.rrule:
-                event.add('rrule').value = meeting.rrule
 
-            if meeting.alarm_ids:
-                for alarm in meeting.alarm_ids:
-                    valarm = event.add('valarm')
-                    interval = alarm.interval
-                    duration = alarm.duration
-                    trigger = valarm.add('TRIGGER')
-                    trigger.params['related'] = ["START"]
-                    if interval == 'days':
-                        delta = timedelta(days=duration)
-                    elif interval == 'hours':
-                        delta = timedelta(hours=duration)
-                    elif interval == 'minutes':
-                        delta = timedelta(minutes=duration)
-                    trigger.value = delta
-                    valarm.add('DESCRIPTION').value = alarm.name or u'Odoo'
+            event.add('dtstart').value = ics_datetime(meeting.start, allday=meeting.allday)
+            event.dtstart.tzid_param = user_tz
+
+            event.add('dtend').value = ics_datetime(meeting.stop, allday=meeting.allday)
+            event.dtend.tzid_param = user_tz
+
+            event.add('dtstamp').value = ics_datetime(fields.Datetime.now())
+
+            event.add('organizer').value = meeting.user_id.partner_id.email
+            event.organizer.cn_param = meeting.user_id.partner_id.name
+
             for attendee in meeting.attendee_ids:
                 attendee_add = event.add('attendee')
-                attendee_add.value = u'MAILTO:' + (attendee.email or u'')
+
+                if attendee.state == 'accepted':
+                    attendee_add.partstat_param = 'ACCEPTED'
+
+                elif attendee.state == 'needsAction':
+                    attendee_add.partstat_param = 'NEEDS-ACTION'
+
+                elif attendee.state == 'tentative':
+                    attendee_add.partstat_param = 'TENTATIVE'
+
+                elif attendee.state == 'declined':
+                    attendee_add.partstat_param = 'DECLINED'
+
+                else:
+                    attendee_add.partstat_param = ''
+
+                attendee_add.cutype_param = 'INDIVIDUAL'
+                attendee_add.role_param = 'REQ-PARTICIPANT'
+                attendee_add.rsvp_param = 'TRUE'
+                attendee_add.cn_param = attendee.email or ''
+                attendee_add.x_num_guests_param = '0'
+                attendee_add.value = 'mailto:' + (attendee.email or '')
+
+            event.add('description').value = meeting.description or ''
+            event.add('summary').value = meeting.name or ''
+            event.add('sequence').value = '0'
+            event.add('location').value = meeting.location or ''
+            event.add('status').value = 'CONFIRMED'
+            event.add('transp').value = 'OPAQUE'
+
+            for alarm in meeting.alarm_ids:
+
+                valarm_display = event.add('valarm')
+
+                valarm_display.add('action').value = 'DISPLAY'
+                valarm_display.add('description').value = alarm.name or 'This is an event reminder'
+
+                interval = alarm.interval
+                duration = alarm.duration
+
+                trigger_display = valarm_display.add('TRIGGER')
+                trigger_display.params['related'] = ["START"]
+
+                if interval == 'days':
+                    delta = timedelta(days=duration)
+
+                elif interval == 'hours':
+                    delta = timedelta(hours=duration)
+
+                elif interval == 'minutes':
+                    delta = timedelta(minutes=duration)
+
+                else:
+                    delta = ''
+
+                trigger_display.value = delta
+
             result[meeting.id] = cal.serialize().encode('utf-8')
 
         return result
