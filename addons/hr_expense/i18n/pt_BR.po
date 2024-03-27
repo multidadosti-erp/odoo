@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-11 12:47+0000\n"
-"PO-Revision-Date: 2024-03-11 12:47+0000\n"
+"POT-Creation-Date: 2024-03-27 17:54+0000\n"
+"PO-Revision-Date: 2024-03-27 17:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -150,12 +150,6 @@ msgid "Add a new expense,"
 msgstr "Adicione nova despesa,"
 
 #. module: hr_expense
-#: model:product.product,name:hr_expense.air_ticket
-#: model:product.template,name:hr_expense.air_ticket_product_template
-msgid "Air Flight"
-msgstr ""
-
-#. module: hr_expense
 #: model:ir.actions.act_window,name:hr_expense.action_hr_expense_sheet_all_all
 msgid "All Expense Reports"
 msgstr "Todos os Relatórios de Despesas"
@@ -192,7 +186,7 @@ msgstr "Aprovar"
 #: selection:hr.expense.sheet,state:0
 #: model:mail.message.subtype,name:hr_expense.mt_expense_approved
 msgid "Approved"
-msgstr "Aprovada"
+msgstr "Aprovado"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_sheet_filter
@@ -253,12 +247,6 @@ msgstr "Pode ser debitado"
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_sheet_register_payment_view_form
 msgid "Cancel"
 msgstr "Cancelar"
-
-#. module: hr_expense
-#: model:product.product,name:hr_expense.car_travel
-#: model:product.template,name:hr_expense.car_travel_product_template
-msgid "Car Travel Expenses"
-msgstr "Despesas de Viagens de Carro"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
@@ -391,7 +379,7 @@ msgstr "Descrição"
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__display_name
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet_register_payment_wizard__display_name
 msgid "Display Name"
-msgstr "Nome exibido"
+msgstr "Nome a Apresentar"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_form
@@ -478,7 +466,7 @@ msgstr "Diário de Despesa"
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__expense_line_ids
 msgid "Expense Lines"
-msgstr "Linhas de Despesas"
+msgstr "Linhas de Despesa"
 
 #. module: hr_expense
 #: model:ir.actions.act_window,name:hr_expense.hr_expense_product
@@ -582,8 +570,6 @@ msgstr "Despesa onde a linha do movimento se origina"
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_expenses_tree
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_filter
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_sheet_filter
-#: model:product.product,name:hr_expense.product_product_fixed_cost
-#: model:product.template,name:hr_expense.product_product_fixed_cost_product_template
 msgid "Expenses"
 msgstr "Despesas"
 
@@ -760,6 +746,11 @@ msgstr "Se marcado novas mensagens solicitarão sua atenção."
 #: model:ir.model.fields,help:hr_expense.field_hr_expense_sheet__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Se marcado, algumas mensagens tem erro de entrega."
+
+#. module: hr_expense
+#: selection:hr.expense,state:0
+msgid "In Contract"
+msgstr "Em Contrato"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__message_is_follower
@@ -1018,14 +1009,14 @@ msgid "Once your <b>Expense report</b> is ready, you can submit it to your manag
 msgstr "Assim que o seu <b>Relatório de Despesas</b> estiver pronto, você poderá enviá-lo ao seu gerente e aguardar por sua aprovação."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:864
+#: code:addons/hr_expense/models/hr_expense.py:865
 #, python-format
 msgid "Only HR Officers or the concerned employee can reset to draft."
 msgstr "Apenas a equipe do RH ou o funcionário que reportou a despesa podem redefiní-la como provisória."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:825
-#: code:addons/hr_expense/models/hr_expense.py:846
+#: code:addons/hr_expense/models/hr_expense.py:826
+#: code:addons/hr_expense/models/hr_expense.py:847
 #, python-format
 msgid "Only Managers and HR Officers can approve expenses"
 msgstr "Apenas Gerentes e Equipe do RH podem aprovar despesas"
@@ -1077,7 +1068,7 @@ msgstr "Método de Pagamento"
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_filter
 msgid "Payment Mode"
-msgstr "Modo do Pagamento"
+msgstr "Modo de Pagamento"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet_register_payment_wizard__payment_method_id
@@ -1235,7 +1226,7 @@ msgstr "Moeda da Empresa no Relatório"
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_filter
 msgid "Reported to Refund"
-msgstr "Reportado para Reembolso"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.ui.menu,name:hr_expense.menu_hr_expense_reports
@@ -1320,10 +1311,10 @@ msgid "Status based on activities\n"
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
-msgstr "Estado com base nas atividades\n"
-"Em atraso: A data limite foi ultrapassada\n"
-"Hoje: A data da atividade é a atual\n"
-"Planeado: Atividades futuras."
+msgstr "Status baseado em atividades\n"
+"Atrasado: Data definida já passou\n"
+"Hoje: Data de atividade é hoje\n"
+"Planejado: Atividades futuras."
 
 #. module: hr_expense
 #: model:ir.model.fields,help:hr_expense.field_hr_expense__state
@@ -1459,14 +1450,6 @@ msgid "Unit of Measure"
 msgstr "Unidade de Medida"
 
 #. module: hr_expense
-#: model:product.product,uom_name:hr_expense.air_ticket
-#: model:product.product,uom_name:hr_expense.product_product_fixed_cost
-#: model:product.template,uom_name:hr_expense.air_ticket_product_template
-#: model:product.template,uom_name:hr_expense.product_product_fixed_cost_product_template
-msgid "Unit(s)"
-msgstr "Unidade(s)"
-
-#. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__message_unread
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__message_unread
 msgid "Unread Messages"
@@ -1524,7 +1507,7 @@ msgid "Website communication history"
 msgstr "Histórico de Comunicação do Site"
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:833
+#: code:addons/hr_expense/models/hr_expense.py:834
 #, python-format
 msgid "You can only approve your department expenses"
 msgstr "Você só pode aprovar despesas do seu departamento"
@@ -1536,7 +1519,7 @@ msgid "You can only generate accounting entry for approved expense(s)."
 msgstr "Você só pode gerar entrada contábil de despesa(s) aprovada(s)."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:854
+#: code:addons/hr_expense/models/hr_expense.py:855
 #, python-format
 msgid "You can only refuse your department expenses"
 msgstr "Você só pode recusar despesas do seu departamento"
@@ -1553,7 +1536,7 @@ msgid "You cannot add expenses of another employee."
 msgstr "Você não pode adicionar despesas de outro funcionário."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:830
+#: code:addons/hr_expense/models/hr_expense.py:831
 #, python-format
 msgid "You cannot approve your own expenses"
 msgstr "Você não pode aprovar suas próprias despesas"
@@ -1571,7 +1554,7 @@ msgid "You cannot delete a posted or paid expense."
 msgstr "Você não pode remover uma despesa lançada ou paga."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:851
+#: code:addons/hr_expense/models/hr_expense.py:852
 #, python-format
 msgid "You cannot refuse your own expenses"
 msgstr "Você não pode recusar suas próprias despesas"
@@ -1612,22 +1595,6 @@ msgstr "p. ex., Viagem a NY"
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_template_refuse_reason
 msgid "has been refused"
 msgstr "foi recusada"
-
-#. module: hr_expense
-#: model:product.product,weight_uom_name:hr_expense.air_ticket
-#: model:product.product,weight_uom_name:hr_expense.car_travel
-#: model:product.product,weight_uom_name:hr_expense.product_product_fixed_cost
-#: model:product.template,weight_uom_name:hr_expense.air_ticket_product_template
-#: model:product.template,weight_uom_name:hr_expense.car_travel_product_template
-#: model:product.template,weight_uom_name:hr_expense.product_product_fixed_cost_product_template
-msgid "kg"
-msgstr ""
-
-#. module: hr_expense
-#: model:product.product,uom_name:hr_expense.car_travel
-#: model:product.template,uom_name:hr_expense.car_travel_product_template
-msgid "km"
-msgstr ""
 
 #. module: hr_expense
 #: code:addons/hr_expense/models/hr_expense.py:169
