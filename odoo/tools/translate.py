@@ -447,11 +447,24 @@ class GettextAlias(object):
 
                     # Adicionado pela Multidados por Erro de Tradução do Odoo nas
                     # Categorias, acertando o Parametro para Localização nas Traduções
-                    if lang and res == source:
-                        res = env['ir.translation']._get_source('ir.module.category,name', ('model'), lang, source)
+                    if lang != 'en_US':
+                        if lang and res == source:
+                            res = env['ir.translation']._get_source('ir.module.category,name', ('model'), lang, source)
 
-                    if lang and res == source:
-                        res = env['ir.translation']._get_source(None, ('selection'), lang, source)
+                        if lang and res == source:
+                            res = env['ir.translation']._get_source('ir.actions.act_window,name', ('model'), lang, source)
+
+                        if lang and res == source:
+                            res = env['ir.translation']._get_source('ir.ui.view,arch_db', ('model'), lang, source)
+
+                        if lang and res == source:
+                            res = env['ir.translation']._get_source(None, ('model'), lang, source)
+
+                        if lang and res == source:
+                            res = env['ir.translation']._get_source(None, ('model_terms'), lang, source)
+
+                        if lang and res == source:
+                            res = env['ir.translation']._get_source(None, ('selection'), lang, source)
                 else:
                     _logger.debug('no context cursor detected, skipping translation for "%r"', source)
             else:
