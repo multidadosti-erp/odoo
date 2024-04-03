@@ -1017,13 +1017,13 @@ class Meeting(models.Model):
         """
         result = {}
 
-        def ics_datetime(idate, allday=False):
+        def ics_datetime(idate, allday=False, tz_name='UTC'):
 
             if idate:
                 if allday:
                     return idate
                 else:
-                    return idate.replace(tzinfo=pytz.timezone('UTC'))
+                    return idate.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(tz_name))
             return False
 
         try:
@@ -1061,10 +1061,10 @@ class Meeting(models.Model):
             if not meeting.start or not meeting.stop:
                 raise UserError(_("First you have to specify the date of the invitation."))
 
-            event.add('dtstart').value = ics_datetime(meeting.start, allday=meeting.allday)
+            event.add('dtstart').value = ics_datetime(meeting.start, allday=meeting.allday, tz_name=user_tz)
             event.dtstart.tzid_param = user_tz
 
-            event.add('dtend').value = ics_datetime(meeting.stop, allday=meeting.allday)
+            event.add('dtend').value = ics_datetime(meeting.stop, allday=meeting.allday, tz_name=user_tz)
             event.dtend.tzid_param = user_tz
 
             event.add('dtstamp').value = ics_datetime(fields.Datetime.now())
