@@ -3174,7 +3174,7 @@ msgstr "Envie um exemplo de orçamento."
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Send by Email"
-msgstr "Enviar por e-mail"
+msgstr "Enviar por E-Mail"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_onboarding_sample_quotation_step
