@@ -5783,12 +5783,13 @@ class Model(AbstractModel):
         else:
             return self[field_name]
 
-    def effect_notify(self, title='', message='', **kwargs):
+    def effect_notify(self, title='', message='', kind='notify', **kwargs):
         """ Utilizado para obter o retorno de efeito JS para
         notificar usuários a partir do WebClient.
 
         OBS: Alteração JS feita para permitir a notificação é
         encontrada no arquivo 'web/static/src/js/chrome/abstract_web_client.js'
+        na função '_onShowEffect'.
 
         Args:
             title (str): Título da notificação.
@@ -5797,14 +5798,38 @@ class Model(AbstractModel):
         Returns:
             dict: valores para efeito de notificação
         """
-        title = title or _('Notification')
+        # Ícones tipados
+        kind_icons = {
+            'warn': 'fa-exclamation-triangle',
+            'error': 'fa-skull-crossbones',
+        }
+        # Títulos tipados
+        kind_titles = {
+            'notify': _('Notification'),
+            'warn': _('Warning'),
+            'error': _('Error'),
+        }
 
-        return { 'effect': {
-                    'type': 'notification',
-                    'title': title,
-                    'message': message,
-                    **kwargs
-                }}
+        # Obtenção do título pelo tipo: args com preferência
+        title = title or kind_titles.get(kind)
+
+        # Obtenção do ícone pelo tipo: args com preferência
+        icon = kwargs.get('icon') or kind_icons.get(kind)
+        if icon:
+            kwargs['icon'] = icon
+
+        # Deixa notificação fixa em caso de erro ou aviso
+        if kind in ['error', 'warn']:
+            kwargs['sticky'] = True
+
+        # Retorno do efeito tratado no arquivo JS
+        return {'effect': {
+            'type': 'notification',
+            'title': title or kind_titles['notify'],
+            'message': message,
+            'kind': kind,
+            **kwargs
+        }}
 
 
 class TransientModel(Model):
