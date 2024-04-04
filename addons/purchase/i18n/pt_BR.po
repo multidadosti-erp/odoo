@@ -1669,7 +1669,7 @@ msgstr "Enviar OC por E-mail"
 #. module: purchase
 #: model_terms:ir.ui.view,arch_db:purchase.purchase_order_form
 msgid "Send by Email"
-msgstr "Enviar por e-mail"
+msgstr "Enviar por E-Mail"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_line__sequence
