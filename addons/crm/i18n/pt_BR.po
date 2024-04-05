@@ -2533,7 +2533,7 @@ msgstr "CEP"
 #. module: crm
 #: model:ir.ui.menu,name:crm.menu_crm_lead_stage_act
 msgid "crm.menu_crm_lead_stage_act"
-msgstr ""
+msgstr "Estágios"
 
 #. module: crm
 #: model_terms:ir.ui.view,arch_db:crm.view_create_opportunity_simplified
