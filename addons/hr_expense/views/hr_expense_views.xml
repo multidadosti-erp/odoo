@@ -610,7 +610,8 @@
                                 <field name="date" readonly="1"/>
                                 <field name="name" readonly="1"/>
                                 <field name="state" invisible="1"/>
-                                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                                <field name="analytic_account_id" readonly="1"
+                                       groups="analytic.group_analytic_accounting"/>
                                 <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"/>
                                 <field name="message_unread" invisible="1"/>
                                 <field name="attachment_number" string=" "/>
@@ -631,7 +632,7 @@
                                 <field name="total_amount" nolabel="1" class="oe_subtotal_footer_separator"/>
                             </group>
                         </page>
-                        <page string="Other Info">
+                        <page name="other_info" string="Other Info">
                             <group>
                                 <group>
                                     <field name="journal_id" domain="[('type', '=', 'purchase')]" options="{'no_open': True, 'no_create': True}" attrs="{'invisible': [('payment_mode', '!=', 'own_account')]}"/>
