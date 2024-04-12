@@ -2105,13 +2105,15 @@ class AccountPaymentTerm(models.Model):
                     next_date += relativedelta(day=line.days, months=1)
                 elif line.option == 'day_current_month':
                     next_date += relativedelta(day=line.days, months=0)
-                result.append((fields.Date.to_string(next_date), amt))
+                result.append((fields.Date.to_string(next_date), amt, line.days))
                 amount -= amt
-        amount = sum(amt for _, amt in result)
+        if result is not False:
+            amount = sum(amt[1] for amt in result)
         dist = currency.round(value - amount)
         if dist:
             last_date = result and result[-1][0] or fields.Date.today()
-            result.append((last_date, dist))
+            days = result and result[-1][2] or 0
+            result.append((last_date, dist, days))
         return result
 
     @api.multi
