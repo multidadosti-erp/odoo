@@ -572,16 +572,25 @@ class Partner(models.Model):
     def create(self, vals_list):
         if self.env.context.get('import_file'):
             self._check_import_consistency(vals_list)
+
         for vals in vals_list:
             if vals.get('website'):
                 vals['website'] = self._clean_website(vals['website'])
+
             if vals.get('parent_id'):
                 vals['company_name'] = False
+
+            # Multidados: Adicionado para Evitar duplicação de Log na Criação do Cliente
+            if vals.get('message_follower_ids'):
+                vals['message_follower_ids'] = False
+
             # compute default image in create, because computing gravatar in the onchange
             # cannot be easily performed if default images are in the way
             if not vals.get('image'):
                 vals['image'] = self._get_default_image(vals.get('type'), vals.get('is_company'), vals.get('parent_id'))
+
             tools.image_resize_images(vals, sizes={'image': (1024, None)})
+
         partners = super(Partner, self).create(vals_list)
 
         if self.env.context.get('_partners_skip_fields_sync'):
@@ -610,7 +619,7 @@ class Partner(models.Model):
 
         for (cp_id, add_id), children in groups.items():
             # values from parents (commercial, regular) written to their common children
-            to_write = {} 
+            to_write = {}
             # commercial fields from commercial partner
             if cp_id:
                 to_write = self.browse(cp_id)._update_fields_values(self._commercial_fields())
