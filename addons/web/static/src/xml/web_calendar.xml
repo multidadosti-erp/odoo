@@ -19,7 +19,7 @@
             <div class="o_fields">
                 <t t-foreach="widget.displayFields" t-as="name">
                     <div t-attf-class="o_field_#{name} o_field_type_#{fields[name].type}">
-                        <t t-if="widget.displayFields[name].avatar_field">
+                        <t t-if="widget.displayFields[name].avatar_field &amp;&amp; widget.displayFields[name].avatar_field != 'no_image'">
                             <t t-if="!isMobile"><t t-esc="fields[name].string"/>:</t>
                             <t t-if="!isMobile"><t t-esc="format(record, name)"/></t>
                             <div class="o_calendar_avatars float-right">
@@ -53,7 +53,7 @@
                             <t t-if="filter.value == 'all'">
                                 <span><i class="fa fa-users fa-fw o_cal_avatar" role="img" aria-label="Avatar" title="Avatar"/></span>
                             </t>
-                            <t t-if="widget.avatar_field &amp;&amp; (filter.value != 'all') &amp;&amp; (filter.value)">
+                            <t t-if="widget.avatar_field &amp;&amp; widget.avatar_field != 'no_image' &amp;&amp; (filter.value != 'all') &amp;&amp; (filter.value)">
                                 <img t-attf-src="/web/image/#{widget.avatar_model}/#{filter.value}/#{widget.avatar_field}" class="o_cal_avatar" alt="Avatar"/>
                             </t>
                             <t t-set="color" t-value="widget.getColor(filter.color_index)"/>
