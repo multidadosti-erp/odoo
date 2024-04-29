@@ -232,9 +232,10 @@ return AbstractRenderer.extend({
     getAvatars: function (record, fieldName, imageField) {
         var field = this.state.fields[fieldName];
 
-        if (!record[fieldName]) {
+        if (!record[fieldName] || imageField == 'no_image') {
             return [];
         }
+
         if (field.type === 'one2many' || field.type === 'many2many') {
             return _.map(record[fieldName], function (id) {
                 return '<img src="/web/image/'+field.relation+'/'+id+'/'+imageField+'" />';
@@ -348,11 +349,15 @@ return AbstractRenderer.extend({
      */
     _format: function (record, fieldName) {
         var field = this.state.fields[fieldName];
+        var field_formated = ""
+
         if (field.type === "one2many" || field.type === "many2many") {
-            return field_utils.format[field.type]({data: record[fieldName]}, field);
+            field_formated = field_utils.format[field.type]({data: record[fieldName]}, field);
         } else {
-            return field_utils.format[field.type](record[fieldName], field, {forceString: true});
+            field_formated = field_utils.format[field.type](record[fieldName], field, {forceString: true});
         }
+
+        return field_formated;
     },
     /**
      * Initialize the main calendar
