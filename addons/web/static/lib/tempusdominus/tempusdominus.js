@@ -2806,6 +2806,11 @@ var TempusDominusBootstrap4 = function ($) {
         return TempusDominusBootstrap4._jQueryInterface;
     };
 
+    // Multidados: Utilizadp no MiniCalendar
+	$.fn.datepicker.Origin_datepicker = function(){
+        return $.fn.datepicker;
+	};
+
     return TempusDominusBootstrap4;
 }(jQuery);
 
