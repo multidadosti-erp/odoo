@@ -36,7 +36,7 @@ class Crawler(odoo.tests.HttpCase):
             seen.add(url_slug)
 
         _logger.info("%s %s", msg, url)
-        r = self.url_open(url)
+        r = self.url_open(url, timeout=3600)
         code = r.status_code
 
         # Only Exist 
