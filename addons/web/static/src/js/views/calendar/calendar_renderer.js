@@ -439,6 +439,10 @@ return AbstractRenderer.extend({
     _initCalendarMini: function () {
         var self = this;
         this.$small_calendar = this.$(".o_calendar_mini");
+
+        // Multidados
+        this.$small_calendar.datepicker = this.$small_calendar.datepicker.Origin_datepicker();
+
         this.$small_calendar.datepicker({
             'onSelect': function (datum, obj) {
                 self.trigger_up('changeDate', {
