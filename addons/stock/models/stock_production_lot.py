@@ -12,13 +12,18 @@ class ProductionLot(models.Model):
 
     name = fields.Char(
         'Lot/Serial Number', default=lambda self: self.env['ir.sequence'].next_by_code('stock.lot.serial'),
+        track_visibility='always',
+        index=True,
         required=True, help="Unique Lot/Serial Number")
-    ref = fields.Char('Internal Reference', help="Internal reference number in case it differs from the manufacturer's lot/serial number")
+    ref = fields.Char('Internal Reference', track_visibility='always', help="Internal reference number in case it differs from the manufacturer's lot/serial number")
     product_id = fields.Many2one(
         'product.product', 'Product',
+        track_visibility='always',
+        index=True,
         domain=[('type', 'in', ['product', 'consu'])], required=True)
     product_uom_id = fields.Many2one(
         'uom.uom', 'Unit of Measure',
+        track_visibility='always',
         related='product_id.uom_id', store=True, readonly=False)
     quant_ids = fields.One2many('stock.quant', 'lot_id', 'Quants', readonly=True)
     product_qty = fields.Float('Quantity', compute='_product_qty')
