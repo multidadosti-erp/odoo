@@ -64,7 +64,7 @@ class MailComposer(models.TransientModel):
         result['composition_mode'] = result.get('composition_mode', self._context.get('mail.compose.message.mode', 'comment'))
         result['model'] = result.get('model', self._context.get('active_model'))
         result['res_id'] = result.get('res_id', self._context.get('active_id'))
-        result['parent_id'] = result.get('parent_id', self._context.get('message_id'))
+        result['message_parent_id'] = result.get('message_parent_id', self._context.get('message_id'))
         if 'no_auto_thread' not in result and (result['model'] not in self.env or not hasattr(self.env[result['model']], 'message_post')):
             result['no_auto_thread'] = True
 
@@ -159,8 +159,8 @@ class MailComposer(models.TransientModel):
         a document (model, res_id). This is based on previously computed default
         values. """
         result, subject = {}, False
-        if values.get('parent_id'):
-            parent = self.env['mail.message'].browse(values.get('parent_id'))
+        if values.get('message_parent_id'):
+            parent = self.env['mail.message'].browse(values.get('message_parent_id'))
             result['record_name'] = parent.record_name,
             subject = tools.ustr(parent.subject or parent.record_name or '')
             if not values.get('model'):
@@ -305,7 +305,7 @@ class MailComposer(models.TransientModel):
             mail_values = {
                 'subject': self.subject,
                 'body': self.body or '',
-                'parent_id': self.parent_id and self.parent_id.id,
+                'message_parent_id': self.message_parent_id and self.message_parent_id.id,
                 'partner_ids': [partner.id for partner in self.partner_ids],
                 'attachment_ids': [attach.id for attach in self.attachment_ids],
                 'author_id': self.author_id.id,
@@ -406,7 +406,7 @@ class MailComposer(models.TransientModel):
             if values.get('attachment_ids', []) or attachment_ids:
                 values['attachment_ids'] = [(5,)] + values.get('attachment_ids', []) + attachment_ids
         else:
-            default_values = self.with_context(default_composition_mode=composition_mode, default_model=model, default_res_id=res_id).default_get(['composition_mode', 'model', 'res_id', 'parent_id', 'partner_ids', 'subject', 'body', 'email_from', 'reply_to', 'attachment_ids', 'mail_server_id'])
+            default_values = self.with_context(default_composition_mode=composition_mode, default_model=model, default_res_id=res_id).default_get(['composition_mode', 'model', 'res_id', 'message_parent_id', 'partner_ids', 'subject', 'body', 'email_from', 'reply_to', 'attachment_ids', 'mail_server_id'])
             values = dict((key, default_values[key]) for key in ['subject', 'body', 'partner_ids', 'email_from', 'reply_to', 'attachment_ids', 'mail_server_id'] if key in default_values)
 
         if values.get('body_html'):

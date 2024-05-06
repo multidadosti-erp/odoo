@@ -1035,7 +1035,7 @@ class MailThread(models.AbstractModel):
                 self._routing_warn(_('posting a message without model should be with a null res_id (private message), received %s') % thread_id, _('resetting thread_id'), message_id, route, assert_model)
                 thread_id = 0
             # should have a parent_id (only answers)
-            if not message_dict.get('parent_id'):
+            if not message_dict.get('message_parent_id'):
                 self._routing_warn(_('posting a message without model should be with a parent_id (private message)'), _('skipping'), message_id, route, assert_model)
                 return False
 
@@ -1270,7 +1270,7 @@ class MailThread(models.AbstractModel):
         # 2. Look for a matching mail.alias entry
         if rcpt_tos_localparts:
             # no route found for a matching reference (or reply), so parent is invalid
-            message_dict.pop('parent_id', None)
+            message_dict.pop('message_parent_id', None)
 
             # check it does not directly contact catchall
             if catchall_alias and email_to_localparts and all(email_localpart == catchall_alias for email_localpart in email_to_localparts):
@@ -1308,7 +1308,7 @@ class MailThread(models.AbstractModel):
         # 5. Fallback to the provided parameters, if they work
         if fallback_model:
             # no route found for a matching reference (or reply), so parent is invalid
-            message_dict.pop('parent_id', None)
+            message_dict.pop('message_parent_id', None)
             route = self.message_route_verify(
                 message, message_dict,
                 (fallback_model, thread_id, custom_values, self._uid, None),
@@ -1349,7 +1349,7 @@ class MailThread(models.AbstractModel):
                     thread.message_update(message_dict)
                 else:
                     # if a new thread is created, parent is irrelevant
-                    message_dict.pop('parent_id', None)
+                    message_dict.pop('message_parent_id', None)
                     thread = MessageModel.message_new(message_dict, custom_values)
                     thread_id = thread.id
             else:
@@ -1362,8 +1362,8 @@ class MailThread(models.AbstractModel):
             partner_ids = []
             if message_dict.pop('internal', False):
                 subtype = 'mail.mt_note'
-                if message_dict.get('parent_id'):
-                    parent_message = self.env['mail.message'].sudo().browse(message_dict['parent_id'])
+                if message_dict.get('message_parent_id'):
+                    parent_message = self.env['mail.message'].sudo().browse(message_dict['message_parent_id'])
                     if parent_message.author_id:
                         partner_ids = [(4, parent_message.author_id.id)]
             else:
@@ -1697,14 +1697,14 @@ class MailThread(models.AbstractModel):
         if message.get('In-Reply-To'):
             parent_ids = self.env['mail.message'].search([('message_id', '=', tools.decode_smtp_header(message['In-Reply-To'].strip()))], limit=1)
             if parent_ids:
-                msg_dict['parent_id'] = parent_ids.id
+                msg_dict['message_parent_id'] = parent_ids.id
                 msg_dict['internal'] = parent_ids.subtype_id and parent_ids.subtype_id.internal or False
 
-        if message.get('References') and 'parent_id' not in msg_dict:
+        if message.get('References') and 'message_parent_id' not in msg_dict:
             msg_list = tools.mail_header_msgid_re.findall(tools.decode_smtp_header(message['References']))
             parent_ids = self.env['mail.message'].search([('message_id', 'in', [x.strip() for x in msg_list])], limit=1)
             if parent_ids:
-                msg_dict['parent_id'] = parent_ids.id
+                msg_dict['message_parent_id'] = parent_ids.id
                 msg_dict['internal'] = parent_ids.subtype_id and parent_ids.subtype_id.internal or False
 
         msg_dict['body'], msg_dict['attachments'] = self._message_extract_payload(message, save_original=save_original)
@@ -2041,14 +2041,14 @@ class MailThread(models.AbstractModel):
             parent_id = messages.ids and messages.ids[0] or False
         # we want to set a parent: force to set the parent_id to the oldest ancestor, to avoid having more than 1 level of thread
         elif parent_id:
-            messages = MailMessage.sudo().search([('id', '=', parent_id), ('parent_id', '!=', False)], limit=1)
+            messages = MailMessage.sudo().search([('id', '=', parent_id), ('message_parent_id', '!=', False)], limit=1)
             # avoid loops when finding ancestors
             processed_list = []
             if messages:
                 message = messages[0]
-                while (message.parent_id and message.parent_id.id not in processed_list):
-                    processed_list.append(message.parent_id.id)
-                    message = message.parent_id
+                while (message.message_parent_id and message.message_parent_id.id not in processed_list):
+                    processed_list.append(message.message_parent_id.id)
+                    message = message.message_parent_id
                 parent_id = message.id
 
         values = kwargs
@@ -2059,7 +2059,7 @@ class MailThread(models.AbstractModel):
             'body': body,
             'subject': subject or False,
             'message_type': message_type,
-            'parent_id': parent_id,
+            'message_parent_id': parent_id,
             'subtype_id': subtype_id,
             'partner_ids': [(4, pid) for pid in partner_ids],
             'channel_ids': kwargs.get('channel_ids', []),
