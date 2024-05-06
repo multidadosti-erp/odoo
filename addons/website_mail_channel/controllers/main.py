@@ -169,7 +169,7 @@ class MailGroup(http.Controller):
 
         Message = request.env['mail.message']
         if mode == 'thread':
-            base_domain = [('model', '=', 'mail.channel'), ('res_id', '=', group.id), ('parent_id', '=', message.parent_id and message.parent_id.id or False)]
+            base_domain = [('model', '=', 'mail.channel'), ('res_id', '=', group.id), ('parent_id', '=', message.message_parent_id and message.message_parent_id.id or False)]
         else:
             base_domain = [('model', '=', 'mail.channel'), ('res_id', '=', group.id)]
         next_message = Message.search(base_domain + [('date', '<', message.date)], order="date DESC", limit=1) or None
