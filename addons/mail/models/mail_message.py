@@ -48,10 +48,13 @@ class Message(models.Model):
         string='Attachments',
         help='Attachments are linked to a document through model / res_id and to the message '
              'through this field.')
-    parent_id = fields.Many2one(
-        'mail.message', 'Parent Message', index=True, ondelete='set null',
+    message_parent_id = fields.Many2one(
+        'mail.message', 'Parent Message', 
+        index=True, 
+        ondelete='set null',
+        oldname='parent_id',
         help="Initial thread message.")
-    child_ids = fields.One2many('mail.message', 'parent_id', 'Child Messages')
+    child_ids = fields.One2many('mail.message', 'message_parent_id', 'Child Messages')
     # related document
     model = fields.Char('Related Document Model', index=True)
     res_id = fields.Integer('Related Document ID', index=True)
@@ -815,7 +818,7 @@ class Message(models.Model):
 
         if operation == 'read':
             self._cr.execute("""
-                SELECT DISTINCT m.id, m.model, m.res_id, m.author_id, m.parent_id,
+                SELECT DISTINCT m.id, m.model, m.res_id, m.author_id, m.message_parent_id,
                                 COALESCE(partner_rel.res_partner_id, needaction_rel.res_partner_id),
                                 channel_partner.channel_id as channel_id, m.moderation_status
                 FROM "%s" m
@@ -830,19 +833,19 @@ class Message(models.Model):
                 LEFT JOIN "mail_channel_partner" channel_partner
                 ON channel_partner.channel_id = channel.id AND channel_partner.partner_id = %%(pid)s
                 WHERE m.id = ANY (%%(ids)s)""" % self._table, dict(pid=self.env.user.partner_id.id, ids=self.ids))
-            for mid, rmod, rid, author_id, parent_id, partner_id, channel_id, moderation_status in self._cr.fetchall():
+            for mid, rmod, rid, author_id, message_parent_id, partner_id, channel_id, moderation_status in self._cr.fetchall():
                 message_values[mid] = {
                     'model': rmod,
                     'res_id': rid,
                     'author_id': author_id,
-                    'parent_id': parent_id,
+                    'message_parent_id': message_parent_id,
                     'moderation_status': moderation_status,
                     'moderator_id': False,
                     'notified': any((message_values[mid].get('notified'), partner_id, channel_id))
                 }
         elif operation == 'write':
             self._cr.execute("""
-                SELECT DISTINCT m.id, m.model, m.res_id, m.author_id, m.parent_id, m.moderation_status,
+                SELECT DISTINCT m.id, m.model, m.res_id, m.author_id, m.message_parent_id, m.moderation_status,
                                 COALESCE(partner_rel.res_partner_id, needaction_rel.res_partner_id),
                                 channel_partner.channel_id as channel_id, channel_moderator_rel.res_users_id as moderator_id
                 FROM "%s" m
@@ -861,41 +864,41 @@ class Message(models.Model):
                 LEFT JOIN "mail_channel_moderator_rel" channel_moderator_rel
                 ON channel_moderator_rel.mail_channel_id = moderated_channel.id AND channel_moderator_rel.res_users_id = %%(uid)s
                 WHERE m.id = ANY (%%(ids)s)""" % self._table, dict(pid=self.env.user.partner_id.id, uid=self.env.user.id, ids=self.ids))
-            for mid, rmod, rid, author_id, parent_id, moderation_status, partner_id, channel_id, moderator_id in self._cr.fetchall():
+            for mid, rmod, rid, author_id, message_parent_id, moderation_status, partner_id, channel_id, moderator_id in self._cr.fetchall():
                 message_values[mid] = {
                     'model': rmod,
                     'res_id': rid,
                     'author_id': author_id,
-                    'parent_id': parent_id,
+                    'message_parent_id': message_parent_id,
                     'moderation_status': moderation_status,
                     'moderator_id': moderator_id,
                     'notified': any((message_values[mid].get('notified'), partner_id, channel_id))
                 }
         elif operation == 'create':
-            self._cr.execute("""SELECT DISTINCT id, model, res_id, author_id, parent_id, moderation_status FROM "%s" WHERE id = ANY (%%s)""" % self._table, (self.ids,))
-            for mid, rmod, rid, author_id, parent_id, moderation_status in self._cr.fetchall():
+            self._cr.execute("""SELECT DISTINCT id, model, res_id, author_id, message_parent_id, moderation_status FROM "%s" WHERE id = ANY (%%s)""" % self._table, (self.ids,))
+            for mid, rmod, rid, author_id, message_parent_id, moderation_status in self._cr.fetchall():
                 message_values[mid] = {
                     'model': rmod,
                     'res_id': rid,
                     'author_id': author_id,
-                    'parent_id': parent_id,
+                    'message_parent_id': message_parent_id,
                     'moderation_status': moderation_status,
                     'moderator_id': False
                 }
         else:  # unlink
-            self._cr.execute("""SELECT DISTINCT m.id, m.model, m.res_id, m.author_id, m.parent_id, m.moderation_status, channel_moderator_rel.res_users_id as moderator_id
+            self._cr.execute("""SELECT DISTINCT m.id, m.model, m.res_id, m.author_id, m.message_parent_id, m.moderation_status, channel_moderator_rel.res_users_id as moderator_id
                 FROM "%s" m
                 LEFT JOIN "mail_channel" moderated_channel
                 ON m.moderation_status = 'pending_moderation' AND m.res_id = moderated_channel.id
                 LEFT JOIN "mail_channel_moderator_rel" channel_moderator_rel
                 ON channel_moderator_rel.mail_channel_id = moderated_channel.id AND channel_moderator_rel.res_users_id = (%%s)
                 WHERE m.id = ANY (%%s)""" % self._table, (self.env.user.id, self.ids,))
-            for mid, rmod, rid, author_id, parent_id, moderation_status, moderator_id in self._cr.fetchall():
+            for mid, rmod, rid, author_id, message_parent_id, moderation_status, moderator_id in self._cr.fetchall():
                 message_values[mid] = {
                     'model': rmod,
                     'res_id': rid,
                     'author_id': author_id,
-                    'parent_id': parent_id,
+                    'message_parent_id': message_parent_id,
                     'moderation_status': moderation_status,
                     'moderator_id': moderator_id
                 }
@@ -916,8 +919,8 @@ class Message(models.Model):
         notified_ids = []
         if operation == 'create':
             # TDE: probably clean me
-            parent_ids = [message.get('parent_id') for message in message_values.values()
-                          if message.get('parent_id')]
+            message_parent_ids = [message.get('message_parent_id') for message in message_values.values()
+                          if message.get('message_parent_id')]
             self._cr.execute("""SELECT DISTINCT m.id, partner_rel.res_partner_id, channel_partner.partner_id FROM "%s" m
                 LEFT JOIN "mail_message_res_partner_rel" partner_rel
                 ON partner_rel.mail_message_id = m.id AND partner_rel.res_partner_id = (%%s)
@@ -927,10 +930,10 @@ class Message(models.Model):
                 ON channel.id = channel_rel.mail_channel_id
                 LEFT JOIN "mail_channel_partner" channel_partner
                 ON channel_partner.channel_id = channel.id AND channel_partner.partner_id = (%%s)
-                WHERE m.id = ANY (%%s)""" % self._table, (self.env.user.partner_id.id, self.env.user.partner_id.id, parent_ids,))
-            not_parent_ids = [mid[0] for mid in self._cr.fetchall() if any([mid[1], mid[2]])]
+                WHERE m.id = ANY (%%s)""" % self._table, (self.env.user.partner_id.id, self.env.user.partner_id.id, message_parent_ids,))
+            not_message_parent_ids = [mid[0] for mid in self._cr.fetchall() if any([mid[1], mid[2]])]
             notified_ids += [mid for mid, message in message_values.items()
-                             if message.get('parent_id') in not_parent_ids]
+                             if message.get('message_parent_id') in not_message_parent_ids]
 
         # Moderator condition: allow to WRITE, UNLINK if moderator of a pending message
         moderator_ids = []
