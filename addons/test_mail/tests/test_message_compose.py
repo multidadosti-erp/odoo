@@ -264,7 +264,7 @@ class TestComposer(BaseFunctionalTest, MockEmails, TestRecipients):
 
         message = self.test_record.message_ids[0]
         self.assertEqual(message.body, '<p>Mega</p>')
-        self.assertEqual(message.parent_id, parent)
+        self.assertEqual(message.message_parent_id, parent)
 
     @mute_logger('odoo.addons.mail.models.mail_mail')
     def test_composer_mass_mail(self):
