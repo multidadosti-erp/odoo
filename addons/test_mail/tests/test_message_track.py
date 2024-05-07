@@ -166,6 +166,7 @@ class TestTracking(common.BaseFunctionalTest, common.MockEmails):
             if 'name' in changes:
                 res['name'] = (mail_template, {'composition_mode': 'mass_mail'})
             return res
+
         self.registry('mail.test')._patch_method('_track_template', _track_template)
 
         cls = type(self.env['mail.test'])
@@ -180,4 +181,4 @@ class TestTracking(common.BaseFunctionalTest, common.MockEmails):
             'name': 'Zizizatestmailname',
             'description': 'Zizizatestmaildescription',
         })
-        test_mail_record.with_context(default_parent_id=2147483647).write({'name': magic_code})
+        test_mail_record.with_context(default_message_parent_id=2147483647).write({'name': magic_code})
