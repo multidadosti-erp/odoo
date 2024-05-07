@@ -472,7 +472,7 @@ Andrew</p>]]></field>
             Thanks for showing interest in our products! As requested, I send to you our products catalog.<br />
             To be able to finely tune the solution, we would like to know precise needs. This way we wil be able to help you choosing the right infrastructure according to your requirements.<br/>
             Best regards,</p>]]></field>
-            <field name="parent_id" ref="msg_case15_1"/>
+            <field name="message_parent_id" ref="msg_case15_1"/>
             <field name="message_type">comment</field>
             <field name="subtype_id" ref="mail.mt_comment"/>
             <field name="attachment_ids" eval="[(6, 0, [ref('msg_case15_attach1')])]"/>
@@ -497,7 +497,7 @@ Andrew</p>]]></field>
             <p>Best regards,</p>]]></field>
             <field name="message_type">email</field>
             <field name="subtype_id" ref="mail.mt_comment"/>
-            <field name="parent_id" ref="msg_case15_1"/>
+            <field name="message_parent_id" ref="msg_case15_1"/>
         </record>
         <record id="msg_case15_4" model="mail.message">
             <field name="subject">Re: Plan to buy RedHat servers</field>
@@ -510,7 +510,7 @@ Andrew</p>]]></field>
             <p>Best regards,</p>]]></field>
             <field name="message_type">email</field>
             <field name="subtype_id" ref="mail.mt_comment"/>
-            <field name="parent_id" ref="msg_case15_1"/>
+            <field name="message_parent_id" ref="msg_case15_1"/>
         </record>
 
         <record id="crm_case_16" model="crm.lead">
@@ -612,7 +612,7 @@ Andrew</p>]]></field>
             <field name="body"><![CDATA[<p>It seems very interesting. As you say, first of all we will have to define precisely what the training will be about, and your precise needs.</p>]]></field>
             <field name="message_type">comment</field>
             <field name="subtype_id" ref="mail.mt_comment"/>
-            <field name="parent_id" ref="msg_case18_1"/>
+            <field name="message_parent_id" ref="msg_case18_1"/>
         </record>
 
         <record id="crm_case_19" model="crm.lead">
