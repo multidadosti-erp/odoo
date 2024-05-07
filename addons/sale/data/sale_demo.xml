@@ -603,7 +603,7 @@ Could you confirm, please?</field>
         <record id="message_sale_2" model="mail.message">
             <field name="model">sale.order</field>
             <field name="res_id" ref="sale_order_2"/>
-            <field name="parent_id" ref="message_sale_1"/>
+            <field name="message_parent_id" ref="message_sale_1"/>
             <field name="body">Hello,
 Unfortunately that was a temporary discount that is not available anymore.
 Do you still plan to confirm the order based on the quoted prices?
@@ -615,7 +615,7 @@ Thanks!</field>
         <record id="message_sale_3" model="mail.message">
             <field name="model">sale.order</field>
             <field name="res_id" ref="sale_order_2"/>
-            <field name="parent_id" ref="message_sale_2"/>
+            <field name="message_parent_id" ref="message_sale_2"/>
             <field name="body">Alright, thanks for the clarification. I will confirm the order as soon as I get my manager's approval.</field>
             <field name="message_type">comment</field>
             <field name="author_id" ref="base.partner_demo"/>
