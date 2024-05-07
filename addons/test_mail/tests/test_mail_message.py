@@ -291,7 +291,7 @@ class TestMessageAccess(common.BaseFunctionalTest, common.MockEmails):
 
     def test_mail_message_access_create_reply(self):
         self.message.write({'partner_ids': [(4, self.user_employee.partner_id.id)]})
-        self.env['mail.message'].sudo(self.user_employee).create({'model': 'mail.channel', 'res_id': self.group_private.id, 'body': 'Test', 'parent_id': self.message.id})
+        self.env['mail.message'].sudo(self.user_employee).create({'model': 'mail.channel', 'res_id': self.group_private.id, 'body': 'Test', 'message_parent_id': self.message.id})
 
     def test_mail_message_access_create_wo_parent_access(self):
         """ Purpose is to test posting a message on a record whose first message / parent
@@ -324,7 +324,7 @@ class TestMessageAccess(common.BaseFunctionalTest, common.MockEmails):
         ])
 
         self.assertTrue(new_mail)
-        self.assertEqual(new_msg.parent_id, message)
+        self.assertEqual(new_msg.message_parent_id, message)
 
     # --------------------------------------------------
     # WRITE

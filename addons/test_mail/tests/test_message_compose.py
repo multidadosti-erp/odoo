@@ -134,7 +134,7 @@ class TestMessagePost(BaseFunctionalTest, MockEmails, TestRecipients):
             partner_ids=[self.partner_1.id],
             parent_id=parent_msg.id)
 
-        self.assertEqual(msg.parent_id.id, parent_msg.id)
+        self.assertEqual(msg.message_parent_id.id, parent_msg.id)
         self.assertEqual(msg.partner_ids, self.partner_1)
         self.assertEqual(parent_msg.partner_ids, self.env['res.partner'])
 
@@ -147,7 +147,7 @@ class TestMessagePost(BaseFunctionalTest, MockEmails, TestRecipients):
             message_type='comment', subtype='mt_comment',
             parent_id=msg.id)
 
-        self.assertEqual(new_msg.parent_id.id, parent_msg.id, 'message_post: flatten error')
+        self.assertEqual(new_msg.message_parent_id.id, parent_msg.id, 'message_post: flatten error')
         self.assertEqual(new_msg.partner_ids, self.env['res.partner'])
 
     @mute_logger('odoo.addons.mail.models.mail_mail')
@@ -190,7 +190,7 @@ class TestMessagePost(BaseFunctionalTest, MockEmails, TestRecipients):
         self.assertTrue(reply)
         self.assertEqual(reply.subtype_id, self.env.ref('mail.mt_note'))
         self.assertEqual(reply.needaction_partner_ids, self.user_employee.partner_id)
-        self.assertEqual(reply.parent_id, msg)
+        self.assertEqual(reply.message_parent_id, msg)
 
     def test_post_log(self):
         new_note = self.test_record.sudo(self.user_employee)._message_log(
@@ -257,7 +257,7 @@ class TestComposer(BaseFunctionalTest, MockEmails, TestRecipients):
 
         self.env['mail.compose.message'].with_context({
             'default_composition_mode': 'comment',
-            'default_parent_id': parent.id
+            'default_message_parent_id': parent.id
         }).sudo(self.user_employee).create({
             'body': '<p>Mega</p>',
         }).send_mail()
@@ -358,7 +358,7 @@ class TestComposer(BaseFunctionalTest, MockEmails, TestRecipients):
 
             ComposerPortal.with_context({
                 'default_composition_mode': 'comment',
-                'default_parent_id': self.test_record.message_ids.ids[0],
+                'default_message_parent_id': self.test_record.message_ids.ids[0],
             }).create({
                 'subject': 'Subject',
                 'body': '<p>Body text 2</p>'}).send_mail()

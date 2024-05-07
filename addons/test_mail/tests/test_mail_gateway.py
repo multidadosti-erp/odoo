@@ -693,7 +693,7 @@ class TestMailgateway(BaseFunctionalTest, MockEmails):
         new_record = self.env['mail.test.simple'].search([('name', "=", msg_fw.subject)])
         self.assertEqual(len(new_record), 1)
         self.assertEqual(msg_fw.model, 'mail.test.simple')
-        self.assertFalse(msg_fw.parent_id)
+        self.assertFalse(msg_fw.message_parent_id)
         self.assertTrue(msg_fw.res_id == new_record.id)
 
     # --------------------------------------------------
