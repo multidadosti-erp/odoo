@@ -276,7 +276,7 @@ Thanks,</field>
         <record id="message_task_2" model="mail.message">
             <field name="model">project.task</field>
             <field name="res_id" ref="project_task_22"/>
-            <field name="parent_id" ref="message_task_1"/>
+            <field name="message_parent_id" ref="message_task_1"/>
             <field name="body">Ok, I have checked the mail,
 I will update the document and let you know.</field>
             <field name="message_type">comment</field>
@@ -285,7 +285,7 @@ I will update the document and let you know.</field>
         <record id="message_task_3" model="mail.message">
             <field name="model">project.task</field>
             <field name="res_id" ref="project_task_22"/>
-            <field name="parent_id" ref="message_task_2"/>
+            <field name="message_parent_id" ref="message_task_2"/>
             <field name="body">Fine!
 Send it ASAP, its urgent.</field>
             <field name="message_type">comment</field>
