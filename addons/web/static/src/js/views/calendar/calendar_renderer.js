@@ -391,6 +391,7 @@ return AbstractRenderer.extend({
                 if (self.state.context.default_name) {
                     data.title = self.state.context.default_name;
                 }
+                data.context = self.state.context;
                 self.trigger_up('openCreate', data);
                 self.$calendar.fullCalendar('unselect');
             },

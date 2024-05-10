@@ -216,17 +216,10 @@ var CalendarController = AbstractController.extend({
         event.stopPropagation();
         this._move('next');
     },
-    /**
-     * @private
-     * @param {OdooEvent} event
-     */
-    _onOpenCreate: function (event) {
-        var self = this;
-        if (this.model.get().scale === "month") {
-            event.data.allDay = true;
-        }
-        var data = this.model.calendarEventToRecord(event.data);
-
+    // Multidados:
+    //  Adiciona obtenção de contexto por função
+    //  - facilita herança.
+    _contextDefaults: function(event, data) {
         var context = _.extend({}, this.context, event.options && event.options.context);
         context.default_name = data.name || null;
         context['default_' + this.mapping.date_start] = data[this.mapping.date_start] || null;
@@ -239,6 +232,23 @@ var CalendarController = AbstractController.extend({
         if (this.mapping.all_day) {
             context['default_' + this.mapping.all_day] = data[this.mapping.all_day] || null;
         }
+        return context
+    },
+    /**
+     * @private
+     * @param {OdooEvent} event
+     */
+    _onOpenCreate: function (event) {
+        var self = this;
+        if (this.model.get().scale === "month") {
+            event.data.allDay = true;
+        }
+        var data = this.model.calendarEventToRecord(event.data);
+
+        // Multidados:
+        //  Adiciona obtenção de contexto por função
+        //  - facilita herança.
+        var context = this._contextDefaults(event, data);
 
         for (var k in context) {
             if (context[k] && context[k]._isAMomentObject) {
