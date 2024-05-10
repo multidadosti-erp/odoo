@@ -13452,7 +13452,7 @@ msgstr "項目タイプ"
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:1084
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
 msgstr "フィールド `%(field_name)s` がありません。"
 
 #. module: base

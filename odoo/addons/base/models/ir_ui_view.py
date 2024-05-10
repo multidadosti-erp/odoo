@@ -1137,7 +1137,7 @@ actual arch.
             if field in fields:
                 fields[field].update(fields_def[field])
             else:
-                message = _("Field `%(field_name)s` does not exist") % dict(field_name=field)
+                message = _("Field `%(field_name)s` does not exist for model `%(model_name)s`") % dict(field_name=field, model_name=model)
                 self.raise_view_error(message, view_id)
 
         missing = [item for item in attrs_fields if item[0] not in fields]

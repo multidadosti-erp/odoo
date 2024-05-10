@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base
-# 
+#
 # Translators:
 # Jay Vora <jay.vora@serpentcs.com>, 2018
 # Divya Pandya <dia@odoo.com>, 2018
@@ -11,7 +11,7 @@
 # Ranjit Pillai <rpi@odoo.com>, 2018
 # Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018
 # Martin Trigaux, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -11275,7 +11275,7 @@ msgstr ""
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:1084
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
 msgstr ""
 
 #. module: base

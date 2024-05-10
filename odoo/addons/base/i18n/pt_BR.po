@@ -15106,8 +15106,8 @@ msgstr "Tipo do Campo"
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:1084
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
-msgstr "O campo `%(field_name)s` não existe"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
+msgstr "O campo `%(field_name)s` não existe para a model `%(model_name)s`"
 
 #. module: base
 #: code:addons/base/models/ir_model.py:410
