@@ -13958,8 +13958,8 @@ msgstr "Вид поле"
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:1084
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
-msgstr "Field `%(field_name)s` does not exist"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
+msgstr "Field `%(field_name)s` does not exist for model `%(model_name)s`"
 
 #. module: base
 #: code:addons/base/models/ir_model.py:410

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base
-# 
+#
 # Translators:
 # Martin Trigaux <mat@odoo.com>, 2017
 msgid ""
@@ -9169,7 +9169,7 @@ msgstr ""
 #. module: base
 #: code:addons/base/ir/ir_ui_view.py:918
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
 msgstr ""
 
 #. module: base

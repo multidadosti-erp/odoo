@@ -14920,7 +14920,7 @@ msgstr "필드 유형"
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:1084
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
 msgstr "`%(field_name)s` 필드가 없습니다"
 
 #. module: base

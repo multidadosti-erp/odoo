@@ -14659,7 +14659,7 @@ msgstr "Type de Champ"
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:1084
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
 msgstr "Le champ `%(field_name)s` n'existe pas"
 
 #. module: base

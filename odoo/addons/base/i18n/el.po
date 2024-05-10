@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * base
-# 
+#
 # Translators:
 # 437c9d6e19936ed69f57bed9e0fe4716, 2018
 # Giota Dandidou <giotadandidou@gmail.com>, 2018
@@ -14,7 +14,7 @@
 # Vangelis Skarmoutsos <skarmoutsosv@gmail.com>, 2019
 # Alexandros Kapetanios <alexandros@gnugr.org>, 2021
 # Methodoos Greece <info@methodoos.com>, 2021
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -11858,7 +11858,7 @@ msgstr "Τύπος Πεδίου"
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:1084
 #, python-format
-msgid "Field `%(field_name)s` does not exist"
+msgid "Field `%(field_name)s` does not exist for model `%(model_name)s`"
 msgstr "Το πεδίο `%(field_name)s` δεν υπάρχει"
 
 #. module: base
