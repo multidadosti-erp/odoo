@@ -18,6 +18,9 @@ body.o_is_superuser .o_menu_systray {
         background-color: fade_out($o-navbar-inverse-link-hover-bg, 0.5);
     }
 }
+body > header {
+    background-color: $o-brand-odoo;
+}
 .o_main_navbar {
     position: relative;
     height: $o-navbar-height;
