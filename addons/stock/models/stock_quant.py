@@ -112,7 +112,7 @@ class StockQuant(models.Model):
             return 'in_date DESC NULLS LAST, id desc'
         raise UserError(_('Removal strategy %s not implemented.') % (removal_strategy,))
 
-    def _gather(self, product_id, location_id, lot_id=None, package_id=None, owner_id=None, strict=False):
+    def _gather(self, product_id, location_id=None, lot_id=None, package_id=None, owner_id=None, strict=False):
         removal_strategy = self._get_removal_strategy(product_id, location_id)
         removal_strategy_order = self._get_removal_strategy_order(removal_strategy)
         domain = [
@@ -125,12 +125,14 @@ class StockQuant(models.Model):
                 domain = expression.AND([[('package_id', '=', package_id.id)], domain])
             if owner_id:
                 domain = expression.AND([[('owner_id', '=', owner_id.id)], domain])
-            domain = expression.AND([[('location_id', 'child_of', location_id.id)], domain])
+            if location_id:
+                domain = expression.AND([[('location_id', 'child_of', location_id.id)], domain])
         else:
             domain = expression.AND([['|', ('lot_id', '=', lot_id.id), ('lot_id', '=', False)] if lot_id else [('lot_id', '=', False)], domain])
             domain = expression.AND([[('package_id', '=', package_id and package_id.id or False)], domain])
             domain = expression.AND([[('owner_id', '=', owner_id and owner_id.id or False)], domain])
-            domain = expression.AND([[('location_id', '=', location_id.id)], domain])
+            if location_id:
+                domain = expression.AND([[('location_id', '=', location_id.id)], domain])
 
         # Copy code of _search for special NULLS FIRST/LAST order
         self.sudo(self._uid).check_access_rights('read')
