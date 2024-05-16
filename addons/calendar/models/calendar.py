@@ -1737,10 +1737,10 @@ class Meeting(models.Model):
         if not 'duration' in values:
             values['duration'] = self._get_duration(values['start'], values['stop'])
 
+        defaults = self.default_get(['activity_ids', 'res_model_id', 'res_id', 'user_id'])
+
         # created from calendar: try to create an activity on the related record
         if not values.get('activity_ids'):
-            defaults = self.default_get(['activity_ids', 'res_model_id', 'res_id', 'user_id'])
-
             # Alterado pela Mutlidados:
             #  - Adiciona funções para a criação da atividade padrão.
             #  - Possibilita a herança (adicionado inicialmente para o multiphono)
