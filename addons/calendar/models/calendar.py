@@ -610,6 +610,32 @@ class Meeting(models.Model):
                 partners |= self.env['res.partner'].browse(active_id)
         return partners
 
+    def _default_activity_ids_values(self, values, defaults):
+        vals = {
+            'res_model_id': values.get('res_model_id', defaults.get('res_model_id')),
+            'res_id': values.get('res_id', defaults.get('res_id')),
+            'activity_type_id': values.get('activity_type_id', self._context.get('default_activity_type_id')) or \
+                                    self.env['mail.activity.type'].search([('category', '=', 'meeting')], limit=1).id
+        }
+        if vals['res_model_id'] and vals['res_id'] and vals['activity_type_id']:
+            user_id = values.get('user_id', defaults.get('user_id'))
+            if user_id:
+                vals['user_id'] = user_id
+            return vals
+        return {}
+
+    def default_activity_ids(self, values, defaults):
+        res_model_id = values.get('res_model_id', defaults.get('res_model_id'))
+        if not res_model_id:
+            return False
+
+        ResModel = self.env[self.env['ir.model'].sudo().browse(res_model_id).model]
+
+        if hasattr(ResModel, 'activity_ids'):
+            activity_vals = self._default_activity_ids_values(values, defaults)
+            if activity_vals:
+                return [(0, 0, activity_vals)]
+
     @api.multi
     def _get_recurrent_dates_by_event(self):
         """ Get recurrent start and stop dates based on Rule string"""
@@ -1702,7 +1728,9 @@ class Meeting(models.Model):
         if 'rrule' in values:
             values['rrule'] = self._fix_rrule(values)
 
+        default_user = False
         if not 'user_id' in values:  # Else bug with quick_create when we are filter on an other user
+            default_user = True
             values['user_id'] = self.env.user.id
 
         # compute duration, if not given
@@ -1712,21 +1740,17 @@ class Meeting(models.Model):
         # created from calendar: try to create an activity on the related record
         if not values.get('activity_ids'):
             defaults = self.default_get(['activity_ids', 'res_model_id', 'res_id', 'user_id'])
-            res_model_id = values.get('res_model_id', defaults.get('res_model_id'))
-            res_id = values.get('res_id', defaults.get('res_id'))
-            user_id = values.get('user_id', defaults.get('user_id'))
-            if not defaults.get('activity_ids') and res_model_id and res_id:
-                if hasattr(self.env[self.env['ir.model'].sudo().browse(res_model_id).model], 'activity_ids'):
-                    meeting_activity_type = self.env['mail.activity.type'].search([('category', '=', 'meeting')], limit=1)
-                    if meeting_activity_type:
-                        activity_vals = {
-                            'res_model_id': res_model_id,
-                            'res_id': res_id,
-                            'activity_type_id': meeting_activity_type.id,
-                        }
-                        if user_id:
-                            activity_vals['user_id'] = user_id
-                        values['activity_ids'] = [(0, 0, activity_vals)]
+
+            # Alterado pela Mutlidados:
+            #  - Adiciona funções para a criação da atividade padrão.
+            #  - Possibilita a herança (adicionado inicialmente para o multiphono)
+            if not defaults.get('activity_ids'):
+                activity_vals = self.default_activity_ids(values, defaults)
+                if activity_vals:
+                    values['activity_ids'] = activity_vals
+
+        if defaults.get('user_id') and default_user:
+            values['user_id'] = defaults['user_id']
 
         meeting = super(Meeting, self).create(values)
         meeting._sync_activities(values)
@@ -1896,26 +1920,45 @@ class Meeting(models.Model):
         default = default or {}
         return super(Meeting, self.browse(calendar_id2real_id(self.id))).copy(default)
 
+    def _get_activity_vals(self, values):
+        """ Adicionado pela Multidados:
+        Obtenção  dos valores para a criação da
+        atividade padrão.
+
+        OBS: Preserva comportamento desejado pelo core,
+            apenas encapsula código em função.
+
+        Args:
+            values (dict): Valores de atualização ou
+                criação do calendar.event.
+
+        Returns:
+            dict: Valores para incluir na criação da
+                atividade
+        """
+        activity_values = {}
+        if values.get('name'):
+            activity_values['summary'] = values['name']
+        if values.get('description'):
+            activity_values['note'] = tools.plaintext2html(values['description'])
+        if values.get('start') or values.get('stop'):
+            # self.start is a datetime UTC *only when the event is not allday*
+            # activty.date_deadline is a date (No TZ, but should represent the day in which the user's TZ is)
+            # See 72254129dbaeae58d0a2055cba4e4a82cde495b7 for the same issue, but elsewhere
+            deadline = fields.Datetime.from_string(values['start'])
+            user_tz = self.env.context.get('tz')
+            if user_tz and not self.allday:
+                deadline = pytz.UTC.localize(deadline)
+                deadline = deadline.astimezone(pytz.timezone(user_tz))
+            activity_values['date_deadline'] = deadline.date()
+        if values.get('user_id'):
+            activity_values['user_id'] = values['user_id']
+        return activity_values
+
     def _sync_activities(self, values):
         # update activities
         if self.mapped('activity_ids'):
-            activity_values = {}
-            if values.get('name'):
-                activity_values['summary'] = values['name']
-            if values.get('description'):
-                activity_values['note'] = tools.plaintext2html(values['description'])
-            if values.get('start'):
-                # self.start is a datetime UTC *only when the event is not allday*
-                # activty.date_deadline is a date (No TZ, but should represent the day in which the user's TZ is)
-                # See 72254129dbaeae58d0a2055cba4e4a82cde495b7 for the same issue, but elsewhere
-                deadline = fields.Datetime.from_string(values['start'])
-                user_tz = self.env.context.get('tz')
-                if user_tz and not self.allday:
-                    deadline = pytz.UTC.localize(deadline)
-                    deadline = deadline.astimezone(pytz.timezone(user_tz))
-                activity_values['date_deadline'] = deadline.date()
-            if values.get('user_id'):
-                activity_values['user_id'] = values['user_id']
+            activity_values = self._get_activity_vals(values)
             if activity_values.keys():
                 self.mapped('activity_ids').write(activity_values)
 
