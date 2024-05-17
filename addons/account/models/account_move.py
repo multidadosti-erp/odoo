@@ -70,10 +70,14 @@ class AccountMove(models.Model):
                             total_reconciled += partial_line.amount
                 move.matched_percentage = precision_currency.round(total_reconciled) / precision_currency.round(total_amount)
 
-    @api.one
-    @api.depends('company_id')
-    def _compute_currency(self):
-        self.currency_id = self.company_id.currency_id or self.env.user.company_id.currency_id
+    @api.model
+    def _get_currency(self):
+        context = self._context or {}
+        currency = context.get('default_currency_id', False)
+        if not currency and context.get('default_journal_id', False):
+            currency = self.env['account.journal'].browse(context['default_journal_id']).currency_id
+
+        return currency or self.company_id.currency_id or self.env.user.company_id.currency_id
 
     @api.multi
     def _get_default_journal(self):
@@ -99,7 +103,8 @@ class AccountMove(models.Model):
     ref = fields.Char(string='Reference', copy=False)
     date = fields.Date(required=True, states={'posted': [('readonly', True)]}, index=True, default=fields.Date.context_today)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True, states={'posted': [('readonly', True)]}, default=_get_default_journal)
-    currency_id = fields.Many2one('res.currency', compute='_compute_currency', store=True, string="Currency")
+    currency_id = fields.Many2one('res.currency', string='Currency', default=_get_currency,
+        help="The optional other currency if it is a multi-currency entry.")
     state = fields.Selection([('draft', 'Unposted'), ('posted', 'Posted')], string='Status',
       required=True, readonly=True, copy=False, default='draft',
       help='All manually created new journal entries are usually in the status \'Unposted\', '
@@ -617,9 +622,9 @@ class AccountMoveLine(models.Model):
 
     @api.model
     def _get_currency(self):
-        currency = False
         context = self._context or {}
-        if context.get('default_journal_id', False):
+        currency = context.get('default_currency_id', False)
+        if not currency and context.get('default_journal_id', False):
             currency = self.env['account.journal'].browse(context['default_journal_id']).currency_id
         return currency
 
