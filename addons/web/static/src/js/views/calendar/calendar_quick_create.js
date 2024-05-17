@@ -48,10 +48,7 @@ var QuickCreate = Dialog.extend({
                     }
                 }},
                 {text: _t("Edit"), click: function () {
-                    dataCalendar.disableQuickCreate = true;
-                    dataCalendar.title = self.$('input').val().trim();
-                    dataCalendar.on_save = self.destroy.bind(self);
-                    self.trigger_up('openCreate', dataCalendar);
+                    self._quickEdit(dataCalendar);
                 }},
                 {text: _t("Cancel"), close: true},
             ] : [],
@@ -79,6 +76,23 @@ var QuickCreate = Dialog.extend({
         var val = this.$('input').val().trim();
         dataCalendar.title = val;
         return (val)? this.trigger_up('quickCreate', {data: dataCalendar, options: this.options}) : false;
+    },
+
+    /**
+     * Adicionado pela Multidados:
+     * - Foi somente transferido para uma função do objeto
+     *   para possibilitar herança.
+     *
+     * Gathers data from the quick create dialog a launch quick_create(data) method
+     * to edit form.
+     */
+    _quickEdit: function (dataCalendar) {
+        $.extend(dataCalendar, {
+            disableQuickCreate: true,
+            title: this.$('input').val().trim(),
+            on_save: this.destroy.bind(this),
+        })
+        this.trigger_up('openCreate', dataCalendar);
     },
 
     //--------------------------------------------------------------------------
