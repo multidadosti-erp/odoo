@@ -379,7 +379,7 @@ class AccountInvoice(models.Model):
     user_id = fields.Many2one('res.users', string='Salesperson', track_visibility='onchange',
         readonly=True, states={'draft': [('readonly', False)]},
         default=lambda self: self.env.user, copy=False)
-    fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', oldname='fiscal_position',
+    fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', oldname='fiscal_position', ondelete='restrict',
         readonly=True, states={'draft': [('readonly', False)]})
     commercial_partner_id = fields.Many2one('res.partner', string='Commercial Entity', compute_sudo=True,
         related='partner_id.commercial_partner_id', store=True, readonly=True,
@@ -1189,8 +1189,11 @@ class AccountInvoice(models.Model):
                 'analytic_tag_ids': analytic_tag_ids,
                 'tax_ids': tax_ids,
                 'invoice_id': self.id,
+                'currency_id': self.currency_id.id,
             }
+            
             res.append(move_line_dict)
+
         return res
 
     @api.model
