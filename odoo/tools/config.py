@@ -284,6 +284,8 @@ class configmanager(object):
                          help="Use the unaccent function provided by the database when available.")
         group.add_option("--geoip-db", dest="geoip_database", my_default='/usr/share/GeoIP/GeoLite2-City.mmdb',
                          help="Absolute path to the GeoIP database file.")
+        group.add_option("--encryption-key", dest="encryption_key", my_default='5ZsZ-p2iU_2mP6s7qIUSc4nrr2DhrG07_MEBYLvL8rI=',
+                         help="Encryption Key used do criptografy values (default '123zYz').")
         parser.add_option_group(group)
 
         if os.name == 'posix':
