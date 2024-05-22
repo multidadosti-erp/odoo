@@ -1068,6 +1068,9 @@ class Meeting(models.Model):
             # nome da timezone do usuario
             user_tz = meeting.user_id.tz
 
+            if not user_tz:
+                raise UserError(_("User has no Timezone set. It's required to create calendar events."))
+
             vtimezone = cal.add('vtimezone')
             vtimezone.add('tzid').value = user_tz
             vtimezone.add('x-lic-location').value = user_tz
