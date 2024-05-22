@@ -2009,7 +2009,7 @@ class O2MProxy(X2MProxy):
         del self._records[index]
         self._parent._perform_onchange([self._field])
 
-class M2MProxy(X2MProxy, collections.Sequence):
+class M2MProxy(X2MProxy, collections.abc.Sequence):
     """ M2MProxy()
 
     Behaves as a :class:`~collection.Sequence` of recordsets, can be
@@ -2189,7 +2189,7 @@ class TagsSelector(object):
 
         test_module = getattr(test, 'test_module', None)
         test_class = getattr(test, 'test_class', None)
-        test_tags = test.test_tags | {test_module}  # module as test_tags deprecated, keep for retrocompatibility, 
+        test_tags = test.test_tags | {test_module}  # module as test_tags deprecated, keep for retrocompatibility,
         test_method = getattr(test, '_testMethodName', None)
 
         def _is_matching(test_filter):
