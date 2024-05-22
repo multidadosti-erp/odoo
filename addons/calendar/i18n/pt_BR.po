@@ -1600,6 +1600,12 @@ msgid "Update only this instance"
 msgstr "Atualizar somente esta instância"
 
 #. module: calendar
+#: code:addons/calendar/models/calendar.py:1072
+#, python-format
+msgid "User has no Timezone set. It's required to create calendar events."
+msgstr "O usuário não tem fuso-horário definido. O fuso é obrigatório para criar eventos de calendário."
+
+#. module: calendar
 #: model:ir.model,name:calendar.model_res_users
 msgid "Users"
 msgstr "Usuários"
