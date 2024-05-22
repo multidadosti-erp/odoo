@@ -5,10 +5,15 @@ import os.path
 import re
 import traceback
 
-from collections import OrderedDict, Sized, Mapping
 from functools import reduce
 from itertools import tee, count
 from textwrap import dedent
+
+try:
+    from collections import OrderedDict, Sized, Mapping
+except ImportError:
+    from collections import OrderedDict
+    from collections.abc import Mapping,Sized
 
 import itertools
 from lxml import etree, html

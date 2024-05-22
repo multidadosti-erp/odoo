@@ -49,7 +49,8 @@ setup(
         'qrcode',
         'reportlab',  # windows binary pypi.python.org/pypi/reportlab
         'requests',
-        'suds-jurko',
+        'suds-community; python_version >= "3.9"',
+        'suds-jurko; python_version <= "3.8"',
         'vatnumber',
         'vobject',
         'werkzeug',
