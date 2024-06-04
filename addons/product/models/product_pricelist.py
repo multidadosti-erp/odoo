@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from itertools import chain
 
 from odoo import api, fields, models, tools, _
@@ -52,7 +51,7 @@ class Pricelist(models.Model):
                        FROM ((
                                 SELECT pr.id, pr.name
                                 FROM product_pricelist pr JOIN
-                                     res_currency cur ON 
+                                     res_currency cur ON
                                          (pr.currency_id = cur.id)
                                 WHERE pr.name || ' (' || cur.name || ')' = %(name)s
                             )
@@ -65,7 +64,7 @@ class Pricelist(models.Model):
                                         tr.name = 'product.pricelist,name' AND
                                         tr.lang = %(lang)s
                                      ) JOIN
-                                     res_currency cur ON 
+                                     res_currency cur ON
                                          (pr.currency_id = cur.id)
                                 WHERE tr.value || ' (' || cur.name || ')' = %(name)s
                             )
@@ -143,23 +142,30 @@ class Pricelist(models.Model):
 
         # Load all rules
         self._cr.execute(
-            'SELECT item.id '
-            'FROM product_pricelist_item AS item '
-            'LEFT JOIN product_category AS categ '
-            'ON item.categ_id = categ.id '
-            'WHERE (item.product_tmpl_id IS NULL OR item.product_tmpl_id = any(%s))'
-            'AND (item.product_id IS NULL OR item.product_id = any(%s))'
-            'AND (item.categ_id IS NULL OR item.categ_id = any(%s)) '
-            'AND (item.pricelist_id = %s) '
-            'AND (item.date_start IS NULL OR item.date_start<=%s) '
-            'AND (item.date_end IS NULL OR item.date_end>=%s)'
-            'ORDER BY item.applied_on, item.min_quantity desc, categ.complete_name desc, item.id desc',
-            (prod_tmpl_ids, prod_ids, categ_ids, self.id, date, date))
-        # NOTE: if you change `order by` on that query, make sure it matches
-        # _order from model to avoid inconstencies and undeterministic issues.
+            "SELECT string_agg(item.id::text, ',') AS ids "
+            "FROM product_pricelist_item AS item "
+            "  LEFT JOIN product_category AS categ ON item.categ_id = categ.id "
+            "WHERE (item.product_tmpl_id IS NULL OR item.product_tmpl_id = any(%s))"
+            "  AND (item.product_id IS NULL OR item.product_id = any(%s))"
+            "  AND (item.categ_id IS NULL OR item.categ_id = any(%s)) "
+            "  AND (item.pricelist_id = %s) "
+            "  AND (item.date_start IS NULL OR item.date_start<=%s) "
+            "  AND (item.date_end IS NULL OR item.date_end>=%s)",
+            (prod_tmpl_ids, prod_ids, categ_ids, self.id, date, date),
+        )
 
-        item_ids = [x[0] for x in self._cr.fetchall()]
-        items = self.env['product.pricelist.item'].browse(item_ids)
+        fetched_data = self._cr.fetchall()
+        if fetched_data:
+            list_ids = eval(fetched_data[0][0])
+            if isinstance(list_ids, int):
+                list_ids = (list_ids,)
+            items = self.env["product.pricelist.item"].search(
+                [("id", "in", list_ids)],
+                order="date_start, product_tmpl_id, product_id, categ_id",
+            )
+        else:
+            items = self.env['product.pricelist.item']
+
         results = {}
 
         for product, qty, partner in products_qty_partner:
@@ -182,11 +188,9 @@ class Pricelist(models.Model):
             # if Public user try to access standard price from website sale, need to call price_compute.
             # TDE SURPRISE: product can actually be a template
             price = product.price_compute('list_price')[product.id]
-
             price_uom = self.env['uom.uom'].browse([qty_uom_id])
 
             for rule in items:
-
                 # Em casos onde a tag 'uom_qty_change' esta presente no contexto (indica
                 # que o metodo foi chamado devido ao onchange de campo de quantidade) e
                 # a quantidade minima do produto na lista de preço é zero, nós mantemos
@@ -232,7 +236,9 @@ class Pricelist(models.Model):
                 if price is not False:
                     price = rule._compute_price(price, price_uom, product, quantity=qty, partner=partner)
                     suitable_rule = rule
+
                 break
+
             # Final price conversion into pricelist currency
             if suitable_rule and suitable_rule.compute_price != 'fixed' and suitable_rule.base != 'pricelist':
                 if suitable_rule.base == 'standard_price':
@@ -240,7 +246,6 @@ class Pricelist(models.Model):
                 else:
                     cur = product.currency_id
                 price = cur._convert(price, self.currency_id, self.env.user.company_id, date, round=False)
-
 
             results[product.id] = (price, suitable_rule and suitable_rule.id or False)
 
