@@ -161,7 +161,7 @@ class Pricelist(models.Model):
                 list_ids = (list_ids,)
             items = self.env["product.pricelist.item"].search(
                 [("id", "in", list_ids)],
-                order="date_start, product_tmpl_id, product_id, categ_id",
+                order="applied_on, product_id, product_tmpl_id, date_start, min_quantity desc, categ_id desc, id desc",
             )
         else:
             items = self.env['product.pricelist.item']
@@ -390,13 +390,13 @@ class PricelistItem(models.Model):
     # inconstencies and undeterministic issues.
 
     product_tmpl_id = fields.Many2one(
-        'product.template', 'Product Template', ondelete='cascade',
+        'product.template', 'Product Template', ondelete='cascade', index=True,
         help="Specify a template if this rule only applies to one product template. Keep empty otherwise.")
     product_id = fields.Many2one(
-        'product.product', 'Product', ondelete='cascade',
+        'product.product', 'Product', ondelete='cascade', index=True,
         help="Specify a product if this rule only applies to one product. Keep empty otherwise.")
     categ_id = fields.Many2one(
-        'product.category', 'Product Category', ondelete='cascade',
+        'product.category', 'Product Category', ondelete='cascade', index=True,
         help="Specify a product category if this rule only applies to products belonging to this category or its children categories. Keep empty otherwise.")
     min_quantity = fields.Integer(
         'Min. Quantity', default=0,
@@ -442,8 +442,8 @@ class PricelistItem(models.Model):
     currency_id = fields.Many2one(
         'res.currency', 'Currency',
         readonly=True, related='pricelist_id.currency_id', store=True)
-    date_start = fields.Date('Start Date', help="Starting date for the pricelist item validation")
-    date_end = fields.Date('End Date', help="Ending valid for the pricelist item validation")
+    date_start = fields.Date('Start Date', help="Starting date for the pricelist item validation", index=True)
+    date_end = fields.Date('End Date', help="Ending valid for the pricelist item validation", index=True)
     compute_price = fields.Selection([
         ('fixed', 'Fix Price'),
         ('percentage', 'Percentage (discount)'),
