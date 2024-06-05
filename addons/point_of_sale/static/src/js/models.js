@@ -324,7 +324,7 @@ exports.PosModel = Backbone.Model.extend({
         },
     },{
         model:  'product.pricelist.item',
-        order:  _.map(['date_start, product_tmpl_id, product_id, categ_id'], function (name) { return {name: name}; }),
+        order:  _.map(['applied_on, product_id, product_tmpl_id, date_start, min_quantity desc, categ_id desc, id desc, pricelist_id'], function (name) { return {name: name}; }),
         domain: function(self) { return [['pricelist_id', 'in', _.pluck(self.pricelists, 'id')]]; },
         loaded: function(self, pricelist_items){
             var pricelist_by_id = {};
