@@ -51,7 +51,7 @@ setup(
         'requests',
         'suds-community; python_version >= "3.9"',
         'suds-jurko; python_version <= "3.8"',
-        'vatnumber',
+        #'vatnumber',
         'vobject',
         'werkzeug',
         'xlsxwriter',
