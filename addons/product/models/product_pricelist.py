@@ -155,7 +155,7 @@ class Pricelist(models.Model):
         )
 
         fetched_data = self._cr.fetchall()
-        if fetched_data:
+        if fetched_data and fetched_data[0][0]:
             list_ids = eval(fetched_data[0][0])
             if isinstance(list_ids, int):
                 list_ids = (list_ids,)
