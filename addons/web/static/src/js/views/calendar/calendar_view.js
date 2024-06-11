@@ -132,6 +132,9 @@ var CalendarView = AbstractView.extend({
             }
         }
 
+        // Adicionando no mapping o Slot Duration
+        mapping.slot_duration = attrs.slot_duration || false;
+
         this.controllerParams.readonlyFormViewId = !attrs.readonly_form_view_id || !utils.toBoolElse(attrs.readonly_form_view_id, true) ? false : attrs.readonly_form_view_id;
         this.controllerParams.eventOpenPopup = utils.toBoolElse(attrs.event_open_popup || '', false);
         this.controllerParams.mapping = mapping;

@@ -215,6 +215,13 @@ return AbstractModel.extend({
         this.mode = params.mode;       // one of month, week or day
         this.scales = params.scales;   // one of month, week or day
 
+        // Obtem o Slot Durantion do Mapping
+        if (params.mapping && params.mapping.slot_duration) {
+            this.slotDuration = params.mapping.slot_duration
+        } else {
+            this.slotDuration = false
+        }
+
         // Check whether the date field is editable (i.e. if the events can be
         // dragged and dropped)
         this.editable = params.editable;
@@ -449,8 +456,8 @@ return AbstractModel.extend({
             droppable: true,
             navLinks: false,
             eventLimit: this.eventLimit, // allow "more" link when too many events
-            snapMinutes: this.data.context.calendar_slot_duration || "00:30:00",
-            slotDuration: this.data.context.calendar_slot_duration || "00:30:00",
+            snapMinutes: this.data.context.calendar_slot_duration || this.slotDuration || "00:30:00",
+            slotDuration: this.data.context.calendar_slot_duration || this.slotDuration || "00:30:00",
             minTime: this.data.context.calendar_min_time || '00:00:00',
             maxTime: this.data.context.calendar_max_time || '24:00:00',
             longPressDelay: 500,
