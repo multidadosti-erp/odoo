@@ -5830,7 +5830,7 @@ class Model(AbstractModel):
             kwargs['icon'] = icon
 
         # Deixa notificação fixa em caso de erro ou aviso
-        if kind in ['error', 'warn']:
+        if kind in ['error', 'warn'] and kwargs.get('sticky') != False:
             kwargs['sticky'] = True
 
         # Retorno do efeito tratado no arquivo JS
