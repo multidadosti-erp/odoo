@@ -146,8 +146,18 @@ class Registry(Mapping):
 
         with closing(self.cursor()) as cr:
             has_unaccent = odoo.modules.db.has_unaccent(cr)
+
             if odoo.tools.config['unaccent'] and not has_unaccent:
                 _logger.warning("The option --unaccent was given but no unaccent() function was found in database.")
+
+                # Cria a extenção unaccent
+                odoo.modules.db.create_unaccent(cr)
+
+                # Verifica novamente a criação do unaccent
+                has_unaccent = odoo.modules.db.has_unaccent(cr)
+                if has_unaccent:
+                    _logger.info("Create Sucess unaccent in database.")
+
             self.has_unaccent = odoo.tools.config['unaccent'] and has_unaccent
 
     @classmethod
