@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+import psycopg2
 import odoo.modules
 import logging
 
@@ -122,3 +122,16 @@ def has_unaccent(cr):
     """
     cr.execute("SELECT proname FROM pg_proc WHERE proname='unaccent'")
     return len(cr.fetchall()) > 0
+
+def create_unaccent(cr):
+    """ Create in the database has an unaccent function.
+
+    The unaccent is supposed to be provided by the PostgreSQL unaccent contrib
+    module but any similar function will be picked by OpenERP.
+    """
+    try:
+        with cr.savepoint():
+            cr.execute("CREATE EXTENSION unaccent")
+        cr.commit()
+    except psycopg2.Error:
+        pass
