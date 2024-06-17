@@ -299,13 +299,24 @@ class ProductTemplate(models.Model):
         # do not pollute variants to be prefetched when counting variants
         self.product_variant_count = len(self.with_prefetch().product_variant_ids)
 
-    @api.depends('product_variant_ids', 'product_variant_ids.default_code')
+    @api.depends("product_variant_ids", "product_variant_ids.default_code")
     def _compute_default_code(self):
-        unique_variants = self.filtered(lambda template: len(template.product_variant_ids) == 1)
-        for template in unique_variants:
-            template.default_code = template.product_variant_ids.default_code
-        for template in (self - unique_variants):
-            template.default_code = False
+        for product_tmpl_id in self:
+            unique_variants = product_tmpl_id.filtered(
+                lambda template: len(template.product_variant_ids) == 1
+            )
+
+            if unique_variants:
+                for template in unique_variants:
+                    template.default_code = template.product_variant_ids.default_code
+            else:
+                lst_default_code = list(
+                    set(product_tmpl_id.product_variant_ids.mapped("default_code"))
+                )
+
+                product_tmpl_id.default_code = (
+                    False if len(lst_default_code) != 1 else lst_default_code[0]
+                )
 
     @api.one
     def _set_default_code(self):
