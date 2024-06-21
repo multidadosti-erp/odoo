@@ -24,7 +24,7 @@ class Bank(models.Model):
     _name = 'res.bank'
     _order = 'name'
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
     street = fields.Char()
     street2 = fields.Char()
     zip = fields.Char()
@@ -54,12 +54,12 @@ class Bank(models.Model):
                 domain = ['&'] + domain
         bank_ids = self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
         return self.browse(bank_ids).name_get()
-        
+
     @api.onchange('country')
     def _onchange_country_id(self):
         if self.country and self.country != self.state.country_id:
             self.state = False
-            
+
     @api.onchange('state')
     def _onchange_state(self):
         if self.state.country_id:
