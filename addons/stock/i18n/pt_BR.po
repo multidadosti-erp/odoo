@@ -501,7 +501,7 @@ msgstr "Tudo"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.stock_picking_action_picking_type
 msgid "All Transfers"
-msgstr "Todas as Transferências"
+msgstr "Todas as Separações"
 
 #. module: stock
 #: selection:procurement.group,move_type:0
@@ -1354,12 +1354,12 @@ msgstr "Data em que a reposição deve ocorrer."
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_picking__date_done
 msgid "Date at which the transfer has been processed or cancelled."
-msgstr "Data em que a transferência foi processada ou cancelada."
+msgstr "Data em que a separação foi processada ou cancelada."
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking__date_done
 msgid "Date of Transfer"
-msgstr "Data da Transferência"
+msgstr "Data da Separação"
 
 #. module: stock
 #: selection:stock.warehouse.orderpoint,lead_type:0
@@ -1430,7 +1430,7 @@ msgstr "Defina uma regra de estoque mínimo para que o Sistema crie automaticame
 #: model_terms:ir.actions.act_window,help:stock.action_picking_type_list
 #: model_terms:ir.actions.act_window,help:stock.stock_picking_action_picking_type
 msgid "Define a new transfer"
-msgstr "Definir uma nova transferência"
+msgstr "Definir uma nova Separação"
 
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_warehouse_form
@@ -1548,7 +1548,7 @@ msgstr "Descrição para Ordens de Entrega"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_template_property_form
 msgid "Description for Internal Transfers"
-msgstr "Descrição para Transferências Internas"
+msgstr "Descrição para Separações Internas"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_template_property_form
@@ -1723,12 +1723,12 @@ msgstr "Concluído"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_done
 msgid "Done Transfers"
-msgstr "Transferências Concluídas"
+msgstr "Separações Concluídas"
 
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_done_grouped
 msgid "Done Transfers by Date"
-msgstr "Transferências Concluídas por Data"
+msgstr "Separações Concluídas por Data"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -2318,7 +2318,7 @@ msgstr "Referência Interna"
 #: model:stock.picking.type,name:stock.picking_type_internal
 #, python-format
 msgid "Internal Transfers"
-msgstr "Transferências Internas"
+msgstr "Separações Internas"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_res_company__internal_transit_location_id
@@ -2701,7 +2701,7 @@ msgstr "Últimas Atividades"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_late
 msgid "Late Transfers"
-msgstr "Transferências Atrasadas"
+msgstr "Separações Atrasadas"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__lead_days
@@ -2958,7 +2958,7 @@ msgstr "Gerenciar Pacotes"
 #. module: stock
 #: model:res.groups,name:stock.group_adv_location
 msgid "Manage Push and Pull inventory flows"
-msgstr "Gerenciar Fluxos Estoque: Inventários/Transferências"
+msgstr "Gerenciar Fluxos Estoque: Inventários/Separações"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -3193,7 +3193,7 @@ msgstr "Nova Quantidade de Saldo Atual"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_form
 msgid "New Transfer"
-msgstr "Nova Transferência"
+msgstr "Nova Separação"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking__activity_date_deadline
@@ -3216,7 +3216,7 @@ msgstr "Tipo da Próxima Atividade"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.exception_on_picking
 msgid "Next transfer(s) impacted:"
-msgstr "Próximas transferências afetadas:"
+msgstr "Próximas Separações Afetadas:"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_backorder_confirmation
@@ -3662,7 +3662,7 @@ msgstr "Referência do Pacote:"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_quant_package_form
 msgid "Package Transfers"
-msgstr "Transferências de Pacote"
+msgstr "Transf. de Pacote"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_quant_package__packaging_id
@@ -3687,7 +3687,7 @@ msgstr "Pacotes"
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_package_view
 msgid "Packages are usually created by pack operations made on transfers and can contains several different products. You can then reuse a package to move its whole content somewhere else, or to pack it into another bigger package. A package can also be unpacked, allowing the disposal of its former content as single units again."
-msgstr "Os pacotes são normalmente criados por operações de pacote feitas em transferências e podem conter vários produtos diferentes. Você pode reutilizar um pacote para mover todo o seu conteúdo para outro lugar, ou para embalá-lo em um outro pacote maior. Um pacote também pode ser desembalado, permitindo a eliminação do seu antigo conteúdo como unidades individuais novamente."
+msgstr "Os pacotes são normalmente criados por operações de pacote feitas em separações e podem conter vários produtos diferentes. Você pode reutilizar um pacote para mover todo o seu conteúdo para outro lugar, ou para embalá-lo em um outro pacote maior. Um pacote também pode ser desembalado, permitindo a eliminação do seu antigo conteúdo como unidades individuais novamente."
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.quant_package_search_view
@@ -3831,7 +3831,7 @@ msgstr "Planejado"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
 msgid "Planned Transfer"
-msgstr "Transferência Planejada"
+msgstr "Separação Planejada"
 
 #. module: stock
 #: code:addons/stock/models/stock_picking.py:717
@@ -4650,7 +4650,7 @@ msgstr "Separação Devolvida"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.act_stock_return_picking
 msgid "Reverse Transfer"
-msgstr "Transferência Reversa"
+msgstr "Separação Reversa"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_location_route__name
@@ -5426,7 +5426,7 @@ msgstr "A empresa é automaticamente definida a partir das suas preferências de
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_rule__delay
 msgid "The expected date of the created transfer will be computed based on this delay."
-msgstr "A data esperada da transferência criada será calculada com base neste atraso."
+msgstr "A data esperada da separação criada será calculada com base neste atraso."
 
 #. module: stock
 #: sql_constraint:stock.warehouse:0
@@ -5619,7 +5619,7 @@ msgstr "Esta nota aparecerá nas ordens de entrega."
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_template_property_form
 msgid "This note will show up on internal transfer orders (e.g. where to pick the product in the warehouse)."
-msgstr "Esta nota aparecerá nas ordens de transferência interna (por exemplo, onde recolher o produto no armazém)."
+msgstr "Esta nota aparecerá nas ordens de separação interna (por exemplo, onde recolher o produto no armazém)."
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_template_property_form
@@ -5774,24 +5774,24 @@ msgstr "Transferir"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move__picking_partner_id
 msgid "Transfer Destination Address"
-msgstr "Endereço de Destino da Transferência"
+msgstr "Endereço de Destino da Separação"
 
 #. module: stock
 #: model:ir.model,name:stock.model_stock_overprocessed_transfer
 msgid "Transfer Over Processed Stock"
-msgstr "Transferência Sobre Estoque Processado"
+msgstr "Separação sobre Estoque Processado"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move__picking_id
 msgid "Transfer Reference"
-msgstr "Referência de Transferência"
+msgstr "Referência da Separação"
 
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree
 #: model:ir.actions.act_window,name:stock.action_picking_tree_all
 #: model:ir.ui.menu,name:stock.all_picking
 msgid "Transfers"
-msgstr "Transferências"
+msgstr "Separações de Estoque"
 
 #. module: stock
 #: selection:stock.location,usage:0
@@ -6002,7 +6002,7 @@ msgid "Use this assistant to replenish your stock. \n"
 "                a manufacturing order or a transfer."
 msgstr "Use esse assistente para reabastecer seu estoque.\n"
 "                  Dependendo da configuração do seu produto, o lançamento de um reabastecimento pode desencadear uma solicitação de cotação,\n"
-"                  uma ordem de produção ou uma transferência."
+"                  uma ordem de produção ou uma separação de estoque."
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -6116,7 +6116,7 @@ msgstr "Aguardando Movimentos"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_waiting
 msgid "Waiting Transfers"
-msgstr "Aguardando Transferências"
+msgstr "Aguardando Separações"
 
 #. module: stock
 #: model:ir.model,name:stock.model_stock_warehouse
@@ -6426,7 +6426,7 @@ msgstr "Você não pode ter dois ajustes de estoque no estado 'Em andamento' com
 #: code:addons/stock/models/stock_move.py:1162
 #, python-format
 msgid "You cannot move the same package content more than once in the same transfer or split the same package into two location."
-msgstr "Você não pode mover o mesmo conteúdo de pacote mais de uma vez na mesma transferência ou dividir o mesmo pacote em dois locais."
+msgstr "Você não pode mover o mesmo conteúdo de pacote mais de uma vez na mesma separação ou dividir o mesmo pacote em dois locais."
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:338
@@ -6477,7 +6477,7 @@ msgstr "Não se pode usar o mesmo número de série duas vezes. Por favor, corri
 #: code:addons/stock/models/stock_picking.py:725
 #, python-format
 msgid "You cannot validate a transfer if no quantites are reserved nor done. To force the transfer, switch in edit more and encode the done quantities."
-msgstr "Não é possível validar uma transferência se nenhuma quantidade for reservada ou feita. Para forçar a transferência, mude para editar mais e codificar as quantidades feitas."
+msgstr "Não é possível validar uma separação se nenhuma quantidade for reservada ou feita. Para forçar a separação, mude para editar mais e codificar as quantidades feitas."
 
 #. module: stock
 #: code:addons/stock/wizard/stock_picking_return.py:140
