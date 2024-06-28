@@ -585,6 +585,11 @@ function parseFloatFactor(value, field, options) {
 
 function parseFloatTime(value) {
     var factor = 1;
+
+    if (! value) {
+        value = '00:00';
+    }
+
     if (value[0] === '-') {
         value = value.slice(1);
         factor = -1;
