@@ -426,7 +426,7 @@ class GettextAlias(object):
                     lang = env['res.users'].context_get()['lang']
         return lang
 
-    def __call__(self, source):
+    def __call__(self, source, lang=None):
         res = source
         cr = None
         is_new_cr = False
@@ -437,7 +437,8 @@ class GettextAlias(object):
             frame = frame.f_back
             if not frame:
                 return source
-            lang = self._get_lang(frame)
+            if not lang:
+                lang = self._get_lang(frame)
             if lang:
                 cr, is_new_cr = self._get_cr(frame)
                 if cr:
