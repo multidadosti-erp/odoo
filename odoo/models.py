@@ -3533,12 +3533,29 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             # Desabilitado check_access_rule por já tratar o acesso em outros métodos
             # e conflitando com a tag related_sudo tratada acima (check_field_access_rights)
             # self.check_access_rule('write')
-
             query = 'UPDATE "%s" SET %s WHERE id IN %%s' % (
                 self._table, ','.join('"%s"=%s' % (column[0], column[1]) for column in columns),
             )
             params = [column[2] for column in columns]
-            for sub_ids in cr.split_for_in_conditions(set(self.ids)):
+
+            # Validando a Lista da IDS
+            # Foi necessário pois a tabela calendar.event em registros recorrentes o ID
+            # é String no Formato ID-XXXX
+            if any(not isinstance(val, int) for val in self.ids):
+                list_ids = []
+                for val in self.ids:
+                    if isinstance(val, int):
+                        list_ids.append(val)
+                    else:
+                        if isinstance(val, str):
+                            try:
+                                list_ids.append(int(val.split('-')[0]))
+                            except Exception as e:
+                                _logger.warning("Update Query ERROR: " + query + " ID = " + val)
+            else:
+                list_ids = self.ids
+
+            for sub_ids in cr.split_for_in_conditions(set(list_ids)):
                 cr.execute(query, params + [sub_ids])
                 if cr.rowcount != len(sub_ids):
                     raise MissingError(
@@ -3552,7 +3569,6 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     # The source value of a field has been modified,
                     # synchronize translated terms when possible.
                     self.env['ir.translation']._sync_terms_translations(field, self)
-
                 elif has_translation and field.translate:
                     # The translated value of a field has been modified.
                     src_trans = self.read([name])[0][name]
@@ -3562,8 +3578,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                         self.with_context(lang=None).write({name: src_trans})
                     tname = "%s,%s" % (self._name, name)
                     val = field.convert_to_column(vals[name], self, vals)
-                    self.env['ir.translation']._set_ids(
-                        tname, 'model', self.env.lang, self.ids, val, src_trans)
+                    self.env['ir.translation']._set_ids(tname, 'model', self.env.lang, list_ids, val, src_trans)
 
         # mark fields to recompute; do this before setting other fields, because
         # the latter can require the value of computed fields, e.g., a one2many
