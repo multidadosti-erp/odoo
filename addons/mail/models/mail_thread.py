@@ -546,7 +546,7 @@ class MailThread(models.AbstractModel):
         """
         tracked_fields = []
         for name, field in self._fields.items():
-            if getattr(field, 'track_visibility', False):
+            if getattr(field, 'track_visibility', False) and getattr(field, 'track_visibility') != 'never':
                 tracked_fields.append(name)
 
         if tracked_fields:
