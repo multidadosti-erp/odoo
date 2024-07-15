@@ -84,7 +84,7 @@ class SaleOrder(models.Model):
             ])
             if domain_inv:
                 refund_ids = self.env['account.invoice'].search(expression.AND([
-                    ['&', ('type', '=', 'out_refund'), ('origin', '!=', False)], 
+                    ['&', ('type', '=', 'out_refund'), ('origin', '!=', False)],
                     domain_inv
                 ]))
             else:

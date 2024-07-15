@@ -298,7 +298,7 @@
                                         We need the sequence field to be here for new lines to be added at the correct position.
                                         TODO: at some point we want to fix this in the framework so that an invisible field is not required.
                                     -->
-                                    <field name="sequence" invisible="1"/>
+                                    <field name="sequence" invisible="0"/>
                                     <group>
                                         <group attrs="{'invisible': [('display_type', '!=', False)]}">
                                             <field name="product_updatable" invisible="1"/>
@@ -384,6 +384,7 @@
                                 <tree
                                     string="Sales Order Lines"
                                     editable="bottom"
+                                    default_order="sequence,name desc"
                                     decoration-info="(not display_type and invoice_status == 'to invoice')"
                                 >
                                     <control>
@@ -393,7 +394,7 @@
                                         <create string="Add a note" context="{'default_display_type': 'line_note'}"/>
                                     </control>
 
-                                    <field name="sequence" widget="handle" />
+                                    <field name="sequence" />
                                     <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
                                     <field name="display_type" invisible="1"/>
 
