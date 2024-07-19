@@ -303,6 +303,11 @@ msgid "<strong>Fiscal Position Remark:</strong>"
 msgstr ""
 
 #. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_sale_order_kanban
+msgid "<strong>Partner:</strong>"
+msgstr ""
+
+#. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "<strong>Payment Terms:</strong>"
 msgstr ""
@@ -314,7 +319,13 @@ msgstr ""
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
+#: model_terms:ir.ui.view,arch_db:sale.view_sale_order_kanban
 msgid "<strong>Salesperson:</strong>"
+msgstr ""
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_sale_order_kanban
+msgid "<strong>Salesteam:</strong>"
 msgstr ""
 
 #. module: sale
