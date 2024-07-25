@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Alterado pela Multidados: -->
+    <!--
+        - Foi adicionado o Grupo de Usuários de Contrato, que são
+        os usuários dos funcionários que podem ter acesso aos seus
+        próprios contratos.
+
+        - Foi adicionado junto com a regra, para limitar o acesso
+        de usuários comuns a contratos.
+
+        - Por algum motivo, anteriormente todos os usuários internos
+        recebiam o grupo `Contract: Manager`, foi trocado para o grupo
+        `Contract: User`.
+     -->
     <data noupdate="1">
+        <record id="hr_contract.group_hr_contract_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="base.module_category_hr_contract"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
         <record id="hr_contract.group_hr_contract_manager" model="res.groups">
             <field name="name">Manager</field>
             <field name="category_id" ref="base.module_category_hr_contract"/>
+            <field name="implied_ids" eval="[(4, ref('hr_contract.group_hr_contract_user'))]"/>
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
 
+        <record id="hr_contract_user_rule" model="ir.rule">
+            <field name="name">HR Contract Rule: User</field>
+            <field name="model_id" ref="model_hr_contract"/>
+            <field name="groups" eval="[(4, ref('hr_contract.group_hr_contract_user'))]"/>
+            <field name="domain_force">[('employee_id', 'in', user.employee_ids.ids)]</field>
+        </record>
+
+        <record id="hr_contract_manager_rule" model="ir.rule">
+            <field name="name">HR Contract Rule: Manager</field>
+            <field name="model_id" ref="model_hr_contract"/>
+            <field name="groups" eval="[(4, ref('hr_contract.group_hr_contract_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
         <record id="base.default_user" model="res.users">
-            <field name="groups_id" eval="[(4,ref('hr_contract.group_hr_contract_manager'))]"/>
+            <field name="groups_id" eval="[(4,ref('hr_contract.group_hr_contract_user'))]"/>
         </record>
     </data>
 </odoo>
