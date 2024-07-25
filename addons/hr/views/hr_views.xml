@@ -79,13 +79,13 @@
                             </page>
                             <page name="personal_information" string="Private Information" groups="hr.group_hr_user">
                                 <group>
-                                    <group string="Citizenship &amp; Other Information">
+                                    <group string="Citizenship &amp; Other Information" name="citizenship">
                                         <field name="country_id" options='{"no_open": True, "no_create": True}'/>
                                         <field name="identification_id" groups="hr.group_hr_user"/>
                                         <field name="passport_id" groups="hr.group_hr_user"/>
                                         <field name="bank_account_id" context="{'default_partner_id': address_home_id}"/>
                                     </group>
-                                    <group string="Contact Information">
+                                    <group string="Contact Information" name="contact_information">
                                         <field name="address_home_id"
                                             context="{
                                                 'show_address': 1,
