@@ -89,7 +89,7 @@
             <field name="arch" type="xml">
                 <form string="Current Contract">
                     <header>
-                        <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                        <field name="state" widget="statusbar" options="{'clickable': 0}"/>
                     </header>
                     <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -177,7 +177,8 @@
             <field name="name">hr.contract.kanban</field>
             <field name="model">hr.contract</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_small_column">
+                <kanban class="o_kanban_small_column"
+                        draggable="0">
                     <field name="employee_id"/>
                     <templates>
                     <t t-name="kanban-box">
