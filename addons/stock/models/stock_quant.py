@@ -113,6 +113,7 @@ class StockQuant(models.Model):
         raise UserError(_('Removal strategy %s not implemented.') % (removal_strategy,))
 
     def _gather(self, product_id, location_id=None, lot_id=None, package_id=None, owner_id=None, strict=False):
+        company_id = self.env.user.company_id
         removal_strategy = self._get_removal_strategy(product_id, location_id)
         removal_strategy_order = self._get_removal_strategy_order(removal_strategy)
         domain = [
@@ -130,7 +131,12 @@ class StockQuant(models.Model):
         else:
             domain = expression.AND([['|', ('lot_id', '=', lot_id.id), ('lot_id', '=', False)] if lot_id else [('lot_id', '=', False)], domain])
             domain = expression.AND([[('package_id', '=', package_id and package_id.id or False)], domain])
-            domain = expression.AND([[('owner_id', '=', owner_id and owner_id.id or False)], domain])
+
+            # Multidados / Augusto
+            # Ajusta Owner para Pegar o False ou da Empresa Logada
+            # domain = expression.AND([[('owner_id', '=', owner_id and owner_id.id or False)], domain])
+            domain = expression.AND([['|', ('owner_id', '=', company_id.partner_id.id), ('owner_id', '=', False)] if not owner_id else [('owner_id', '=', owner_id.id)], domain])
+
             if location_id:
                 domain = expression.AND([[('location_id', '=', location_id.id)], domain])
 
