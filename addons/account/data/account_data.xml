@@ -159,6 +159,16 @@
             <field eval="False" name="company_id"/>
             <field name="padding">4</field>
         </record>
+        <record id="sequence_payment_inbound_title_discount" model="ir.sequence">
+            <field name="name">Payments Inbound sequence</field>
+            <field name="code">account.payment.inbound.title.discount</field>
+            <field name="prefix">TRANS/%(range_year)s/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
 
         <!-- Account Tax Group -->
         <record id="tax_group_taxes" model="account.tax.group">

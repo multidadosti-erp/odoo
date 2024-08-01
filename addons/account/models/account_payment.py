@@ -699,7 +699,12 @@ class account_payment(models.Model):
                 # Use the right sequence to set the name
                 if rec.payment_type == 'transfer':
                     sequence_code = 'account.payment.transfer'
+
+                elif rec.payment_type == 'inbound_by_title_discount':
+                    sequence_code = 'account.payment.inbound.title.discount'
+
                 else:
+
                     if rec.partner_type == 'customer':
                         if rec.payment_type == 'inbound':
                             sequence_code = 'account.payment.customer.invoice'
