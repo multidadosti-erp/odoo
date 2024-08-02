@@ -65,7 +65,7 @@ class Contract(models.Model):
         'resource.calendar', 'Working Schedule',
         default=lambda self: self.env['res.company']._company_default_get().resource_calendar_id.id)
     wage = fields.Monetary('Wage', digits=(16, 2), required=True, track_visibility="onchange", help="Employee's monthly gross wage.")
-    advantages = fields.Text('Advantages')
+    advantages = fields.Text('Extra Advantages')
     notes = fields.Text('Notes')
     state = fields.Selection([
         ('draft', 'New'),
