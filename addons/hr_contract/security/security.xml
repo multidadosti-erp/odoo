@@ -17,7 +17,7 @@
         <record id="hr_contract.group_hr_contract_user" model="res.groups">
             <field name="name">User</field>
             <field name="category_id" ref="base.module_category_hr_contract"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('hr.group_hr_user'))]"/>
         </record>
 
         <record id="hr_contract.group_hr_contract_manager" model="res.groups">
