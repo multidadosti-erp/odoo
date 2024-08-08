@@ -56,8 +56,17 @@
         <field name="name">product supplierinfo company rule</field>
         <field name="model_id" ref="model_product_supplierinfo"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|',('company_id','=',False),('company_id','=',user.company_id.id)]</field>
+        <field name="domain_force">[(1, '=', 1)]</field>
     </record>
 
 </data>
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value eval="[('model', '=', 'ir.rule'), ('name', '=', 'product_supplierinfo_comp_rule')]"/>
+        </function>
+        <value eval="{'noupdate': False}"/>
+    </function>
+    <record model="ir.rule" id="product.product_supplierinfo_comp_rule">
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
 </odoo>
