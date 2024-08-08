@@ -571,8 +571,6 @@ class ProductProduct(models.Model):
 
         res = self.env['product.supplierinfo']
         sellers = self._prepare_sellers(params)
-        if self.env.context.get('force_company'):
-            sellers = sellers.filtered(lambda s: not s.company_id or s.company_id.id == self.env.context['force_company'])
         for seller in sellers:
             # Set quantity in UoM of seller
             quantity_uom_seller = quantity
@@ -763,7 +761,7 @@ class SupplierInfo(models.Model):
         required=True, help="The price to purchase a product")
     company_id = fields.Many2one(
         'res.company', 'Company',
-        default=lambda self: self.env.user.company_id.id, index=1)
+        default=False, index=1)
     currency_id = fields.Many2one(
         'res.currency', 'Currency',
         default=lambda self: self.env.user.company_id.currency_id.id,

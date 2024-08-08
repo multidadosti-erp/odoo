@@ -27,7 +27,7 @@
                                 options='{"terminology": "archive"}'/>
                         </button>
                     </div>
-                    
+
                     <field name="image_medium" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <label class="oe_edit_only" for="name" string="Product Name"/>
@@ -632,9 +632,6 @@
                             </div>
                             <label for="date_start" string="Validity"/>
                             <div><field name="date_start" class="oe_inline"/> to <field name="date_end" class="oe_inline"/></div>
-                        </group>
-                        <group name="other_info" string="Other Information" groups="base.group_multi_company">
-                            <field name="company_id" options="{'no_create': True}"/>
                         </group>
                     </group>
                 </form>
