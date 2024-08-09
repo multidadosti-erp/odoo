@@ -2406,7 +2406,7 @@ msgstr "Somente o valor inteiro ou flutuante deve ser válido."
 #: code:addons/web/controllers/main.py:503
 #, python-format
 msgid "Only employee can access this database. Please contact the administrator."
-msgstr "Somente funcionários podem acessar este banco de dados. Entre em contato com o administrador."
+msgstr "Somente colaboradores podem acessar este banco de dados. Entre em contato com o administrador."
 
 #. module: web
 #. openerp-web

@@ -777,7 +777,7 @@ msgstr "E-mail do Convidado"
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_contacts__partner_id
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: calendar
 #: model:ir.model.fields,field_description:calendar.field_calendar_event__stop_date
@@ -1505,7 +1505,7 @@ msgstr "Esta atividade está vinculada a um evento. Deletá-la fará com que o e
 msgid "The calendar is shared between employees and fully integrated with\n"
 "            other applications such as the employee leaves or the business\n"
 "            opportunities."
-msgstr "O calendário é compartilhado entre funcionários e totalmente integrado com\n"
+msgstr "O calendário é compartilhado entre colaboradores e totalmente integrado com\n"
 "            outras aplicações como  o empregado que deixa oportunidades de \n"
 "            negócios."
 

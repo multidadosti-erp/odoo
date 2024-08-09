@@ -186,7 +186,7 @@ msgstr "Contrato Atual"
 #. module: hr_contract
 #: model_terms:ir.ui.view,arch_db:hr_contract.hr_contract_view_search
 msgid "Current Employee"
-msgstr "Funcionário Atual"
+msgstr "Colaborador Atual"
 
 #. module: hr_contract
 #: model_terms:ir.ui.view,arch_db:hr_contract.hr_contract_view_kanban
@@ -220,22 +220,22 @@ msgstr "Editar Contrato"
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract__employee_id
 #: model_terms:ir.ui.view,arch_db:hr_contract.hr_contract_view_search
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract__type_id
 msgid "Employee Category"
-msgstr "Categoria de Funcionários"
+msgstr "Categoria de Colaboradores"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_employee__contract_ids
 msgid "Employee Contracts"
-msgstr "Contratos de Funcionários"
+msgstr "Contratos de Colaboradores"
 
 #. module: hr_contract
 #: model:ir.model.fields,help:hr_contract.field_hr_contract__wage
 msgid "Employee's monthly gross wage."
-msgstr "Salário bruto mensal do funcionário."
+msgstr "Salário bruto mensal do colaborador."
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract__date_end
@@ -387,7 +387,7 @@ msgstr "Últimas Atividades"
 #. module: hr_contract
 #: model:ir.model.fields,help:hr_contract.field_hr_employee__contract_id
 msgid "Latest contract of the employee"
-msgstr "Último contrato do funcionário"
+msgstr "Último contrato do colaborador"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract__message_main_attachment_id

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * website_forum_doc
-# 
+#
 # Translators:
 # Mateus Lopes <mateus1@gmail.com>, 2017
 # danimaribeiro <danimaribeiro@gmail.com>, 2017
@@ -167,7 +167,7 @@ msgstr "Editar Publicação"
 #. module: website_forum_doc
 #: model:forum.documentation.toc,name:website_forum_doc.toc_hrm_contract
 msgid "Employee Contract"
-msgstr "Contrato do Funcionário"
+msgstr "Contrato do Colaborador"
 
 #. module: website_forum_doc
 #: code:addons/website_forum_doc/models/forum_documentation_toc.py:38

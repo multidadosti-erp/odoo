@@ -91,7 +91,7 @@ msgid ""
 "Hello,<br/>Odoo's chat helps employees collaborate efficiently. I'm here to "
 "help you discover its features.<br/><b>Try to send me an emoji :)</b>"
 msgstr ""
-"Olá,<br/>o chat do Odoo, ajuda os funcionários a colaborar de forma mais "
+"Olá,<br/>o chat do Sistema, ajuda os colaboradores a colaborar de forma mais "
 "eficiente. Eu estou aqui para ajudar você a descobrir seus recursos. "
 "<br/><b>Tente enviar-me um email ou um emoji :)</b>"
 

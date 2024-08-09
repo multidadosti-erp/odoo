@@ -63,7 +63,7 @@ msgid ""
 "* At Employee Rate: Timesheets will be billed at a rate defined at employee level"
 msgstr ""
 "* Na taxa do projeto: todos os quadros de horários do projeto serão cobrados na mesma taxa\n"
-"* Na taxa de funcionário: os quadros de horários serão cobrados a uma taxa definida no nível do funcionário"
+"* Na taxa de colaborador: os quadros de horários serão cobrados a uma taxa definida no nível do colaborador"
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.timesheet_plan
@@ -127,7 +127,7 @@ msgid ""
 "An employee cannot be selected more than once in the mapping. Please remove "
 "duplicate(s) and try again."
 msgstr ""
-"Um funcionário não pode ser selecionado mais de uma vez no mapeamento. Por "
+"Um colaborador não pode ser selecionado mais de uma vez no mapeamento. Por "
 "favor, remova os duplicado(s) e tente novamente."
 
 #. module: sale_timesheet
@@ -175,7 +175,7 @@ msgstr "Atribuir linha de venda a Tarefas"
 #: selection:project.project,billable_type:0
 #: selection:project.task,billable_type:0
 msgid "At Employee Rate"
-msgstr "À taxa de funcionário"
+msgstr "À taxa de Colaborador"
 
 #. module: sale_timesheet
 #: selection:project.create.sale.order,billable_type:0
@@ -242,7 +242,7 @@ msgid ""
 msgstr ""
 "O tipo faturável implica:\n"
 " - Na taxa de tarefas: cada vez que o gasto em uma tarefa é cobrado na taxa de tarefas.\n"
-" - Na taxa de funcionário: cada horário de registro de funcionário é cobrado pela taxa.\n"
+" - Na taxa de colaborador: cada horário de registro de colaborador é cobrado pela taxa.\n"
 " - Não faturável: rastreie o tempo sem faturá-lo"
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.res_config_settings_view_form
@@ -417,12 +417,12 @@ msgstr "Concluído"
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_create_sale_order_line__employee_id
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_sale_line_employee_map__employee_id
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,help:sale_timesheet.field_project_create_sale_order_line__employee_id
 msgid "Employee that has timesheets on the project."
-msgstr "O funcionário que possui horas no projeto."
+msgstr "O colaborador que possui horas no projeto."
 
 #. module: sale_timesheet
 #: model_terms:ir.ui.view,arch_db:sale_timesheet.project_project_view_search
@@ -812,7 +812,7 @@ msgstr "Relatório de Rentabilidade do Projeto"
 #. module: sale_timesheet
 #: model:ir.model,name:sale_timesheet.model_project_sale_line_employee_map
 msgid "Project Sales line, employee mapping"
-msgstr "Linha de Vendas do Projeto, mapeamento de funcionários"
+msgstr "Linha de Vendas do Projeto, mapeamento de colaboradores"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_product_product__project_template_id
@@ -892,7 +892,7 @@ msgstr "Itens do Pedido"
 #. module: sale_timesheet
 #: model:ir.model.fields,field_description:sale_timesheet.field_project_project__sale_line_employee_ids
 msgid "Sale line/Employee map"
-msgstr "Linha da Venda/Mapa de Funcionário"
+msgstr "Linha da Venda/Mapa de Colaborador"
 
 #. module: sale_timesheet
 #: model:ir.model.fields,help:sale_timesheet.field_project_project__sale_line_id
@@ -1096,8 +1096,8 @@ msgid ""
 "The Sales Order cannot be created because you did not enter some employees that entered timesheets on this project. Please list all the relevant employees before creating the Sales Order.\n"
 "Missing employee(s): %s"
 msgstr ""
-"O Pedido de Vendas não pode ser criado porque você não inseriu alguns funcionários que inseriram horas neste projeto. Liste todos os funcionários relevantes antes de criar o Pedido de Vendas.\n"
-"Funcionário ausente(s): %s"
+"O Pedido de Vendas não pode ser criado porque você não inseriu alguns colaboradores que inseriram horas neste projeto. Liste todos os colaboradores relevantes antes de criar o Pedido de Vendas.\n"
+"Colaborador(es) ausente(s): %s"
 
 #. module: sale_timesheet
 #: code:addons/sale_timesheet/models/product.py:68
@@ -1169,7 +1169,7 @@ msgid ""
 msgstr ""
 "Este relatório permite que você analise a rentabilidade de seus projetos: "
 "compare o valor da fatura, os já faturados e o custo do projeto (via "
-"planilha de horas dos seus funcionários)."
+"planilha de horas dos seus colaboradores)."
 
 #. module: sale_timesheet
 #: code:addons/sale_timesheet/models/sale_order.py:270
@@ -1361,7 +1361,7 @@ msgstr ""
 #: code:addons/sale_timesheet/models/account.py:76
 #, python-format
 msgid "You can not modify timesheets from different employees"
-msgstr "Você não pode modificar horas de funcionários diferentes"
+msgstr "Você não pode modificar horas de colaboradores diferentes"
 
 #. module: sale_timesheet
 #: code:addons/sale_timesheet/wizard/project_create_invoice.py:18

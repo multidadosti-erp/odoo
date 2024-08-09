@@ -353,7 +353,7 @@ msgstr "Tipos de Atividades"
 #. module: hr_recruitment
 #: model_terms:ir.actions.act_window,help:hr_recruitment.action_hr_job_no_employee
 msgid "Add a new employee"
-msgstr "Adicione um novo funcionário"
+msgstr "Adicione um novo colaborador"
 
 #. module: hr_recruitment
 #: model_terms:ir.actions.act_window,help:hr_recruitment.hr_job_stage_act
@@ -369,7 +369,7 @@ msgstr "Adicione uma nova tag"
 #. module: hr_recruitment
 #: model:ir.model.fields,help:hr_recruitment.field_hr_job__address_id
 msgid "Address where employees are working"
-msgstr "Endereço onde os funcionários estão trabalhando"
+msgstr "Endereço onde os colaboradores estão trabalhando"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_job__alias_id
@@ -662,7 +662,7 @@ msgstr "Criar"
 #. module: hr_recruitment
 #: model_terms:ir.ui.view,arch_db:hr_recruitment.crm_case_form_view_job
 msgid "Create Employee"
-msgstr "Criar Funcionário"
+msgstr "Criar Colaborador"
 
 #. module: hr_recruitment
 #: model:ir.actions.act_window,name:hr_recruitment.create_job_simple
@@ -880,24 +880,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_applicant__emp_id
 #: model_terms:ir.ui.view,arch_db:hr_recruitment.crm_case_form_view_job
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_applicant__employee_name
 msgid "Employee Name"
-msgstr "Nome do Funcionário"
+msgstr "Nome do Colaborador"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,help:hr_recruitment.field_hr_applicant__emp_id
 msgid "Employee linked to the applicant."
-msgstr "Funcionário vinculado ao candidato."
+msgstr "Colaborador vinculado ao candidato."
 
 #. module: hr_recruitment
 #: model:ir.actions.act_window,name:hr_recruitment.action_hr_job_no_employee
 #: model:ir.model.fields,field_description:hr_recruitment.field_digest_digest__kpi_hr_recruitment_new_colleagues
 #: model_terms:ir.ui.view,arch_db:hr_recruitment.hr_job_survey
 msgid "Employees"
-msgstr "Funcionários"
+msgstr "Colaboradores"
 
 #. module: hr_recruitment
 #: model:ir.model,name:hr_recruitment.model_calendar_event
@@ -912,7 +912,7 @@ msgstr "Excelente"
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_department__expected_employee
 msgid "Expected Employee"
-msgstr "Funcionários Esperados"
+msgstr "Colaboradores Esperados"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_applicant__salary_expected
@@ -1029,7 +1029,7 @@ msgstr "Responsável do RH"
 #. module: hr_recruitment
 #: model_terms:ir.ui.view,arch_db:hr_recruitment.view_hr_job_kanban
 msgid "Hired Employees"
-msgstr "Funcionários Contratados"
+msgstr "Colaboradores Contratados"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_applicant__id
@@ -1352,12 +1352,12 @@ msgstr "Novas Aplicações"
 #: code:addons/hr_recruitment/models/hr_recruitment.py:447
 #, python-format
 msgid "New Employee %s Hired"
-msgstr "Novo Funcionário %s Contratado"
+msgstr "Novo Colaborador %s Contratado"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_department__new_hired_employee
 msgid "New Hired Employee"
-msgstr "Novo Funcionário Contratado"
+msgstr "Novo Colaborador Contratado"
 
 #. module: hr_recruitment
 #: model_terms:digest.tip,tip_description:hr_recruitment.digest_tip_hr_recruitment_0
@@ -1374,12 +1374,12 @@ msgstr "Recém-contratado"
 #. module: hr_recruitment
 #: model:ir.actions.act_window,name:hr_recruitment.hr_employee_action_from_department
 msgid "Newly Hired Employees"
-msgstr "Novos Funcionários Contratados"
+msgstr "Novos Colaboradores Contratados"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,field_description:hr_recruitment.field_hr_employee__newly_hired_employee
 msgid "Newly hired employee"
-msgstr "Novos funcionários contratados"
+msgstr "Novos Colaboradores contratados"
 
 #. module: hr_recruitment
 #: model_terms:ir.ui.view,arch_db:hr_recruitment.hr_applicant_view_tree_activity
@@ -2031,7 +2031,7 @@ msgid ""
 "                can easily find all the information you need for each person;\n"
 "                contact data, job position, availability, etc."
 msgstr ""
-"Com apenas uma rápida olhada na tela de funcionários do Odoo, você\n"
+"Com apenas uma rápida olhada na tela de colaboradores do Odoo, você\n"
 "pode facilmente encontrar todas as informações que você precisa para cada pessoa;\n"
 "dados de contato, cargo, disponibilidade, etc."
 

@@ -810,7 +810,7 @@ msgstr "Anexos estão ligados a um documento através de modelo / res_id e à me
 #. module: mail
 #: selection:mail.alias,alias_contact:0
 msgid "Authenticated Employees"
-msgstr "Funcionários Autenticados"
+msgstr "Colaboradores Autenticados"
 
 #. module: mail
 #: selection:mail.alias,alias_contact:0
@@ -3261,7 +3261,7 @@ msgstr "Mensagens podem ser <b>marcadas</b> para lembra-lo de verifica-las mais 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_message_subtype__internal
 msgid "Messages with internal subtypes will be visible only by employees, aka members of base_user group"
-msgstr "Mensagens com subtipos internos serão visíveis somente por funcionários, conhecidos como membros do grupo base_user"
+msgstr "Mensagens com subtipos internos serão visíveis somente por colaboradores, conhecidos como membros do grupo base_user"
 
 #. module: mail
 #. openerp-web

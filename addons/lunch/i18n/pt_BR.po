@@ -75,7 +75,7 @@ msgid "<span class=\"o_stat_text\">Balance</span>"
 msgstr ""
 "Movimento de caixa pode ser tanto para uma despesa quanto para um pagamento."
 " A despesa é criada automaticamente com a emissão do recibo. O pagamento "
-"representa o reembolso do funcionário para a empresa."
+"representa o reembolso do colaborador para a empresa."
 
 #. module: lunch
 #: model_terms:ir.ui.view,arch_db:lunch.report_lunch_order
@@ -277,7 +277,7 @@ msgstr ""
 #. module: lunch
 #: model_terms:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search_2
 msgid "By Employee"
-msgstr "Por Funcionário"
+msgstr "Por Colaborador"
 
 #. module: lunch
 #: model_terms:ir.ui.view,arch_db:lunch.lunch_order_line_view_search
@@ -462,7 +462,7 @@ msgstr "Não se esqueça dos alertas mostrados na área avermelhada"
 #. module: lunch
 #: model:ir.ui.menu,name:lunch.lunch_cashmove_menu_payment
 msgid "Employee Payments"
-msgstr "Pagamentos de Funcionários"
+msgstr "Pagamentos de Colaboradores"
 
 #. module: lunch
 #: model:ir.model.fields,help:lunch.field_lunch_order_line_lucky__is_max_budget
@@ -1183,4 +1183,4 @@ msgstr "movimento de caixa de almoço"
 #. module: lunch
 #: model_terms:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search
 msgid "lunch employee payment"
-msgstr "pagamento de almoço do funcionário"
+msgstr "pagamento de almoço do colaborador"

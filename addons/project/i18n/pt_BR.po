@@ -1183,9 +1183,9 @@ msgid "Holds visibility of the tasks or issues that belong to the current projec
 "   them or by someone of their company\n"
 ""
 msgstr "Mantém a visibilidade das tarefas ou problemas que pertencem ao projeto atual:\n"
-"- Somente por convite: os funcionários só podem ver o projeto, as tarefas ou os problemas seguidos\n"
-"- Visível para todos os funcionários: Os funcionários podem ver todos os projetos, tarefas ou problemas de sua equipe. Se um projeto não tiver uma equipe relacionada, todos os funcionários poderão vê-lo.\n"
-"- Visível para os clientes que seguem: os funcionários veem tudo de suas equipes e os parceiros do portal podem visualizar no portal;\n"
+"- Somente por convite: os colaboradores só podem ver o projeto, as tarefas ou os problemas seguidos\n"
+"- Visível para todos os colaboradores: Os colaboradores podem ver todos os projetos, tarefas ou problemas de sua equipe. Se um projeto não tiver uma equipe relacionada, todos os colaboradores poderão vê-lo.\n"
+"- Visível para os clientes que seguem: os colaboradores veem tudo de suas equipes e os parceiros do portal podem visualizar no portal;\n"
 "   se o site estiver ativado, os usuários do portal poderão ver o projeto, as tarefas ou os problemas seguidos por alguém de sua empresa\n"
 ""
 

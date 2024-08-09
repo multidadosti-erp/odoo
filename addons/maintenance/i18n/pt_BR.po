@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * maintenance
-# 
+#
 # Translators:
 # danimaribeiro <danimaribeiro@gmail.com>, 2018
 # Adriel Kotviski <kotviski@gmail.com>, 2018
@@ -18,7 +18,7 @@
 # Lauro de Lima <lauro@ciclix.com>, 2019
 # Ramiro Pereira de Magalhães <ramiro.p.magalhaes@gmail.com>, 2019
 # PopSolutions Cooperativa Digital <popsolutions.co@gmail.com>, 2020
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -1390,7 +1390,7 @@ msgid ""
 "Track equipments and link it to an employee or department.\n"
 "                You will be able to manage allocations, issues and maintenance of your equipment."
 msgstr ""
-"Rastreie os equipamentos e ligue-os a um funcionário ou departamento.\n"
+"Rastreie os equipamentos e ligue-os a um colaborador ou departamento.\n"
 "                Você será capaz de gerenciar alocações, problemas e manutenção de seus equipamentos."
 
 #. module: maintenance

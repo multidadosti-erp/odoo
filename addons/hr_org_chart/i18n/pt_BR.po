@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * hr_org_chart
-# 
+#
 # Translators:
 # Mateus Lopes <mateus1@gmail.com>, 2018
 # grazziano <gra.negocia@gmail.com>, 2018
 # Diego Bittencourt <diegomb86@gmail.com>, 2018
 # Lauro de Lima <lauro@ciclix.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5\n"
@@ -39,7 +39,7 @@ msgstr "Subordinados diretos"
 #. module: hr_org_chart
 #: model:ir.model,name:hr_org_chart.model_hr_employee
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_org_chart
 #. openerp-web
@@ -105,7 +105,7 @@ msgstr "Subordinados de %s"
 #: code:addons/hr_org_chart/static/src/xml/hr_org_chart.xml:88
 #, python-format
 msgid "This employee has no manager or subordinate."
-msgstr "Este funcionário não possui gerente ou subordinado."
+msgstr "Este colaborador não possui gerente ou subordinado."
 
 #. module: hr_org_chart
 #. openerp-web

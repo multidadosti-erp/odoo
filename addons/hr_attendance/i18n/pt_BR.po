@@ -70,7 +70,7 @@ msgstr "<i class=\"fa fa-calendar\" aria-label=\"Period\" role=\"img\" title=\"P
 #. module: hr_attendance
 #: model_terms:ir.ui.view,arch_db:hr_attendance.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Employee PIN</span>"
-msgstr "<span class=\"o_form_label\">Funcionário PIN</span>"
+msgstr "<span class=\"o_form_label\">PIN Colaborador</span>"
 
 #. module: hr_attendance
 #: model_terms:ir.ui.view,arch_db:hr_attendance.view_employee_form_inherit_hr_attendance
@@ -107,8 +107,8 @@ msgid ""
 "Add a few employees to be able to select an employee here and perform his check in / check out.\n"
 "                To create employees go to the Employees menu."
 msgstr ""
-"Adicione alguns funcionários para poder selecioná-los aqui e realizar o check in / check out.\n"
-"\t\t Para criar novos colaboradores vá até o menu Funcionários."
+"Adicione alguns colaboradores para poder selecioná-los aqui e realizar o check in / check out.\n"
+"\t\t Para criar novos colaboradores vá até o menu Colaboradores."
 
 #. module: hr_attendance
 #. openerp-web
@@ -176,7 +176,7 @@ msgid ""
 "Cannot create new attendance record for %(empl_name)s, the employee hasn't "
 "checked out since %(datetime)s"
 msgstr ""
-"Não pode criar novo registro de presença para %(empl_name)s, o funcionário "
+"Não pode criar novo registro de presença para %(empl_name)s, o colaborador "
 "nãorealiza check out desde %(datetime)s"
 
 #. module: hr_attendance
@@ -187,7 +187,7 @@ msgid ""
 "Cannot create new attendance record for %(empl_name)s, the employee was "
 "already checked in on %(datetime)s"
 msgstr ""
-"Não pode criar novo registro de presença para %(empl_name)s, o funcionário "
+"Não pode criar novo registro de presença para %(empl_name)s, o colaborador "
 "járealizou check in em %(datetime)s"
 
 #. module: hr_attendance
@@ -195,7 +195,7 @@ msgstr ""
 #, python-format
 msgid "Cannot perform check in or check out on multiple employees."
 msgstr ""
-"Não é possível realizar o check in ou check out em vários funcionários."
+"Não é possível realizar o check in ou check out em vários Colaboradores."
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/models/hr_employee.py:123
@@ -292,7 +292,7 @@ msgstr "Configuração"
 #. module: hr_attendance
 #: model_terms:ir.actions.act_window,help:hr_attendance.hr_employee_attendance_action_kanban
 msgid "Create a new employee"
-msgstr "Criar novo funcionário"
+msgstr "Criar novo Colaborador"
 
 #. module: hr_attendance
 #: model:ir.model.fields,field_description:hr_attendance.field_hr_attendance__create_uid
@@ -336,34 +336,34 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_attendance.hr_attendance_view_filter
 #: model_terms:ir.ui.view,arch_db:hr_attendance.hr_employees_view_kanban
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_attendance
 #: model_terms:ir.ui.view,arch_db:hr_attendance.print_employee_badge
 msgid "Employee Image"
-msgstr "Foto Funcionário"
+msgstr "Foto Colaborador"
 
 #. module: hr_attendance
 #: model:ir.model.fields,field_description:hr_attendance.field_res_config_settings__group_attendance_use_pin
 msgid "Employee PIN"
-msgstr "Funcionário PIN"
+msgstr "PIN Colaborador"
 
 #. module: hr_attendance
 #: model_terms:ir.ui.view,arch_db:hr_attendance.hr_attendance_view_form
 #: model_terms:ir.ui.view,arch_db:hr_attendance.view_attendance_tree
 msgid "Employee attendances"
-msgstr "Frequências de funcionários"
+msgstr "Frequências dos colaboradores"
 
 #. module: hr_attendance
 #: model_terms:ir.ui.view,arch_db:hr_attendance.view_employee_kanban_inherit_hr_attendance
 msgid "Employee's Name"
-msgstr "Nome do Funcionário"
+msgstr "Nome do Colaborador"
 
 #. module: hr_attendance
 #: model:ir.actions.act_window,name:hr_attendance.hr_employee_attendance_action_kanban
 #: model:ir.ui.menu,name:hr_attendance.menu_hr_attendance_view_employees_kanban
 msgid "Employees"
-msgstr "Funcionários"
+msgstr "Colaboradores"
 
 #. module: hr_attendance
 #: model:res.groups,name:hr_attendance.group_hr_attendance_use_pin
@@ -375,7 +375,7 @@ msgstr "Habilitar uso de PIN"
 #: code:addons/hr_attendance/static/src/xml/attendance.xml:96
 #, python-format
 msgid "Error: could not find corresponding employee."
-msgstr "Erro: não foi possível encontrar este funcionário."
+msgstr "Erro: não foi possível encontrar este colaborador."
 
 #. module: hr_attendance
 #. openerp-web
@@ -483,7 +483,7 @@ msgstr "ID"
 #. module: hr_attendance
 #: model:ir.model.fields,help:hr_attendance.field_hr_employee__barcode
 msgid "ID used for employee identification."
-msgstr "ID usado para identificação de funcionário."
+msgstr "ID usado para identificação de colaborador."
 
 #. module: hr_attendance
 #. openerp-web
@@ -569,7 +569,7 @@ msgstr "Sem registro de presença para mostrar"
 #: code:addons/hr_attendance/models/hr_employee.py:73
 #, python-format
 msgid "No employee corresponding to barcode %(barcode)s"
-msgstr "Nenhum funcionário possui o código de barras %(barcode)s"
+msgstr "Nenhum colaborador possui o código de barras %(barcode)s"
 
 #. module: hr_attendance
 #: model_terms:ir.ui.view,arch_db:hr_attendance.view_employee_form_inherit_hr_attendance
@@ -636,13 +636,13 @@ msgstr "Escaneie seu crachá"
 #: code:addons/hr_attendance/static/src/xml/attendance.xml:25
 #, python-format
 msgid "Select Employee"
-msgstr "Selecionar Funcionário"
+msgstr "Selecionar Colaborador"
 
 #. module: hr_attendance
 #: model_terms:ir.ui.view,arch_db:hr_attendance.res_config_settings_view_form
 msgid "Set PIN codes in the employee detail form (in HR Settings tab)."
 msgstr ""
-"Definir código PIN no formulário do funcionário (na aba Configurações RH)."
+"Definir código PIN no formulário do colaborador (na aba Configurações RH)."
 
 #. module: hr_attendance
 #: model:ir.actions.act_window,name:hr_attendance.action_hr_attendance_settings
@@ -689,7 +689,7 @@ msgid ""
 "employee."
 msgstr ""
 "O ID do Crachá deve ser único, este número já está vinculado a outro "
-"funcionário."
+"colaborador."
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/models/hr_employee.py:64
@@ -701,7 +701,7 @@ msgstr "É esperado uma sequência de dígitos para o PIN"
 #: model_terms:ir.actions.act_window,help:hr_attendance.hr_attendance_action
 #: model_terms:ir.actions.act_window,help:hr_attendance.hr_attendance_action_employee
 msgid "The attendance records of your employees will be displayed here."
-msgstr "O registro de presença do seu funcionário será mostrado aqui."
+msgstr "O registro de presença do seu colaborador será mostrado aqui."
 
 #. module: hr_attendance
 #. openerp-web
@@ -716,7 +716,7 @@ msgid ""
 "The employee will have access to the \"My Attendances\" menu to check in and"
 " out from his session"
 msgstr ""
-"O funcionário terá acesso ao menu \"Minhas Presenças\" para realizar o check"
+"O colaborador terá acesso ao menu \"Minhas Presenças\" para realizar o check"
 " in e check out em qualquer momento"
 
 #. module: hr_attendance
@@ -760,7 +760,7 @@ msgid ""
 "Warning : Your user should be linked to an employee to use attendance. "
 "Please contact your administrator."
 msgstr ""
-"Atenção: Seu usuário deve estar vinculado a um funcionário para realizar "
+"Atenção: Seu usuário deve estar vinculado a um colaborador para realizar "
 "presença. Favor contactar seu administrador."
 
 #. module: hr_attendance
@@ -828,7 +828,7 @@ msgstr "check out"
 #. module: hr_attendance
 #: model:ir.model.fields,help:hr_attendance.field_hr_employee__attendance_ids
 msgid "list of attendances for the employee"
-msgstr "Lista de presenças para o funcionário"
+msgstr "Lista de presenças para o colaborador"
 
 #. module: hr_attendance
 #. openerp-web

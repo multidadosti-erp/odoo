@@ -2039,7 +2039,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Adicione todas as informações no formulário do funcionário para gerenciar os contratos.\n"
+"Adicione todas as informações no formulário do colaborador para gerenciar os contratos.\n"
 "================================================== ===========\n"
 "\n"
 "     * Contrato\n"
@@ -2047,7 +2047,7 @@ msgstr ""
 "     * Data de Exame Médico\n"
 "     * Veículo da Empresa\n"
 "\n"
-"Você pode atribuir vários contratos por funcionário.\n"
+"Você pode atribuir vários contratos por colaborador.\n"
 "    "
 
 #. module: base
@@ -2705,7 +2705,7 @@ msgstr ""
 "Regras belgas de folha de pagamento.\n"
 "======================\n"
 "\n"
-"* Detalhes dos funcionários\n"
+"* Detalhes dos Colaboradores\n"
 "    * Contratos de Empregados\n"
 "    * Contrato baseado em passaporte\n"
 "    * Subsídios/Deduções\n"
@@ -2828,7 +2828,7 @@ msgstr ""
 "Módulo ponte para integrar ausências em planilhas de tempo\n"
 "================================================\n"
 "\n"
-"Esse módulo permite automaticamente registrar em planilhas de tempo quando os funcionários\n"
+"Esse módulo permite automaticamente registrar em planilhas de tempo quando os colaboradores\n"
 " estão de folga. Projeto e tarefas podem ser configuradas em tamanho de companhia. \n"
 "    "
 
@@ -3988,7 +3988,7 @@ msgstr ""
 "    * Novo relatório de contracheque\n"
 "    * Contratos de Empregados\n"
 "    * Permitir configurar salário básico / bruto / líquido\n"
-"    * Pagamento de funcionários\n"
+"    * Pagamento de colaboradores\n"
 "    * Subsídio / Dedução\n"
 "    * Integrado com Gestão de Folhas\n"
 "    * Subsídio médico, subsídio de viagem, auxílio-criança, ...\n"
@@ -4364,7 +4364,7 @@ msgstr ""
 "Gerencie despesas pelos Colaboradores\n"
 "============================\n"
 "\n"
-"Esta aplicação permite-lhe gerir as despesas diárias de seus funcionários. Dá-lhe acesso a notas de honorários de seus funcionários e dar-lhe o direito de completar e validar ou recusar as notas. Após a validação cria uma fatura para o empregado.\n"
+"Esta aplicação permite-lhe gerir as despesas diárias de seus colaboradores. Dá-lhe acesso a notas de honorários de seus colaboradores e dar-lhe o direito de completar e validar ou recusar as notas. Após a validação cria uma fatura para o empregado.\n"
 "Empregado pode codificar suas próprias despesas eo fluxo de validação coloca-o automaticamente na contabilidade após validação por parte dos gestores.\n"
 "\n"
 "\n"
@@ -4400,9 +4400,9 @@ msgstr ""
 "Gerenciar solicitações e alocações de licenças\n"
 "=====================================\n"
 "\n"
-"Este aplicativo controla a programação de licenças da sua empresa. Permite que os funcionários solicitem folhas. Em seguida, os gerentes podem revisar solicitações de licenças e aprová-las ou rejeitá-las. Dessa forma, você pode controlar o planejamento geral de licenças para a empresa ou departamento.\n"
+"Este aplicativo controla a programação de licenças da sua empresa. Permite que os colaboradores solicitem folhas. Em seguida, os gerentes podem revisar solicitações de licenças e aprová-las ou rejeitá-las. Dessa forma, você pode controlar o planejamento geral de licenças para a empresa ou departamento.\n"
 "\n"
-"Você pode configurar vários tipos de folhas (doença, dias pagos, ...) e alocar folhas para um funcionário ou departamento rapidamente usando a alocação de licenças. Um funcionário também pode solicitar mais dias de folga fazendo uma nova alocação de licenças. Aumentará o total de dias disponíveis para esse tipo de licença (se a solicitação for aceita).\n"
+"Você pode configurar vários tipos de folhas (doença, dias pagos, ...) e alocar folhas para um colaborador ou departamento rapidamente usando a alocação de licenças. Um colaborador também pode solicitar mais dias de folga fazendo uma nova alocação de licenças. Aumentará o total de dias disponíveis para esse tipo de licença (se a solicitação for aceita).\n"
 "\n"
 "Você pode acompanhar as folhas de diferentes maneiras seguindo os relatórios:\n"
 "\n"
@@ -5392,7 +5392,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Publique seus funcionários com informações públicas na página do site Sobre Nós.\n"
+"Publique seus colaboradores com informações públicas na página do site Sobre Nós.\n"
 "    "
 
 #. module: base
@@ -5486,7 +5486,7 @@ msgstr ""
 "==========================\n"
 "\n"
 "Crie alguns produtos para os quais você pode faturar novamente os custos.\n"
-"Este módulo permite reinventar as despesas dos funcionários, definindo o ordem de venda diretamente na despesa.\n"
+"Este módulo permite reinventar as despesas dos colaboradores, definindo o ordem de venda diretamente na despesa.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_fetchmail
@@ -5998,15 +5998,15 @@ msgstr ""
 "O módulo base para controle de refeições.\n"
 "================================\n"
 "\n"
-"Muitas empresas como em caso de Eventos ou Obras, pedem marmitex, sanduíches, pizzas e outros, de fornecedores habituais, para os seus funcionários para lhes oferecer mais facilidades. \n"
+"Muitas empresas como em caso de Eventos ou Obras, pedem marmitex, sanduíches, pizzas e outros, de fornecedores habituais, para os seus colaboradores para lhes oferecer mais facilidades. \n"
 "\n"
-"No entanto o controle de refeições na empresa exige boa administração, especialmente quando o número de funcionários ou fornecedores for importante.\n"
+"No entanto o controle de refeições na empresa exige boa administração, especialmente quando o número de colaboradores ou fornecedores for importante.\n"
 "\n"
-"O Módulo \"Pedido de Refeição\" foi desenvolvido para facilitar esse gerenciamento, mas também para oferecer aos funcionários mais ferramentas e usabilidade.\n"
+"O Módulo \"Pedido de Refeição\" foi desenvolvido para facilitar esse gerenciamento, mas também para oferecer aos colaboradores mais ferramentas e usabilidade.\n"
 "\n"
-"Além da gestão completa de refeições e fornecedores, este módulo oferece a possibilidade de exibir avisos e oferece a escolha do pedido rapidamente com base nas preferências dos funcionários.\n"
+"Além da gestão completa de refeições e fornecedores, este módulo oferece a possibilidade de exibir avisos e oferece a escolha do pedido rapidamente com base nas preferências dos colaboradores.\n"
 "\n"
-"Se você quiser economizar o tempo dos seus funcionários e evitar que eles sempre carreguem dinheiro, este módulo é essencial.\n"
+"Se você quiser economizar o tempo dos seus colaboradores e evitar que eles sempre carreguem dinheiro, este módulo é essencial.\n"
 "    "
 
 #. module: base
@@ -6899,10 +6899,10 @@ msgid ""
 "       "
 msgstr ""
 "\n"
-"Este módulo tem como objetivo gerenciar a presença de funcionários.\n"
+"Este módulo tem como objetivo gerenciar a presença de colaboradores.\n"
 "==================================================\n"
 "\n"
-"Mantém a conta dos atendimentos dos funcionários com base no\n"
+"Mantém a conta dos atendimentos dos colaboradores com base no\n"
 "ações (Check in / Check out) realizadas por eles.\n"
 "       "
 
@@ -7276,9 +7276,9 @@ msgstr ""
 "Este módulo implementa um sistema de quadro de horários.\n"
 "==========================================\n"
 "\n"
-"Cada funcionário pode codificar e acompanhar o tempo gasto nos diferentes projetos.\n"
+"Cada colaborador pode codificar e acompanhar o tempo gasto nos diferentes projetos.\n"
 "\n"
-"Muitos relatórios sobre tempo e acompanhamento de funcionários são fornecidos.\n"
+"Muitos relatórios sobre tempo e acompanhamento de colaboradores são fornecidos.\n"
 "\n"
 "Está completamente integrado ao módulo de contabilidade de custos. Ele permite que você defina\n"
 "uma gestão por assunto.\n"
@@ -10321,7 +10321,7 @@ msgstr "Aruba"
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_appraisal
 msgid "Assess your employees"
-msgstr "Avalie seus funcionários"
+msgstr "Avalie seus Colaboradores"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_asset
@@ -10459,7 +10459,7 @@ msgstr "Regras de Ações Automatizadas"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_base_automation_hr_contract
 msgid "Automated Action based on Employee Contracts"
-msgstr "Ação Automatizada baseada nos Contratos do Funcionário"
+msgstr "Ação Automatizada baseada nos Contratos do Colaboradores"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_base_gengo
@@ -11285,7 +11285,7 @@ msgstr "República Centro-Africana"
 #. module: base
 #: model:ir.module.module,summary:base.module_hr
 msgid "Centralize employee information"
-msgstr "Centralizar as informações dos funcionários"
+msgstr "Centralizar as informações dos colaboradores"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_contacts
@@ -11414,7 +11414,7 @@ msgstr ""
 #: model:ir.model.fields,help:base.field_res_partner__employee
 #: model:ir.model.fields,help:base.field_res_users__employee
 msgid "Check this box if this contact is an Employee."
-msgstr "Marque a opção se este contato for um Funcionário."
+msgstr "Marque a opção se este contato for um Colaborador."
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_attachment__checksum
@@ -14185,12 +14185,12 @@ msgstr "Preferências do E-mail"
 #: model:ir.model.fields,field_description:base.field_res_partner__employee
 #: model:ir.model.fields,field_description:base.field_res_users__employee
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_contract
 msgid "Employee Contracts"
-msgstr "Contratos de Funcionários"
+msgstr "Contratos de Colaboradores"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_partner_employee_form
@@ -14198,7 +14198,7 @@ msgstr "Contratos de Funcionários"
 #: model:ir.module.module,shortdesc:base.module_hr
 #: model:res.partner.category,name:base.res_partner_category_3
 msgid "Employees"
-msgstr "Funcionários"
+msgstr "Colaboradores"
 
 #. module: base
 #: selection:ir.attachment,type:0
@@ -18703,7 +18703,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_payroll
 msgid "Manage your employee payroll records"
-msgstr "Gerencie os registros da folha de pagamento dos seus funcionários"
+msgstr "Gerencie os registros da folha de pagamento dos seus colaboradores"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_fleet
@@ -20235,7 +20235,7 @@ msgstr ""
 " Colabore de forma segura -------------------- Defina a política de "
 "segurança correta; público, privado ou apenas por convite - de acordo com a "
 "sensibilidade da informação. Uma rede do Twitter para minha empresa "
-"--------------------------------------- Faça todos os funcionários sinta-se "
+"--------------------------------------- Faça todos os colaboradores sinta-se "
 "mais conectado e engajado com recursos semelhantes ao Twitter para sua "
 "própria empresa. Siga pessoas, compartilhe práticas recomendadas, "
 "&quot;goste&quot; de ideias importantes, etc.\n"
@@ -20342,11 +20342,11 @@ msgstr ""
 "operações de RH gerenciadas facilmente: compartilhamento de conhecimento, "
 "recrutamento , avaliações, planilhas de horas, contratos, atendimentos, "
 "folha de pagamento, etc. Cada necessidade é fornecida por um aplicativo "
-"específico que você ativa sob demanda. Gerencie seus funcionários "
+"específico que você ativa sob demanda. Gerencie seus colaboradores "
 "--------------------- Supervisione todas as informações importantes no "
 "catálogo de endereços da sua empresa. Algumas informações são restritas aos "
 "gerentes de RH, outras são públicas para procurar facilmente colegas. "
-"Registre os contratos dos funcionários e receba alertas quando eles "
+"Registre os contratos dos colaboradores e receba alertas quando eles "
 "precisarem ser renovados. Agilize seu processo de recrutamento "
 "----------------------------------- O índice retoma, rastreia candidatos, "
 "pesquisa perfis com <a href=\"https://www.odoo.com/page/employees\">Odoo "
@@ -20356,25 +20356,25 @@ msgstr ""
 "de email. Os currículos são indexados automaticamente, permitindo que você "
 "encontre facilmente perfis específicos. Rede Social Corporativa "
 "------------------------- Divide os silos de informações. Compartilhar "
-"conhecimento e melhores práticas entre todos os funcionários. Siga pessoas "
+"conhecimento e melhores práticas entre todos os colaboradores. Siga pessoas "
 "ou documentos específicos e participe de grupos de interesses para "
 "compartilhar conhecimentos e documentos. Interaja com seus colegas de "
 "trabalho em tempo real com o bate-papo ao vivo no site. Rastrear tempo e "
 "atendimentos -------------------------- Mantenha o controle do tempo gasto "
 "por projeto, cliente ou tarefa. É fácil registrar quadros de horários ou "
-"verificar as presenças de cada funcionário. Obtenha sua contabilidade "
+"verificar as presenças de cada colaborador. Obtenha sua contabilidade "
 "analítica publicada automaticamente com base no tempo gasto em seus "
 "projetos. Gerenciamento de Folhas ----------------- Acompanhe os dias de "
-"férias acumulados por cada funcionário. Os funcionários inserem seus pedidos"
+"férias acumulados por cada colaborador. Os colaboradores inserem seus pedidos"
 " (folhas pagas, licenças por doença, etc.) para os gerentes aprovarem e "
 "validarem. Tudo é feito em apenas alguns cliques. A agenda de cada "
-"funcionário é atualizada de acordo. Mantenha o controle das despesas dos "
-"funcionários ------------------------------- Livrar-se do trabalho de papel "
+"colaborador é atualizada de acordo. Mantenha o controle das despesas dos "
+"colaboradores ------------------------------- Livrar-se do trabalho de papel "
 "e siga as despesas do empregado diretamente em Odoo. Não perca tempo ou "
 "dinheiro controlando o fluxo total: validação de despesas, reembolso de "
-"funcionários, postagem na contabilidade e re-faturamento para os clientes. "
+"colaboradores, postagem na contabilidade e re-faturamento para os clientes. "
 "Siga as avaliações periódicas -------------------------- Planeje planos de "
-"avaliação e / ou pesquisas para seus funcionários e assista a sua evolução. "
+"avaliação e / ou pesquisas para seus colaboradores e assista a sua evolução. "
 "Definir etapas para entrevistas e Odoo notificará gerentes ou subordinados "
 "automaticamente para preparar avaliações. Acompanhe o progresso de sua "
 "equipe periodicamente. Impulsione o envolvimento com a Gamificação "
@@ -20809,7 +20809,7 @@ msgstr ""
 "personalize seus próprios passos para processar seus itens por-fazer e "
 "notas. ### Uma Pessoa Criativa Uma pessoa criativa organizará notas com base"
 " no nível de maturidade da ideia: Esboço de idéias ** Idéias para adultos **"
-" Especificado ** Para fazer ### Um viajante frequente Um funcionário que "
+" Especificado ** Para fazer ### Um viajante frequente Um colaborador que "
 "viaja muito pode organizar suas tarefas com base no contexto para executar a"
 " tarefa: Escritório dos EUA | Escritório de Londres | Rever durante os voos "
 "| At Home ### A Manager Um gerente organizará seu alto número de tarefas com"
@@ -21648,7 +21648,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_hr
 msgid "Online Employee Details"
-msgstr "Detalhes do Funcionário Online"
+msgstr "Detalhes do Colaborador Online"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_event_sale
@@ -22819,7 +22819,7 @@ msgstr "Prefixo do registro para a sequência"
 #. module: base
 #: model:ir.module.module,summary:base.module_website_hr
 msgid "Present your employee details online"
-msgstr "Apresente online os dados dos seus funcionários"
+msgstr "Apresente online os dados dos seus colaboradores"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_website_twitter_wall
@@ -24183,7 +24183,7 @@ msgstr "Agendar compromissos com os clientes"
 #. module: base
 #: model:ir.module.module,summary:base.module_calendar
 msgid "Schedule employees meetings"
-msgstr "Agendar encontros com funcionários"
+msgstr "Agendar encontros com colaboradores"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_project_timesheet_holidays
@@ -25121,7 +25121,7 @@ msgstr "Submenus"
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_expense
 msgid "Submit, validate and reinvoice employee expenses"
-msgstr "Submeter, validar e refazer as despesas dos funcionários"
+msgstr "Submeter, validar e refazer as despesas dos colaboradores"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_subscription
@@ -27121,12 +27121,12 @@ msgstr "Passeios"
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_attendance
 msgid "Track employee attendance"
-msgstr "Acompanhar a presença dos funcionários"
+msgstr "Acompanhar a presença dos colaboradores"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_timesheet
 msgid "Track employee time on tasks"
-msgstr "Acompanhar o tempo dos funcionários nas tarefas"
+msgstr "Acompanhar o tempo dos colaboradores nas tarefas"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_maintenance
@@ -27838,7 +27838,7 @@ msgstr ""
 "Utilize os recursos de RH para o processo de gamificação.\n"
 "\n"
 "O oficial de RH pode agora gerir desafios e crachás.\n"
-"Isto permite que o usuário envie crachás para os funcionários em vez de simples usuários.\n"
+"Isto permite que o usuário envie crachás para os colaboradores em vez de simples usuários.\n"
 "Os crachás recebidos são exibidos no perfil do usuário.\n"
 
 #. module: base

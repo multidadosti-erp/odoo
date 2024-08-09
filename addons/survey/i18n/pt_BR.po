@@ -2769,7 +2769,7 @@ msgid ""
 msgstr ""
 "Você pode criar pesquisas para diferentes propósitos: opinião do cliente, "
 "retorno sobre serviços, entrevistas de recrutamento, avaliações periódicas "
-"de funcionários, campanhas de marketing, etc."
+"de colaboradores, campanhas de marketing, etc."
 
 #. module: survey
 #: model_terms:ir.ui.view,arch_db:survey.survey_email_compose_message

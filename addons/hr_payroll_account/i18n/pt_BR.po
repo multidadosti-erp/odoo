@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * hr_payroll_account
-# 
+#
 # Translators:
 # Martin Trigaux, 2018
 # Mateus Lopes <mateus1@gmail.com>, 2018
 # grazziano <gra.negocia@gmail.com>, 2018
 # Fernando Colus <fcolus1@gmail.com>, 2020
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5\n"
@@ -67,12 +67,12 @@ msgstr "Conta de Débito"
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_contract
 msgid "Employee Contract"
-msgstr "Contrato do Funcionário"
+msgstr "Contrato do Colaborador"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip_employees
 msgid "Generate payslips for all selected employees"
-msgstr "Gerar holerites para todos os funcionários selecionados"
+msgstr "Gerar holerites para todos os colaboradores selecionados"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_payslip__date

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * hr_payroll
-# 
+#
 # Translators:
 # Luiz Carlos de Lima <luiz.carlos@akretion.com.br>, 2018
 # falexandresilva <falexandresilva@gmail.com>, 2018
@@ -14,7 +14,7 @@
 # Mateus Lopes <mateus1@gmail.com>, 2019
 # Fernando Colus <fcolus1@gmail.com>, 2020
 # Éder Brito <britoederr@gmail.com>, 2021
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -64,7 +64,7 @@ msgid ""
 "Payslips Run.</span>"
 msgstr ""
 "<span colspan=\"4\" nolabel=\"1\">Este assistente gerará contracheques para "
-"todos os funcionários selecionados baseado em datas e notas de crédito "
+"todos os colaboradores selecionados baseado em datas e notas de crédito "
 "especificadas na Execução do Contracheque.</span>"
 
 #. module: hr_payroll
@@ -538,7 +538,7 @@ msgstr ""
 "Define as regras que têm de ser aplicadas a este holerite, de acordo com o "
 "contrato escolhido. Se você deixar em branco o campo contrato, este campo "
 "não é obrigatório e, portanto, as regras aplicadas serão as regras definidas"
-" na estrutura de todos os contratos do funcionário válida para o período "
+" na estrutura de todos os contratos do colaborador válida para o período "
 "escolhido"
 
 #. module: hr_payroll
@@ -625,24 +625,24 @@ msgstr "Holerites Provisórios"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__employee_id
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_contract
 msgid "Employee Contract"
-msgstr "Contrato do Funcionário"
+msgstr "Contrato do Colaborador"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_employee_grade_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payroll_structure_list_view
 msgid "Employee Function"
-msgstr "Função do Funcionário"
+msgstr "Função do Colaborador"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.action_view_hr_payslip_form
 #: model:ir.ui.menu,name:hr_payroll.menu_department_tree
 msgid "Employee Payslips"
-msgstr "Holerites do Funcionário"
+msgstr "Holerites do Colaborador"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_contract_advantage_template
@@ -660,7 +660,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_line_filter
 msgid "Employees"
-msgstr "Funcionários"
+msgstr "Colaboradores"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_salary_rule.py:92
@@ -679,7 +679,7 @@ msgstr ""
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__register_id
 msgid "Eventual third party involved in the salary payment of the employees."
 msgstr ""
-"Eventual de terceiros envolvidos no pagamento de salário dos funcionários."
+"Eventual de terceiros envolvidos no pagamento de salário dos colaboradores."
 
 #. module: hr_payroll
 #: selection:hr.payslip.line,amount_select:0
@@ -726,7 +726,7 @@ msgstr "Gerar Holerites"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payslip_employees
 msgid "Generate payslips for all selected employees"
-msgstr "Gerar holerites para todos os funcionários selecionados"
+msgstr "Gerar holerites para todos os colaboradores selecionados"
 
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_sales_commission
@@ -1203,7 +1203,7 @@ msgstr "Lote de Holerites"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
 msgid "Payslips by Employees"
-msgstr "Holerites por Funcionários"
+msgstr "Holerites por Colaboradores"
 
 #. module: hr_payroll
 #: selection:hr.payslip.line,amount_select:0
@@ -1646,7 +1646,7 @@ msgstr ""
 #: code:addons/hr_payroll/wizard/hr_payroll_payslips_by_employees.py:24
 #, python-format
 msgid "You must select employee(s) to generate payslip(s)."
-msgstr "Você precisa selecionar o funcionário para gerar o holerite."
+msgstr "Você precisa selecionar o colaborador para gerar o holerite."
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:525

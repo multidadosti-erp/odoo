@@ -185,7 +185,7 @@ msgstr "Ícone de Tipo de Atividade"
 #: model_terms:ir.actions.act_window,help:hr.act_employee_from_department
 #: model_terms:ir.actions.act_window,help:hr.open_view_employee_list_my
 msgid "Add a new employee"
-msgstr "Adicione um novo funcionário"
+msgstr "Adicione um novo Colaborador"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__additional_note
@@ -215,7 +215,7 @@ msgstr "Contagem de Anexos"
 #. module: hr
 #: selection:mail.alias,alias_contact:0
 msgid "Authenticated Employees"
-msgstr "Funcionários autenticados"
+msgstr "Colaboradores autenticados"
 
 #. module: hr
 #: selection:mail.alias,alias_contact:0
@@ -368,7 +368,7 @@ msgstr "Criado em"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_job__no_of_employee
 msgid "Current Number of Employees"
-msgstr "Número de Funcionários Atuais"
+msgstr "Número de Colaboradores Atuais"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__birthday
@@ -448,34 +448,34 @@ msgstr "Telefone para emergência"
 #: model:ir.model,name:hr.model_hr_employee
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr
 #: model:ir.model,name:hr.model_hr_employee_category
 msgid "Employee Category"
-msgstr "Categoria de Funcionários"
+msgstr "Categoria de Colaboradores"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee_category__name
 msgid "Employee Tag"
-msgstr "Marcador de Funcionário"
+msgstr "Marcador de Colaborador"
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.open_view_categ_form
 #: model:ir.ui.menu,name:hr.menu_view_employee_category_form
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_category_form
 msgid "Employee Tags"
-msgstr "Marcadores de Funcionário"
+msgstr "Marcadores de Colaboradores"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__bank_account_id
 msgid "Employee bank salary account"
-msgstr "Conta Bancária para Salário do Funcionário"
+msgstr "Conta Bancária para Salário do Colaborador"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 msgid "Employee's Name"
-msgstr "Nome do Funcionário"
+msgstr "Nome do Colaborador"
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.act_employee_from_department
@@ -490,22 +490,22 @@ msgstr "Nome do Funcionário"
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_tree
 #: model_terms:ir.ui.view,arch_db:hr.view_partner_tree2
 msgid "Employees"
-msgstr "Funcionários"
+msgstr "Colaboradores"
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.open_view_employee_tree
 msgid "Employees Structure"
-msgstr "Estrutura de Funcionários"
+msgstr "Estrutura de Colaboradores"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_category_list
 msgid "Employees Tags"
-msgstr "Marcadores de Funcionários"
+msgstr "Marcadores de Colaboradores"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__address_home_id
 msgid "Enter here the private address of the employee, not the one linked to your company."
-msgstr "Insira aqui o endereço particular do funcionário, e não o endereço vinculado à sua empresa."
+msgstr "Insira aqui o endereço particular do colaborador, e não o endereço vinculado à sua empresa."
 
 #. module: hr
 #: selection:mail.alias,alias_contact:0
@@ -515,12 +515,12 @@ msgstr "Todos"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_job__no_of_recruitment
 msgid "Expected New Employees"
-msgstr "Novos Funcionários Esperados"
+msgstr "Novos Colaboradores Esperados"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_job__expected_employees
 msgid "Expected number of employees for this job position after new recruitment."
-msgstr "Número de funcionários para esta posição após o novo processo de contratação."
+msgstr "Número de colaboradores para esta posição após o novo processo de contratação."
 
 #. module: hr
 #: model:hr.job,name:hr.job_developer
@@ -607,7 +607,7 @@ msgstr "Configurações de RH"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_job__no_of_hired_employee
 msgid "Hired Employees"
-msgstr "Funcionários Contratados"
+msgstr "Colaboradores Contratados"
 
 #. module: hr
 #: model:ir.ui.menu,name:hr.menu_hr_main
@@ -662,7 +662,7 @@ msgstr "Se o campo ativo for definido como Falso, te permitirá esconder o regis
 #: code:addons/hr/models/hr.py:296
 #, python-format
 msgid "Import Template for Employees"
-msgstr "Template de Importação para Funcionários"
+msgstr "Template de Importação para Colaboradores"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_job_filter
@@ -810,7 +810,7 @@ msgstr "Foto de tamanho médio"
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__image_medium
 msgid "Medium-sized photo of the employee. It is automatically resized as a 128x128px image, with aspect ratio preserved. Use this field in form views or some kanban views."
-msgstr "Foto média do funcionário. Será automaticamente redimensionado para 128x128 px, mantendo o aspecto. Use este campo em visões de formulário ou kanban."
+msgstr "Foto média do colaborador. Será automaticamente redimensionado para 128x128 px, mantendo o aspecto. Use este campo em visões de formulário ou kanban."
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__member_ids
@@ -886,7 +886,7 @@ msgstr "Número de Filhos"
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_job__no_of_employee
 msgid "Number of employees currently occupying this job position."
-msgstr "Número de funcionários atualmente ocupando este cargo"
+msgstr "Número de colaboradores atualmente ocupando este cargo"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__message_has_error_counter
@@ -898,7 +898,7 @@ msgstr "Número do erro"
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_job__no_of_hired_employee
 msgid "Number of hired employees for this job position during recruitment phase."
-msgstr "Número de funcionários contratados para este cargo durante a fase de recrutamento."
+msgstr "Número de colaboradores contratados para este cargo durante a fase de recrutamento."
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_department__message_needaction_counter
@@ -917,7 +917,7 @@ msgstr "Número de mensagens com erro de entrega"
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_job__no_of_recruitment
 msgid "Number of new employees you expect to recruit."
-msgstr "Número de novos funcionários a serem contratados."
+msgstr "Número de novos colaboradores a serem contratados."
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_department__message_unread_counter
@@ -932,7 +932,7 @@ msgid "Odoo's department structure is used to manage all documents\n"
 "                related to employees by departments: expenses, timesheets,\n"
 "                leaves, recruitments, etc."
 msgstr "A estrutura de departamento do Odoo é usada para gerenciar todos documentos\n"
-"       relacionados a funcionários: despesas, quadros de horários,\n"
+"       relacionados a colaboradores: despesas, quadros de horários,\n"
 "       afastamentos, recrutamentos, etc."
 
 #. module: hr
@@ -1034,7 +1034,7 @@ msgstr "Usuário relacionado"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_res_users__employee_ids
 msgid "Related employees"
-msgstr "Funcionários Relacionados"
+msgstr "Colaboradores Relacionados"
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__user_id
@@ -1101,12 +1101,12 @@ msgstr "Mostrar Organograma"
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Show organizational chart on employee form"
-msgstr "Mostrar organograma no formulário do funcionário"
+msgstr "Mostrar organograma no formulário do colaborador"
 
 #. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_config_settings_view_form
 msgid "Show organizational chart on employee form."
-msgstr "Mostrar organograma no formulário do funcionário"
+msgstr "Mostrar organograma no formulário do colaborador"
 
 #. module: hr
 #: selection:hr.employee,marital:0
@@ -1121,7 +1121,7 @@ msgstr "Foto pequena"
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__image_small
 msgid "Small-sized photo of the employee. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
-msgstr "Foto pequena do funcionário. Será automaticamente redimensionada para 64x64px mantendo o aspecto. Use este campo em qualquer lugar que uma imagem miniatura for necessária."
+msgstr "Foto pequena do colaborador. Será automaticamente redimensionada para 64x64px mantendo o aspecto. Use este campo em qualquer lugar que uma imagem miniatura for necessária."
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__sinid
@@ -1194,7 +1194,7 @@ msgstr "Marcadores"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__is_address_home_a_company
 msgid "The employee adress has a company linked"
-msgstr "O endereço do funcionário tem uma empresa vinculada"
+msgstr "O endereço do colaborador tem uma empresa vinculada"
 
 #. module: hr
 #: sql_constraint:hr.job:0
@@ -1204,7 +1204,7 @@ msgstr "O nome do cargo precisa ser único por departamento na empresa!"
 #. module: hr
 #: model:res.groups,comment:hr.group_hr_user
 msgid "The user will be able to approve document created by employees."
-msgstr "O usuário poderá aprovar o documento criado pelos funcionários."
+msgstr "O usuário poderá aprovar o documento criado pelos colaboradores."
 
 #. module: hr
 #: model:res.groups,comment:hr.group_hr_manager
@@ -1214,7 +1214,7 @@ msgstr "O usuário terá acesso à configuração de recursos humanos e aos rela
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__image
 msgid "This field holds the image used as photo for the employee, limited to 1024x1024px."
-msgstr "Este campo contém a imagem usada como foto do funcionário, limitada para 1024x1024px."
+msgstr "Este campo contém a imagem usada como foto do colaborador, limitada para 1024x1024px."
 
 #. module: hr
 #: model:ir.model.fields,help:hr.field_hr_employee__tz
@@ -1239,7 +1239,7 @@ msgstr "Atividades de Hoje"
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_job__expected_employees
 msgid "Total Forecasted Employees"
-msgstr "Total de Funcionários Previstos"
+msgstr "Total de Colaboradores Previstos"
 
 #. module: hr
 #: model:hr.job,name:hr.job_trainee
@@ -1268,7 +1268,7 @@ msgstr "Contador de Mensagens Não Lidas"
 msgid "Use here the home address of the employee.\n"
 "                                            This private address is used in the expense report reimbursement document.\n"
 "                                            It should be different from the work address."
-msgstr "Use aqui o endereço residencial do funcionário.\n"
+msgstr "Use aqui o endereço residencial do colaborador.\n"
 "                                            Este endereço particular é usado no documento de reembolso do relatório de despesas.\n"
 "                                            Deve ser diferente do endereço de trabalho."
 
@@ -1308,7 +1308,7 @@ msgstr "Viúvo"
 msgid "With just a quick glance on the Odoo employee screen, you\n"
 "                can easily find all the information you need for each person;\n"
 "                contact data, job position, availability, etc."
-msgstr "Com apenas uma rápida olhada na tela de funcionários do Odoo, você\n"
+msgstr "Com apenas uma rápida olhada na tela de colaboradores do Sistema, você\n"
 "pode facilmente encontrar todas as informações que você precisa para cada pessoa;\n"
 "dados de contato, cargo, disponibilidade, etc."
 

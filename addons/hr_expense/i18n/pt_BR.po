@@ -80,7 +80,7 @@ msgstr "<strong>Descrição:</strong>"
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
 msgid "<strong>Employee:</strong>"
-msgstr "<strong>Funcionário:</strong>"
+msgstr "<strong>Colaborador:</strong>"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
@@ -415,29 +415,29 @@ msgstr "E-mails"
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_filter
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_sheet_filter
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_expense
 #: selection:hr.expense.sheet,payment_mode:0
 msgid "Employee (to refund)"
-msgstr "Funcionário (para Reembolsar)"
+msgstr "Colaborador (para Reembolsar)"
 
 #. module: hr_expense
 #: selection:hr.expense,payment_mode:0
 msgid "Employee (to reimburse)"
-msgstr "Funcionário (para reembolsar)"
+msgstr "Colaborador (para reembolsar)"
 
 #. module: hr_expense
 #: model:ir.actions.act_window,name:hr_expense.action_approved_expense
 #: model:ir.actions.act_window,name:hr_expense.hr_expense_actions_employee_expenses
 #: model:ir.ui.menu,name:hr_expense.menu_hr_expense_employee_expenses
 msgid "Employee Expenses"
-msgstr "Despesas de Funcionário"
+msgstr "Despesas de Colaborador"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__address_id
 msgid "Employee Home Address"
-msgstr "Endereço Residencial do Funcionário"
+msgstr "Endereço Residencial do Colaborador"
 
 #. module: hr_expense
 #: model:ir.model,name:hr_expense.model_hr_expense
@@ -609,7 +609,7 @@ msgstr "Despesas Provisórias"
 #: code:addons/hr_expense/models/hr_expense.py:621
 #, python-format
 msgid "Expenses must be paid by the same entity (Company or employee)."
-msgstr "Despesas devem ser pagas pela mesma entidade (empresa ou funcionário)."
+msgstr "Despesas devem ser pagas pela mesma entidade (empresa ou colaborador)."
 
 #. module: hr_expense
 #: code:addons/hr_expense/models/hr_expense.py:781
@@ -671,7 +671,7 @@ msgstr "Ícone do Font Awesome. Ex: fa-tasks"
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_filter
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_sheet_filter
 msgid "Former Employees"
-msgstr "Ex-Funcionários"
+msgstr "Ex-Colaborador"
 
 #. module: hr_expense
 #: model_terms:ir.actions.act_window,help:hr_expense.action_approved_expense
@@ -808,7 +808,7 @@ msgstr "Últimas Atividades"
 #: model:ir.model.fields,field_description:hr_expense.field_res_config_settings__use_mailgateway
 #: model_terms:ir.ui.view,arch_db:hr_expense.res_config_settings_view_form
 msgid "Let your employees record expenses by email"
-msgstr "Permitir que seus funcionários relatem despesas por e-mail"
+msgstr "Permitir que seus colaboradores relatem despesas por e-mail"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__message_main_attachment_id
@@ -914,12 +914,12 @@ msgstr "Não foi encontrada uma conta contábil para o produto %s (ou para sua c
 #: code:addons/hr_expense/models/hr_expense.py:280
 #, python-format
 msgid "No Home Address found for the employee %s, please configure one."
-msgstr "Nenhum endereço de casa encontrado para o funcionário %s, por favor, configure um."
+msgstr "Nenhum endereço de casa encontrado para o colaborador %s, por favor, configure um."
 
 #. module: hr_expense
 #: model_terms:ir.actions.act_window,help:hr_expense.action_approved_expense
 msgid "No approved employee expenses"
-msgstr "Nenhuma despesa de funcionário aprovada"
+msgstr "Nenhuma despesa de colaborador aprovada"
 
 #. module: hr_expense
 #: code:addons/hr_expense/models/hr_expense.py:276
@@ -941,7 +941,7 @@ msgstr "Nenhuma despesa a mostrar"
 #. module: hr_expense
 #: model_terms:ir.actions.act_window,help:hr_expense.action_unsubmitted_expense
 msgid "No unreported employee expenses"
-msgstr "Nenhuma despesa de funcionário não reportada"
+msgstr "Nenhuma despesa de colaborador não reportada"
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense__description
@@ -1012,7 +1012,7 @@ msgstr "Assim que o seu <b>Relatório de Despesas</b> estiver pronto, você pode
 #: code:addons/hr_expense/models/hr_expense.py:865
 #, python-format
 msgid "Only HR Officers or the concerned employee can reset to draft."
-msgstr "Apenas a equipe do RH ou o funcionário que reportou a despesa podem redefiní-la como provisória."
+msgstr "Apenas a equipe do RH ou o colaborador que reportou a despesa podem redefiní-la como provisória."
 
 #. module: hr_expense
 #: code:addons/hr_expense/models/hr_expense.py:826
@@ -1363,7 +1363,7 @@ msgstr "Campo técnico usado para saber se o campo `partner_bank_account_id` pre
 #: code:addons/hr_expense/static/src/js/tour.js:57
 #, python-format
 msgid "The accountant can register a payment to reimburse the employee directly."
-msgstr "O contador pode registrar um pagamento para reembolsar o funcionário diretamente."
+msgstr "O contador pode registrar um pagamento para reembolsar o colaborador diretamente."
 
 #. module: hr_expense
 #: model:ir.model.fields,help:hr_expense.field_hr_expense_sheet__journal_id
@@ -1533,7 +1533,7 @@ msgstr "Você pode configurar um apelido de e-mail genérico para criar despesas
 #: code:addons/hr_expense/models/hr_expense.py:628
 #, python-format
 msgid "You cannot add expenses of another employee."
-msgstr "Você não pode adicionar despesas de outro funcionário."
+msgstr "Você não pode adicionar despesas de outro colaborador."
 
 #. module: hr_expense
 #: code:addons/hr_expense/models/hr_expense.py:831
@@ -1563,7 +1563,7 @@ msgstr "Você não pode recusar suas próprias despesas"
 #: code:addons/hr_expense/models/hr_expense.py:192
 #, python-format
 msgid "You cannot report expenses for different employees in the same report."
-msgstr "Você não pode reportar despesas para diferentes funcionários no mesmo relatório."
+msgstr "Você não pode reportar despesas para diferentes colaboradores no mesmo relatório."
 
 #. module: hr_expense
 #: code:addons/hr_expense/models/hr_expense.py:190

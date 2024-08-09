@@ -145,7 +145,7 @@ msgstr "Planilha de Horas Impressionante"
 #: model:ir.actions.act_window,name:hr_timesheet.act_hr_timesheet_report
 #: model:ir.ui.menu,name:hr_timesheet.menu_hr_activity_analysis
 msgid "By Employee"
-msgstr "Por Funcionário"
+msgstr "Por Colaborador"
 
 #. module: hr_timesheet
 #: model:ir.actions.act_window,name:hr_timesheet.timesheet_action_report_by_project
@@ -236,7 +236,7 @@ msgstr "Horas Efetivas"
 #: model:ir.model.fields,field_description:hr_timesheet.field_account_analytic_line__employee_id
 #: model_terms:ir.ui.view,arch_db:hr_timesheet.hr_timesheet_line_search
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_timesheet
 #: model:ir.model.fields,field_description:hr_timesheet.field_res_config_settings__timesheet_encode_uom_id
@@ -466,7 +466,7 @@ msgid ""
 "If you use the timesheet linked to projects, don't forget to setup the right unit of measure in your employees."
 msgstr ""
 "Isto irá definir a unidade de medida utilizada em projetos e tarefas.\n"
-"Se você usar o quadro de horários vinculado a projetos, não se esqueça de configurar a unidade de medida certa em seus funcionários."
+"Se você usar o quadro de horários vinculado a projetos, não se esqueça de configurar a unidade de medida certa em seus colaboradores."
 
 #. module: hr_timesheet
 #: model:ir.model.fields,help:hr_timesheet.field_res_company__timesheet_encode_uom_id

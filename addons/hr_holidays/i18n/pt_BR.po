@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * hr_holidays
-# 
+#
 # Translators:
 # danimaribeiro <danimaribeiro@gmail.com>, 2018
 # Adriel Kotviski <kotviski@gmail.com>, 2018
@@ -15,7 +15,7 @@
 # Lauro de Lima <lauro@ciclix.com>, 2019
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2019
 # Éder Brito <britoederr@gmail.com>, 2021
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
@@ -446,7 +446,7 @@ msgid ""
 "                    ("
 msgstr ""
 "<span attrs=\"{'invisible': [('holiday_type', '!=', 'employee')]}\">\n"
-"                        O funcionário tem um fuso horário diferente do seu! Aqui, as datas e horas são exibidas no fuso horário do funcionário\n"
+"                        O colaborador tem um fuso horário diferente do seu! Aqui, as datas e horas são exibidas no fuso horário do colaborador\n"
 "                    </span>\n"
 "                    <span attrs=\"{'invisible': [('holiday_type', '!=', 'department')]}\">\n"
 "                        A empresa do departamento tem um fuso horário diferente do seu! Aqui, as datas e horas são exibidas no fuso horário da empresa\n"
@@ -485,7 +485,7 @@ msgstr "<span>Adicionar</span>"
 #. module: hr_holidays
 #: model_terms:ir.ui.view,arch_db:hr_holidays.report_holidayssummary
 msgid "<strong>Departments and Employees</strong>"
-msgstr "<strong>Departamentos e Funcionários</strong>"
+msgstr "<strong>Departamentos e Colaboradores</strong>"
 
 #. module: hr_holidays
 #: code:addons/hr_holidays/models/hr_leave.py:516
@@ -520,7 +520,7 @@ msgstr ""
 #. module: hr_holidays
 #: model:ir.actions.act_window,name:hr_holidays.hr_employee_action_from_department
 msgid "Absent Employees"
-msgstr "Funcionários Ausentes"
+msgstr "Colaboradores Ausentes"
 
 #. module: hr_holidays
 #: model:ir.model.fields,field_description:hr_holidays.field_hr_employee__is_absent_totay
@@ -813,14 +813,14 @@ msgstr "Por Departamento"
 #: selection:hr.leave.allocation,holiday_type:0
 #: selection:hr.leave.report,holiday_type:0
 msgid "By Employee"
-msgstr "Por Funcionário"
+msgstr "Por Colaborador"
 
 #. module: hr_holidays
 #: selection:hr.leave,holiday_type:0
 #: selection:hr.leave.allocation,holiday_type:0
 #: selection:hr.leave.report,holiday_type:0
 msgid "By Employee Tag"
-msgstr "Por Marcador de Funcionário"
+msgstr "Por Marcador de Colaborador"
 
 #. module: hr_holidays
 #: model:ir.model.fields,help:hr_holidays.field_hr_leave__holiday_type
@@ -828,8 +828,8 @@ msgid ""
 "By Employee: Allocation/Request for individual Employee, By Employee Tag: "
 "Allocation/Request for group of employees in category"
 msgstr ""
-"Por Funcionário: Alocação/Pedido individual, por Marcador de Funcionário: "
-"Alocação/Pedido para grupo de funcionários na categoria"
+"Por colaborador: Alocação/Pedido individual, por Marcador de Colaborador: "
+"Alocação/Pedido para grupo de colaboradores na categoria"
 
 #. module: hr_holidays
 #: model_terms:ir.ui.view,arch_db:hr_holidays.edit_holiday_status_form
@@ -870,7 +870,7 @@ msgstr "Categoria"
 #. module: hr_holidays
 #: model:ir.model.fields,help:hr_holidays.field_hr_leave__category_id
 msgid "Category of Employee"
-msgstr "Categoria do Funcionário"
+msgstr "Categoria dos Colaboradores"
 
 #. module: hr_holidays
 #: model_terms:ir.ui.view,arch_db:hr_holidays.report_holidayssummary
@@ -1123,19 +1123,19 @@ msgstr "Editar Licença"
 #: model_terms:ir.ui.view,arch_db:hr_holidays.view_hr_holidays_filter_report
 #: model_terms:ir.ui.view,arch_db:hr_holidays.view_hr_leave_allocation_filter
 msgid "Employee"
-msgstr "Funcionário"
+msgstr "Colaborador"
 
 #. module: hr_holidays
 #: selection:hr.leave.type,validation_type:0
 msgid "Employee Manager"
-msgstr "Gerente do Funcionário"
+msgstr "Gerente do Colaborador"
 
 #. module: hr_holidays
 #: model:ir.model.fields,field_description:hr_holidays.field_hr_leave__category_id
 #: model:ir.model.fields,field_description:hr_holidays.field_hr_leave_allocation__category_id
 #: model:ir.model.fields,field_description:hr_holidays.field_hr_leave_report__category_id
 msgid "Employee Tag"
-msgstr "Marcador de Funcionário"
+msgstr "Marcador de Colaborador"
 
 #. module: hr_holidays
 #: model:ir.model.fields,field_description:hr_holidays.field_hr_holidays_summary_employee__emp
@@ -1291,7 +1291,7 @@ msgstr "Relatório de Folgas do RH por Departamento"
 #. module: hr_holidays
 #: model:ir.model,name:hr_holidays.model_hr_holidays_summary_employee
 msgid "HR Leaves Summary Report By Employee"
-msgstr "Relatório do Resumo de Folgas do RH por funcionário"
+msgstr "Relatório do Resumo de Folgas do RH por Colaborador"
 
 #. module: hr_holidays
 #: model:ir.model.fields,field_description:hr_holidays.field_hr_leave__request_unit_half
@@ -2267,9 +2267,9 @@ msgid ""
 "The employee, department, company or employee category of this request is "
 "missing. Please make sure that your user login is linked to an employee."
 msgstr ""
-"O funcionário, departamento, empresa ou categoria de funcionário desta "
+"O colaborador, departamento, empresa ou categoria de colaborador desta "
 "solicitação está ausente. Por favor, tenha certeza que seu login de usuário "
-"está vinculado a um funcionário."
+"está vinculado a um colaborador."
 
 #. module: hr_holidays
 #: sql_constraint:hr.leave.allocation:0
@@ -2411,7 +2411,7 @@ msgstr "Atividades de Hoje"
 #. module: hr_holidays
 #: model:ir.model.fields,field_description:hr_holidays.field_hr_department__total_employee
 msgid "Total Employee"
-msgstr "Total de Funcionários"
+msgstr "Total de Colaboradores"
 
 #. module: hr_holidays
 #: model:ir.model.fields,help:hr_holidays.field_hr_employee__remaining_leaves
@@ -2420,7 +2420,7 @@ msgid ""
 "to create allocation/leave request. Total based on all the leave types "
 "without overriding limit."
 msgstr ""
-"Número total de folgas legais alocados a este funcionário, alterando este "
+"Número total de folgas legais alocados a este colaborador, alterando este "
 "valor para criar um pedido de folga/alocação. Total com base em todos os "
 "tipos de folgas, sem limite de substituição."
 
