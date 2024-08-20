@@ -10,10 +10,9 @@
 
 OFX and QIF imports are available in Enterprise version.""",
     'data': [
-        # 'account_bank_statement_import_view.xml',
-        # 'account_import_tip_data.xml',
-        # 'wizard/journal_creation.xml',
-        # 'views/account_bank_statement_import_templates.xml',
+        'wizard/journal_creation.xml',
+        'views/account_bank_statement_import_view.xml',
+        'views/account_bank_statement_import_templates.xml',
     ],
     'demo': [
         'demo/partner_bank.xml',
