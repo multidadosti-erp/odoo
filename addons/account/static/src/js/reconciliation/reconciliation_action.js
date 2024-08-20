@@ -285,7 +285,7 @@ var StatementAction = AbstractAction.extend(ControlPanelMixin, {
     },
     /**
      * call 'validate' model method then destroy the
-     * validated lines and update the action renderer with the new status bar 
+     * validated lines and update the action renderer with the new status bar
      * values and notifications then open the first available line
      *
      * @private
@@ -313,7 +313,7 @@ var StatementAction = AbstractAction.extend(ControlPanelMixin, {
                 }
             });
             // Get number of widget and if less than constant and if there are more to laod, load until constant
-            if (self.widgets.length < self.model.defaultDisplayQty 
+            if (self.widgets.length < self.model.defaultDisplayQty
                 && self.model.valuemax - self.model.valuenow >= self.model.defaultDisplayQty) {
                 var toLoad = self.model.defaultDisplayQty - self.widgets.length;
                 self._loadMore(toLoad);

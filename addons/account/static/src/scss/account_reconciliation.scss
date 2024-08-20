@@ -35,7 +35,7 @@
     }
 
     h1, .progress {
-        @media screen and (min-width: 480px) { // FIXME 
+        @media screen and (min-width: 480px) { // FIXME
             width: 48%;
         }
     }
@@ -228,7 +228,7 @@
         }
         &[data-mode="create"] > .create {
             display: block;
-            max-height: 210px;
+            max-height: 320px;
             transition: max-height 400ms ease 0s;
         }
     }
