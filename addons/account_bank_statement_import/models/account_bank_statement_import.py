@@ -113,6 +113,19 @@ class AccountBankStatementImport(models.TransientModel):
     def _check_journal_bank_account(self, journal, account_number):
         return journal.bank_account_id.sanitized_acc_number == account_number
 
+    def _check_valid_transaction(self, values, journal):
+        """ Função para ser herdada e validar as transações obtidas
+        na importação do arquivo OFX.
+
+        Args:
+            values (dict): Valores da transação.
+            journal (models.Model): Diário a checar
+
+        Returns:
+            bool: Check da transação
+        """
+        return True
+
     def _find_additional_data(self, currency_code, account_number):
         """ Look for a res.currency and account.journal using values extracted from the
             statement and make sure it's consistent.
@@ -168,6 +181,11 @@ class AccountBankStatementImport(models.TransientModel):
                 st_vals['name'] = journal.sequence_id.with_context(ir_sequence_date=st_vals.get('date')).get_next_char(st_vals['number'])
                 del(st_vals['number'])
             for line_vals in st_vals['transactions']:
+
+                # Ignora transações inválidas
+                if not self._check_valid_transaction(line_vals, journal):
+                    continue
+
                 unique_import_id = line_vals.get('unique_import_id')
                 if unique_import_id:
                     sanitized_account_number = sanitize_account_number(account_number)
