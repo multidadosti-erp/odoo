@@ -559,23 +559,9 @@ class AccountReconciliation(models.AbstractModel):
         domain = expression.AND([domain, [('company_id', '=', account.company_id.id)]])
         return domain
 
-    @api.model
-    def _prepare_move_lines(self, move_lines, target_currency=False, target_date=False, recs_count=0):
-        """ Returns move lines formatted for the manual/bank reconciliation widget
-
-            :param move_line_ids:
-            :param target_currency: currency (browse) you want the move line debit/credit converted into
-            :param target_date: date to use for the monetary conversion
-        """
-        context = dict(self._context or {})
-        ret = []
-
-        for line in move_lines:
-            company_currency = line.company_id.currency_id
-            line_currency = (line.currency_id and line.amount_currency) and line.currency_id or company_currency
-            date_maturity = misc.format_date(self.env, line.date_maturity, lang_code=self.env.user.lang)
-
-            ret_line = {
+    def _prepare_move_lines_values(self, line, line_currency):
+        date_maturity = misc.format_date(self.env, line.date_maturity, lang_code=self.env.user.lang)
+        return {
                 'id': line.id,
                 'name': line.name and line.name != '/' and line.move_id.name + ': ' + line.name or line.move_id.name,
                 'ref': line.move_id.ref or '',
@@ -593,6 +579,22 @@ class AccountReconciliation(models.AbstractModel):
                 'partner_name': line.partner_id.name,
                 'currency_id': line_currency.id,
             }
+
+    @api.model
+    def _prepare_move_lines(self, move_lines, target_currency=False, target_date=False, recs_count=0):
+        """ Returns move lines formatted for the manual/bank reconciliation widget
+
+            :param move_line_ids:
+            :param target_currency: currency (browse) you want the move line debit/credit converted into
+            :param target_date: date to use for the monetary conversion
+        """
+        ret = []
+
+        for line in move_lines:
+            company_currency = line.company_id.currency_id
+            line_currency = (line.currency_id and line.amount_currency) and line.currency_id or company_currency
+
+            ret_line = self._prepare_move_lines_values(line, line_currency)
 
             debit = line.debit
             credit = line.credit
