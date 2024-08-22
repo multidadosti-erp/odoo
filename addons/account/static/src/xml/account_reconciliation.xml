@@ -178,12 +178,12 @@
         </div>
     </div>
     <table class="float-left">
-        <tr class="create_account_id">
-            <td class="o_td_label">Account</td>
+        <tr class="create_partner_id">
+            <td class="o_td_label">Partner</td>
             <td class="o_td_field"></td>
         </tr>
-        <tr class="create_tax_id">
-            <td class="o_td_label">Tax</td>
+        <tr class="create_account_id">
+            <td class="o_td_label">Account</td>
             <td class="o_td_field"></td>
         </tr>
         <tr class="create_analytic_account_id" t-if="group_acc">
@@ -207,6 +207,10 @@
             </tr>
             <tr class="create_amount">
                 <td class="o_td_label">Amount</td>
+                <td class="o_td_field"></td>
+            </tr>
+            <tr class="create_tax_id">
+                <td class="o_td_label">Tax</td>
                 <td class="o_td_field"></td>
             </tr>
             <tr class="create_force_tax_included d-none">

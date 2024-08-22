@@ -529,23 +529,32 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
     },
 
     /**
-     * create account_id, tax_id, analytic_account_id, analytic_tag_ids, label and amount fields
+     * Adicionado pela Multidados;
+     * Obtém os campos que serão utilizados na criação rápida da conciliação.
+     * Foi removido da função '_renderCreate' e transferido para uma função
+     * particular para possibilitar a herança e inclusão de campos.
      *
      * @private
      * @param {object} state - statement line
      */
-    _renderCreate: function (state) {
-        var self = this;
-        this.model.makeRecord('account.bank.statement.line', [{
+    _getCreationFields: function (state) {
+        var rec_fields = [{
             relation: 'account.account',
             type: 'many2one',
             name: 'account_id',
-            domain: [['company_id', '=', state.st_line.company_id], ['deprecated', '=', false]],
+            domain: [['company_id', '=', state.st_line.company_id],
+                     ['code_first_digit', '=', state.st_line.payment_type == 'receivable' ? 3 : 4],
+                     ['deprecated', '=', false]],
         }, {
             relation: 'account.journal',
             type: 'many2one',
             name: 'journal_id',
             domain: [['company_id', '=', state.st_line.company_id], ['type', '=', 'general']],
+        }, {
+            relation: 'res.partner',
+            type: 'many2one',
+            name: 'partner_id',
+            domain: [],
         }, {
             relation: 'account.tax',
             type: 'many2one',
@@ -571,61 +580,146 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
         }, {
             type: 'char', //TODO is it a bug or a feature when type date exists ?
             name: 'date',
-        }], {
+        }];
+        return rec_fields;
+    },
+    /**
+     * Adicionado pela Multidados;
+     * Obtém as informações dos campos que serão utilizados na criação rápida
+     * da conciliação.
+     * Foi removido da função '_renderCreate' e transferido para uma função
+     * particular para possibilitar a herança e inclusão de informações de campos.
+     *
+     * @private
+     */
+    _getCreationFieldsInfo: function () {
+        return {
             account_id: {
                 string: _t("Account"),
             },
             label: {string: _t("Label")},
             amount: {string: _t("Account")},
-        }).then(function (recordID) {
+        }
+    },
+    /**
+     * Adicionado pela Multidados;
+     * Instancia os campos que serão utilizados na criação rápida da conciliação
+     * com o widget correto para cada tipo de campo.
+     * Foi removido da função '_renderCreate' e transferido para uma função
+     * particular para possibilitar a herança e inclusão de novos campos.
+     *
+     * @private
+     * @param {object} record - Registro provisório criado com '_makeRecord'
+     */
+    _instantiateCreateFields: function (record) {
+        var self = this;
+
+        var _getOptions = function (mode, create_restrict) {
+            var opts = {mode: mode};
+            if (create_restrict){
+                opts.attrs = {options: {'no_create': true, 'no_open': true}};
+            }
+            return opts
+        }
+        self.fields.account_id = new relational_fields.FieldMany2One(self,
+            'account_id', record, _getOptions('edit', true));
+
+        self.fields.partner_id = new relational_fields.FieldMany2One(self,
+            'partner_id', record, _getOptions('edit', true));
+
+        self.fields.journal_id = new relational_fields.FieldMany2One(self,
+            'journal_id', record, _getOptions('readonly', true));
+
+        self.fields.tax_id = new relational_fields.FieldMany2One(self,
+            'tax_id', record, _.extend({}, _getOptions('edit', true), {additionalContext: {append_type_to_tax_name: true}}));
+
+        self.fields.analytic_account_id = new relational_fields.FieldMany2One(self,
+            'analytic_account_id', record, _getOptions('edit', true));
+
+        self.fields.analytic_tag_ids = new relational_fields.FieldMany2ManyTags(self,
+            'analytic_tag_ids', record, _getOptions('edit', true));
+
+        self.fields.force_tax_included = new basic_fields.FieldBoolean(self,
+            'force_tax_included', record, _getOptions('edit'));
+
+        self.fields.label = new basic_fields.FieldChar(self,
+            'label', record, _getOptions('edit'));
+
+        self.fields.amount = new basic_fields.FieldFloat(self,
+            'amount', record, _getOptions('edit'));
+
+        self.fields.date = new basic_fields.FieldDate(self,
+            'date', record, _getOptions('edit'));
+    },
+    /**
+     * Adicionado pela Multidados;
+     * Adiciona na tela de criação rápida os campos utilizados na criação
+     * da conciliação.
+     * Foi removido da função '_renderCreate' e transferido para uma função
+     * particular para possibilitar a herança e inclusão de novos campos.
+     *
+     * @private
+     * @param {object} record - Registro provisório criado com '_makeRecord'
+     */
+    _renderCreateFields: function ($createForm) {
+        function addRequiredStyle(widget) {
+            widget.$el.addClass('o_required_modifier');
+        }
+        this.fields.account_id.appendTo(
+            $createForm.find('.create_account_id .o_td_field'))
+            .then(addRequiredStyle.bind(this, this.fields.account_id));
+        this.fields.partner_id.appendTo(
+            $createForm.find('.create_partner_id .o_td_field'))
+            .then(addRequiredStyle.bind(this, this.fields.partner_id));
+        this.fields.journal_id.appendTo(
+            $createForm.find('.create_journal_id .o_td_field'));
+        this.fields.tax_id.appendTo(
+            $createForm.find('.create_tax_id .o_td_field'));
+        this.fields.analytic_account_id.appendTo(
+            $createForm.find('.create_analytic_account_id .o_td_field'));
+        this.fields.analytic_tag_ids.appendTo(
+            $createForm.find('.create_analytic_tag_ids .o_td_field'));
+        this.fields.force_tax_included.appendTo(
+            $createForm.find('.create_force_tax_included .o_td_field'))
+        this.fields.label.appendTo(
+            $createForm.find('.create_label .o_td_field'))
+            .then(addRequiredStyle.bind(this, this.fields.label));
+        this.fields.amount.appendTo(
+            $createForm.find('.create_amount .o_td_field'))
+            .then(addRequiredStyle.bind(this, this.fields.amount));
+        this.fields.date.appendTo(
+            $createForm.find('.create_date .o_td_field'))
+        return $createForm;
+    },
+    /**
+     * Alterado pela Multidados;
+     * Encapsula código em funções para possibilitar a herança.
+     *
+     * Define e renderiza campos no form para a criação rápida de uma
+     * conciliação de pagamento.
+     *
+     * @private
+     * @param {object} state - statement line
+     */
+    _renderCreate: function (state) {
+        var self = this;
+
+        // Cria registro virtual para a base do registro final
+        this.model.makeRecord('account.bank.statement.line',
+                              this._getCreationFields(state),
+                              this._getCreationFieldsInfo()
+        ).then(function (recordID) {
+            // Obtenção do registro virtual criado
             self.handleCreateRecord = recordID;
             var record = self.model.get(self.handleCreateRecord);
 
-            self.fields.account_id = new relational_fields.FieldMany2One(self,
-                'account_id', record, {mode: 'edit'});
+            // Criação dos widgets dos campos utilizados para a criação
+            self._instantiateCreateFields(record);
 
-            self.fields.journal_id = new relational_fields.FieldMany2One(self,
-                'journal_id', record, {mode: 'edit'});
-
-            self.fields.tax_id = new relational_fields.FieldMany2One(self,
-                'tax_id', record, {mode: 'edit', additionalContext: {append_type_to_tax_name: true}});
-
-            self.fields.analytic_account_id = new relational_fields.FieldMany2One(self,
-                'analytic_account_id', record, {mode: 'edit'});
-
-            self.fields.analytic_tag_ids = new relational_fields.FieldMany2ManyTags(self,
-                'analytic_tag_ids', record, {mode: 'edit'});
-
-            self.fields.force_tax_included = new basic_fields.FieldBoolean(self,
-                'force_tax_included', record, {mode: 'edit'});
-
-            self.fields.label = new basic_fields.FieldChar(self,
-                'label', record, {mode: 'edit'});
-
-            self.fields.amount = new basic_fields.FieldFloat(self,
-                'amount', record, {mode: 'edit'});
-            
-            self.fields.date = new basic_fields.FieldDate(self,
-                'date', record, {mode: 'edit'});
-
+            // Renderização do JQuery do form de criação
             var $create = $(qweb.render("reconciliation.line.create", {'state': state, 'group_tags': self.group_tags, 'group_acc': self.group_acc}));
-            self.fields.account_id.appendTo($create.find('.create_account_id .o_td_field'))
-                .then(addRequiredStyle.bind(self, self.fields.account_id));
-            self.fields.journal_id.appendTo($create.find('.create_journal_id .o_td_field'));
-            self.fields.tax_id.appendTo($create.find('.create_tax_id .o_td_field'));
-            self.fields.analytic_account_id.appendTo($create.find('.create_analytic_account_id .o_td_field'));
-            self.fields.analytic_tag_ids.appendTo($create.find('.create_analytic_tag_ids .o_td_field'));
-            self.fields.force_tax_included.appendTo($create.find('.create_force_tax_included .o_td_field'))
-            self.fields.label.appendTo($create.find('.create_label .o_td_field'))
-                .then(addRequiredStyle.bind(self, self.fields.label));
-            self.fields.amount.appendTo($create.find('.create_amount .o_td_field'))
-                .then(addRequiredStyle.bind(self, self.fields.amount));
-            self.fields.date.appendTo($create.find('.create_date .o_td_field'))
+            self._renderCreateFields($create);
             self.$('.create').append($create);
-
-            function addRequiredStyle(widget) {
-                widget.$el.addClass('o_required_modifier');
-            }
         });
     },
 
