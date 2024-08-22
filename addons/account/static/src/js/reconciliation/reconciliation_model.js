@@ -229,6 +229,14 @@ var StatementModel = BasicModel.extend({
         var line = this.getLine(handle);
         line.st_line.partner_id = partner && partner.id;
         line.st_line.partner_name = partner && partner.display_name || '';
+
+        // Adicionado pela Multidados
+        // Atualização do parceiro nos valores da Proposition
+        if (!line.partner_id) {
+            line.partner_id = partner && partner.id;
+        }
+        this.updateProposition(handle, {partner_id: partner});
+
         return $.when(partner && this._changePartner(handle, partner.id))
                 .then(function() {
                     if(line.st_line.partner_id){
@@ -492,7 +500,7 @@ var StatementModel = BasicModel.extend({
     },
     /**
      * RPC method to load informations on lines
-     * 
+     *
      * @param {Array} ids ids of bank statement line passed to rpc call
      * @param {Array} excluded_ids list of move_line ids that needs to be excluded from search
      * @returns {Deferred}
@@ -1128,7 +1136,7 @@ var StatementModel = BasicModel.extend({
             'account_code': account ? this.accounts[account.id] : '',
             'analytic_account_id': this._formatNameGet(values.analytic_account_id),
             'analytic_tag_ids': this._formatMany2ManyTags(values.analytic_tag_ids || []),
-            'journal_id': this._formatNameGet(values.journal_id),
+            'journal_id': this._formatNameGet(values.journal_id || (line.st_line.journal_id && [line.st_line.journal_id])),
             'tax_id': this._formatNameGet(values.tax_id),
             'debit': 0,
             'credit': 0,
