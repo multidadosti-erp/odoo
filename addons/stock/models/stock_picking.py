@@ -599,49 +599,50 @@ class Picking(models.Model):
         Normally that happens when the button "Done" is pressed on a Picking view.
         @return: True
         """
-        # TDE FIXME: remove decorator when migration the remaining
-        todo_moves = self.mapped('move_lines').filtered(lambda self: self.state in ['draft', 'waiting', 'partially_available', 'assigned', 'confirmed'])
-        # Check if there are ops not linked to moves yet
-        for pick in self:
-            # # Explode manually added packages
-            # for ops in pick.move_line_ids.filtered(lambda x: not x.move_id and not x.product_id):
-            #     for quant in ops.package_id.quant_ids: #Or use get_content for multiple levels
-            #         self.move_line_ids.create({'product_id': quant.product_id.id,
-            #                                    'package_id': quant.package_id.id,
-            #                                    'result_package_id': ops.result_package_id,
-            #                                    'lot_id': quant.lot_id.id,
-            #                                    'owner_id': quant.owner_id.id,
-            #                                    'product_uom_id': quant.product_id.uom_id.id,
-            #                                    'product_qty': quant.qty,
-            #                                    'qty_done': quant.qty,
-            #                                    'location_id': quant.location_id.id, # Could be ops too
-            #                                    'location_dest_id': ops.location_dest_id.id,
-            #                                    'picking_id': pick.id
-            #                                    }) # Might change first element
-            # # Link existing moves or add moves when no one is related
-            for ops in pick.move_line_ids.filtered(lambda x: not x.move_id):
-                # Search move with this product
-                moves = pick.move_lines.filtered(lambda x: x.product_id == ops.product_id)
-                moves = sorted(moves, key=lambda m: m.quantity_done < m.product_qty, reverse=True)
-                if moves:
-                    ops.move_id = moves[0].id
-                else:
-                    new_move = self.env['stock.move'].create({
-                                                    'name': _('New Move:') + ops.product_id.display_name,
-                                                    'product_id': ops.product_id.id,
-                                                    'product_uom_qty': ops.qty_done,
-                                                    'product_uom': ops.product_uom_id.id,
-                                                    'location_id': pick.location_id.id,
-                                                    'location_dest_id': pick.location_dest_id.id,
-                                                    'picking_id': pick.id,
-                                                    'picking_type_id': pick.picking_type_id.id,
-                                                   })
-                    ops.move_id = new_move.id
-                    new_move = new_move._action_confirm()
-                    todo_moves |= new_move
-                    #'qty_done': ops.qty_done})
+        onlymove_lines = self._context.get("onlymove_lines", False)
+
+        todo_moves = self.mapped("move_lines").filtered(
+            lambda self: self.state
+            in ["draft", "waiting", "partially_available", "assigned", "confirmed"]
+        )
+
+        if not onlymove_lines:
+            # Check if there are ops not linked to moves yet
+            for pick in self:
+                # # Explode manually added packages
+                # # Link existing moves or add moves when no one is related
+                for ops in pick.move_line_ids.filtered(lambda x: not x.move_id):
+                    # Search move with this product
+                    moves = pick.move_lines.filtered(
+                        lambda x: x.product_id == ops.product_id
+                    )
+                    moves = sorted(
+                        moves,
+                        key=lambda m: m.quantity_done < m.product_qty,
+                        reverse=True,
+                    )
+                    if moves:
+                        ops.move_id = moves[0].id
+                    else:
+                        new_move = self.env["stock.move"].create(
+                            {
+                                "name": _("New Move:") + ops.product_id.display_name,
+                                "product_id": ops.product_id.id,
+                                "product_uom_qty": ops.qty_done,
+                                "product_uom": ops.product_uom_id.id,
+                                "location_id": pick.location_id.id,
+                                "location_dest_id": pick.location_dest_id.id,
+                                "picking_id": pick.id,
+                                "picking_type_id": pick.picking_type_id.id,
+                            }
+                        )
+                        ops.move_id = new_move.id
+                        new_move = new_move._action_confirm()
+                        todo_moves |= new_move
+
         todo_moves._action_done()
-        self.write({'date_done': fields.Datetime.now()})
+        self.write({"date_done": fields.Datetime.now()})
+
         return True
 
     def _check_move_lines_map_quant_package(self, package):
@@ -712,20 +713,56 @@ class Picking(models.Model):
 
     @api.multi
     def button_validate(self):
+        """ Método para Validar a Movimentação do Estoque
+
+            onlymove_lines = True = Pegas sommente Lines com Move_id e Qty_done
+
+        Returns:
+            Dict: Dicionário Vázio ou Form a Montar
+        """
+        onlymove_lines = self._context.get("onlymove_lines", False)
+
+        if onlymove_lines:
+            move_line_ids = self.move_line_ids.filtered(
+                lambda line: line.qty_done > 0 and line.move_id != False
+            )
+        else:
+            move_line_ids = self.move_line_ids
+
         self.ensure_one()
-        if not self.move_lines and not self.move_line_ids:
+        if not self.move_lines and not move_line_ids:
             raise UserError(_('Please add some items to move.'))
 
         # If no lots when needed, raise error
         picking_type = self.picking_type_id
-        precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
-        no_quantities_done = all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in self.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
-        no_reserved_quantities = all(float_is_zero(move_line.product_qty, precision_rounding=move_line.product_uom_id.rounding) for move_line in self.move_line_ids)
+        precision_digits = self.env["decimal.precision"].precision_get(
+            "Product Unit of Measure"
+        )
+
+        no_quantities_done = all(
+            float_is_zero(move_line.qty_done, precision_digits=precision_digits)
+            for move_line in move_line_ids.filtered(
+                lambda m: m.state not in ("done", "cancel")
+            )
+        )
+
+        no_reserved_quantities = all(
+            float_is_zero(
+                move_line.product_qty,
+                precision_rounding=move_line.product_uom_id.rounding,
+            )
+            for move_line in move_line_ids
+        )
+
         if no_reserved_quantities and no_quantities_done:
-            raise UserError(_('You cannot validate a transfer if no quantites are reserved nor done. To force the transfer, switch in edit more and encode the done quantities.'))
+            raise UserError(
+                _(
+                    "You cannot validate a transfer if no quantites are reserved nor done. To force the transfer, switch in edit more and encode the done quantities."
+                )
+            )
 
         if picking_type.use_create_lots or picking_type.use_existing_lots:
-            lines_to_check = self.move_line_ids
+            lines_to_check = move_line_ids
             if not no_quantities_done:
                 lines_to_check = lines_to_check.filtered(
                     lambda line: float_compare(line.qty_done, 0,
@@ -739,40 +776,48 @@ class Picking(models.Model):
                         raise UserError(_('You need to supply a Lot/Serial number for product %s.') % product.display_name)
 
         if no_quantities_done:
-            view = self.env.ref('stock.view_immediate_transfer')
-            wiz = self.env['stock.immediate.transfer'].create({'pick_ids': [(4, self.id)]})
+            view = self.env.ref("stock.view_immediate_transfer")
+            wiz = self.env["stock.immediate.transfer"].create(
+                {"pick_ids": [(4, self.id)]}
+            )
             return {
-                'name': _('Immediate Transfer?'),
-                'type': 'ir.actions.act_window',
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'stock.immediate.transfer',
-                'views': [(view.id, 'form')],
-                'view_id': view.id,
-                'target': 'new',
-                'res_id': wiz.id,
-                'context': self.env.context,
+                "name": _("Immediate Transfer?"),
+                "type": "ir.actions.act_window",
+                "view_type": "form",
+                "view_mode": "form",
+                "res_model": "stock.immediate.transfer",
+                "views": [(view.id, "form")],
+                "view_id": view.id,
+                "target": "new",
+                "res_id": wiz.id,
+                "context": self.env.context,
             }
 
-        if self._get_overprocessed_stock_moves() and not self._context.get('skip_overprocessed_check'):
-            view = self.env.ref('stock.view_overprocessed_transfer')
-            wiz = self.env['stock.overprocessed.transfer'].create({'picking_id': self.id})
+        if self._get_overprocessed_stock_moves() and not self._context.get(
+            "skip_overprocessed_check"
+        ):
+            view = self.env.ref("stock.view_overprocessed_transfer")
+            wiz = self.env["stock.overprocessed.transfer"].create(
+                {"picking_id": self.id}
+            )
             return {
-                'type': 'ir.actions.act_window',
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'stock.overprocessed.transfer',
-                'views': [(view.id, 'form')],
-                'view_id': view.id,
-                'target': 'new',
-                'res_id': wiz.id,
-                'context': self.env.context,
+                "type": "ir.actions.act_window",
+                "view_type": "form",
+                "view_mode": "form",
+                "res_model": "stock.overprocessed.transfer",
+                "views": [(view.id, "form")],
+                "view_id": view.id,
+                "target": "new",
+                "res_id": wiz.id,
+                "context": self.env.context,
             }
 
         # Check backorder should check for other barcodes
         if self._check_backorder():
             return self.action_generate_backorder_wizard()
-        self.action_done()
+
+        self.with_context(onlymove_lines=onlymove_lines).action_done()
+
         return
 
     def action_generate_backorder_wizard(self):
