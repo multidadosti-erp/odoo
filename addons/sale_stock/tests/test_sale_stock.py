@@ -259,7 +259,7 @@ class TestSaleStock(TestSale):
         # process all the reserved quantities and, if the user chose to process, a second wizard
         # will ask to create a backorder for the unavailable product.
         self.assertEquals(len(self.so.picking_ids), 1)
-        res_dict = self.so.picking_ids[0].button_validate()
+        res_dict = self.so.picking_ids[0].with_context(onlymove_lines=False).button_validate()
         wizard = self.env[(res_dict.get('res_model'))].browse(res_dict.get('res_id'))
         self.assertEqual(wizard._name, 'stock.immediate.transfer')
         res_dict = wizard.process()
@@ -315,7 +315,7 @@ class TestSaleStock(TestSale):
 
         # deliver them
         self.assertEquals(len(self.so.picking_ids), 1)
-        res_dict = self.so.picking_ids[0].button_validate()
+        res_dict = self.so.picking_ids[0].with_context(onlymove_lines=False).button_validate()
         wizard = self.env[(res_dict.get('res_model'))].browse(res_dict.get('res_id'))
         wizard.process()
         self.assertEquals(self.so.picking_ids[0].state, "done")
@@ -486,7 +486,7 @@ class TestSaleStock(TestSale):
                 }),
             ],
         })
-        so1.picking_ids.button_validate()
+        so1.picking_ids.with_context(onlymove_lines=False).button_validate()
         self.assertEqual(so1.picking_ids.state, 'done')
         self.assertEqual(so1.order_line.mapped('qty_delivered'), [1, 1, 1])
 
