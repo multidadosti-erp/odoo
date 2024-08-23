@@ -941,11 +941,13 @@ var StatementModel = BasicModel.extend({
             line.reconciliation_proposition = reconciliation_proposition;
 
             var amount_currency = 0;
+            var is_valid = !!reconciliation_proposition.length;
             var total = line.st_line.amount || 0;
             var isOtherCurrencyId = _.uniq(_.pluck(_.reject(reconciliation_proposition, 'invalid'), 'currency_id'));
             isOtherCurrencyId = isOtherCurrencyId.length === 1 && !total && isOtherCurrencyId[0] !== formatOptions.currency_id ? isOtherCurrencyId[0] : false;
 
             _.each(reconciliation_proposition, function (prop) {
+                is_valid = is_valid && !prop.invalid;
                 if (!prop.invalid) {
                     total -= prop.amount;
                     if (isOtherCurrencyId) {
@@ -971,7 +973,7 @@ var StatementModel = BasicModel.extend({
                 }) : false,
                 account_code: self.accounts[line.st_line.open_balance_account_id],
             };
-            line.balance.type = line.balance.amount_currency ? (line.st_line.partner_id ? 0 : -1) : 1;
+            line.balance.type = line.balance.amount_currency ? (is_valid ? 0 : -1) : 1;
         });
     },
     /**

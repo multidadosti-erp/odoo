@@ -77,7 +77,7 @@
                 <div class="float-right o_buttons">
                     <button t-attf-class="o_validate btn btn-secondary #{!state.balance.type ? '' : 'd-none'}">Validate</button>
                     <button t-attf-class="o_reconcile btn btn-primary #{state.balance.type &gt; 0 ? '' : 'd-none'}">Reconcile</button>
-                    <span t-attf-class="o_no_valid text-danger #{state.balance.type &lt; 0 ? '' : 'd-none'}">Select a partner or choose a counterpart</span>
+                    <span t-attf-class="o_no_valid text-danger #{state.balance.type &lt; 0 ? '' : 'd-none'}">Invalid lines! All required fields must be entered.</span>
                 </div>
             </caption>
             <thead>

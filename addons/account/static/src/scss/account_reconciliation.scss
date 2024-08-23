@@ -307,6 +307,12 @@
         td {
             width: 99%;
             padding-left: 8px;
+
+            &.o_td_field {
+                > .o_field_many2one {
+                    width: 100%;
+                }
+            }
         }
         tr .o_td_label {
             vertical-align: top;
