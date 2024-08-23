@@ -5287,6 +5287,13 @@ msgid "Invalid fiscal year last day"
 msgstr "Último dia inválido do ano fiscal"
 
 #. module: account
+#. openerp-web
+#: code:addons/account/static/src/xml/account_reconciliation.xml:80
+#, python-format
+msgid "Invalid lines! All required fields must be entered."
+msgstr "Linhas inválidas! Todos os campos obrigatórios devem ser preenchidos."
+
+#. module: account
 #: code:addons/account/models/account_invoice.py:669
 #: code:addons/account/models/account_invoice.py:1428
 #: model:ir.model,name:account.model_account_invoice
@@ -8572,13 +8579,6 @@ msgid "Select 'Sale' for customer invoices journals.\n"
 "Select 'Cash' or 'Bank' for journals that are used in customer or vendor payments.\n"
 "Select 'General' for miscellaneous operations journals."
 msgstr "Escolha 'Venda' para diários de faturas de clientes. Escolha 'Compra' para diários de faturas de fornecedores. Escolha 'Dinheiro' ou 'Banco' para diários que são usados nos pagamentos de clientes ou fornecedores. Escolha 'Geral' para diários de operações diversas. Escolha 'Situação de Abertura/Fechamento' para entradas geradas em um novo ano fiscal."
-
-#. module: account
-#. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:80
-#, python-format
-msgid "Select a partner or choose a counterpart"
-msgstr "Selecione um parceiro ou escolha uma contraparte"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_form
