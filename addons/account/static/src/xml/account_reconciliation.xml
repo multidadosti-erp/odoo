@@ -209,14 +209,17 @@
                 <td class="o_td_label">Amount</td>
                 <td class="o_td_field"></td>
             </tr>
-            <tr class="create_tax_id">
+            <!-- Removido Pela Multidados:
+                - Não deve utilizar cálculo de impostos na reconciliação.
+             -->
+            <!-- <tr class="create_tax_id">
                 <td class="o_td_label">Tax</td>
                 <td class="o_td_field"></td>
             </tr>
             <tr class="create_force_tax_included d-none">
                 <td class="o_td_label">Tax Included in Price</td>
                 <td class="o_td_field"></td>
-            </tr>
+            </tr> -->
             <tr class="create_date d-none">
                 <td class="o_td_label">Writeoff Date</td>
                 <td class="o_td_field"></td>
