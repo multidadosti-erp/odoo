@@ -555,12 +555,16 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             type: 'many2one',
             name: 'partner_id',
             domain: [],
-        }, {
-            relation: 'account.tax',
-            type: 'many2one',
-            name: 'tax_id',
-            domain: [['company_id', '=', state.st_line.company_id]],
-        }, {
+        },
+        // Multidados:
+        // Remove campo de Impostos na reconciliação bancária.
+        // {
+        //     relation: 'account.tax',
+        //     type: 'many2one',
+        //     name: 'tax_id',
+        //     domain: [['company_id', '=', state.st_line.company_id]],
+        // },
+        {
             relation: 'account.analytic.account',
             type: 'many2one',
             name: 'analytic_account_id',
@@ -630,8 +634,10 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
         self.fields.journal_id = new relational_fields.FieldMany2One(self,
             'journal_id', record, _getOptions('readonly', true));
 
-        self.fields.tax_id = new relational_fields.FieldMany2One(self,
-            'tax_id', record, _.extend({}, _getOptions('edit', true), {additionalContext: {append_type_to_tax_name: true}}));
+        // Multidados:
+        // Remove campo de Impostos na reconciliação bancária.
+        // self.fields.tax_id = new relational_fields.FieldMany2One(self,
+        //     'tax_id', record, _.extend({}, _getOptions('readonly', true), {additionalContext: {append_type_to_tax_name: true}}));
 
         self.fields.analytic_account_id = new relational_fields.FieldMany2One(self,
             'analytic_account_id', record, _getOptions('edit', true));
@@ -673,8 +679,12 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             .then(addRequiredStyle.bind(this, this.fields.partner_id));
         this.fields.journal_id.appendTo(
             $createForm.find('.create_journal_id .o_td_field'));
-        this.fields.tax_id.appendTo(
-            $createForm.find('.create_tax_id .o_td_field'));
+
+        // Multidados:
+        // Remove campo de Impostos na reconciliação bancária.
+        // this.fields.tax_id.appendTo(
+        //     $createForm.find('.create_tax_id .o_td_field'));
+
         this.fields.analytic_account_id.appendTo(
             $createForm.find('.create_analytic_account_id .o_td_field'));
         this.fields.analytic_tag_ids.appendTo(
