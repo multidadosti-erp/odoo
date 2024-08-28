@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-13 19:22+0000\n"
-"PO-Revision-Date: 2023-07-13 19:22+0000\n"
+"POT-Creation-Date: 2024-08-28 17:28+0000\n"
+"PO-Revision-Date: 2024-08-28 17:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -596,7 +596,7 @@ msgid "A Cash Register allows you to manage cash entries in your cash\n"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:2056
+#: code:addons/account/models/account_invoice.py:2078
 #, python-format
 msgid "A Payment Term should have only one line of type Balance."
 msgstr ""
@@ -632,13 +632,13 @@ msgid "A journal is used to record transactions of all accounting data\n"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:379
+#: code:addons/account/models/account_move.py:384
 #, python-format
 msgid "A payment journal entry generated in a journal configured to post entries only when payments are reconciled with a bank statement cannot be manually posted. Those will be posted automatically after performing the bank reconciliation."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/reconciliation_widget.py:770
+#: code:addons/account/models/reconciliation_widget.py:772
 #, python-format
 msgid "A reconciliation must involve at least 2 move lines."
 msgstr ""
@@ -687,11 +687,11 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:576
-#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:579
-#: code:addons/account/static/src/xml/account_reconciliation.xml:182
-#: code:addons/account/static/src/xml/account_reconciliation.xml:287
-#: code:addons/account/static/src/xml/account_reconciliation.xml:312
+#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:602
+#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:605
+#: code:addons/account/static/src/xml/account_reconciliation.xml:186
+#: code:addons/account/static/src/xml/account_reconciliation.xml:294
+#: code:addons/account/static/src/xml/account_reconciliation.xml:319
 #: model:ir.model,name:account.model_account_account
 #: model:ir.model.fields,field_description:account.field_account_cash_rounding__account_id
 #: model:ir.model.fields,field_description:account.field_account_invoice__account_id
@@ -709,7 +709,7 @@ msgid "Account"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1024
+#: code:addons/account/models/account_move.py:1029
 #, python-format
 msgid "Account %s (%s) does not allow reconciliation. First change the configuration of this account to allow it."
 msgstr ""
@@ -1209,11 +1209,6 @@ msgid "Additional Contacts"
 msgstr ""
 
 #. module: account
-#: model:ir.model.fields,field_description:account.field_account_invoice__comment
-msgid "Additional Information"
-msgstr ""
-
-#. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_form
 msgid "Additional notes..."
 msgstr ""
@@ -1374,8 +1369,8 @@ msgstr ""
 #. module: account
 #. openerp-web
 #: code:addons/account/static/src/xml/account_reconciliation.xml:209
-#: code:addons/account/static/src/xml/account_reconciliation.xml:294
-#: code:addons/account/static/src/xml/account_reconciliation.xml:311
+#: code:addons/account/static/src/xml/account_reconciliation.xml:301
+#: code:addons/account/static/src/xml/account_reconciliation.xml:318
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__amount
 #: model:ir.model.fields,field_description:account.field_account_move__amount
 #: model:ir.model.fields,field_description:account.field_account_partial_reconcile__amount
@@ -1849,7 +1844,7 @@ msgid "Automatic Import"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:463
+#: code:addons/account/models/account_move.py:468
 #, python-format
 msgid "Automatic reversal of: %s"
 msgstr ""
@@ -2175,7 +2170,7 @@ msgid "Bills to Validate"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_journal_dashboard.py:208
+#: code:addons/account/models/account_journal_dashboard.py:212
 #, python-format
 msgid "Bills to pay"
 msgstr ""
@@ -2337,13 +2332,13 @@ msgid "Cannot create credit note for the draft/cancelled invoice."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:409
+#: code:addons/account/models/account_move.py:414
 #, python-format
 msgid "Cannot create moves for different companies."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:450
+#: code:addons/account/models/account_move.py:455
 #, python-format
 msgid "Cannot create unbalanced journal entry."
 msgstr ""
@@ -2661,7 +2656,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:346
+#: code:addons/account/static/src/xml/account_reconciliation.xml:353
 #, python-format
 msgid "Close"
 msgstr ""
@@ -2721,6 +2716,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_account_tag__color
 #: model:ir.model.fields,field_description:account.field_account_journal__color
 msgid "Color Index"
+msgstr ""
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_invoice__comment
+msgid "Comment"
 msgstr ""
 
 #. module: account
@@ -2945,6 +2945,12 @@ msgid "Contents"
 msgstr ""
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_res_partner__contract_ids
+#: model:ir.model.fields,field_description:account.field_res_users__contract_ids
+msgid "Contracts"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner__contracts_count
 #: model:ir.model.fields,field_description:account.field_res_users__contracts_count
 msgid "Contracts Count"
@@ -3093,13 +3099,13 @@ msgid "Create and post move"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_journal_dashboard.py:345
+#: code:addons/account/models/account_journal_dashboard.py:349
 #, python-format
 msgid "Create cash statement"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_journal_dashboard.py:331
+#: code:addons/account/models/account_journal_dashboard.py:335
 #, python-format
 msgid "Create invoice/bill"
 msgstr ""
@@ -3275,7 +3281,7 @@ msgstr ""
 #. module: account
 #: code:addons/account/models/account_invoice.py:534
 #: code:addons/account/models/account_invoice.py:671
-#: code:addons/account/models/account_invoice.py:1430
+#: code:addons/account/models/account_invoice.py:1442
 #: model:ir.actions.act_window,name:account.action_account_invoice_refund
 #: model:ir.model,name:account.model_account_invoice_refund
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -3367,8 +3373,8 @@ msgid "Currency Rate"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1639
-#: code:addons/account/models/account_move.py:1651
+#: code:addons/account/models/account_move.py:1644
+#: code:addons/account/models/account_move.py:1656
 #, python-format
 msgid "Currency exchange rate difference"
 msgstr ""
@@ -3406,7 +3412,7 @@ msgstr ""
 #. module: account
 #: selection:account.invoice,type:0
 #: selection:account.invoice.report,type:0
-#: code:addons/account/models/account_payment.py:877
+#: code:addons/account/models/account_payment.py:894
 #, python-format
 msgid "Customer Credit Note"
 msgstr ""
@@ -3424,7 +3430,7 @@ msgid "Customer Invoices"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:875
+#: code:addons/account/models/account_payment.py:892
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 #, python-format
 msgid "Customer Payment"
@@ -3514,8 +3520,8 @@ msgstr ""
 #. module: account
 #. openerp-web
 #: selection:account.print.journal,sort_selection:0
-#: code:addons/account/static/src/xml/account_reconciliation.xml:292
-#: code:addons/account/static/src/xml/account_reconciliation.xml:307
+#: code:addons/account/static/src/xml/account_reconciliation.xml:299
+#: code:addons/account/static/src/xml/account_reconciliation.xml:314
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__date
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__date
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__date
@@ -3767,7 +3773,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:310
+#: code:addons/account/static/src/xml/account_reconciliation.xml:317
 #: model:ir.model.fields,field_description:account.field_account_account_type__note
 #: model:ir.model.fields,field_description:account.field_account_invoice_line__name
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
@@ -3817,7 +3823,7 @@ msgid "Difference between the computed ending balance and the specified ending b
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:451
+#: code:addons/account/models/account_move.py:456
 #, python-format
 msgid "Difference debit - credit: "
 msgstr ""
@@ -4003,7 +4009,7 @@ msgstr ""
 #. module: account
 #. openerp-web
 #: code:addons/account/controllers/portal.py:43
-#: code:addons/account/static/src/xml/account_reconciliation.xml:293
+#: code:addons/account/static/src/xml/account_reconciliation.xml:300
 #: model:ir.model.fields,field_description:account.field_account_invoice__date_due
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__date_due
 #: model_terms:ir.ui.view,arch_db:account.portal_my_invoices
@@ -4039,7 +4045,7 @@ msgid "Duplicate"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1379
+#: code:addons/account/models/account_invoice.py:1385
 #, python-format
 msgid "Duplicated vendor reference detected. You probably encoded twice the same vendor bill/credit note."
 msgstr ""
@@ -4070,7 +4076,7 @@ msgid "EXCH"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1092
+#: code:addons/account/models/account_move.py:1097
 #, python-format
 msgid "Either pass both debit and credit or none."
 msgstr ""
@@ -4134,7 +4140,7 @@ msgid "Entries Sorted by"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1022
+#: code:addons/account/models/account_move.py:1027
 #, python-format
 msgid "Entries are not from the same account."
 msgstr ""
@@ -4227,8 +4233,8 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:323
-#: code:addons/account/static/src/xml/account_reconciliation.xml:338
+#: code:addons/account/static/src/xml/account_reconciliation.xml:330
+#: code:addons/account/static/src/xml/account_reconciliation.xml:345
 #, python-format
 msgid "External link"
 msgstr ""
@@ -4993,7 +4999,7 @@ msgid "In order to delete a bank statement, you must first cancel it to delete r
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:98
+#: code:addons/account/models/account_payment.py:107
 #, python-format
 msgid "In order to pay multiple invoices at once, they must use the same currency."
 msgstr ""
@@ -5041,7 +5047,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/js/reconciliation/reconciliation_model.js:802
+#: code:addons/account/static/src/js/reconciliation/reconciliation_model.js:810
 #, python-format
 msgid "Incorrect Operation"
 msgstr ""
@@ -5094,7 +5100,7 @@ msgid "Information"
 msgstr ""
 
 #. module: account
-#: model:ir.model.fields,help:account.field_account_invoice_send__parent_id
+#: model:ir.model.fields,help:account.field_account_invoice_send__message_parent_id
 msgid "Initial thread message."
 msgstr ""
 
@@ -5190,7 +5196,7 @@ msgstr ""
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:669
-#: code:addons/account/models/account_invoice.py:1428
+#: code:addons/account/models/account_invoice.py:1440
 #: model:ir.model,name:account.model_account_invoice
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__invoice_id
 #: model:ir.model.fields,field_description:account.field_account_invoice_tax__invoice_id
@@ -5386,7 +5392,7 @@ msgid "Invoices Statistics"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_journal_dashboard.py:208
+#: code:addons/account/models/account_journal_dashboard.py:212
 #, python-format
 msgid "Invoices owed to you"
 msgstr ""
@@ -5492,13 +5498,13 @@ msgid "It indicates that the invoice has been sent."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1090
+#: code:addons/account/models/account_move.py:1095
 #, python-format
 msgid "It is mandatory to specify an account and a journal to create a write-off."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:668
+#: code:addons/account/models/account_payment.py:677
 #, python-format
 msgid "It is not allowed to delete a payment that already created a journal entry since it would create a gap in the numbering. You should create the journal entry again and cancel it thanks to a regular revert."
 msgstr ""
@@ -5516,7 +5522,7 @@ msgstr ""
 #. module: account
 #. openerp-web
 #: code:addons/account/static/src/xml/account_reconciliation.xml:201
-#: code:addons/account/static/src/xml/account_reconciliation.xml:288
+#: code:addons/account/static/src/xml/account_reconciliation.xml:295
 #: model:ir.model,name:account.model_account_journal
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__journal_id
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__journal_id
@@ -5598,7 +5604,7 @@ msgid "Journal Item Label"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:604
+#: code:addons/account/models/account_payment.py:613
 #: code:addons/account/models/reconciliation_widget.py:228
 #: model:ir.actions.act_window,name:account.act_account_journal_2_account_move_line
 #: model:ir.actions.act_window,name:account.act_account_move_to_account_move_line_open
@@ -5757,9 +5763,9 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:578
+#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:604
 #: code:addons/account/static/src/xml/account_reconciliation.xml:205
-#: code:addons/account/static/src/xml/account_reconciliation.xml:289
+#: code:addons/account/static/src/xml/account_reconciliation.xml:296
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__name
 #: model:ir.model.fields,field_description:account.field_account_move_line__name
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_label
@@ -6419,7 +6425,7 @@ msgid "Move Reconciled"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1319
+#: code:addons/account/models/account_move.py:1324
 #, python-format
 msgid "Move name (id): %s (%s)"
 msgstr ""
@@ -6501,7 +6507,7 @@ msgstr ""
 #. module: account
 #. openerp-web
 #: selection:account.bank.statement,state:0
-#: code:addons/account/static/src/xml/account_reconciliation.xml:248
+#: code:addons/account/static/src/xml/account_reconciliation.xml:255
 #, python-format
 msgid "New"
 msgstr ""
@@ -6517,7 +6523,7 @@ msgid "New Transactions"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1296
+#: code:addons/account/models/account_move.py:1301
 #, python-format
 msgid "New expected payment date: "
 msgstr ""
@@ -6629,7 +6635,7 @@ msgstr ""
 #. module: account
 #. openerp-web
 #: selection:account.invoice.line,display_type:0
-#: code:addons/account/static/src/xml/account_reconciliation.xml:313
+#: code:addons/account/static/src/xml/account_reconciliation.xml:320
 #: model:ir.model.fields,field_description:account.field_account_account_template__note
 #: model_terms:ir.ui.view,arch_db:account.view_invoice_line_form
 #, python-format
@@ -6788,7 +6794,7 @@ msgid "Once installed, set 'Bank Feeds' to 'File Import' in bank account setting
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:682
+#: code:addons/account/models/account_payment.py:691
 #, python-format
 msgid "Only a draft payment can be posted."
 msgstr ""
@@ -6819,7 +6825,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/js/reconciliation/reconciliation_model.js:766
+#: code:addons/account/static/src/js/reconciliation/reconciliation_model.js:774
 #: code:addons/account/static/src/xml/account_reconciliation.xml:137
 #, python-format
 msgid "Open balance"
@@ -7029,7 +7035,7 @@ msgid "Paid"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:616
+#: code:addons/account/models/account_payment.py:625
 #, python-format
 msgid "Paid Invoices"
 msgstr ""
@@ -7058,7 +7064,7 @@ msgid "Parent Chart Template"
 msgstr ""
 
 #. module: account
-#: model:ir.model.fields,field_description:account.field_account_invoice_send__parent_id
+#: model:ir.model.fields,field_description:account.field_account_invoice_send__message_parent_id
 msgid "Parent Message"
 msgstr ""
 
@@ -7081,8 +7087,9 @@ msgstr ""
 #. openerp-web
 #: selection:account.account.type,type:0
 #: selection:account.journal,type:0
-#: code:addons/account/static/src/xml/account_reconciliation.xml:291
-#: code:addons/account/static/src/xml/account_reconciliation.xml:308
+#: code:addons/account/static/src/xml/account_reconciliation.xml:182
+#: code:addons/account/static/src/xml/account_reconciliation.xml:298
+#: code:addons/account/static/src/xml/account_reconciliation.xml:315
 #: model:ir.model,name:account.model_res_partner
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__partner_id
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__partner_id
@@ -7343,7 +7350,7 @@ msgid "Payment that created this entry"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:431
+#: code:addons/account/models/account_payment.py:440
 #: model:ir.actions.act_window,name:account.action_account_payments
 #: model:ir.actions.act_window,name:account.action_account_payments_payable
 #: model:ir.model,name:account.model_account_payment
@@ -7373,7 +7380,7 @@ msgid "Payments are used to register liquidity movements. You can process those 
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:498
+#: code:addons/account/models/account_payment.py:507
 #, python-format
 msgid "Payments without a customer can't be matched"
 msgstr ""
@@ -7418,7 +7425,7 @@ msgid "Percentage of balance"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:2136
+#: code:addons/account/models/account_invoice.py:2200
 #, python-format
 msgid "Percentages on the Payment Terms lines must be between 0 and 100."
 msgstr ""
@@ -7440,7 +7447,7 @@ msgid "Planned"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1280
+#: code:addons/account/models/account_invoice.py:1286
 #, python-format
 msgid "Please add at least one invoice line."
 msgstr ""
@@ -7458,19 +7465,19 @@ msgid "Please check that the field 'Transfer Account' is set on the company."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:357
+#: code:addons/account/models/account_move.py:362
 #, python-format
 msgid "Please define a sequence for the credit notes"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:362
+#: code:addons/account/models/account_move.py:367
 #, python-format
 msgid "Please define a sequence on the journal."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1278
+#: code:addons/account/models/account_invoice.py:1284
 #, python-format
 msgid "Please define sequence on the journal related to this invoice."
 msgstr ""
@@ -7693,7 +7700,7 @@ msgid "Programmation Error: Can't call _get_wo_suggestion_query() for different 
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:319
+#: code:addons/account/models/account_payment.py:328
 #, python-format
 msgid "Programming error: wizard action executed without active_ids in context."
 msgstr ""
@@ -7899,7 +7906,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:290
+#: code:addons/account/static/src/xml/account_reconciliation.xml:297
 #, python-format
 msgid "Ref"
 msgstr ""
@@ -8057,7 +8064,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:295
+#: code:addons/account/static/src/xml/account_reconciliation.xml:302
 #, python-format
 msgid "Residual"
 msgstr ""
@@ -8133,7 +8140,7 @@ msgid "Reversal date"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:463
+#: code:addons/account/models/account_move.py:468
 #, python-format
 msgid "Reversal of: %s"
 msgstr ""
@@ -8311,7 +8318,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:223
+#: code:addons/account/static/src/xml/account_reconciliation.xml:230
 #, python-format
 msgid "Save and New"
 msgstr ""
@@ -8573,7 +8580,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:244
+#: code:addons/account/static/src/xml/account_reconciliation.xml:251
 #, python-format
 msgid "Set"
 msgstr ""
@@ -8726,7 +8733,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:787
+#: code:addons/account/static/src/js/reconciliation/reconciliation_renderer.js:891
 #, python-format
 msgid "Some fields are undefined"
 msgstr ""
@@ -8962,8 +8969,6 @@ msgid "Target Moves"
 msgstr ""
 
 #. module: account
-#. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:186
 #: model:ir.model,name:account.model_account_tax
 #: model:ir.model.fields,field_description:account.field_account_invoice__amount_tax
 #: model:ir.model.fields,field_description:account.field_account_invoice_tax__tax_id
@@ -8974,7 +8979,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.invoice_tree
 #: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_form
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_search
-#, python-format
 msgid "Tax"
 msgstr ""
 
@@ -9081,11 +9085,8 @@ msgid "Tax Group"
 msgstr ""
 
 #. module: account
-#. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:213
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model__force_tax_included
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_template__force_tax_included
-#, python-format
 msgid "Tax Included in Price"
 msgstr ""
 
@@ -9447,7 +9448,7 @@ msgid "The 'Internal Type' is used for features available on different types of 
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1236
+#: code:addons/account/models/account_move.py:1241
 #, python-format
 msgid "The account %s (%s) is deprecated."
 msgstr ""
@@ -9477,7 +9478,7 @@ msgid "The amount expressed in an optional other currency if it is a multi-curre
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:777
+#: code:addons/account/models/account_move.py:782
 #, python-format
 msgid "The amount expressed in the secondary currency must be positive when account is debited and negative when account is credited."
 msgstr ""
@@ -9521,7 +9522,7 @@ msgid "The bank statement used for bank reconciliation"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1368
+#: code:addons/account/models/account_invoice.py:1374
 #, python-format
 msgid "The cash rounding cannot be computed because the difference must be added on the biggest tax found and no tax are specified.\n"
 "Please set up a tax or change the cash rounding method."
@@ -9576,7 +9577,7 @@ msgid "The currency used to enter statement"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:2142
+#: code:addons/account/models/account_invoice.py:2206
 #, python-format
 msgid "The day of the month used for this term must be stricly positive."
 msgstr ""
@@ -9641,7 +9642,7 @@ msgid "The journal entry containing the initial balance of all this company's ac
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:2053
+#: code:addons/account/models/account_invoice.py:2075
 #, python-format
 msgid "The last line of a Payment Term should have the Balance type."
 msgstr ""
@@ -9684,13 +9685,14 @@ msgid "The next sequence number will be used for the next invoice."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:2144
+#: code:addons/account/models/account_invoice.py:2208
 #, python-format
 msgid "The number of days used for a payment term cannot be negative."
 msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__currency_id
+#: model:ir.model.fields,help:account.field_account_move__currency_id
 #: model:ir.model.fields,help:account.field_account_move_line__currency_id
 msgid "The optional other currency if it is a multi-currency entry."
 msgstr ""
@@ -9718,7 +9720,7 @@ msgid "The partners of the journal's company and the related bank account mismat
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:133
+#: code:addons/account/models/account_payment.py:142
 #, python-format
 msgid "The payment amount cannot be negative."
 msgstr ""
@@ -9792,13 +9794,13 @@ msgid "The residual amount on a journal item expressed in the company currency."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:762
+#: code:addons/account/models/account_move.py:767
 #, python-format
 msgid "The selected account of your Journal Entry forces to provide a secondary currency. You should remove the secondary currency on the account."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1924
+#: code:addons/account/models/account_invoice.py:1946
 #, python-format
 msgid "The selected unit of measure has to be in the same category as the product unit of measure."
 msgstr ""
@@ -9838,7 +9840,7 @@ msgid "There are still unposted entries in the period you want to lock. You shou
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:519
+#: code:addons/account/models/account_payment.py:528
 #, python-format
 msgid "There is no Transfer Account defined in the accounting settings. Please define one to be able to confirm this transfer."
 msgstr ""
@@ -9856,7 +9858,7 @@ msgid "There is no journal items in draft state to post."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1819
+#: code:addons/account/models/account_move.py:1824
 #, python-format
 msgid "There is no tax cash basis journal defined for this company: \"%s\" \n"
 "Configure it in Accounting/Configuration/Settings"
@@ -9935,7 +9937,7 @@ msgid "This boolean helps you to choose if you want to propose to the user to en
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1582
+#: code:addons/account/models/account_invoice.py:1594
 #, python-format
 msgid "This customer invoice credit note has been created from: <a href=# data-oe-model=account.invoice data-oe-id=%d>%s</a><br>Reason: %s"
 msgstr ""
@@ -9989,7 +9991,7 @@ msgid "This journal already contains items, therefore you cannot modify its shor
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:736
+#: code:addons/account/models/account_payment.py:752
 #, python-format
 msgid "This method should only be called to process a single invoice's payment."
 msgstr ""
@@ -10013,7 +10015,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:299
+#: code:addons/account/static/src/xml/account_reconciliation.xml:306
 #, python-format
 msgid "This payment is registered but not reconciled."
 msgstr ""
@@ -10036,7 +10038,7 @@ msgid "This technical field can be used at the statement line creation/import ti
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1584
+#: code:addons/account/models/account_invoice.py:1596
 #, python-format
 msgid "This vendor bill credit note has been created from: <a href=# data-oe-model=account.invoice data-oe-id=%d>%s</a><br>Reason: %s"
 msgstr ""
@@ -10068,7 +10070,7 @@ msgid "To pay"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1020
+#: code:addons/account/models/account_move.py:1025
 #, python-format
 msgid "To reconcile the entries company should be the same for all entries."
 msgstr ""
@@ -10219,7 +10221,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:309
+#: code:addons/account/static/src/xml/account_reconciliation.xml:316
 #, python-format
 msgid "Transaction"
 msgstr ""
@@ -10240,13 +10242,13 @@ msgid "Transfer To"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:803
+#: code:addons/account/models/account_payment.py:820
 #, python-format
 msgid "Transfer from %s"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:898
+#: code:addons/account/models/account_payment.py:915
 #, python-format
 msgid "Transfer to %s"
 msgstr ""
@@ -10595,7 +10597,7 @@ msgstr ""
 #: selection:account.invoice.report,type:0
 #: code:addons/account/models/account_invoice.py:536
 #: code:addons/account/models/account_invoice.py:670
-#: code:addons/account/models/account_invoice.py:1429
+#: code:addons/account/models/account_invoice.py:1441
 #: model:ir.model.fields,field_description:account.field_account_invoice__vendor_bill_id
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_form
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_tree
@@ -10621,7 +10623,7 @@ msgstr ""
 #: selection:account.invoice,type:0
 #: selection:account.invoice.report,type:0
 #: code:addons/account/models/account_invoice.py:538
-#: code:addons/account/models/account_payment.py:880
+#: code:addons/account/models/account_payment.py:897
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 #, python-format
 msgid "Vendor Credit Note"
@@ -10635,7 +10637,7 @@ msgstr ""
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:672
-#: code:addons/account/models/account_invoice.py:1431
+#: code:addons/account/models/account_invoice.py:1443
 #, python-format
 msgid "Vendor Credit note"
 msgstr ""
@@ -10646,7 +10648,7 @@ msgid "Vendor Display Name"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:882
+#: code:addons/account/models/account_payment.py:899
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 #, python-format
 msgid "Vendor Payment"
@@ -10711,8 +10713,8 @@ msgid "Warning on the Invoice"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1841
-#: code:addons/account/models/account_invoice.py:1923
+#: code:addons/account/models/account_invoice.py:1863
+#: code:addons/account/models/account_invoice.py:1945
 #, python-format
 msgid "Warning!"
 msgstr ""
@@ -10793,8 +10795,8 @@ msgid "With tax"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1099
-#: code:addons/account/models/account_move.py:1119
+#: code:addons/account/models/account_move.py:1104
+#: code:addons/account/models/account_move.py:1124
 #, python-format
 msgid "Write-Off"
 msgstr ""
@@ -10807,7 +10809,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:217
+#: code:addons/account/static/src/xml/account_reconciliation.xml:224
 #, python-format
 msgid "Writeoff Date"
 msgstr ""
@@ -10823,7 +10825,7 @@ msgid "Wrong credit or debit value in accounting entry! Credit or debit should b
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1018
+#: code:addons/account/models/account_move.py:1023
 #, python-format
 msgid "You are trying to reconcile some entries that are already reconciled."
 msgstr ""
@@ -10840,7 +10842,7 @@ msgid "You can find a contact by its Name, TIN, Email or Internal Reference."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:2101
+#: code:addons/account/models/account_invoice.py:2165
 #, python-format
 msgid "You can not delete payment terms as other records still reference it. However, you can archive it."
 msgstr ""
@@ -10852,13 +10854,13 @@ msgid "You can not have an overlap between two fiscal years, please correct the 
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1945
+#: code:addons/account/models/account_invoice.py:1967
 #, python-format
 msgid "You can only delete an invoice line if the invoice is in draft state."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:95
+#: code:addons/account/models/account_payment.py:103
 #, python-format
 msgid "You can only register payments for open invoices"
 msgstr ""
@@ -10869,13 +10871,13 @@ msgid "You can set here the default communication that will appear on customer i
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:421
+#: code:addons/account/models/account_move.py:426
 #, python-format
 msgid "You cannot add/modify entries prior to and inclusive of the lock date %s"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:423
+#: code:addons/account/models/account_move.py:428
 #, python-format
 msgid "You cannot add/modify entries prior to and inclusive of the lock date %s. Check the company settings or ask someone with the 'Adviser' role"
 msgstr ""
@@ -10893,13 +10895,13 @@ msgid "You cannot change the owner company of an account that already contains j
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1974
+#: code:addons/account/models/account_invoice.py:1996
 #, python-format
 msgid "You cannot change the type of an invoice line. Instead you should delete the current line and create a new line of the proper type."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:769
+#: code:addons/account/models/account_move.py:774
 #, python-format
 msgid "You cannot create journal items with a secondary currency without filling both 'currency' and 'amount currency' fields."
 msgstr ""
@@ -10911,7 +10913,7 @@ msgid "You cannot define stricter conditions on advisors than on users. Please m
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:666
+#: code:addons/account/models/account_payment.py:675
 #, python-format
 msgid "You cannot delete a payment that is already posted."
 msgstr ""
@@ -10935,14 +10937,14 @@ msgid "You cannot disable this setting because some of your taxes are cash basis
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1321
+#: code:addons/account/models/account_move.py:1326
 #, python-format
 msgid "You cannot do this modification on a posted journal entry, you can just change some non legal fields. You must revert the journal entry to cancel it.\n"
 "%s."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1323
+#: code:addons/account/models/account_move.py:1328
 #, python-format
 msgid "You cannot do this modification on a reconciled entry. You can just change some non legal fields or you must unreconcile first.\n"
 "%s."
@@ -10968,19 +10970,19 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/js/reconciliation/reconciliation_model.js:803
+#: code:addons/account/static/src/js/reconciliation/reconciliation_model.js:811
 #, python-format
 msgid "You cannot mix items from receivable and payable accounts."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:132
+#: code:addons/account/models/account_move.py:137
 #, python-format
 msgid "You cannot modify a journal entry linked to a posted payment."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:386
+#: code:addons/account/models/account_move.py:391
 #, python-format
 msgid "You cannot modify a posted entry of this journal.\n"
 "First you should set the journal to allow cancelling entries."
@@ -11005,13 +11007,13 @@ msgid "You cannot put/take money in/out for a bank statement which is closed."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:108
+#: code:addons/account/models/account_payment.py:118
 #, python-format
 msgid "You cannot register payments for customer invoices and credit notes at the same time."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:105
+#: code:addons/account/models/account_payment.py:115
 #, python-format
 msgid "You cannot register payments for vendor bills and supplier refunds at the same time."
 msgstr ""
@@ -11041,13 +11043,13 @@ msgid "You cannot switch an account to prevent the reconciliation if some partia
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1284
+#: code:addons/account/models/account_move.py:1289
 #, python-format
 msgid "You cannot use a deprecated account."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1246
+#: code:addons/account/models/account_move.py:1251
 #, python-format
 msgid "You cannot use this general account in this journal, check the tab 'Entry Controls' on the related journal."
 msgstr ""
@@ -11065,7 +11067,7 @@ msgid "You have"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_payment.py:706
+#: code:addons/account/models/account_payment.py:722
 #, python-format
 msgid "You have to define a sequence for %s in your company."
 msgstr ""
@@ -11084,7 +11086,7 @@ msgid "You must first define an opening move."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1842
+#: code:addons/account/models/account_invoice.py:1864
 #, python-format
 msgid "You must first select a partner."
 msgstr ""
@@ -11097,19 +11099,19 @@ msgid "You reconciled"
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1880
+#: code:addons/account/models/account_move.py:1885
 #, python-format
 msgid "You should configure the 'Exchange Rate Journal' in the accounting settings, to manage automatically the booking of accounting entries related to differences between exchange rates."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1882
+#: code:addons/account/models/account_move.py:1887
 #, python-format
 msgid "You should configure the 'Gain Exchange Rate Account' in the accounting settings, to manage automatically the booking of accounting entries related to differences between exchange rates."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1884
+#: code:addons/account/models/account_move.py:1889
 #, python-format
 msgid "You should configure the 'Loss Exchange Rate Account' in the accounting settings, to manage automatically the booking of accounting entries related to differences between exchange rates."
 msgstr ""
@@ -11199,7 +11201,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:323
+#: code:addons/account/static/src/xml/account_reconciliation.xml:330
 #, python-format
 msgid "have been reconciled automatically."
 msgstr ""
@@ -11259,7 +11261,7 @@ msgstr ""
 
 #. module: account
 #. openerp-web
-#: code:addons/account/static/src/xml/account_reconciliation.xml:324
+#: code:addons/account/static/src/xml/account_reconciliation.xml:331
 #, python-format
 msgid "statement lines"
 msgstr ""
