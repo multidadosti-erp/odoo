@@ -14,7 +14,7 @@ var _t = core._t;
  * Widget used as action for 'account.bank.statement' reconciliation
  */
 var StatementAction = AbstractAction.extend(ControlPanelMixin, {
-    title: core._t('Bank Reconciliation'),
+    title: core._t('Conciliação Bancária'),
     template: 'reconciliation',
     custom_events: {
         change_mode: '_onAction',
