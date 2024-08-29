@@ -159,7 +159,7 @@ class Attendee(models.Model):
         raise UserError(_('You cannot duplicate a calendar attendee.'))
 
     def can_send_email(self):
-        """ Método para retornar se envio ou não o e-mai
+        """ Método para retornar se envio ou não o e-mail
 
         Returns:
             bool : True or False
@@ -1191,7 +1191,12 @@ class Meeting(models.Model):
                 meeting_attendees |= attendee
                 meeting_partners |= partner
 
-            if meeting_attendees and not self._context.get('detaching'):
+            if hasattr(meeting, 'activity_type_id'):
+                send_alert_email = meeting.activity_type_id.send_alert_email
+            else:
+                send_alert_email = True
+
+            if meeting_attendees and not self._context.get('detaching') and send_alert_email:
                 to_notify = meeting_attendees.filtered(lambda a: a.email != current_user.email)
                 to_notify._send_mail_to_attendees('calendar.calendar_template_meeting_invitation')
 
