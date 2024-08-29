@@ -2147,15 +2147,10 @@ class AccountPaymentTerm(models.Model):
         dist = currency.round(value - amount)
         dist_without_taxes = currency.round(value_without_taxes - amount_without_taxes)
 
-        if dist:
+        if dist or dist_without_taxes:
             last_date = result and result[-1][0] or fields.Date.today()
             days = result and result[-1][2] or 0
-            result.append((last_date, dist, days))
-
-        if dist_without_taxes:
-            last_date = result and result[-1][0] or fields.Date.today()
-            days = result and result[-1][2] or 0
-            result.append((last_date, dist_without_taxes, days))
+            result.append((last_date, dist, days, dist_without_taxes))
 
         return result
 
