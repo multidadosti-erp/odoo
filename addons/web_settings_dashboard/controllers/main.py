@@ -7,7 +7,7 @@ from odoo import _, fields, http
 from odoo.exceptions import AccessError
 from odoo.http import request
 
-import pkg_resources  # part of setuptools
+from importlib.metadata import version
 
 
 class WebSettingsDashboard(http.Controller):
@@ -61,9 +61,6 @@ class WebSettingsDashboard(http.Controller):
         # in the settings dashboard.
         demo_active = bool(request.env['ir.module.module'].search_count([('demo', '=', True)]))
 
-        # resgatamos a versao definida no setup.py
-        version = pkg_resources.require("multierp")[0].version
-
         return {
             'apps': {
                 'installed_apps': installed_apps,
@@ -76,7 +73,7 @@ class WebSettingsDashboard(http.Controller):
                 'user_form_view_id': request.env['ir.model.data'].xmlid_to_res_id("base.view_users_form"),
             },
             'share': {
-                'server_version': version,
+                'server_version': version('multierp'),
                 'expiration_date': expiration_date,
                 'debug': request.debug,
                 'demo_active': demo_active,
