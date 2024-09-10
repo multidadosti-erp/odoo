@@ -328,6 +328,16 @@ def load_modules(db, force_demo=False, status=None, update_module=False):
     models_to_check = set()
 
     with db.cursor() as cr:
+        if update_module:
+            # MultidadosTI: Mudar o Chave do Indice Unico
+            # Excluir na Próxixa Versão 10/09/2024
+            if odoo.tools.index_exists(cr, 'ir_translation_code_unique'):
+                odoo.tools.drop_index(cr, 'ir_translation_code_unique', 'ir_translation')
+                cr.execute(
+                    "CREATE UNIQUE INDEX ir_translation_code_unique ON ir_translation (type, lang, module, md5(src)) WHERE type = 'code'"
+                )
+                cr.commit()
+
         if not odoo.modules.db.is_initialized(cr):
             if not update_module:
                 _logger.error("Database %s not initialized, you can force it with `-i base`", cr.dbname)
