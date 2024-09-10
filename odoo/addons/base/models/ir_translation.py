@@ -140,7 +140,7 @@ class IrTranslationImport(object):
                            FROM %s
                            WHERE type = 'code'
                            AND noupdate IS NOT TRUE
-                           ON CONFLICT (type, lang, md5(src)) WHERE type = 'code'
+                           ON CONFLICT (type, lang, module, md5(src)) WHERE type = 'code'
                             DO UPDATE SET (name, lang, res_id, src, type, value, module, state, comments) = (EXCLUDED.name, EXCLUDED.lang, EXCLUDED.res_id, EXCLUDED.src, EXCLUDED.type, EXCLUDED.value, EXCLUDED.module, EXCLUDED.state, EXCLUDED.comments)
                             WHERE EXCLUDED.value IS NOT NULL AND EXCLUDED.value != '';
                        """ % (self._model_table, self._table))
@@ -287,7 +287,7 @@ class IrTranslation(models.Model):
         tools.create_unique_index(self._cr, 'ir_translation_unique', self._table,
                                   ['type', 'name', 'lang', 'res_id', 'md5(src)'])
         if not tools.index_exists(self._cr, 'ir_translation_code_unique'):
-            self._cr.execute("CREATE UNIQUE INDEX ir_translation_code_unique ON ir_translation (type, lang, md5(src)) WHERE type = 'code'")
+            self._cr.execute("CREATE UNIQUE INDEX ir_translation_code_unique ON ir_translation (type, lang, module, md5(src)) WHERE type = 'code'")
         if not tools.index_exists(self._cr, 'ir_translation_model_unique'):
             self._cr.execute("CREATE UNIQUE INDEX ir_translation_model_unique ON ir_translation (type, lang, name, res_id) WHERE type = 'model'")
         if not tools.index_exists(self._cr, 'ir_translation_selection_unique'):
