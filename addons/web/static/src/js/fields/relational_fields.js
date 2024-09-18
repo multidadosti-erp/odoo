@@ -133,6 +133,9 @@ var FieldMany2One = AbstractField.extend({
         } else if (this.nodeOptions.no_create != undefined) {
             // Caso o valor da opção seja 'bool' ou 'number'
             can_create = can_create && !this.nodeOptions.no_create;
+        } else if (this.nodeOptions.no_create_edit != undefined) {
+            // Caso o valor da opção seja 'bool' ou 'number'
+            can_create = can_create && !this.nodeOptions.no_create_edit;
         }
         this.can_create = can_create;
 
