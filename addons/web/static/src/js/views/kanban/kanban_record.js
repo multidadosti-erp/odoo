@@ -53,6 +53,7 @@ var KanbanRecord = Widget.extend({
         this.read_only_mode = options.read_only_mode;
         this.qweb = options.qweb;
         this.subWidgets = {};
+        this.group_readonly = new Domain(options.groupReadonlyAttr, state.data).compute(state.data);
 
         this._setState(state);
         // avoid quick multiple clicks
@@ -344,6 +345,7 @@ var KanbanRecord = Widget.extend({
         this.defs = [];
         this._replaceElement(this.qweb.render('kanban-box', this.qweb_context));
         this.$el.addClass('o_kanban_record').attr("tabindex",0);
+
         this.$el.attr('role', 'article');
         this.$el.data('record', this);
         if (this.$el.hasClass('oe_kanban_global_click') ||
