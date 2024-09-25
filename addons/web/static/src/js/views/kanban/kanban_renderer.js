@@ -457,8 +457,16 @@ var KanbanRenderer = BasicRenderer.extend({
                 draggable = !(groupByFieldAttrs.readonly);
             }
         }
+        var drag_attr_readonly = [];
         if (groupByFieldInfo) {
-            if (draggable && groupByFieldInfo.readonly !== undefined) {
+            var dragging_options = groupByFieldInfo.options.dragging;
+            if (dragging_options){
+                force_draggable = !!(dragging_options.drag) || force_draggable;
+            }
+            // o domínio readonly nos attrs prevalecem do que o próprio atributo.
+            if (draggable && (groupByFieldInfo.modifiers || {}).readonly) {
+                drag_attr_readonly = groupByFieldInfo.modifiers.readonly;
+            } else if (draggable && groupByFieldInfo.readonly !== undefined) {
                 draggable = !(groupByFieldInfo.readonly);
             }
         }
@@ -467,6 +475,7 @@ var KanbanRenderer = BasicRenderer.extend({
         var groupByTooltip = groupByFieldInfo && groupByFieldInfo.options.group_by_tooltip;
         this.columnOptions = _.extend(this.columnOptions, {
             draggable: force_draggable && draggable,
+            group_readonly: drag_attr_readonly,
             group_by_tooltip: groupByTooltip,
             groupedBy: groupByField,
             grouped_by_m2o: this.groupedByM2O,

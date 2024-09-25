@@ -56,6 +56,7 @@ var KanbanColumn = Widget.extend({
         this.deletable = options.deletable;
         this.archivable = options.archivable;
         this.draggable = options.draggable;
+        this.group_readonly = options.group_readonly || [];
         this.KanbanRecord = options.KanbanRecord || KanbanRecord; // the KanbanRecord class to use
         this.records_editable = options.records_editable;
         this.records_deletable = options.records_deletable;
@@ -71,6 +72,7 @@ var KanbanColumn = Widget.extend({
         }
 
         this.record_options = _.clone(recordOptions);
+        this.record_options.groupReadonlyAttr = this.group_readonly;
 
         if (options.grouped_by_m2o) {
             // For many2one, a false value means that the field is not set.
@@ -117,7 +119,7 @@ var KanbanColumn = Widget.extend({
                 containment: this.draggable ? false : 'parent',
                 revert: 0,
                 delay: 0,
-                items: '> .o_kanban_record:not(.o_updating)',
+                items: '> .o_kanban_record:not(.o_updating).draggable',
                 cursor: 'move',
                 over: function () {
                     self.$el.addClass('o_kanban_hover');
