@@ -53,7 +53,13 @@ var KanbanRecord = Widget.extend({
         this.read_only_mode = options.read_only_mode;
         this.qweb = options.qweb;
         this.subWidgets = {};
-        this.group_readonly = options.groupReadonlyAttr.length ? new Domain(options.groupReadonlyAttr, state.data).compute(state.data) : false;
+        
+        if (options.groupReadonlyAttr == undefined) {
+            this.group_readonly = false;    
+        }
+        else {
+            this.group_readonly = options.groupReadonlyAttr.length ? new Domain(options.groupReadonlyAttr, state.data).compute(state.data) : false;
+        }
 
         this._setState(state);
         // avoid quick multiple clicks
