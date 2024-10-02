@@ -12,7 +12,8 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="sale_margin_sale_order_line">
+    <!-- Multidados: Removido para ser adicionado br_sale_margin -->
+    <!-- <record model="ir.ui.view" id="sale_margin_sale_order_line">
         <field name="name">sale.order.line.margin.view.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
@@ -21,7 +22,7 @@
                 <field name="purchase_price" groups="base.group_user"/>
             </xpath>
         </field>
-    </record>
+    </record> -->
 
     <record model="ir.ui.view" id="sale_margin_sale_order_line_form">
         <field name="name">sale.order.line.tree.margin.view.form</field>
