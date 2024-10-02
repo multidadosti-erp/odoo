@@ -939,7 +939,8 @@
             </field>
         </record>
 
-        <record id="sale_order_line_view_form_readonly" model="ir.ui.view">
+        <!-- multidados: Comentado para ser criado view única no br_sale -->
+        <!-- <record id="sale_order_line_view_form_readonly" model="ir.ui.view">
             <field name="name">sale.order.line.form.readonly</field>
             <field name="model">sale.order.line</field>
             <field name="arch" type="xml">
@@ -977,7 +978,7 @@
                     </sheet>
                 </form>
             </field>
-        </record>
+        </record> -->
 
         <record id="view_sales_order_line_filter" model="ir.ui.view">
             <field name="name">sale.order.line.select</field>
