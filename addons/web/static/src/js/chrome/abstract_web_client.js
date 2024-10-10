@@ -480,6 +480,7 @@ var AbstractWebClient = Widget.extend(ServiceProviderMixin, KeyboardNavigationMi
         function effectNotification(self, effect_data){
             self.call('notification', 'notify', _.extend(
                 {}, effect_data, {
+                    type: effect_data.kind,
                     title: effect_data.title || '',
                     message: effect_data.message,
                     sticky: !!(effect_data.sticky),

@@ -5826,12 +5826,14 @@ class Model(AbstractModel):
         """
         # Ícones tipados
         kind_icons = {
+            'success': 'fa-check',
             'warn': 'fa-exclamation-triangle',
             'error': 'fa-skull-crossbones',
         }
         # Títulos tipados
         kind_titles = {
             'notify': _('Notification'),
+            'success': _('Success'),
             'warn': _('Warning'),
             'error': _('Error'),
         }
