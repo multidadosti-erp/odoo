@@ -2216,9 +2216,11 @@ class MailThread(models.AbstractModel):
             author = self.env['res.partner'].sudo().browse(kw_author)
         else:
             author = self.env.user.partner_id
-        if not author.email:
+
+        email_from = author.email or self.env.user.login
+        if not email_from:
             raise exceptions.UserError(_("Unable to log message, please configure the sender's email address."))
-        email_from = formataddr((author.name, author.email))
+        email_from = formataddr((author.name, email_from))
 
         message_values = {
             'subject': subject,
