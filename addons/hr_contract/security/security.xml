@@ -13,7 +13,22 @@
         recebiam o grupo `Contract: Manager`, foi trocado para o grupo
         `Contract: User`.
      -->
-    <data noupdate="1">
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value eval="[
+                ('model', 'in', ['res.groups', 'ir.rule']),
+                ('name', 'in', [
+                    'group_hr_contract_user',
+                    'group_hr_contract_manager',
+                    'hr_contract_user_rule',
+                    'hr_contract_manager_rule',
+                ])
+            ]"/>
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+    <data noupdate="0">
         <record id="hr_contract.group_hr_contract_user" model="res.groups">
             <field name="name">User</field>
             <field name="category_id" ref="base.module_category_hr_contract"/>
