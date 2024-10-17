@@ -6387,6 +6387,12 @@ msgid "You cannot change the UoM for a stock move that has been set to 'Done'."
 msgstr "Você não pode alterar a UM de uma movimentação de estoque que foi definida como 'Concluído'."
 
 #. module: stock
+#: code:addons/stock/models/stock_location.py:121
+#, python-format
+msgid "You cannot change the location type or its use as a scrap or active location as there are products quantity in this location. Please reset the balances the products first."
+msgstr "Você não pode alterar o tipo de local ou seu uso como sucata ou local inativo, pois há quantidade de produtos neste local. Reinicie os saldos dos produtos primeiro."
+
+#. module: stock
 #: code:addons/stock/models/stock_location.py:95
 #, python-format
 msgid "You cannot change the location type or its use as a scrap location as there are products reserved in this location. Please unreserve the products first."
