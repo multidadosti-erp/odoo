@@ -2471,8 +2471,12 @@ var FieldSelection = AbstractField.extend({
             this.values = this.record.specialData[this.name];
             this.formatType = 'many2one';
         } else {
+            // Adicionado pela Multidados:
+            //  - Adiciona obtenção de valores que não serão exibidos na hora
+            //   de selecionar um valor para o campo 'selection' (restrict_selection)
+            var restrict_selection = this.nodeOptions.restrict_selection || [];
             this.values = _.reject(this.field.selection, function (v) {
-                return v[0] === false && v[1] === '';
+                return (v[0] === false && v[1] === '') || restrict_selection.includes(v[0]);
             });
         }
         if (!this.attrs.modifiersValue || !this.attrs.modifiersValue.required) {
