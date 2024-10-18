@@ -177,7 +177,7 @@ def _eval_xml(self, node, env):
                 return tuple(res)
             return res
     elif node.tag == "function":
-        args = []
+        args, kwargs = [], {}
         a_eval = node.get('eval')
         model_str = node.get('model')
         # FIXME: should probably be exclusive
@@ -187,11 +187,18 @@ def _eval_xml(self, node, env):
         for n in node:
             return_val = _eval_xml(self, n, env)
             if return_val is not None:
-                args.append(return_val)
+                # Alterado pela Multidados:
+                # - Permite que o atributo 'name' seja passado na tag
+                #   <value> do xml, para que o argumento seja passado
+                #   como 'kwargs' ao inves de 'args'
+                if n.tag == 'value' and n.get('name'):
+                    kwargs.update({n.get('name'): return_val})
+                else:
+                    args.append(return_val)
         model = env[model_str]
         method = node.get('name')
         # this one still depends on the old API
-        return odoo.api.call_kw(model, method, args, {})
+        return odoo.api.call_kw(model, method, args, kwargs)
     elif node.tag == "test":
         return node.text
 
