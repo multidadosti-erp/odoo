@@ -504,6 +504,14 @@ var FormController = BasicController.extend({
             def = d.promise();
         } else if (attrs.special === 'cancel') {
             def = this._callButtonAction(attrs, event.data.record);
+
+        // Adicionado pela Multidados:
+        // - Adiciona tratamento para botões dropdown-toggle, não executa
+        //   nada, somente habilita os botões novamente.
+        } else if (attrs.type === 'dropdown') {
+            def = $.Deferred().promise();
+            this._enableButtons();
+
         } else if (!attrs.special || attrs.special === 'save') {
             // save the record but don't switch to readonly mode
             def = saveAndExecuteAction();
