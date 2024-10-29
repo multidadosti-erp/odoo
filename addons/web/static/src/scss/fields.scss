@@ -100,8 +100,16 @@
         }
 
         .badge {
+            display: inline-block;
+            padding: .25em .4em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
             flex: 0 0 auto;
             border: 0;
+            border-radius: .25rem;
             font-size: 12px;
             user-select: none;
 
