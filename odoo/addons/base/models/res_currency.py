@@ -127,6 +127,34 @@ class Currency(models.Model):
                         )
         return amount_words
 
+    def get_locale_value(self, original_value, company=False):
+        """ Adicionado pela Multidados:
+
+        - Sobrescreve função básica da classe 'models.Model' para que
+          quando chamada a partir de uma moeda (res.currency), utiliza
+          ela para formatar o valor, e não somente a moeda definida no
+          local, pela lib 'locale' em 'currency'.
+
+        - Utiliza a formatação pela linguagem definida no contexto.
+
+        Arguments:
+            original_value {float} -- Valor a ser formatado de acordo.
+
+        Returns:
+            str -- Valor formatado para moeda do usuário.
+        """
+        lang = self.env['res.lang']._lang_get(self._context.get('lang') or 'pt_BR')
+
+        fmt = "%.{0}f".format(self.decimal_places)
+        fmt = lang.format(fmt, self.round(original_value), grouping=True, monetary=True)
+
+        if self.position == 'before':
+            fmt = '{symbol} {value}'.format(symbol=self.symbol or '', value=fmt)
+        else:
+            fmt = '{value} {symbol}'.format(symbol=self.symbol or '', value=fmt)
+        return fmt
+
+
     @api.multi
     def round(self, amount):
         """Return ``amount`` rounded  according to ``self``'s rounding rules.
