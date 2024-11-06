@@ -9,7 +9,8 @@
        <field name="context">{
            'search_default_is_absent_totay': 1,
            'search_default_department_id': [active_id],
-           'default_department_id': active_id}
+           'default_department_id': active_id,
+           'create': False}
        </field>
        <field name="search_view_id" ref="hr.view_employee_filter"/>
    </record>
