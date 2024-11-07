@@ -8,14 +8,28 @@ class TestCommonSaleTimesheetNoChart(TestCommonSaleNoChart):
 
     @classmethod
     def setUpEmployees(cls):
+
+        cls.user_employee = cls.env["res.users"].create(
+            {"name": "Test User Employee",
+             "login": "test_employee_user",
+             "email": "testuseremployee@test.com",
+            })
+        cls.user_manager = cls.env["res.users"].create(
+            {"name": "Test User Manager",
+             "login": "test_manager_user",
+             "email": "testusermanager@test.com",
+            })
+
         # Create employees
         cls.employee_user = cls.env['hr.employee'].create({
             'name': 'Employee User',
             'timesheet_cost': 15,
+            'user_id': cls.user_employee.id
         })
         cls.employee_manager = cls.env['hr.employee'].create({
             'name': 'Employee Manager',
             'timesheet_cost': 45,
+            'user_id': cls.user_manager.id
         })
 
     @classmethod

@@ -14,9 +14,16 @@ class TestProjectBilling(TestCommonSaleTimesheetNoChart):
         # set up
         cls.setUpServiceProducts()
         cls.setUpEmployees()
+
+        cls.user_tde = cls.env['res.users'].create({
+            'name': 'Test TDE',
+            'email': 'employeetesttde@test.com',
+            'login': 'employee_test_tde',
+        })
         cls.employee_tde = cls.env['hr.employee'].create({
             'name': 'Employee TDE',
             'timesheet_cost': 42,
+            'user_id': cls.user_tde.id,
         })
 
         cls.partner_2 = cls.env['res.partner'].create({
