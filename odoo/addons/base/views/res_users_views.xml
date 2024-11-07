@@ -197,7 +197,10 @@
                             <h2><field name="login"/></h2>
                         </div>
 
-                        <field name="partner_id" nolabel="1" readonly="1" required="0" attrs="{'invisible': [('id', '=', False)]}"/>
+                        <label for="partner_id" class="oe_edit_only"/>
+                        <field name="partner_id" nolabel="1"
+                               required="0"
+                               attrs="{'readonly': [('id', '!=', False)]}"/>
 
                         <notebook>
                             <page name="access_rights" string="Access Rights">
