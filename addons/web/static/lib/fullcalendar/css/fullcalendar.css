@@ -380,13 +380,14 @@ hr.fc-divider {
 
 .fc th,
 .fc td {
-	border-style: solid;
-	border-width: 1px;
+	border-style: dotted;
+	border-width: 1.5px;
 	padding: 0;
 	vertical-align: top;
 }
 
 .fc td.fc-today {
+	border-width: 3.5px;
 	border-style: double; /* overcome neighboring borders */
 }
 
@@ -987,6 +988,7 @@ a.fc-more:hover {
 
 .fc-ltr .fc-axis {
 	text-align: right;
+	border-style: dotted;
 }
 
 .fc-rtl .fc-axis {
@@ -1073,7 +1075,7 @@ a.fc-more:hover {
 --------------------------------------------------------------------------------------------------*/
 
 .fc-time-grid .fc-slats td {
-	height: 1.5em;
+	height: 2.2em;
 	border-bottom: 0; /* each cell is responsible for its top border */
 }
 
