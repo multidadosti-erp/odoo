@@ -854,7 +854,7 @@ class Meeting(models.Model):
     res_model = fields.Char('Document Model Name', related='res_model_id.model', readonly=True, store=True)
     activity_ids = fields.One2many('mail.activity', 'calendar_event_id', string='Activities')
 
-    #redifine message_ids to remove autojoin to avoid search to crash in get_recurrent_ids
+    # redifine message_ids to remove autojoin to avoid search to crash in get_recurrent_ids
     message_ids = fields.One2many(auto_join=False)
 
     # RECURRENCE FIELD
@@ -1261,9 +1261,9 @@ class Meeting(models.Model):
 
         leaf_evaluations = None
         recurrent_ids = [meeting.id for meeting in self if meeting.recurrency and meeting.rrule]
-        #compose a query of the type SELECT id, condition1 as domain1, condition2 as domaine2
-        #This allows to load leaf interpretation of the where clause in one query
-        #leaf_evaluations is then used when running custom interpretation of domain for recuring events
+        # compose a query of the type SELECT id, condition1 as domain1, condition2 as domaine2
+        # This allows to load leaf interpretation of the where clause in one query
+        # leaf_evaluations is then used when running custom interpretation of domain for recuring events
         if self and recurrent_ids:
             select_fields = ["id"]
             where_params_list = []
@@ -1455,13 +1455,13 @@ class Meeting(models.Model):
         data['count'] = rule._count
         data['interval'] = rule._interval
         data['final_date'] = rule._until and rule._until.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        #repeat weekly
+        # repeat weekly
         if rule._byweekday:
             for i in range(0, 7):
                 if i in rule._byweekday:
                     data[day_list[i]] = True
             data['rrule_type'] = 'weekly'
-        #repeat monthly by nweekday ((weekday, weeknumber), )
+        # repeat monthly by nweekday ((weekday, weeknumber), )
         if rule._bynweekday:
             data['week_list'] = day_list[list(rule._bynweekday)[0][0]].upper()
             data['byday'] = str(list(rule._bynweekday)[0][1])
@@ -1473,13 +1473,13 @@ class Meeting(models.Model):
             data['month_by'] = 'date'
             data['rrule_type'] = 'monthly'
 
-        #repeat yearly but for odoo it's monthly, take same information as monthly but interval is 12 times
+        # repeat yearly but for odoo it's monthly, take same information as monthly but interval is 12 times
         if rule._bymonth:
             data['interval'] = data['interval'] * 12
 
-        #FIXEME handle forever case
-        #end of recurrence
-        #in case of repeat for ever that we do not support right now
+        # FIXEME handle forever case
+        # end of recurrence
+        # in case of repeat for ever that we do not support right now
         if not (data.get('count') or data.get('final_date')):
             data['count'] = 100
         if data.get('count'):
@@ -1733,46 +1733,51 @@ class Meeting(models.Model):
     @api.model
     def create(self, values):
         # FIXME: neverending recurring events
-        if 'rrule' in values:
-            values['rrule'] = self._fix_rrule(values)
+        if "rrule" in values:
+            values["rrule"] = self._fix_rrule(values)
 
         default_user = False
-        if not 'user_id' in values:  # Else bug with quick_create when we are filter on an other user
+        if "user_id" not in values or not values["user_id"]:
             default_user = True
-            values['user_id'] = self.env.user.id
+            values["user_id"] = self.env.user.id
 
         # compute duration, if not given
-        if not 'duration' in values:
-            values['duration'] = self._get_duration(values['start'], values['stop'])
+        if "duration" not in values:
+            values["duration"] = self._get_duration(values["start"], values["stop"])
 
-        defaults = self.default_get(['activity_ids', 'res_model_id', 'res_id', 'user_id'])
+        defaults = self.default_get(
+            ["activity_ids", "res_model_id", "res_id", "user_id"]
+        )
 
         # created from calendar: try to create an activity on the related record
-        if not values.get('activity_ids'):
+        if not values.get("activity_ids"):
             # Alterado pela Mutlidados:
             #  - Adiciona funções para a criação da atividade padrão.
             #  - Possibilita a herança (adicionado inicialmente para o multiphono)
-            if not defaults.get('activity_ids'):
+            if not defaults.get("activity_ids"):
                 activity_vals = self.default_activity_ids(values, defaults)
                 if activity_vals:
-                    values['activity_ids'] = activity_vals
+                    values["activity_ids"] = activity_vals
 
-        if defaults.get('user_id') and default_user:
-            values['user_id'] = defaults['user_id']
+        if defaults.get("user_id") and default_user:
+            values["user_id"] = defaults["user_id"]
 
         meeting = super(Meeting, self).create(values)
         meeting._sync_activities(values)
 
         final_date = meeting._get_recurrency_end_date()
         # `dont_notify=True` in context to prevent multiple notify_next_alarm
-        meeting.with_context(dont_notify=True).write({'final_date': final_date})
+        meeting.with_context(dont_notify=True).write({"final_date": final_date})
         meeting.with_context(dont_notify=True).create_attendees()
 
         # Notify attendees if there is an alarm on the created event, as it might have changed their
         # next event notification
-        if not self._context.get('dont_notify'):
+        if not self._context.get("dont_notify"):
             if len(meeting.alarm_ids) > 0:
-                self.env['calendar.alarm_manager'].notify_next_alarm(meeting.partner_ids.ids)
+                self.env["calendar.alarm_manager"].notify_next_alarm(
+                    meeting.partner_ids.ids
+                )
+
         return meeting
 
     @api.multi
