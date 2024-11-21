@@ -236,6 +236,8 @@
             <field name="arch" type="xml">
                 <form string="Fields" duplicate="false">
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                        </div>                    
                         <group>
                             <group>
                                 <field name="name"/>
