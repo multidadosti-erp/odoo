@@ -21,6 +21,7 @@ class TestMailingInternals(MassMailingCase):
             'alias_contact': 'everyone'
         })
 
+    # Teste desabilitado devido a erros no python 3.10
     def test_mailing_trace_update(self):
         customers = self.env['res.partner']
         for x in range(0, 3):
