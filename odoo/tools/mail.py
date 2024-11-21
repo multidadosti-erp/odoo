@@ -492,28 +492,64 @@ def email_send(email_from, email_to, subject, body, email_cc=None, email_bcc=Non
             cr.close()
     return res
 
+def email_split_tuples(text):
+    """ Return a list of (name, email) address tuples found in ``text`` . Note
+    that text should be an email header or a stringified email list as it may
+    give broader results than expected on actual text. """
+    def _parse_based_on_spaces(pair):
+        """ With input 'name email@domain.com' (missing quotes for a formatting)
+        getaddresses returns ('', 'name email@domain.com). This when having no
+        name and an email a fallback to enhance parsing is to redo a getaddresses
+        by replacing spaces by commas. The new email will be split into sub pairs
+        allowing to find the email and name parts, allowing to make a new name /
+        email pair. Emails should not contain spaces thus this is coherent with
+        email formation. """
+        name, email = pair
+        if not name and email and ' ' in email:
+            inside_pairs = getaddresses([email.replace(' ', ',')])
+            name_parts, found_email = [], False
+            for pair in inside_pairs:
+                if pair[1] and '@' not in pair[1]:
+                    name_parts.append(pair[1])
+                if pair[1] and '@' in pair[1]:
+                    found_email = pair[1]
+            name, email = (' '.join(name_parts), found_email) if found_email else (name, email)
+        return (name, email)
+
+    if not text:
+        return []
+
+    # found valid pairs, filtering out failed parsing
+    valid_pairs = [
+        (addr[0], addr[1]) for addr in getaddresses([text])
+        # getaddresses() returns '' when email parsing fails, and
+        # sometimes returns emails without at least '@'. The '@'
+        # is strictly required in RFC2822's `addr-spec`.
+        if addr[1] and '@' in addr[1]
+    ]
+    # corner case: returning '@gmail.com'-like email (see test_email_split)
+    if any(pair[1].startswith('@') for pair in valid_pairs):
+        filtered = [
+            found_email for found_email in email_re.findall(text)
+            if found_email and not found_email.startswith('@')
+        ]
+        if filtered:
+            valid_pairs = [('', found_email) for found_email in filtered]
+
+    return list(map(_parse_based_on_spaces, valid_pairs))
+
 def email_split(text):
     """ Return a list of the email addresses found in ``text`` """
     if not text:
         return []
-    return [addr[1] for addr in getaddresses([text])
-                # getaddresses() returns '' when email parsing fails, and
-                # sometimes returns emails without at least '@'. The '@'
-                # is strictly required in RFC2822's `addr-spec`.
-                if addr[1]
-                if '@' in addr[1]]
+    return [email for (name, email) in email_split_tuples(text)]
 
 def email_split_and_format(text):
     """ Return a list of email addresses found in ``text``, formatted using
     formataddr. """
     if not text:
         return []
-    return [formataddr((addr[0], addr[1])) for addr in getaddresses([text])
-                # getaddresses() returns '' when email parsing fails, and
-                # sometimes returns emails without at least '@'. The '@'
-                # is strictly required in RFC2822's `addr-spec`.
-                if addr[1]
-                if '@' in addr[1]]
+    return [formataddr((name, email)) for (name, email) in email_split_tuples(text)]
 
 def email_escape_char(email_address):
     """ Escape problematic characters in the given email address string"""
@@ -636,3 +672,98 @@ def encapsulate_email(old_email, new_email):
         name_part,
         new_email_split[0][1],
     ))
+
+
+def email_normalize(text, strict=True):
+    """ Sanitize and standardize email address entries. As of rfc5322 section
+    3.4.1 local-part is case-sensitive. However most main providers do consider
+    the local-part as case insensitive. With the introduction of smtp-utf8
+    within odoo, this assumption is certain to fall short for international
+    emails. We now consider that
+
+      * if local part is ascii: normalize still 'lower' ;
+      * else: use as it, SMTP-UF8 is made for non-ascii local parts;
+
+    Concerning domain part of the address, as of v14 international domain (IDNA)
+    are handled fine. The domain is always lowercase, lowering it is fine as it
+    is probably an error. With the introduction of IDNA, there is an encoding
+    that allow non-ascii characters to be encoded to ascii ones, using 'idna.encode'.
+
+    A normalized email is considered as :
+    - having a left part + @ + a right part (the domain can be without '.something')
+    - having no name before the address. Typically, having no 'Name <>'
+    Ex:
+    - Possible Input Email : 'Name <NaMe@DoMaIn.CoM>'
+    - Normalized Output Email : 'name@domain.com'
+
+    :param boolean strict: if True, text should contain a single email
+      (default behavior in stable 14+). If more than one email is found no
+      normalized email is returned. If False the first found candidate is used
+      e.g. if email is 'tony@e.com, "Tony2" <tony2@e.com>', result is either
+      False (strict=True), either 'tony@e.com' (strict=False).
+
+    :return: False if no email found (or if more than 1 email found when being
+      in strict mode); normalized email otherwise;
+    """
+    emails = email_split(text)
+    if not emails or (strict and len(emails) != 1):
+        return False
+
+    return _normalize_email(emails[0])
+
+def _normalize_email(email):
+    """ As of rfc5322 section 3.4.1 local-part is case-sensitive. However most
+    main providers do consider the local-part as case insensitive. With the
+    introduction of smtp-utf8 within odoo, this assumption is certain to fall
+    short for international emails. We now consider that
+
+      * if local part is ascii: normalize still 'lower' ;
+      * else: use as it, SMTP-UF8 is made for non-ascii local parts;
+
+    Concerning domain part of the address, as of v14 international domain (IDNA)
+    are handled fine. The domain is always lowercase, lowering it is fine as it
+    is probably an error. With the introduction of IDNA, there is an encoding
+    that allow non-ascii characters to be encoded to ascii ones, using 'idna.encode'.
+
+    A normalized email is considered as :
+    - having a left part + @ + a right part (the domain can be without '.something')
+    - having no name before the address. Typically, having no 'Name <>'
+    Ex:
+    - Possible Input Email : 'Name <NaMe@DoMaIn.CoM>'
+    - Normalized Output Email : 'name@domain.com'
+    """
+    local_part, at, domain = email.rpartition('@')
+    try:
+        local_part.encode('ascii')
+    except UnicodeEncodeError:
+        pass
+    else:
+        local_part = local_part.lower()
+    return local_part + at + domain.lower()
+
+def parse_contact_from_email(text):
+    """ Parse contact name and email (given by text) in order to find contact
+    information, able to populate records like partners, leads, ...
+    Supported syntax:
+
+      * Raoul <raoul@grosbedon.fr>
+      * "Raoul le Grand" <raoul@grosbedon.fr>
+      * Raoul raoul@grosbedon.fr (strange fault tolerant support from
+        df40926d2a57c101a3e2d221ecfd08fbb4fea30e now supported directly
+        in 'email_split_tuples';
+
+    Otherwise: default, text is set as name.
+
+    :return: name, email (normalized if possible)
+    """
+    if not text or not text.strip():
+        return '', ''
+    split_results = email_split_tuples(text.rstrip())
+    name, email = split_results[0] if split_results else ('', '')
+
+    if email:
+        email_normalized = email_normalize(email, strict=False) or email
+    else:
+        name, email_normalized = text, ''
+
+    return name, email_normalized
