@@ -6,7 +6,7 @@ import ast
 from odoo import SUPERUSER_ID
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase, BaseCase
-from odoo.tools import mute_logger
+from odoo.tools import mute_logger, parse_contact_from_email
 from odoo.tools.safe_eval import safe_eval, const_eval
 
 
@@ -50,9 +50,11 @@ class TestSafeEval(BaseCase):
 # list at http://publicsuffix.org
 SAMPLES = [
     ('"Raoul Grosbedon" <raoul@chirurgiens-dentistes.fr> ', 'Raoul Grosbedon', 'raoul@chirurgiens-dentistes.fr'),
-    ('ryu+giga-Sushi@aizubange.fukushima.jp', '', 'ryu+giga-Sushi@aizubange.fukushima.jp'),
+    ('ryu+giga-Sushi@aizubange.fukushima.jp', '', 'ryu+giga-sushi@aizubange.fukushima.jp'),
     ('Raoul chirurgiens-dentistes.fr', 'Raoul chirurgiens-dentistes.fr', ''),
     (" Raoul O'hara  <!@historicalsociety.museum>", "Raoul O'hara", '!@historicalsociety.museum'),
+    ('Raoul Grosbedon <raoul@CHIRURGIENS-dentistes.fr> ', 'Raoul Grosbedon', 'raoul@chirurgiens-dentistes.fr'),
+    ('Raoul megaraoul@chirurgiens-dentistes.fr', 'Raoul', 'megaraoul@chirurgiens-dentistes.fr'),
 ]
 
 class TestBase(TransactionCase):
@@ -61,7 +63,8 @@ class TestBase(TransactionCase):
         res_partner = self.env['res.partner']
         parse = res_partner._parse_partner_name
         for text, name, mail in SAMPLES:
-            self.assertEqual((name, mail), parse(text), 'Partner name parsing failed')
+            # self.assertEqual((name, mail), parse(text), 'Partner name parsing failed')
+            self.assertEqual((name, mail), parse_contact_from_email(text), 'Partner name parsing failed')
             partner_id, dummy = res_partner.name_create(text)
             partner = res_partner.browse(partner_id)
             self.assertEqual(name or mail, partner.name, 'Partner name incorrect')

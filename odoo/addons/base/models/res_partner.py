@@ -17,7 +17,7 @@ from odoo import api, fields, models, tools, SUPERUSER_ID, _
 from odoo.modules import get_module_resource
 from odoo.osv.expression import get_unaccent_wrapper
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import pycompat
+from odoo.tools import pycompat, parse_contact_from_email
 
 # Global variables used for the warning fields declared on the res.partner
 # in the following modules : sale, purchase, account, stock
@@ -740,7 +740,8 @@ class Partner(models.Model):
             context = dict(self._context)
             context.pop('default_type')
             self = self.with_context(context)
-        name, email = self._parse_partner_name(name)
+        # name, email = self._parse_partner_name(name)
+        name, email = parse_contact_from_email(name.rstrip())
         if self._context.get('force_email') and not email:
             raise UserError(_("Couldn't create contact without email address!"))
         if not name and email:
