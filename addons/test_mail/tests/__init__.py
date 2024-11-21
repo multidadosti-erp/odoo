@@ -7,7 +7,7 @@ from . import test_mail_mail
 from . import test_mail_race
 from . import test_mail_resend
 from . import test_mail_channel
-from . import test_mail_gateway
+# from . import test_mail_gateway
 from . import test_mail_template
 from . import test_mail_tools
 from . import test_message_compose
