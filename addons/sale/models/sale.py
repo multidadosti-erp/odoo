@@ -345,6 +345,11 @@ class SaleOrder(models.Model):
         - Invoice address
         - Delivery address
         """
+        # Multidados: Adicionado para não regravar os campos caso não tenha mudado o
+        # partner_id.
+        if hasattr(self, '_origin') and self._origin.partner_id == self.partner_id:
+            return
+
         if not self.partner_id:
             self.update({
                 'partner_invoice_id': False,
