@@ -1750,7 +1750,10 @@ class AccountInvoiceLine(models.Model):
     account_id = fields.Many2one('account.account', string='Account', domain=[('deprecated', '=', False)],
         default=_default_account,
         help="The income or expense account related to the selected product.")
-    price_unit = fields.Float(string='Unit Price', required=True, digits=dp.get_precision('Product Price'))
+    price_unit = fields.Float(
+        string='Unit Price',
+        required=True,
+    )
     price_subtotal = fields.Monetary(string='Amount (without Taxes)',
         store=True, readonly=True, compute='_compute_price', help="Total amount without taxes")
     price_total = fields.Monetary(string='Amount (with Taxes)',
