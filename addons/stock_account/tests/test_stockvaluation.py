@@ -2291,7 +2291,8 @@ class TestStockValuation(TransactionCase):
         move5.move_line_ids.qty_done = 30.0
         move5._action_done()
 
-        self.assertEqual(move5.value, -477.6)
+        # Multidados: Calculo Considerando 4 Casas pelo compras
+        self.assertEqual(move5.value, -477.56)
 
         # Receives 10 units but assign them to an owner, the valuation should not be impacted.
         move6 = self.env['stock.move'].create({
@@ -2557,7 +2558,8 @@ class TestStockValuation(TransactionCase):
         move2.quantity_done = 10
         move2._action_done()
 
-        self.assertAlmostEqual(self.product1.standard_price, 16.67)
+        # Multidados: Por padrão 4 casas decimais para compras
+        self.assertAlmostEqual(round(self.product1.standard_price, 4), 16.6667)
 
         move1.move_line_ids.qty_done = 15
 
@@ -3071,7 +3073,8 @@ class TestStockValuation(TransactionCase):
 
         # the cost should now be 12,65
         # (9 * 10) + (15 * 10) / 19
-        self.assertEqual(self.product1.standard_price, 12.63)
+        # Multidados: Por padrão 4 casas decimais para compras
+        self.assertEqual(self.product1.standard_price, 12.6316)
 
     def test_change_cost_method_2(self):
         """ Change the cost method from FIFO to standard.
@@ -3141,7 +3144,8 @@ class TestStockValuation(TransactionCase):
 
         # the cost should now be 12,65
         # (9 * 10) + (15 * 10) / 19
-        self.assertEqual(self.product1.standard_price, 12.63)
+        # Multidados: Por padrão 4 casas decimais para compras
+        self.assertEqual(self.product1.standard_price, 12.6316)
 
     def test_fifo_sublocation_valuation_1(self):
         """ Set the main stock as a view location. Receive 2 units of a
