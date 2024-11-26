@@ -77,7 +77,7 @@ class ProductPriceHistory(models.Model):
         default=_get_default_company_id, required=True, index=True)
     product_id = fields.Many2one('product.product', 'Product', ondelete='cascade', required=True, index=True)
     datetime = fields.Datetime('Date', default=fields.Datetime.now, index=True)
-    cost = fields.Float('Cost', digits=dp.get_precision('Product Price'))
+    cost = fields.Float('Cost', digits=dp.get_precision('Purchase Price'))
 
 
 class ProductProduct(models.Model):
@@ -137,7 +137,7 @@ class ProductProduct(models.Model):
 
     standard_price = fields.Float(
         'Cost', company_dependent=True,
-        digits=dp.get_precision('Product Price'),
+        digits=dp.get_precision('Purchase Price'),
         groups="base.group_user",
         help = "Cost used for stock valuation in standard price and as a first price to set in average/fifo. "
                "Also used as a base price for pricelists. "
