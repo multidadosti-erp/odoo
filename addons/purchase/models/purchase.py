@@ -461,7 +461,7 @@ class PurchaseOrderLine(models.Model):
         'Product Image', related="product_id.image", readonly=False,
         help="Non-stored related field to allow portal user to see the image of the product he has ordered")
     product_type = fields.Selection(related='product_id.type', readonly=True)
-    price_unit = fields.Float(string='Unit Price', required=True, digits=dp.get_precision('Product Price'))
+    price_unit = fields.Float(string='Unit Price', required=True, digits=dp.get_precision('Purchase Price'))
 
     price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
     price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True)
