@@ -4762,7 +4762,7 @@ msgstr "Envie diretrizes para novos assinantes"
 #: code:addons/mail/static/src/xml/chatter.xml:96
 #, python-format
 msgid "Send message"
-msgstr "Enviar mensagem"
+msgstr "Enviar Mensagem"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel__email_send
