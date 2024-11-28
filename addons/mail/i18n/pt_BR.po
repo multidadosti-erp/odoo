@@ -4609,7 +4609,7 @@ msgstr "Agendar"
 #: code:addons/mail/static/src/xml/chatter.xml:103
 #, python-format
 msgid "Schedule activity"
-msgstr "Agendar atividade"
+msgstr "Agendar Atividade"
 
 #. module: mail
 #: code:addons/mail/models/mail_activity.py:448
@@ -4731,7 +4731,7 @@ msgstr "Enviar Agora"
 #: code:addons/mail/static/src/xml/chatter.xml:96
 #, python-format
 msgid "Send a message"
-msgstr "Enviar mensagem"
+msgstr "Enviar Mensagem"
 
 #. module: mail
 #. openerp-web
