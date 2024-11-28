@@ -562,6 +562,7 @@ define([
         { kbd: '⌘ + B', text: lang.font.bold },
         { kbd: '⌘ + I', text: lang.font.italic },
         { kbd: '⌘ + U', text: lang.font.underline },
+        { kbd: '⌘ + ⇧ + S', text: lang.font.strikethrough },
         { kbd: '⌘ + \\', text: lang.font.clear }
       ];
 

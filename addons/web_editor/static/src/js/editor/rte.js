@@ -558,7 +558,7 @@ var RTEWidget = Widget.extend({
             'focus': false,
             'airPopover': [
                 ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],

@@ -236,7 +236,7 @@ var TranslatorMenuBar = Widget.extend({
             airPopover: $editable.data('oe-model') ? [
                 ['history', ['undo', 'redo']],
             ] : [
-                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['history', ['undo', 'redo']],
