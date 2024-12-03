@@ -1030,6 +1030,7 @@ for rec in records:
                     'default_type': 'opportunity',
                     'search_default_assigned_to_me': 1
             }</field>
+            <field name="limit" eval="50"/>
             <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
         </record>
 
