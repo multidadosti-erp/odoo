@@ -371,7 +371,7 @@
     // Notebooks
     .o_notebook {
         clear: both; // For the notebook not to have alongside floating elements
-        margin-top: $o-form-spacing-unit * 2;
+        margin-top: $o-form-spacing-unit;
 
         .tab-content > .tab-pane {
             padding: $o-horizontal-padding - 8 0;
