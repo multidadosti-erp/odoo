@@ -59,18 +59,32 @@ var Domain = collections.Tree.extend({
             // We split the domain first part and check if it's a match
             // for the syntax 'parent.field'.
             var parentField = this._data[0].split('.');
+            
             if ('parent' in values && parentField.length === 2) {
                 fieldName = parentField[1];
                 isParentField = parentField[0] === 'parent' &&
                     fieldName in values.parent;
             }
+
             if (!(this._data[0] in values) && !(isParentField)) {
-                throw new Error(_.str.sprintf(
-                    "Unknown field %s in domain",
-                    this._data[0]
-                ));
+                // Multidados: Antes de gerar erro, verifica se o campo 
+                // existe nos values, evitando o Erro no Form pois no Dialog
+                // o parent funciona.
+                if (parentField.length === 2) {
+                    fieldName = parentField[1];
+                    isParentField = false;
+                }
+
+                if (!(fieldName in values)) {
+                    throw new Error(_.str.sprintf(
+                        "Unknown field %s in domain",
+                        this._data[0]
+                    ));
+                }
             }
+
             var fieldValue;
+
             if (!isParentField) {
                 fieldValue = values[fieldName];
             } else {
