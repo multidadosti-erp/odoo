@@ -2231,9 +2231,17 @@ var BooleanToggle = FieldBoolean.extend({
      * @param {MouseEvent} event
      */
     _onClick: function (event) {
-        event.stopPropagation();
-        this._setValue(!this.value);
-        this.$el.closest(".o_data_row").toggleClass('text-muted', this.value);
+        var canWrite = !this.readonly && (
+            this.mode === 'edit' ||
+            (this.editable_readonly && this.mode === 'readonly') ||
+            (this.viewType === 'kanban')
+        );
+        
+        if (canWrite) {
+            event.stopPropagation();
+            this._setValue(!this.value);
+            this.$el.closest(".o_data_row").toggleClass('text-muted', this.value);
+        }
     },
 });
 
