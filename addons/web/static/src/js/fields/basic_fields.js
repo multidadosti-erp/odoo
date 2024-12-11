@@ -2236,7 +2236,12 @@ var BooleanToggle = FieldBoolean.extend({
             (this.editable_readonly && this.mode === 'readonly') ||
             (this.viewType === 'kanban')
         );
-        
+
+        // Verifica se o Campo está setado como readOnly
+        if (canWrite && this.attrs.readonly === "1") {
+            canWrite = false
+        }
+
         if (canWrite) {
             event.stopPropagation();
             this._setValue(!this.value);
