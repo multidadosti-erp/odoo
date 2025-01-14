@@ -48,7 +48,7 @@ msgstr "Marketing"
 #: model:ir.model.fields,field_description:website_sale_link_tracker.field_sale_report__medium_id
 #, python-format
 msgid "Medium"
-msgstr "Mídia"
+msgstr "Média"
 
 #. module: website_sale_link_tracker
 #. openerp-web

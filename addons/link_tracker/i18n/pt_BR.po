@@ -158,7 +158,7 @@ msgstr "Código de Rastreamento de Link"
 #. module: link_tracker
 #: model:ir.model.fields,field_description:link_tracker.field_link_tracker__medium_id
 msgid "Medium"
-msgstr "Mídia"
+msgstr "Média"
 
 #. module: link_tracker
 #: model:ir.model.fields,field_description:link_tracker.field_link_tracker__count

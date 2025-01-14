@@ -1340,7 +1340,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm.view_crm_case_leads_filter
 #: model_terms:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
 msgid "Medium"
-msgstr "Mídia"
+msgstr "Média"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:985
