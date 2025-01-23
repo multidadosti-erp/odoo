@@ -589,15 +589,12 @@ return AbstractModel.extend({
                     }
                     records.unshift(me);
                 }
-                // MultidadosTI: link exibia todos os calendarios
-                // Codigo comentado devido ao fato de não ser interessante
-                // que um usuario possa ver eventos de calendario de outros usuarios
                 // add all selection
-                // records.push({
-                //     'value': 'all',
-                //     'label': field.relation === 'res.partner' || field.relation === 'res.users' ? _t("Everybody's calendars") : _t("Everything"),
-                //     'active': filter.all,
-                // });
+                records.push({
+                    'value': 'all',
+                    'label': field.relation === 'res.partner' || field.relation === 'res.users' ? _t("Everybody's calendars") : _t("Everything"),
+                    'active': filter.all,
+                });
 
                 filter.filters = records;
             });
