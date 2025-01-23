@@ -1219,7 +1219,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         return False
 
     @api.model
-    def user_has_groups(self, groups):
+    def user_has_groups(self, groups=False, group_ids=False):
         """Return true if the user is member of at least one of the groups in
         ``groups``, and is not a member of any of the groups in ``groups``
         preceded by ``!``. Typically used to resolve ``groups`` attribute in
@@ -1234,15 +1234,30 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         """
         from odoo.http import request
         user = self.env.user
-
         has_groups = []
         not_has_groups = []
-        for group_ext_id in groups.split(','):
-            group_ext_id = group_ext_id.strip()
-            if group_ext_id[0] == '!':
-                not_has_groups.append(group_ext_id[1:])
-            else:
-                has_groups.append(group_ext_id)
+
+        if group_ids:
+            model_data_ids = (
+                self.env["ir.model.data"]
+                .sudo()
+                .search(
+                    [
+                        ("model", "=", "res.groups"),
+                        ("res_id", "in", group_ids.split(",")),
+                    ]
+                )
+            )
+            for model_data_id in model_data_ids:
+                has_groups.append(model_data_id.module.replace('.', '_') + "." + model_data_id.name.replace('.', '_'))
+
+        if groups:
+            for group_ext_id in groups.split(','):
+                group_ext_id = group_ext_id.strip()
+                if group_ext_id[0] == '!':
+                    not_has_groups.append(group_ext_id[1:])
+                else:
+                    has_groups.append(group_ext_id)
 
         for group_ext_id in not_has_groups:
             if group_ext_id == 'base.group_no_one':
@@ -1417,7 +1432,6 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
         if options.get('load_filters'):
             result['filters'] = self.env['ir.filters'].get_filters(self._name, options.get('action_id'))
-
 
         return result
 
@@ -4836,7 +4850,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         Can take no ids, a single id or a sequence of ids.
         """
         ids = _normalize_ids(arg)
-        #assert all(isinstance(id, IdType) for id in ids), "Browsing invalid ids: %s" % ids
+        # assert all(isinstance(id, IdType) for id in ids), "Browsing invalid ids: %s" % ids
         return self._browse(ids, self.env, prefetch)
 
     #
