@@ -23,8 +23,8 @@ If you need to manage your meetings, you should install the CRM module.
         'data/calendar_demo.xml'
     ],
     'data': [
-        'security/ir.model.access.csv',
         'security/calendar_security.xml',
+        'security/ir.model.access.csv',
         'data/calendar_cron.xml',
         'data/calendar_data.xml',
         'data/mail_data.xml',

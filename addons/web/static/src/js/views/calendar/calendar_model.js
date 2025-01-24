@@ -589,11 +589,21 @@ return AbstractModel.extend({
                     }
                     records.unshift(me);
                 }
-                // add all selection
-                records.push({
-                    'value': 'all',
-                    'label': field.relation === 'res.partner' || field.relation === 'res.users' ? _t("Everybody's calendars") : _t("Everything"),
-                    'active': filter.all,
+
+                // verificamos permissao de gruopo do usuario.
+                // somente gerente do calendario pode ver calendario de outros
+                session.user_has_group('calendar.group_calendar_manager').then(function(has_group) {
+
+                    if (has_group == true) {
+
+                        // add all selection
+                        records.push({
+                            'value': 'all',
+                            'label': field.relation === 'res.partner' || field.relation === 'res.users' ? _t("Everybody's calendars") : _t("Everything"),
+                            'active': filter.all,
+                        });
+                    }
+
                 });
 
                 filter.filters = records;

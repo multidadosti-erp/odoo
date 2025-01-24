@@ -214,6 +214,7 @@ class TestCalendar(TransactionCase):
     def test_event_activity(self):
         # ensure meeting activity type exists
         meeting_act_type = self.env['mail.activity.type'].search([('category', '=', 'meeting')], limit=1)
+
         if not meeting_act_type:
             meeting_act_type = self.env['mail.activity.type'].create({
                 'name': 'Meeting Test',
@@ -224,22 +225,25 @@ class TestCalendar(TransactionCase):
         test_record = self.env['res.partner'].create({
             'name': 'Test',
         })
+
         now = datetime.now()
         test_user = self.env.ref('base.user_demo')
         test_name, test_description, test_description2 = 'Test-Meeting', 'Test-Description', 'NotTest'
         test_note, test_note2 = '<p>Test-Description</p>', '<p>NotTest</p>'
 
         # create using default_* keys
-        test_event = self.env['calendar.event'].sudo(test_user).with_context(
+        test_event = self.env['calendar.event'].with_context(
             default_res_model=test_record._name,
             default_res_id=test_record.id,
         ).create({
             'name': test_name,
             'description': test_description,
+            'partner_ids': [(4, test_user.partner_id.id)],
             'start': fields.Datetime.to_string(now + timedelta(days=-1)),
             'stop': fields.Datetime.to_string(now + timedelta(hours=2)),
             'user_id': self.env.user.id,
         })
+
         self.assertEqual(test_event.res_model, test_record._name)
         self.assertEqual(test_event.res_id, test_record.id)
         self.assertEqual(len(test_record.activity_ids), 1)
@@ -274,7 +278,7 @@ class TestCalendar(TransactionCase):
         self.assertEqual(self.env['calendar.event'], self.env['calendar.event'].search([('name', '=', test_name)]))
 
         # create using active_model keys
-        test_event = self.env['calendar.event'].sudo(self.env.ref('base.user_demo')).with_context(
+        test_event = self.env['calendar.event'].with_context(
             active_model=test_record._name,
             active_id=test_record.id,
         ).create({
