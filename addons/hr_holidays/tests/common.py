@@ -11,16 +11,16 @@ class TestHrHolidaysBase(common.TransactionCase):
         super(TestHrHolidaysBase, self).setUp()
 
         # Test users to use through the various tests
-        self.user_hruser = mail_new_test_user(self.env, login='armande', groups='base.group_user,hr_holidays.group_hr_holidays_user')
+        self.user_hruser = mail_new_test_user(self.env, login='armande', groups='base.group_user,hr_holidays.group_hr_holidays_user,calendar.group_calendar_manager')
         self.user_hruser_id = self.user_hruser.id
 
-        self.user_hrmanager = mail_new_test_user(self.env, login='bastien', groups='base.group_user,hr_holidays.group_hr_holidays_manager')
+        self.user_hrmanager = mail_new_test_user(self.env, login='bastien', groups='base.group_user,hr_holidays.group_hr_holidays_manager,calendar.group_calendar_manager')
         self.user_hrmanager_id = self.user_hrmanager.id
 
-        self.user_employee = mail_new_test_user(self.env, login='david', groups='base.group_user')
+        self.user_employee = mail_new_test_user(self.env, login='david', groups='base.group_user,calendar.group_calendar_manager')
         self.user_employee_id = self.user_employee.id
 
-        self.user_hrmanager_2 = mail_new_test_user(self.env, login='florence', groups='base.group_user,hr_holidays.group_hr_holidays_manager')
+        self.user_hrmanager_2 = mail_new_test_user(self.env, login='florence', groups='base.group_user,hr_holidays.group_hr_holidays_manager,calendar.group_calendar_manager')
         self.user_hrmanager_2_id = self.user_hrmanager_2.id
 
         # Hr Data

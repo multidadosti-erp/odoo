@@ -66,6 +66,7 @@
     <record id="view_calendar_event_tree" model="ir.ui.view">
         <field name="name">calendar.event.tree</field>
         <field name="model">calendar.event</field>
+        <field name="groups_id" eval="[(4, ref('calendar.group_calendar_user'))]"/>
         <field name="arch" type="xml">
             <tree string="Meetings" decoration-bf="message_needaction==True">
                 <field name="name" string="Subject"/>
@@ -85,6 +86,7 @@
         <field name="name">calendar.event.form</field>
         <field name="model">calendar.event</field>
         <field name="priority" eval="1"/>
+        <field name="groups_id" eval="[(4, ref('calendar.group_calendar_user'))]"/>
         <field name="arch" type="xml">
             <form string="Meetings">
                 <sheet>
@@ -265,6 +267,7 @@
     <record id="view_calendar_event_calendar" model="ir.ui.view">
         <field name="name">calendar.event.calendar</field>
         <field name="model">calendar.event</field>
+        <field name="groups_id" eval="[(4, ref('calendar.group_calendar_user'))]"/>
         <field name="priority" eval="2"/>
         <field name="arch" type="xml">
             <calendar string="Meetings" date_start="start" date_stop="stop" date_delay="duration" all_day="allday"
@@ -346,7 +349,7 @@
         sequence="2"
         action="action_calendar_event"
         web_icon="calendar,static/description/icon.png"
-        groups="base.group_user"/>
+        groups="calendar.group_calendar_user"/>
 
     <menuitem
         id="menu_calendar_configuration"
