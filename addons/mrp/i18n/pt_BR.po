@@ -1787,7 +1787,7 @@ msgstr "Local onde o sistema estocará os produtos acabados."
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
 msgid "Lock"
-msgstr "Trancar"
+msgstr "Concluir"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_workcenter_productivity__loss_id
