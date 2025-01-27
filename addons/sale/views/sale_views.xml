@@ -13,17 +13,23 @@
             parent="sale_menu_root"
             sequence="2"/>
 
+        <menuitem id="sale_order_menu_reg"
+            name="Registrations"
+            parent="sale_order_menu"
+            sequence="4"/>
+
         <menuitem id="report_sales_team"
             name="Sales Teams"
-            parent="sale_order_menu"
+            parent="sale_order_menu_reg"
             groups="sales_team.group_sale_manager"
             action="sales_team.crm_team_salesteams_act"
-            sequence="3"/>
+            sequence="2"/>
 
         <menuitem id="res_partner_menu"
-            parent="sale_order_menu"
+            parent="sale_order_menu_reg"
             action="base.action_partner_form"
-            sequence="4" groups="sales_team.group_sale_salesman"/>
+            sequence="1" 
+            groups="sales_team.group_sale_salesman"/>
 
         <menuitem id="menu_sale_report"
             name="Reporting"
@@ -725,7 +731,7 @@
             <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
             <field name="search_view_id" ref="sale_order_view_search_inherit_sale"/>
             <field name="context">{}</field>
-            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+            <field name="domain">[('state', '=', 'sale')]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create a new quotation, the first step of a new sale!
@@ -781,7 +787,75 @@
             name="Orders"
             action="action_orders"
             parent="sale_order_menu"
-            sequence="2" groups="sales_team.group_sale_salesman"/>
+            sequence="2" 
+            groups="sales_team.group_sale_salesman"/>
+
+       <record id="action_orders_done" model="ir.actions.act_window">
+            <field name="name">Sales Orders Done</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_sale"/>
+            <field name="context">{}</field>
+            <field name="domain">[('state', '=', 'done')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation, the first step of a new sale!
+                </p><p>
+                    Once the quotation is done, it becomes a sales order.<br/> You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <record id="sale_order_done_action_view_order_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale.view_order_tree"/>
+            <field name="act_window_id" ref="action_orders_done"/>
+        </record>
+
+        <record id="sale_order_done_action_view_order_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="sale.view_sale_order_kanban"/>
+            <field name="act_window_id" ref="action_orders_done"/>
+        </record>
+
+        <record id="sale_order_done_action_view_order_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale.view_order_form"/>
+            <field name="act_window_id" ref="action_orders_done"/>
+        </record>
+
+        <record id="sale_order_done_action_view_order_calendar" model="ir.actions.act_window.view">
+            <field name="sequence" eval="4"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="sale.view_sale_order_calendar"/>
+            <field name="act_window_id" ref="action_orders_done"/>
+        </record>
+
+        <record id="sale_order_done_action_view_order_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="sale.view_sale_order_pivot"/>
+            <field name="act_window_id" ref="action_orders_done"/>
+        </record>
+
+        <record id="sale_order_done_action_view_order_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="6"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="sale.view_sale_order_graph"/>
+            <field name="act_window_id" ref="action_orders_done"/>
+        </record>
+
+        <menuitem id="menu_sale_order_done"
+            name="Orders Done"
+            action="action_orders_done"
+            parent="sale_order_menu"
+            sequence="3" 
+            groups="sales_team.group_sale_salesman"/>
 
         <record id="action_orders_to_invoice" model="ir.actions.act_window">
             <field name="name">Orders to Invoice</field>
@@ -805,7 +879,8 @@
         <menuitem id="menu_sale_invoicing"
             name="To Invoice"
             parent="sale_menu_root"
-            sequence="3" groups="sales_team.group_sale_salesman"/>
+            sequence="4" 
+            groups="sales_team.group_sale_salesman"/>
 
         <menuitem id="menu_sale_order_invoice"
             action="action_orders_to_invoice"
@@ -834,10 +909,10 @@
               </p>
             </field>
         </record>
+
         <menuitem action="action_orders_upselling"
             id="menu_sale_order_upselling" parent="sale.menu_sale_invoicing"
             sequence="5" active="False"/>
-
 
         <record id="action_quotations_with_onboarding" model="ir.actions.act_window">
             <field name="name">Quotations</field>

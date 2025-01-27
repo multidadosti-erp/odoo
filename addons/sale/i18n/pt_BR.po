@@ -1780,7 +1780,7 @@ msgstr "É verdadeiro se o linha pedido de venda vem de uma despesa ou contas de
 #, python-format
 msgid "It is forbidden to modify the following fields in a locked order:\n"
 "%s"
-msgstr "É proibido a modificação dos seguintes campos em um pedido trancado:\n"
+msgstr "É proibido a modificação dos seguintes campos em um pedido Concluído:\n"
 "%s"
 
 #. module: sale
@@ -1854,18 +1854,18 @@ msgstr "Vamos criar uma novo orçamento.<br><i>Observe que botões coloridos ger
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Lock"
-msgstr "Trancar"
+msgstr "Concluir"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_contact_config_settings__auto_done_setting
 #: model:ir.model.fields,field_description:sale.field_res_config_settings__auto_done_setting
 msgid "Lock Confirmed Sales"
-msgstr "Trancar Vendas Confirmadas"
+msgstr "Concluir Vendas Confirmadas"
 
 #. module: sale
 #: selection:sale.order,state:0
 msgid "Locked"
-msgstr "Trancado"
+msgstr "Concluído"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.onboarding_quotation_layout_step
@@ -2294,6 +2294,11 @@ msgstr "Quantidades solicitadas"
 #: model:ir.ui.menu,name:sale.sale_order_menu
 msgid "Orders"
 msgstr "Pedidos"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.menu_sale_order_done
+msgid "Orders Done"
+msgstr "Pedidos Concluídos"
 
 #. module: sale
 #: model:ir.actions.act_window,name:sale.action_orders_to_invoice
@@ -2815,6 +2820,11 @@ msgid "Reference of the document that generated this sales order request."
 msgstr "Referência para o documento que gerou esta solicitação de pedido de venda."
 
 #. module: sale
+#: model:ir.ui.menu,name:sale.sale_order_menu_reg
+msgid "Registrations"
+msgstr "Cadastros"
+
+#. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
 msgid "Reject This Quotation"
 msgstr "Rejeite este Orçamento"
@@ -3031,7 +3041,12 @@ msgstr "Pedido(s) de Venda"
 #: model_terms:ir.ui.view,arch_db:sale.view_sale_order_pivot
 #, python-format
 msgid "Sales Orders"
-msgstr "Ordens de Vendas"
+msgstr "Pedidos"
+
+#. module: sale
+#: model:ir.actions.act_window,name:sale.action_orders_done
+msgid "Sales Orders Done"
+msgstr "Pedidos Concuídos"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_invoice__team_id
