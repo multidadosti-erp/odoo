@@ -2964,6 +2964,11 @@ msgid "Confirm Invoices"
 msgstr "Confirmar Faturas"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
+msgid "Confirm set to Draft?"
+msgstr "Confirma Marcar como Provisório?"
+
+#. module: account
 #: model:ir.model,name:account.model_account_invoice_confirm
 msgid "Confirm the selected invoices"
 msgstr "Confirmar as faturas selecionadas"
