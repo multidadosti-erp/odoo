@@ -3571,7 +3571,11 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     self.env['ir.translation']._sync_terms_translations(field, self)
                 elif has_translation and field.translate:
                     # The translated value of a field has been modified.
-                    src_trans = self.read([name])[0][name]
+                    
+                    # Multidados: Adicionado o Sudo para resolver os casos de campos related 
+                    # com tabelas sem acesso pelo usuário.
+                    src_trans = self.sudo().read([name])[0][name]
+
                     if not src_trans:
                         # Insert value to DB
                         src_trans = vals[name]
