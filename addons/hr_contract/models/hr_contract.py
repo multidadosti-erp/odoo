@@ -43,30 +43,43 @@ class ContractType(models.Model):
     sequence = fields.Integer(help="Gives the sequence when displaying a list of Contract.", default=10)
 
 
+READONLY_STATES = {'open': [('readonly', True)],
+                   'pending': [('readonly', True)],
+                   'close': [('readonly', True)],
+                   'cancel': [('readonly', True)]}
+
 class Contract(models.Model):
 
     _name = 'hr.contract'
     _description = 'Contract'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin',
+        'hr.contract.mixin'] # altreado pela Multidados:
+                             #   Conteúdo transferido para o mixin
 
     name = fields.Char('Contract Reference', required=True)
     active = fields.Boolean(default=True)
-    employee_id = fields.Many2one('hr.employee', string='Employee')
-    department_id = fields.Many2one('hr.department', string="Department")
-    type_id = fields.Many2one('hr.contract.type', string="Employee Category", required=True, default=lambda self: self.env['hr.contract.type'].search([], limit=1))
-    job_id = fields.Many2one('hr.job', string='Job Position')
-    date_start = fields.Date('Start Date', required=True, default=fields.Date.today,
-        help="Start date of the contract.")
-    date_end = fields.Date('End Date',
-        help="End date of the contract (if it's a fixed-term contract).")
+
+    # Alterado pela Multidados:
+    # - Transfere campos comuns para o mixin 'hr.contract.mixin'
+    # - O mixin agrega os campos principais para serem utilizados na
+    #   model de logs (hr.employee.update) e wizard de atualizações
+    #   contratuais (update.employee.contract.wizard)
+
+    employee_id = fields.Many2one('hr.employee', readonly=False, states=READONLY_STATES)
+    department_id = fields.Many2one('hr.department', readonly=False, states=READONLY_STATES)
+    type_id = fields.Many2one('hr.contract.type', readonly=False, states=READONLY_STATES)
+    job_id = fields.Many2one('hr.job', readonly=False, states=READONLY_STATES)
+    date_start = fields.Date(readonly=False, states=READONLY_STATES)
+    date_end = fields.Date(readonly=False, states=READONLY_STATES)
+
     trial_date_end = fields.Date('End of Trial Period',
         help="End date of the trial period (if there is one).")
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'Working Schedule',
         default=lambda self: self.env['res.company']._company_default_get().resource_calendar_id.id)
-    wage = fields.Monetary('Wage', digits=(16, 2), required=True, track_visibility="onchange", help="Employee's monthly gross wage.")
+    wage = fields.Monetary(readonly=False, states=READONLY_STATES)
     advantages = fields.Text('Extra Advantages')
-    notes = fields.Text('Notes')
+    notes = fields.Text(readonly=False, states=READONLY_STATES)
     state = fields.Selection([
         ('draft', 'New'),
         ('open', 'Running'),
@@ -76,12 +89,19 @@ class Contract(models.Model):
     ], string='Status', group_expand='_expand_states',
        track_visibility='onchange', help='Status of the contract', default='draft')
     company_id = fields.Many2one('res.company', default=lambda self: self.env.user.company_id)
-    currency_id = fields.Many2one(string="Currency", related='company_id.currency_id', readonly=True)
+    # currency_id = fields.Many2one(string="Currency", related='company_id.currency_id', readonly=True)
     permit_no = fields.Char('Work Permit No', related="employee_id.permit_no", readonly=False)
     visa_no = fields.Char('Visa No', related="employee_id.visa_no", readonly=False)
     visa_expire = fields.Date('Visa Expire Date', related="employee_id.visa_expire", readonly=False)
     reported_to_secretariat = fields.Boolean('Social Secretariat',
         help='Green this button when the contract information has been transfered to the social secretariat.')
+
+    # Adicionado pela Multidados:
+    schedule_pay = fields.Selection(  # importado parcialmente de 'hr_payroll'
+        index=True,                   #   ver mixin 'hr.contract.mixin'
+        readonly=False,
+        states=READONLY_STATES)
+
 
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).state.selection]
