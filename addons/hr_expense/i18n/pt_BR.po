@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * hr_expense
+#	* hr_expense
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 17:54+0000\n"
-"PO-Revision-Date: 2024-03-27 17:54+0000\n"
+"POT-Creation-Date: 2025-02-06 19:02+0000\n"
+"PO-Revision-Date: 2025-02-06 19:02+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -90,7 +90,7 @@ msgstr "<strong>Pagamento por:</strong>"
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
 msgid "<strong>Total</strong>"
-msgstr "Total"
+msgstr ""
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.report_expense_sheet
@@ -201,7 +201,7 @@ msgstr "Reembolso Aprovado"
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_filter
 msgid "Approved refunding expense sheets, not the refused ones"
-msgstr "Relatórios de Reembolso de despesas aprovados, sem os recusados"
+msgstr "Relatórios de Reembolso de despesas aprovados, nenhum recusado"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_form
@@ -293,12 +293,12 @@ msgstr "Despesas Confirmadas"
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_filter
 msgid "Confirmed Expenses to refund"
-msgstr "Despesas Confirmadas para Reembolsar"
+msgstr "Despesas confirmadas para o Reembolso"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_form
-msgid "Create Refund Report"
-msgstr "Criar Relatório de Reembolso"
+msgid "Create Expense Report(s)"
+msgstr "Criar Relatório(s) de Despesas"
 
 #. module: hr_expense
 #: model_terms:ir.actions.act_window,help:hr_expense.action_request_approve_expense_sheet
@@ -357,7 +357,6 @@ msgid "Date"
 msgstr "Data"
 
 #. module: hr_expense
-#: model:ir.model.fields,field_description:hr_expense.field_contact_config_settings__expense_alias_prefix
 #: model:ir.model.fields,field_description:hr_expense.field_res_config_settings__expense_alias_prefix
 msgid "Default Alias Name for Expenses"
 msgstr "Apelido Padrão para Despesas"
@@ -379,7 +378,7 @@ msgstr "Descrição"
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet__display_name
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet_register_payment_wizard__display_name
 msgid "Display Name"
-msgstr "Nome a Apresentar"
+msgstr "Nome exibido"
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.hr_expense_view_form
@@ -626,7 +625,7 @@ msgstr "Despesas de Seu Membro de Equipe"
 #. module: hr_expense
 #: model:ir.model.fields,help:hr_expense.field_hr_expense_sheet__expense_line_ids
 msgid "Expenses related to the sheet. Changes on this field are managed on 'create' and 'write' methods to keep, expenses with right values for sheet fields on expenses."
-msgstr "Despesas relacionadas ao Relatório. As alterações neste campo são gerenciadas pelos métodos 'create' e 'write', para manter as despesas relacionadas corretamente aos relatórios."
+msgstr "Despesas relacionadas ao relatório. As mudanças nesse campo são gerenciadas pelos métodos 'create' e 'write', para manter as despesas relacionadas corretamente com os relatórios."
 
 #. module: hr_expense
 #: model_terms:ir.ui.view,arch_db:hr_expense.view_hr_expense_sheet_filter
@@ -804,7 +803,6 @@ msgid "Late Activities"
 msgstr "Últimas Atividades"
 
 #. module: hr_expense
-#: model:ir.model.fields,field_description:hr_expense.field_contact_config_settings__use_mailgateway
 #: model:ir.model.fields,field_description:hr_expense.field_res_config_settings__use_mailgateway
 #: model_terms:ir.ui.view,arch_db:hr_expense.res_config_settings_view_form
 msgid "Let your employees record expenses by email"
@@ -1009,14 +1007,14 @@ msgid "Once your <b>Expense report</b> is ready, you can submit it to your manag
 msgstr "Assim que o seu <b>Relatório de Despesas</b> estiver pronto, você poderá enviá-lo ao seu gerente e aguardar por sua aprovação."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:865
+#: code:addons/hr_expense/models/hr_expense.py:864
 #, python-format
 msgid "Only HR Officers or the concerned employee can reset to draft."
 msgstr "Apenas a equipe do RH ou o colaborador que reportou a despesa podem redefiní-la como provisória."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:826
-#: code:addons/hr_expense/models/hr_expense.py:847
+#: code:addons/hr_expense/models/hr_expense.py:825
+#: code:addons/hr_expense/models/hr_expense.py:846
 #, python-format
 msgid "Only Managers and HR Officers can approve expenses"
 msgstr "Apenas Gerentes e Equipe do RH podem aprovar despesas"
@@ -1073,7 +1071,7 @@ msgstr "Modo de Pagamento"
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_sheet_register_payment_wizard__payment_method_id
 msgid "Payment Type"
-msgstr "Tipo de pagamento"
+msgstr "Tipo de Pagamento"
 
 #. module: hr_expense
 #: selection:hr.expense,activity_state:0
@@ -1507,7 +1505,7 @@ msgid "Website communication history"
 msgstr "Histórico de Comunicação do Site"
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:834
+#: code:addons/hr_expense/models/hr_expense.py:833
 #, python-format
 msgid "You can only approve your department expenses"
 msgstr "Você só pode aprovar despesas do seu departamento"
@@ -1519,7 +1517,7 @@ msgid "You can only generate accounting entry for approved expense(s)."
 msgstr "Você só pode gerar entrada contábil de despesa(s) aprovada(s)."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:855
+#: code:addons/hr_expense/models/hr_expense.py:854
 #, python-format
 msgid "You can only refuse your department expenses"
 msgstr "Você só pode recusar despesas do seu departamento"
@@ -1536,7 +1534,7 @@ msgid "You cannot add expenses of another employee."
 msgstr "Você não pode adicionar despesas de outro colaborador."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:831
+#: code:addons/hr_expense/models/hr_expense.py:830
 #, python-format
 msgid "You cannot approve your own expenses"
 msgstr "Você não pode aprovar suas próprias despesas"
@@ -1554,7 +1552,7 @@ msgid "You cannot delete a posted or paid expense."
 msgstr "Você não pode remover uma despesa lançada ou paga."
 
 #. module: hr_expense
-#: code:addons/hr_expense/models/hr_expense.py:852
+#: code:addons/hr_expense/models/hr_expense.py:851
 #, python-format
 msgid "You cannot refuse your own expenses"
 msgstr "Você não pode recusar suas próprias despesas"
