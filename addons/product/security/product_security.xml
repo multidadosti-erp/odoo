@@ -64,7 +64,7 @@
         <function name="search" model="ir.model.data">
             <value eval="[('model', '=', 'ir.rule'), ('name', '=', 'product_supplierinfo_comp_rule')]"/>
         </function>
-        <value eval="{'noupdate': False}"/>
+        <value eval="{'noupdate': True}"/>
     </function>
     <record model="ir.rule" id="product.product_supplierinfo_comp_rule">
         <field name="domain_force">[(1, '=', 1)]</field>

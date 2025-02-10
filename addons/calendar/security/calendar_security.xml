@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- TODO: Remover depois da proxima versao -->
-    <!-- Desabilita atualizacao do grupo-->
-    <function name="write" model="ir.model.data">
-        <function name="search" model="ir.model.data">
-            <value eval="[('model', '=', 'res.groups'), ('name', 'in', ('group_user',))]"/>
-        </function>
-        <value eval="{'noupdate': True}"/>
-    </function>
-
     <data noupdate="0">
 
         <record id="group_calendar_user" model="res.groups">
@@ -70,8 +61,6 @@
             <field name="perm_create" eval="True"/>
             <field name="perm_unlink" eval="True"/>
         </record>
-
-
 
     </data>
 </odoo>

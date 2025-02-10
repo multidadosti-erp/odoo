@@ -25,7 +25,7 @@
                 ])
             ]"/>
         </function>
-        <value eval="{'noupdate': False}" />
+        <value eval="{'noupdate': True}" />
     </function>
 
     <data noupdate="0">

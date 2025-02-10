@@ -4,10 +4,10 @@
         <!-- Alterando subtipo do core-->
         <function name="write" model="ir.model.data">
             <function name="search" model="ir.model.data">
-                <value eval="[('model', '=', 'mail.template'), 
+                <value eval="[('model', '=', 'mail.template'),
                               ('name', 'in', ('reset_password_email', 'set_password_email', 'mail_template_user_signup_account_created'))]"/>
             </function>
-            <value eval="{'noupdate': False}"/>
+            <value eval="{'noupdate': True}"/>
         </function>
 
         <!-- activate B2C portal by default -->
@@ -396,7 +396,7 @@
                     </tr>
                 </table>
             </field>
-            
+
             <field name="auto_delete" eval="True"/>
             <field name="user_signature" eval="False"/>
         </record>
