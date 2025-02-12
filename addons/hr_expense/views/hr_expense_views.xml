@@ -336,6 +336,7 @@
             <field name="view_mode">tree,kanban,form,activity</field>
             <field name="search_view_id" ref="view_hr_expense_filter"/>
             <field name="context">{'default_payment_mode': 'own_account',
+                                   'search_default_employee': 1,
                                    'search_default_no_report': 1,
                                    'search_default_no_report_invoice': 1}
             </field>

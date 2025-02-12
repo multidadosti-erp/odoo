@@ -96,7 +96,8 @@ class Employee(models.Model):
     _name = "hr.employee"
     _description = "Employee"
     _order = 'name'
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'resource.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'resource.mixin',
+                'hr.job.mixin']  # Features for hr.job  # Adicionado pela Multidados
 
     _mail_post_access = 'read'
 
@@ -162,7 +163,10 @@ class Employee(models.Model):
     emergency_phone = fields.Char("Emergency Phone", groups="hr.group_hr_user")
     km_home_work = fields.Integer(string="Km home-work", groups="hr.group_hr_user")
     google_drive_link = fields.Char(string="Employee Documents", groups="hr.group_hr_user")
-    job_title = fields.Char("Job Title")
+
+    # Alterado pela Multidados:
+    # - Transfere campos para o mixin 'hr.job.mixin'
+    #job_title = fields.Char("Job Title")
 
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary(
@@ -185,9 +189,13 @@ class Employee(models.Model):
     mobile_phone = fields.Char('Work Mobile')
     work_email = fields.Char('Work Email')
     work_location = fields.Char('Work Location')
+
     # employee in company
-    job_id = fields.Many2one('hr.job', 'Job Position')
-    department_id = fields.Many2one('hr.department', 'Department')
+    # Alterado pela Multidados:
+    # - Transfere campos para o mixin 'hr.job.mixin'
+    #job_id = fields.Many2one('hr.job', 'Job Position')
+    #department_id = fields.Many2one('hr.department', 'Department')
+
     parent_id = fields.Many2one('hr.employee', 'Manager')
     child_ids = fields.One2many('hr.employee', 'parent_id', string='Subordinates')
     coach_id = fields.Many2one('hr.employee', 'Coach')

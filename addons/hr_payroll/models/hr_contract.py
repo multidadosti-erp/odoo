@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class HrContract(models.Model):
@@ -10,20 +10,38 @@ class HrContract(models.Model):
     allows to configure different Salary structure
     """
     _inherit = 'hr.contract'
-    _description = 'Employee Contract'
 
     struct_id = fields.Many2one('hr.payroll.structure', string='Salary Structure')
-    schedule_pay = fields.Selection([
-        ('monthly', 'Monthly'),
+
+    # Alterado pela Multidados:
+    # transfere criação do campo para o módulo 'hr_contract'
+    schedule_pay = fields.Selection(selection_add=[
+        # ('monthly', 'Monthly'), # transferido para o módulo 'hr_contract'
         ('quarterly', 'Quarterly'),
         ('semi-annually', 'Semi-annually'),
-        ('annually', 'Annually'),
+        # ('annually', 'Annually'), # transferido para o módulo 'hr_contract'
         ('weekly', 'Weekly'),
         ('bi-weekly', 'Bi-weekly'),
         ('bi-monthly', 'Bi-monthly'),
-    ], string='Scheduled Pay', index=True, default='monthly',
-    help="Defines the frequency of the wage payment.")
+    ])
     resource_calendar_id = fields.Many2one(required=True, help="Employee's working schedule.")
+
+
+    def _recurrency_label_mappings(self):
+        """ Adiciona Labels para os novos valores do campo
+        Selection 'schedule_pay'.
+
+        Returns:
+            dict: Mapeamento do campo 'schedule_pay' com 'recurrency_label'
+        """
+        return {
+            **super(HrContract, self)._recurrency_label_mappings(),
+            'quarterly': _("quarter"),
+            'semi-annually': _("semester"),
+            'weekly': _("week"),
+            'bi-weekly': _("fortnight"),
+            'bi-monthly': _("two months"),
+        }
 
     @api.multi
     def get_all_structures(self):

@@ -103,46 +103,58 @@
                             <field name="name" placeholder="Contract Reference"/>
                         </h1>
                     </div>
-                    <group>
+                    <group name="main">
                         <group>
-                            <field name="employee_id"/>
-                            <field name="department_id"/>
-                            <field name="job_id"/>
-                        </group>
-                        <group>
-                            <field name="type_id"/>
+                            <field name="employee_id"
+                                   options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="type_id"
+                                   options="{'no_create_edit': True}"/>
                             <field name="reported_to_secretariat" widget="toggle_button" options='{"active": "Reported to the social secretariat", "inactive": "To report to the social secretariat"}'/>
                         </group>
+                        <group>
+                            <field name="department_id"
+                                   options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="job_id"
+                                   domain="[('department_id', '=', department_id), ('department_id', '=', False)]"
+                                   options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="resource_calendar_id"
+                                   options="{'no_create_edit': True, 'no_open': True}"/>
+                        </group>
                     </group>
-                    <notebook>
+                    <notebook name="main">
                         <page string="Contract Details" name="other">
                             <group>
-                                <group name="duration_group" string="Contract Terms">
+                                <group name="duration_group" string="Contract Dates">
                                     <field name="date_start"/>
                                     <label for="date_end"/>
-                                    <div class="o_row">
+                                    <div class="o_row" name="date_end">
                                         <field name="date_end" nolabel="1"/>
                                         <span class="text-muted">(If fixed-term contract)</span>
                                     </div>
                                     <field name="trial_date_end"/>
-                                    <field name="resource_calendar_id"/>
                                 </group>
                             </group>
-                            <group string="Notes">
+                            <group string="Notes" name="notes">
                                 <field name="notes" nolabel="1"/>
                             </group>
                         </page>
                         <page string="Salary Information" name="information">
-                            <group name="main_info">
-                                <group name="salary_and_advantages" string="Monthly Advantages in Cash">
-                                    <label for="wage"/>
-                                    <div class="o_row" name="wage">
-                                        <field name="wage" nolabel="1"/>
-                                        <span>/ month</span>
-                                    </div>
-                                    <field name="advantages" nolabel="1" placeholder="Advantages..." colspan="2" invisible="1"/>
-                                </group>
-                            </group>
+                            <notebook name="in_sallary">
+                                <page string="Sallary" name="sallary">
+                                    <group name="main_info">
+                                        <group name="salary_and_advantages" string="Sallary">
+                                            <field name="currency_id"/>
+                                            <field name="schedule_pay"/>
+                                            <label for="wage"/>
+                                            <div class="o_row" name="wage">
+                                                <field name="wage" nolabel="1"/>
+                                                <span>/ <field name="recurrency_label"/></span>
+                                            </div>
+                                            <field name="advantages" nolabel="1" placeholder="Advantages..." colspan="2" invisible="1"/>
+                                        </group>
+                                    </group>
+                                </page>
+                            </notebook>
                         </page>
                     </notebook>
                     </sheet>
@@ -217,7 +229,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form,activity</field>
             <field name="domain">[('employee_id', '!=', False)]</field>
-            <field name="context">{'search_default_current':1, 'search_default_group_by_state': 1}</field>
+            <field name="context">{'search_default_current':1, 'search_default_contract_type': 1}</field>
             <field name="search_view_id" ref="hr_contract_view_search"/>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
