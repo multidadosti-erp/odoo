@@ -470,9 +470,23 @@ class MailActivity(models.Model):
             activity['mail_template_ids'] = [mail_template_dict[mail_template_id] for mail_template_id in activity['mail_template_ids']]
         return activities
 
+    @api.multi
+    def _get_activity_data_basic_domain(self, res_model):
+        """ Adicionado pela Multidados:
+        Adicionado função para obter o domain das atividades na
+        view do tipo Atividades para as models.
+
+        Args:
+            res_model (str): model a encontrar atividades
+
+        Returns:
+            list: domain para busca de atividades
+        """
+        return [('res_model', '=', res_model)]
+
     @api.model
     def get_activity_data(self, res_model, domain):
-        activity_domain = [('res_model', '=', res_model)]
+        activity_domain = self._get_activity_data_basic_domain(res_model)
         if domain:
             res = self.env[res_model].search(domain)
             activity_domain.append(('res_id', 'in', res.ids))
