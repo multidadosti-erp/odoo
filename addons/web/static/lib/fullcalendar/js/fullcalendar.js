@@ -4919,6 +4919,10 @@ Grid.mixin({
 			seg.event = event;
 			seg.eventStartMS = +span.start; // TODO: not the best name after making spans unzoned
 			seg.eventDurationMS = span.end - span.start;
+
+            // Adicionado pela Multidados:
+            // mantém o evento readonly caso o campo 'is_calendar_fixed' = True
+            event.editable = !((event.record || {}).is_calendar_fixed );
 		}
 
 		return segs;
