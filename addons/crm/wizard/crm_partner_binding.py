@@ -31,7 +31,6 @@ class PartnerBinding(models.TransientModel):
     action = fields.Selection([
         ('exist', 'Link to an existing customer'),
         ('create', 'Create a new customer'),
-        ('nothing', 'Do not link to a customer')
     ], 'Related Customer', required=True)
     partner_id = fields.Many2one('res.partner', 'Customer')
 
