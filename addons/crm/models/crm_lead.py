@@ -861,7 +861,7 @@ class Lead(models.Model):
             otherwise assign lead to the specified partner_id
 
             :param list ids: leads/opportunities ids to process
-            :param string action: what has to be done regarding partners (create it, assign an existing one, or nothing)
+            :param string action: what has to be done regarding partners (create it or assign an existing one)
             :param int partner_id: partner to assign if any
             :return dict: dictionary organized as followed: {lead_id: partner_assigned_id}
         """

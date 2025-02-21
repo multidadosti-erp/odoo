@@ -40,8 +40,7 @@ class Lead2OpportunityPartner(models.TransientModel):
                 result['user_id'] = lead.user_id.id
             if lead.team_id:
                 result['team_id'] = lead.team_id.id
-            if not partner_id and not lead.contact_name:
-                result['action'] = 'nothing'
+
         return result
 
     name = fields.Selection([
@@ -182,7 +181,6 @@ class Lead2OpportunityMassConvert(models.TransientModel):
     deduplicate = fields.Boolean('Apply deduplication', default=True, help='Merge with existing leads/opportunities of each partner')
     action = fields.Selection([
         ('each_exist_or_create', 'Use existing partner or create'),
-        ('nothing', 'Do not link to a customer')
     ], 'Related Customer', required=True)
     force_assignation = fields.Boolean('Force assignation', help='If unchecked, this will leave the salesman of duplicated opportunities')
 
