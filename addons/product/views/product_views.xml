@@ -68,7 +68,7 @@
                                     </div>
                                 </group>
                                 <group string="Internal Notes">
-                                    <field name="description" nolabel="1" placeholder="This note is only for internal purposes."/>
+                                    <field name="description" nolabel="1" widget="html" placeholder="This note is only for internal purposes."/>
                                 </group>
                             </group>
                         </page>
