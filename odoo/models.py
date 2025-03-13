@@ -2109,7 +2109,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         return data
 
     @api.model
-    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True, fields_list_computed=None):
         """
         Get the list of records in list view grouped by the given ``groupby`` fields
 
@@ -2162,6 +2162,22 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 # leave the `False` value alone
                 if group.get(df):
                     group[df] = group[df][1]
+
+        # Multidados: 
+        #    Adiciona fields_list_computed para poder Calcular campos computed
+        if isinstance(fields_list_computed, list):
+            dynamic_fields = [field for field in fields_list_computed if field in fields]
+            if dynamic_fields:
+                for line in result:
+                    if "__domain" in line:
+                        lines = self.search(line["__domain"])
+                        totals = {field: 0.0 for field in dynamic_fields}
+                        for record in lines:
+                            for field in dynamic_fields:
+                                totals[field] += getattr(record, field, 0.0)
+                        for field, total in totals.items():
+                            line[field] = total
+
         return result
 
     @api.model
