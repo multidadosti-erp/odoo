@@ -1485,6 +1485,29 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 raise UserError(_("No default view of type '%s' could be found !") % view_type)
         return result
 
+    def _bindings_to_toolbar(self, bindings, view_type):
+        """ Adiciona bindings das actions ao toolbar.
+        Dessa forma podemos herdar e adicionar novas formas
+        de binding, como o 'export_action' adicionado no modulo
+        'br_base_export_excel'.
+        """
+        resreport = [action for action in bindings['report']
+                    if view_type == 'tree' or not action.get('multi')]
+        resaction = [action for action in bindings['action']
+                    if view_type == 'tree' or not action.get('multi')]
+        resrelate = []
+
+        if view_type == 'form':
+            resrelate = bindings['action_form_only']
+
+        for res in itertools.chain(resreport, resaction):
+            res['string'] = res['name']
+        return {
+            'print': resreport,
+            'action': resaction,
+            'relate': resrelate,
+        }
+
     @api.model
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         """ fields_view_get([view_id | view_type='form'])
@@ -1518,24 +1541,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         # Add related action information if aksed
         if toolbar:
             bindings = self.env['ir.actions.actions'].get_bindings(self._name)
-            resreport = [action
-                         for action in bindings['report']
-                         if view_type == 'tree' or not action.get('multi')]
-            resaction = [action
-                         for action in bindings['action']
-                         if view_type == 'tree' or not action.get('multi')]
-            resrelate = []
-            if view_type == 'form':
-                resrelate = bindings['action_form_only']
-
-            for res in itertools.chain(resreport, resaction):
-                res['string'] = res['name']
-
-            result['toolbar'] = {
-                'print': resreport,
-                'action': resaction,
-                'relate': resrelate,
-            }
+            result['toolbar'] = self._bindings_to_toolbar(bindings, view_type)
         return result
 
     @api.multi
@@ -2163,7 +2169,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 if group.get(df):
                     group[df] = group[df][1]
 
-        # Multidados: 
+        # Multidados:
         #    Adiciona fields_list_computed para poder Calcular campos computed
         if isinstance(fields_list_computed, list):
             dynamic_fields = [field for field in fields_list_computed if field in fields]
@@ -3601,8 +3607,8 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     self.env['ir.translation']._sync_terms_translations(field, self)
                 elif has_translation and field.translate:
                     # The translated value of a field has been modified.
-                    
-                    # Multidados: Adicionado o Sudo para resolver os casos de campos related 
+
+                    # Multidados: Adicionado o Sudo para resolver os casos de campos related
                     # com tabelas sem acesso pelo usuário.
                     src_trans = self.sudo().read([name])[0][name]
 
