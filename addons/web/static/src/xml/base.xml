@@ -395,6 +395,16 @@
         <button type="button" class="btn btn-secondary o_list_button_discard" accesskey="j">
             Discard
         </button>
+        <t>
+            <button type="button" class="btn btn-secondary dropdown-toggle"
+                    data-toggle="dropdown" aria-expanded="false">
+                <span class="fa fa-file-excel-o"></span>
+                Export
+            </button>
+            <div id="o_list_button_exports" class="dropdown-menu o_dropdown_menu o_list_button_exports" role="menu">
+                <!-- Append on herited modules -->
+            </div>
+        </t>
     </div>
 </t>
 
