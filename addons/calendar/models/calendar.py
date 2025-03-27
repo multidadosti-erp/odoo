@@ -618,6 +618,7 @@ class Meeting(models.Model):
                                     self.env['mail.activity.type'].search([('category', '=', 'meeting')], limit=1).id
         }
         if vals['res_model_id'] and vals['res_id'] and vals['activity_type_id']:
+            vals['res_model'] = self.env['ir.model'].sudo().browse(vals['res_model_id']).model
             user_id = values.get('user_id', defaults.get('user_id'))
             if user_id:
                 vals['user_id'] = user_id
@@ -1954,7 +1955,7 @@ class Meeting(models.Model):
             activity_values['summary'] = values['name']
         if values.get('description'):
             activity_values['note'] = tools.plaintext2html(values['description'])
-        if values.get('start') or values.get('stop'):
+        if values.get('start'):
             # self.start is a datetime UTC *only when the event is not allday*
             # activty.date_deadline is a date (No TZ, but should represent the day in which the user's TZ is)
             # See 72254129dbaeae58d0a2055cba4e4a82cde495b7 for the same issue, but elsewhere

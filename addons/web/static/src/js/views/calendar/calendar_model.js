@@ -548,14 +548,49 @@ return AbstractModel.extend({
         }
 
         var field = this.fields[filter.fieldName];
+
+        // Adicionado pela Multidados:
+        // FIXME: hack para resolver problema de self não declarado
+        // - mesmo criando uma "var self = this;" no inicio da função,
+        // o self não é reconhecido dentro do rpc por algum motivo misterioso.
+        field.parent = this;
+
         return this._rpc({
                 model: filter.write_model,
                 method: 'search_read',
                 domain: [["user_id", "=", session.uid]],
                 fields: [filter.write_field],
             })
+            // Adicionado pela Multidados:
+            //  Carregamentos dos filtros padrão para registros relacionados.
+            //  Adiciona chamada de RPC para gravar o nome dos registros relacionados.
             .then(function (res) {
-                var records = _.map(res, function (record) {
+                if (_.contains(['many2many', 'one2many', 'many2one'], field.type)) {
+                    _.each(filter.records, (r) => {r.id = r.value;});
+                    if ((filter.records || []).length) {
+
+                        // FIXME: hack para resolver problema de self não declarado
+                        return field.parent._rpc({
+                            model: field.relation,
+                            method: 'name_get',
+                            args: _.pluck(filter.records, 'id'),
+                        }).then(function (result) {
+                            _.each(filter.records, function (record) {
+                                record.label = (_.find(result, (rec_name) => {
+                                    return rec_name[0] === record.id;
+                                }) || [0, _t('? Name not found ?')])[1];
+                            });
+                            return res;
+                        });
+                    }
+                }
+                return res;
+            })
+            .then(function (res) {
+                // Alterado pela Multidados:
+                // Além de obter os registros relacionados, são incluídos os
+                // registros ja carregados por padrão nos context ('search_default')
+                var records = _.union(_.map(res, function (record) {
                     var _value = record[filter.write_field];
                     var value = _.isArray(_value) ? _value[0] : _value;
                     var f = _.find(filter.filters, function (f) {return f.value === value;});
@@ -566,7 +601,7 @@ return AbstractModel.extend({
                         'label': formater(_value, field),
                         'active': !f || f.active,
                     };
-                });
+                }), filter.records);
                 records.sort(function (f1,f2) {
                     return _.string.naturalCmp(f2.label, f1.label);
                 });
@@ -639,15 +674,57 @@ return AbstractModel.extend({
 
             var fs = [];
             var undefined_fs = [];
-            _.each(events, function (event) {
-                var data =  event.record[fieldName];
+
+            // Alterado pela Multidados:
+            // Quando carregados filtros de campos many2many ou one2many
+            // são incluídos os registros relacionados no to_read para
+            // posteriormente serem carregados os nomes dos registros.
+
+            if (!_.contains(['many2many', 'one2many'], field.type)) {
+                _.each(events, function (event) {
+                    var data =  event.record[fieldName];
+                    if (!_.contains(['many2many', 'one2many'], field.type)) {
+                        data = [data];
+                    } else {
+                        to_read[field.relation] = (to_read[field.relation] || []).concat(data);
+                    }
+                    _.each(data, function (_value) {
+                        var value = _.isArray(_value) ? _value[0] : _value;
+                        var f = {
+                            'color_index': self.model_color === (field.relation || element.model) ? value : false,
+                            'value': value,
+                            'label': fieldUtils.format[field.type](_value, field) || _t("Undefined"),
+                            'avatar_model': field.relation || element.model,
+                        };
+                        // if field used as color does not have value then push filter in undefined_fs,
+                        // such filters should come last in filter list with Undefined string, later merge it with fs
+                        value ? fs.push(f) : undefined_fs.push(f);
+                    });
+                });
+            }
+
+            // Adicionado pela Multidados:
+            // Adiciona no carregamentos dos registros relacionados, o carregamento
+            // dos registros que devem ser carregados por padrão, independentemente
+            // se ele está presente nos eventos carregados.
+            _.each(filter.records, function (record) {
+                // filter.records contém os valores para os filtros padrões
+                var data =  record.value;
                 if (!_.contains(['many2many', 'one2many'], field.type)) {
                     data = [data];
                 } else {
                     to_read[field.relation] = (to_read[field.relation] || []).concat(data);
+                    //return;  // FIXME: Desenvolvimento talvez necessário para campos many2many e one2many
+                             //       que não estão sendo carregados corretamente.
                 }
                 _.each(data, function (_value) {
                     var value = _.isArray(_value) ? _value[0] : _value;
+                    // Verifica se o valor já foi carregado
+                    if (_.find(fs, function (f) {return f.value === value})) {
+                        return;
+                    }
+                    // Cria filtros para os registros passados no contexto de busca
+                    // de filtro padrões ('search_default')
                     var f = {
                         'color_index': self.model_color === (field.relation || element.model) ? value : false,
                         'value': value,
@@ -670,6 +747,9 @@ return AbstractModel.extend({
             });
         });
 
+        // TODO: Adicionado pela Multidados:
+        // VER AQUI para entendimento do carregamento do nome dos
+        // registros relacionados
         var defs = [];
         _.each(to_read, function (ids, model) {
             defs.push(self._rpc({

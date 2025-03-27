@@ -39,6 +39,7 @@ var CalendarView = AbstractView.extend({
         var arch = this.arch;
         var fields = this.fields;
         var attrs = arch.attrs;
+        params.action = params.action || {};
 
         if (!attrs.date_start) {
             throw new Error(_lt("Calendar view has not defined 'date_start' attribute."));
@@ -109,6 +110,66 @@ var CalendarView = AbstractView.extend({
             }
         }
 
+        // Adicionado pela Multidados:
+        // Adiciona a obtenção dos filtros padrões, passados pelo
+        // contexto da ação com o prefixo ('search_default_')
+        var searchViewFilters = _.map(_.map(
+            (params.action.searchView || {}).filters, function (filters) {
+                return filters.filters;
+            }
+        ), function (filter) {
+            return _.map(filter, (fs) => {return (fs.attrs || {}).name} );
+        }).flat() || [];
+
+        var default_filters = {};
+        if (params.action.context) {
+            // Filtra o contexto de chaves que começam com 'search_default_'
+            default_filters = _.pick(params.action.context, (val, key) => {
+                var field_name = key.startsWith('search_default_') && key.replace(/^search_default_/, '');
+                var filter_conflict = fields[field_name] && _.contains(searchViewFilters, field_name);
+                if (filter_conflict) {
+                    console.warn('Conflito "' + field_name + '": foi encontrado na busca');
+                }
+                return field_name && !filter_conflict;
+            });
+            // Remove o prefixo dos campos
+            default_filters = _.object(
+                // Novas chaves (somente o nome do campo)
+                _.map(default_filters, (v,k) => {return k.replace(/^search_default_/, '')}),
+                // Novos valores
+                _.map(default_filters, (v,k) => {return v})
+            );
+        }
+
+        // Adicionado pela Multidados:
+        // Cria os registros de filtro padrão no mesmo formato
+        // utilizado para a criação dos registros de filtro, e os
+        // salva em 'filters.records'
+        _.each(default_filters, function (value, field) {
+            if (filters[field]) {
+                if (typeof value === 'object') {
+                    filters[field].records = _.map(value, function (v) {
+                        return {
+                            'value': v,
+                            'active': true,
+                        };
+                    });
+                } else {
+                    filters[field].records = [{
+                        'value': value,
+                        'active': true,
+                    }];
+                }
+            }
+            // Se o campo for do tipo many2many, one2many ou many2one
+            // é necessário adicionar o campo 'id' para que o filtro
+            // funcione corretamente
+            if (_.contains(['many2many', 'one2many', 'many2one'], fields[field].type)) {
+                _.each(filters[field].records, function (record) {
+                    record.id = record.value;
+                });
+            }
+        });
         if (_.isEmpty(displayFields)) {
             displayFields = fields.display_name ? {'display_name': {}} : [];
         }
@@ -155,6 +216,7 @@ var CalendarView = AbstractView.extend({
         this.loadParams.fieldColor = attrs.color;
 
         this.loadParams.filters = filters;
+        this.loadParams.default_filters = default_filters;
         this.loadParams.mode = (params.context && params.context.default_mode) || attrs.mode;
         this.loadParams.initialDate = moment(params.initialDate ||
             (params.context && params.context.initial_date) ||

@@ -42,10 +42,21 @@ class Partner(models.Model):
             operator = 'child_of' if partner.is_company else '='  # the opportunity count should counts the opportunities of this company and all its contacts
             partner.opportunity_count = self.env['crm.lead'].search_count([('partner_id', operator, partner.id), ('type', '=', 'opportunity')])
 
+    def _get_meetings(self):
+        """ Adicionado pela Multidados
+
+        Método retorna as reuniões do parceiro.
+        Foi adicionado para heranças em outros módulos.
+
+        Returns:
+            recordset: Os registros de reuniões associados ao parceiro.
+        """
+        return self.meeting_ids
+
     @api.multi
     def _compute_meeting_count(self):
         for partner in self:
-            partner.meeting_count = len(partner.meeting_ids)
+            partner.meeting_count = len(partner._get_meetings())
 
     @api.multi
     def schedule_meeting(self):
