@@ -59,7 +59,7 @@ var Domain = collections.Tree.extend({
             // We split the domain first part and check if it's a match
             // for the syntax 'parent.field'.
             var parentField = this._data[0].split('.');
-            
+
             if ('parent' in values && parentField.length === 2) {
                 fieldName = parentField[1];
                 isParentField = parentField[0] === 'parent' &&
@@ -67,7 +67,7 @@ var Domain = collections.Tree.extend({
             }
 
             if (!(this._data[0] in values) && !(isParentField)) {
-                // Multidados: Antes de gerar erro, verifica se o campo 
+                // Multidados: Antes de gerar erro, verifica se o campo
                 // existe nos values, evitando o Erro no Form pois no Dialog
                 // o parent funciona.
                 if (parentField.length === 2) {
@@ -294,7 +294,7 @@ var Domain = collections.Tree.extend({
                     "('" + fieldName + "', '>=', " +
                     "(datetime.datetime.combine(context_today() + relativedelta(" + leftBoundaryStringifyParams + "), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S'))," +
                     "('" + fieldName + "', '<', " +
-                    "(datetime.datetime.combine(context_today() + relativedelta(" + rightBoundaryStringifyParams + "), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S'))"+
+                    "(datetime.datetime.combine(context_today() + relativedelta(" + rightBoundaryStringifyParams + "), datetime.time(23,59,59)).to_utc()).strftime('%Y-%m-%d %H:%M:%S'))"+
                     "]";
             }
         }
@@ -329,7 +329,7 @@ var Domain = collections.Tree.extend({
                 return makeInterval();
             case 'yesterday':
                 leftBoundaryParams = {days: -1};
-                rightBoundaryParams = (t ? {days: -1} : {});
+                rightBoundaryParams = {days: -1};
                 offsetPeriodParams = {days: -1};
                 return makeInterval();
             case 'last_week':
