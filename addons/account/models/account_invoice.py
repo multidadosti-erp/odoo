@@ -1568,10 +1568,12 @@ class AccountInvoice(models.Model):
         # Atualiza os campos da fatura
         update_vals = {
             "account_id": account_id,
-            "payment_term_id": payment_term_id,
             "date_due": False,
-            "fiscal_position_id": fiscal_position,
         }
+        if payment_term_id:
+            update_vals.update({"payment_term_id": payment_term_id})
+        if fiscal_position:
+            update_vals.update({"fiscal_position_id": fiscal_position})
 
         # Define o domínio para o campo de conta bancária
         if invoice_type in ("in_invoice", "out_refund"):
