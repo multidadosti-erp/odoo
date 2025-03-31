@@ -71,7 +71,7 @@ class AccountInvoice(models.Model):
         """
         invoice_line_ids = self.invoice_line_ids
         values = {}
-        
+
         if invoice_line_ids:
             round_curr = self.currency_id.round
 
@@ -1178,9 +1178,11 @@ class AccountInvoice(models.Model):
             if partner.supplier and not partner.customer:
                 view_id = self.env.ref(
                     "account.invoice_supplier_form", raise_if_not_found=False
-                )
+                ).id
             elif partner.customer and not partner.supplier:
-                view_id = self.env.ref("account.invoice_form", raise_if_not_found=False)
+                view_id = self.env.ref(
+                    "account.invoice_form", raise_if_not_found=False
+                ).id
 
         return super(AccountInvoice, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
 
