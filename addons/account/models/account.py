@@ -1035,12 +1035,31 @@ class AccountTax(models.Model):
             self.include_base_amount = True
 
     def get_grouping_key(self, invoice_tax_val):
-        """ Returns a string that will be used to group account.invoice.tax sharing the same properties"""
+        """
+        Retorna uma string usada para agrupar account.invoice.tax que compartilham as mesmas propriedades.
+
+        :param invoice_tax_val: Dicionário contendo os valores do imposto da fatura.
+        :return: String representando a chave de agrupamento.
+        """
         self.ensure_one()
-        return str(invoice_tax_val['tax_id']) + '-' + \
-               str(invoice_tax_val['account_id']) + '-' + \
-               str(invoice_tax_val['account_analytic_id']) + '-' + \
-               str(invoice_tax_val.get('analytic_tag_ids', []))
+
+        # Constrói a chave de agrupamento de forma eficiente utilizando join
+        keys = [
+            str(invoice_tax_val['tax_id']),
+            str(invoice_tax_val['account_id']),
+        ]
+
+        # Adiciona account_analytic_id se presente
+        account_analytic_id = invoice_tax_val.get('account_analytic_id')
+        if account_analytic_id:
+            keys.append(str(account_analytic_id))
+
+        # Adiciona analytic_tag_ids se presente
+        analytic_tag_ids = invoice_tax_val.get('analytic_tag_ids')
+        if analytic_tag_ids:
+            keys.append(str(analytic_tag_ids))
+
+        return '-'.join(keys)
 
     def _compute_amount(self, base_amount, price_unit, quantity=1.0, product=None, partner=None):
         """ Returns the amount of a single tax. base_amount is the actual amount on which the tax is applied, which is
