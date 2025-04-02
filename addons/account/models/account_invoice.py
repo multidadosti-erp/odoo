@@ -1472,32 +1472,17 @@ class AccountInvoice(models.Model):
         """
         Atualiza as linhas de imposto da fatura com base nas linhas de itens da fatura.
 
-        Este método foi otimizado para melhorar a performance ao evitar operações desnecessárias
-        e utiliza uma abordagem direta para atualizar as linhas de imposto.
-
-        - Calcula os valores dos impostos agrupados.
-        - Mantém as linhas de imposto manuais existentes.
-        - Adiciona novas linhas de imposto com base nos valores calculados.
-
         Retorno:
             None
         """
         # Calcula os valores dos impostos agrupados
         taxes_grouped = self.get_taxes_values()
-        manual_tax_lines = {
-            tax.tax_id.id: tax for tax in self.tax_line_ids.filtered("manual")
-        }
-        new_tax_lines = []
-
+        tax_lines = self.tax_line_ids.filtered('manual')
+       
         for tax in taxes_grouped.values():
-            if tax["tax_id"] in manual_tax_lines:
-                manual_tax_lines[tax["tax_id"]].update(tax)
-            else:
-                new_tax_lines.append((0, 0, tax))
-
-        self.tax_line_ids = [
-            (1, tax.id, {}) for tax in manual_tax_lines.values()
-        ] + new_tax_lines
+            tax_lines += tax_lines.new(tax)
+        
+        self.tax_line_ids = tax_lines
 
         return
 
@@ -1901,7 +1886,7 @@ class AccountInvoice(models.Model):
         # Determina a conta analítica, se aplicável
         account_analytic_id = (
             line.account_analytic_id.id
-            if tax["analytic"] or account_id == line.account_id.id
+            if tax["analytic"] # or account_id == line.account_id.id    Multidados: comentado até uma solução completa
             else False
         )
 
@@ -1946,7 +1931,6 @@ class AccountInvoice(models.Model):
                 self.partner_id,
             )["taxes"]
 
-            # Processa cada imposto calculado
             for tax in taxes:
                 val = self._prepare_tax_line_vals(line, tax)
                 key = self.env["account.tax"].browse(tax["id"]).get_grouping_key(val)
