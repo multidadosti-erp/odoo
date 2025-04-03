@@ -165,9 +165,11 @@ var CalendarView = AbstractView.extend({
             // é necessário adicionar o campo 'id' para que o filtro
             // funcione corretamente
             if (_.contains(['many2many', 'one2many', 'many2one'], fields[field].type)) {
-                _.each(filters[field].records, function (record) {
-                    record.id = record.value;
-                });
+                if (filters[field] && filters[field].records) {
+                    _.each(filters[field].records, function (record) {
+                        record.id = record.value;
+                    });
+                }
             }
         });
         if (_.isEmpty(displayFields)) {
