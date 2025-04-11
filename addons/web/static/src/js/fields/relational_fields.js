@@ -929,6 +929,17 @@ var FieldX2Many = AbstractField.extend({
         return true;
     },
     /**
+     * Adicionado pela Multidados:
+     * Adiciona função para ser extendida no módulo br_base em
+     * 'list_editable_renderer.js' para bloquear a exclusão de registros
+     * ao abrir o form.
+     *
+     * @returns {boolean} Se deve poder deletar registros
+     */
+    _isDeletable: function (id) {
+        return this.activeActions.delete;
+    },
+    /**
      * @override
      * @param {Object} record
      * @param {OdooEvent} [ev] an event that triggered the reset action
@@ -1512,7 +1523,7 @@ var FieldOne2Many = FieldX2Many.extend({
             fields_view: this.attrs.views && this.attrs.views.form,
             parentID: this.value.id,
             viewInfo: this.view,
-            deletable: this.activeActions.delete,
+            deletable: 'deletable' in params ? params.deletable : this.activeActions.delete,
         }));
     },
 
@@ -1614,7 +1625,7 @@ var FieldOne2Many = FieldX2Many.extend({
             on_remove: function () {
                 self._setValue({operation: 'DELETE', ids: [id]});
             },
-            deletable: this.activeActions.delete,
+            deletable: this._isDeletable(id, ev.target),
             readonly: this.mode === 'readonly',
         });
     },
@@ -1685,7 +1696,7 @@ var FieldMany2Many = FieldX2Many.extend({
                 self._setValue({operation: 'FORGET', ids: [ev.data.id]});
             },
             readonly: this.mode === 'readonly',
-            deletable: this.activeActions.delete,
+            deletable: this._isDeletable(ev.data.id, ev.target),
             string: this.string,
         });
     },
@@ -2856,6 +2867,7 @@ return {
     ListFieldMany2One: ListFieldMany2One,
 
     FieldOne2Many: FieldOne2Many,
+    FieldX2Many: FieldX2Many,
 
     FieldMany2Many: FieldMany2Many,
     FieldMany2ManyBinaryMultiFiles: FieldMany2ManyBinaryMultiFiles,
