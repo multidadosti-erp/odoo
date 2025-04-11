@@ -7,6 +7,8 @@
             </xpath>
         </template>
 
+        <function model="mail.template" name="fix_email_template_body_html"/>
+
         <template id="assets_backend" name="mail assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/mail/static/src/js/many2many_tags_email.js"></script>
@@ -127,7 +129,7 @@
                     <script type="text/javascript" src="/mail/static/tests/models/cc_throttle_function_tests.js"></script>
                     <script type="text/javascript" src="/mail/static/tests/models/timer_tests.js"></script>
                     <script type="text/javascript" src="/mail/static/tests/models/timers_tests.js"></script>
-                <!-- activity view --> 
+                <!-- activity view -->
                 <script type="text/javascript" src="/mail/static/tests/activity_tests.js"></script>
             </xpath>
         </template>
