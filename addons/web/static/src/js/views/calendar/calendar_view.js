@@ -164,13 +164,16 @@ var CalendarView = AbstractView.extend({
             // Se o campo for do tipo many2many, one2many ou many2one
             // é necessário adicionar o campo 'id' para que o filtro
             // funcione corretamente
-            if (_.contains(['many2many', 'one2many', 'many2one'], fields[field].type)) {
-                if (filters[field] && filters[field].records) {
-                    _.each(filters[field].records, function (record) {
-                        record.id = record.value;
-                    });
+            if (field in filters && filters[field]) {
+                if (_.contains(['many2many', 'one2many', 'many2one'], fields[field].type)) {
+                    if (filters[field].records) {
+                        _.each(filters[field].records, function (record) {
+                            record.id = record.value;
+                        });
+                    }
                 }
             }
+
         });
         if (_.isEmpty(displayFields)) {
             displayFields = fields.display_name ? {'display_name': {}} : [];
