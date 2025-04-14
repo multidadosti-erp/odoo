@@ -571,37 +571,3 @@ class MailTemplate(models.Model):
         if force_send:
             mail.send(raise_exception=raise_exception)
         return mail.id  # TDE CLEANME: return mail + api.returns ?
-
-    # TODO Remover apos update de 13/04
-    @api.model
-    def fix_email_template_body_html(self):
-        model_data_ids = self.env["ir.model.data"].search(
-            [
-                (
-                    "name",
-                    "in",
-                    (
-                        "mail_activity_scheduled_for_email_template",
-                        "mail_activity_participant_email_template",
-                    ),
-                )
-            ]
-        )
-
-        templates = self.env["mail.template"].search(
-            [("id", "in", [md.res_id for md in model_data_ids])]
-        )
-        translations = self.env["ir.translation"].search(
-            [
-                ("name", "=", "mail.template,body_html"),
-                ("res_id", "in", [md.res_id for md in model_data_ids]),
-            ]
-        )
-
-        for trans in translations:
-            trans.write({"src": trans.value})
-
-            for temp in templates:
-
-                if trans.res_id == temp.id:
-                    temp.write({"body_html": trans.value})
