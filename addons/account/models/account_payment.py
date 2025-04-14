@@ -78,6 +78,13 @@ class account_abstract_payment(models.AbstractModel):
             for inv in invoices)
         return multi
 
+    def check_invoice_open(self, invoices):
+        """ Check if all invoices are open """
+        if any(invoice.state not in ("open", "blocked") for invoice in invoices):
+            raise UserError(_("You can only register payments for open invoices"))
+
+        return True
+
     @api.model
     def default_get(self, fields):
         rec = super(account_abstract_payment, self).default_get(fields)
@@ -99,8 +106,7 @@ class account_abstract_payment(models.AbstractModel):
             invoices = self.env['account.invoice'].browse(active_ids)
 
         # Check all invoices are open
-        if any(invoice.state != 'open' for invoice in invoices):
-            raise UserError(_("You can only register payments for open invoices"))
+        self.check_invoice_open(invoices=invoices)
 
         # Check all invoices have the same currency
         if any(inv.currency_id != invoices[0].currency_id for inv in invoices):
