@@ -1607,6 +1607,26 @@ class SaleOrderLine(models.Model):
 
         return result
 
+    def get_uom_qty_change(self):
+        """
+        Retorna se houve alteração na quantidade da unidade de medida.
+        Por padrão, retorna False. Este método pode ser sobrescrito em módulos específicos, como l10n_br.
+
+        Retorno:
+            bool: False, indicando que não houve alteração.
+        """
+        return False
+
+    def get_old_price(self):
+        """
+        Retorna o valor original do preço unitário.
+        Por padrão, retorna 0. Este método pode ser sobrescrito em módulos específicos, como l10n_br.
+
+        Retorno:
+            Float: 0, indicando que não há preço original. Pois não funcionado no Odoo padrão.
+        """
+        return 0
+
     @api.onchange('product_uom', 'product_uom_qty')
     def product_uom_change(self):
         if not self.product_uom or not self.product_id:
@@ -1622,10 +1642,8 @@ class SaleOrderLine(models.Model):
                 pricelist=self.order_id.pricelist_id.id,
                 uom=self.product_uom.id,
                 fiscal_position=self.env.context.get("fiscal_position"),
-                uom_qty_change=self.env.context.get(
-                    "uom_qty_change", False
-                ),  # flag vem do campo de quantidade da view
-                old_price=self.price_unit,  # valor original, em caso onde nao desejamos alterar o preco unitario
+                uom_qty_change=self.get_uom_qty_change(),
+                old_price=self.get_old_price(),
             )
 
             self.price_unit = self.env["account.tax"]._fix_tax_included_price_company(
