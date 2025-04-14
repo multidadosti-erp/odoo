@@ -214,16 +214,21 @@ class Pricelist(models.Model):
             price_uom = self.env["uom.uom"].browse([qty_uom_id])
 
             for rule in items:
-                # Em casos onde a tag 'uom_qty_change' esta presente no contexto (indica
-                # que o metodo foi chamado devido ao onchange de campo de quantidade) e
-                # a quantidade minima do produto na lista de preço é zero, nós mantemos
-                # o valor original do preço unitario. Isso impede que o valor de preco
-                # unitario inserido pelo usuario seja sobrescrito pelo valor da lista de
-                # preco quando a quantidade do produto e alterada no orçamento.
-                if not rule.min_quantity and self.env.context.get(
-                    "uom_qty_change", False
-                ):
-                    price = self.env.context.get("old_price", 0)
+                # Recupera valores do contexto para evitar múltiplas chamadas ao método `get`
+                old_price = self.env.context.get("old_price", 0)
+                uom_qty_change = self.env.context.get("uom_qty_change", False)
+
+                # Se a quantidade mínima não for definida e o contexto indicar alteração de quantidade
+                # de unidade de medida (uom_qty_change), e o preço antigo for maior que zero,
+                # mantém o preço antigo e continua para a próxima regra.
+                if not rule.min_quantity and uom_qty_change and old_price > 0:
+                    # Quando a tag 'uom_qty_change' está presente no contexto (indicando
+                    # que o método foi acionado devido a um onchange no campo de quantidade)
+                    # e a quantidade mínima do produto na lista de preços é zero, o preço
+                    # unitário original é mantido. Isso evita que o preço unitário inserido
+                    # manualmente pelo usuário seja sobrescrito pelo valor da lista de preços
+                    # ao alterar a quantidade do produto em um orçamento.
+                    price = old_price
                     continue
 
                 if rule.min_quantity and qty_in_product_uom < rule.min_quantity:
