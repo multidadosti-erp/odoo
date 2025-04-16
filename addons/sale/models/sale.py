@@ -84,7 +84,7 @@ class SaleOrder(models.Model):
             ])
             if domain_inv:
                 refund_ids = self.env['account.invoice'].search(expression.AND([
-                    ['&', ('type', '=', 'out_refund'), ('origin', '!=', False)], 
+                    ['&', ('type', '=', 'out_refund'), ('origin', '!=', False)],
                     domain_inv
                 ]))
             else:
@@ -1507,6 +1507,7 @@ class SaleOrderLine(models.Model):
         # TO DO: move me in master/saas-16 on sale.order
         # awa: don't know if it's still the case since we need the "product_no_variant_attribute_value_ids" field now
         # to be able to compute the full price
+        pricelist = self.order_id.pricelist_id
 
         # it is possible that a no_variant attribute is still in a variant if
         # the type of the attribute has been changed after creation.
@@ -1522,16 +1523,16 @@ class SaleOrderLine(models.Model):
                 no_variant_attributes_price_extra=no_variant_attributes_price_extra
             )
 
-        if self.order_id.pricelist_id.discount_policy == 'with_discount':
-            return product.with_context(pricelist=self.order_id.pricelist_id.id, uom=self.product_uom.id).price
+        if pricelist.discount_policy == 'with_discount':
+            return product.with_context(pricelist=pricelist.id, uom=self.product_uom.id).price
 
         product_context = dict(self.env.context, partner_id=self.order_id.partner_id.id, date=self.order_id.date_order, uom=self.product_uom.id)
 
-        final_price, rule_id = self.order_id.pricelist_id.with_context(product_context).get_product_price_rule(product or self.product_id, self.product_uom_qty or 1.0, self.order_id.partner_id)
-        base_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id, self.product_uom_qty, self.product_uom, self.order_id.pricelist_id.id)
-        if currency != self.order_id.pricelist_id.currency_id:
+        final_price, rule_id = pricelist.with_context(product_context).get_product_price_rule(product or self.product_id, self.product_uom_qty or 1.0, self.order_id.partner_id)
+        base_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id, self.product_uom_qty, self.product_uom, pricelist.id)
+        if currency != pricelist.currency_id:
             base_price = currency._convert(
-                base_price, self.order_id.pricelist_id.currency_id,
+                base_price, pricelist.currency_id,
                 self.order_id.company_id or self.env.user.company_id, self.order_id.date_order or fields.Date.today())
         # negative discounts (= surcharge) are included in the display price
         return max(base_price, final_price)
