@@ -116,7 +116,7 @@ class Pricelist(models.Model):
             date = self._context.get("date") or fields.Date.today()
 
         # boundary conditions differ if we have a datetime
-        date = fields.Date.to_date(date)  
+        date = fields.Date.to_date(date)
 
         if not uom_id and self._context.get("uom"):
             uom_id = self._context["uom"]
@@ -459,6 +459,16 @@ class PricelistItem(models.Model):
     categ_id = fields.Many2one(
         'product.category', 'Product Category', ondelete='cascade', index=True,
         help="Specify a product category if this rule only applies to products belonging to this category or its children categories. Keep empty otherwise.")
+
+    # Adicionado pela Multidados
+    # Para definir o preço específico para um parceiro
+    partner_id = fields.Many2one(
+        "res.partner",
+        string="Partner",
+        ondelete="cascade",
+        index=True,
+    )
+
     min_quantity = fields.Integer(
         'Min. Quantity', default=0,
         help="For the rule to apply, bought/sold quantity must be greater "
