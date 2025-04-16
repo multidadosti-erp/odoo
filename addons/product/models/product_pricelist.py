@@ -147,6 +147,10 @@ class Pricelist(models.Model):
         else:
             products = [item[0] for item in products_qty_partner]
 
+        # Get the partner id
+        partner_id = [item[2].id for item in products_qty_partner if item[2]]
+        partner_id = partner_id[0] if len(set(partner_id)) == 1 else 0
+
         if not products:
             return {}
 
@@ -175,16 +179,32 @@ class Pricelist(models.Model):
 
         # Load all rules
         self._cr.execute(
-            "SELECT string_agg(item.id::text, ',') AS ids "
-            "FROM product_pricelist_item AS item "
-            "  LEFT JOIN product_category AS categ ON item.categ_id = categ.id "
-            "WHERE (item.product_tmpl_id IS NULL OR item.product_tmpl_id = any(%s))"
-            "  AND (item.product_id IS NULL OR item.product_id = any(%s))"
-            "  AND (item.categ_id IS NULL OR item.categ_id = any(%s)) "
-            "  AND (item.pricelist_id = %s) "
-            "  AND (item.date_start IS NULL OR item.date_start<=%s) "
-            "  AND (item.date_end IS NULL OR item.date_end>=%s)",
-            (prod_tmpl_ids, prod_ids, categ_ids, self.id, date, date),
+            "WITH list_prices AS ( "
+            "  SELECT id, product_tmpl_id, product_id, categ_id, date_start, date_end, partner_id"
+            "  FROM product_pricelist_item item"
+            "  WHERE (item.product_tmpl_id IS NULL OR item.product_tmpl_id = any(%s))"
+            "   AND (item.product_id IS NULL OR item.product_id = any(%s))"
+            "   AND (item.categ_id IS NULL OR item.categ_id = any(%s)) "
+            "   AND (item.pricelist_id = %s) "
+            "   AND (item.date_start IS NULL OR item.date_start<=%s) "
+            "   AND (item.date_end IS NULL OR item.date_end>=%s)"
+            "),\n"
+            "combined AS ("
+            "  SELECT *, 1 AS priority FROM list_prices WHERE list_prices.partner_id = %s"
+            "  UNION ALL"
+            "  SELECT *, 2 AS priority FROM list_prices WHERE list_prices.partner_id is null"
+            "),\n"
+            "deduplicated AS ("
+            "  SELECT *"
+            "  FROM ("
+            "    SELECT *, row_number() over (partition by product_tmpl_id, product_id, categ_id, date_start, date_end order by priority) AS rn"
+            "    FROM combined"
+            "  ) sub"
+            "  WHERE rn = 1"
+            ")\n"
+            "SELECT string_agg(id::text, ',') AS ids "
+            "FROM deduplicated",
+            (prod_tmpl_ids, prod_ids, categ_ids, self.id, date, date, partner_id),
         )
 
         fetched_data = self._cr.fetchall()
