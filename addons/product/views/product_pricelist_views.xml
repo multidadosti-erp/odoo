@@ -51,8 +51,11 @@
                                 </div>
                             </div>
                         </group>
-                        <group name="partner" string="Partner" attrs="{'invisible':[('partner_id', '=', False)]}">
-                            <field name="partner_id" readonly="1"
+                        <group name="partner" string="Partner"
+                               attrs="{'invisible':[('partner_id', '=', False), ('with_partner', '=', False)]}">
+                            <field name="with_partner" invisible="1"/>
+                            <field name="partner_id"
+                                   attrs="{'required': ['|', ('partner_id', '!=', False), ('with_partner', '=', True)]}"
                                    options="{'no_create': True, 'no_open': True}"/>
                         </group>
                     </group>
@@ -157,9 +160,26 @@
                             <separator string="Pricelist Items"/>
                             <notebook>
                                 <page string="Items" name="items">
-                                    <field name="item_ids" nolabel="1" context="{'default_base':'list_price'}">
+                                    <field name="base_item_ids" nolabel="1" context="{'default_base':'list_price'}">
                                         <tree string="Pricelist Items">
                                             <field name="name" string="Applicable On"/>
+                                            <field name="min_quantity"/>
+                                            <field name="date_start"/>
+                                            <field name="date_end"/>
+                                            <field name="price" string="Price"/>
+                                            <field name="base" invisible="1"/>
+                                            <field name="price_discount" invisible="1"/>
+                                            <field name="applied_on" invisible="1"/>
+                                            <field name="compute_price" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                                <page string="Partners Items" name="partner_items">
+                                    <field name="partner_item_ids" nolabel="1"
+                                           context="{'default_base':'list_price', 'with_partner': True}">
+                                        <tree string="Pricelist Items" default_order="partner_id desc">
+                                            <field name="name" string="Applicable On"/>
+                                            <field name="partner_id" readonly="1"/>
                                             <field name="min_quantity"/>
                                             <field name="date_start"/>
                                             <field name="date_end"/>

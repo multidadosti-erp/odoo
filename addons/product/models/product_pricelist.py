@@ -30,6 +30,20 @@ class Pricelist(models.Model):
     item_ids = fields.One2many(
         'product.pricelist.item', 'pricelist_id', 'Pricelist Items',
         copy=True, default=_get_default_item_ids)
+
+    # Adicionado pela Multidados:
+    # Copia campo de itens, para filtrar os itens que não tem
+    # parceiro relacionado. Na view não é possível adicionar
+    # o domain em campos One2many.
+    base_item_ids = fields.One2many(
+        'product.pricelist.item', 'pricelist_id', 'Base Items',
+        domain=[('partner_id', '=', False)],
+        copy=False)
+    partner_item_ids = fields.One2many(
+        'product.pricelist.item', 'pricelist_id', 'Partners Items',
+        domain=[('partner_id', '!=', False)],
+        copy=False)
+
     currency_id = fields.Many2one('res.currency', 'Currency', default=_get_default_currency_id, required=True)
     company_id = fields.Many2one('res.company', 'Company')
 
@@ -528,6 +542,10 @@ class PricelistItem(models.Model):
     price = fields.Char(
         'Price', compute='_get_pricelist_item_name_price',
         help="Explicit rule name for this pricelist line.")
+    with_partner = fields.Boolean(
+        'With Partner',
+        default=lambda self: self._context.get('with_partner', False)
+    )
 
     @api.constrains('base_pricelist_id', 'pricelist_id', 'base')
     def _check_recursion(self):
