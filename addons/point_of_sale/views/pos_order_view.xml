@@ -7,7 +7,7 @@
             <form string="Point of Sale Orders" create="0">
                 <header>
                     <button name="%(action_pos_payment)d" string="Payment" class="oe_highlight" type="action" states="draft" context="{'pos_session_id' : session_id}"/>
-                    <button name="action_pos_order_invoice" string="Invoice" type="object"
+                    <button name="action_pos_order_invoice" string="Invoice" type="object" class="oe_highlight"
                             attrs="{'invisible': ['|', ('invoice_group', '=', False), ('state','!=','paid')]}"/>
                     <button name="refund" string="Return Products" type="object"
                         attrs="{'invisible':[('state','=','draft')]}"/>
