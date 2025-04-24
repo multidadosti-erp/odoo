@@ -150,6 +150,10 @@ class Pricelist(models.Model):
         if not products:
             return {}
 
+        # Get the partner id
+        partner_ids = [item[2].id for item in products_qty_partner if item[2]]
+        partner_ids = [partner_ids[0] if len(set(partner_ids)) == 1 else 0]
+
         categ_ids = {}
         for p in products:
             categ = p.categ_id
@@ -182,9 +186,10 @@ class Pricelist(models.Model):
             "  AND (item.product_id IS NULL OR item.product_id = any(%s))"
             "  AND (item.categ_id IS NULL OR item.categ_id = any(%s)) "
             "  AND (item.pricelist_id = %s) "
+            "  AND (item.partner_id IS NULL OR item.partner_id = any(%s)) "
             "  AND (item.date_start IS NULL OR item.date_start<=%s) "
             "  AND (item.date_end IS NULL OR item.date_end>=%s)",
-            (prod_tmpl_ids, prod_ids, categ_ids, self.id, date, date),
+            (prod_tmpl_ids, prod_ids, categ_ids, self.id, partner_ids, date, date),
         )
 
         fetched_data = self._cr.fetchall()
@@ -194,7 +199,7 @@ class Pricelist(models.Model):
                 list_ids = (list_ids,)
             items = self.env["product.pricelist.item"].search(
                 [("id", "in", list_ids)],
-                order="applied_on, product_id, product_tmpl_id, date_start, min_quantity desc, categ_id desc, id desc",
+                order="applied_on, partner_id, product_id, product_tmpl_id, date_start, min_quantity desc, categ_id desc, id desc",
             )
         else:
             items = self.env["product.pricelist.item"]
@@ -227,7 +232,15 @@ class Pricelist(models.Model):
             price = product.price_compute("list_price")[product.id]
             price_uom = self.env["uom.uom"].browse([qty_uom_id])
 
+            # Adicionado pela Multidados:
+            # Se o parceiro for definido, procura a regra de preço específica para
+            # o parceiro, caso contrário, procura a regra de preço padrão.
+            partner_rule = False
+
             for rule in items:
+                if rule.applied_on == '0_product_variant' and partner_rule:
+                    continue
+
                 # Recupera valores do contexto para evitar múltiplas chamadas ao método `get`
                 old_price = self.env.context.get("old_price", 0)
                 uom_qty_change = self.env.context.get("uom_qty_change", False)
@@ -295,6 +308,8 @@ class Pricelist(models.Model):
                     # if base option is public price take sale price else cost price of product
                     # price_compute returns the price in the context UoM, i.e. qty_uom_id
                     price = product.price_compute(rule.base)[product.id]
+                    if rule.applied_on == '0_product_variant' and rule.partner_id.id in partner_ids:
+                        partner_rule = rule
 
                 if price is not False:
                     price = rule._compute_price(
