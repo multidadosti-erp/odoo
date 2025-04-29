@@ -2,31 +2,99 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
-
+from odoo.tools.float_utils import float_round as round
 from odoo import api, fields, models
 
 
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
-    sale_amount_total = fields.Monetary(compute='_compute_sale_amount_total', string="Sum of Orders", help="Untaxed Total of Confirmed Orders", currency_field='company_currency')
-    sale_number = fields.Integer(compute='_compute_sale_amount_total', string="Number of Quotations")
-    order_ids = fields.One2many('sale.order', 'opportunity_id', string='Orders')
+    quotation_amount_total = fields.Monetary(
+        compute="_compute_sale_amount_total",
+        string="Sum of Quotation",
+        help="Untaxed Total of Quotation",
+        currency_field="company_currency",
+    )
+    sale_amount_total = fields.Monetary(
+        compute="_compute_sale_amount_total",
+        string="Sum of Orders",
+        help="Untaxed Total of Confirmed Orders",
+        currency_field="company_currency",
+    )
+    perc_sale_of_quotation = fields.Float(
+        compute="_compute_sale_amount_total",
+        string="Perc Orders of Quotations",
+        help="Field gives the value of actual Sales Percentage for current opportunity from the Sale Order",
+    )
+    sale_number = fields.Integer(
+        compute="_compute_sale_amount_total",
+        string="Number of Quotations",
+    )
+    order_ids = fields.One2many(
+        "sale.order",
+        "opportunity_id",
+        string="Orders",
+    )
 
     @api.depends('order_ids')
     def _compute_sale_amount_total(self):
+        """Computa o total de vendas e o número de cotações para cada lead.
+
+        Este método utiliza operações vetorizadas para melhorar a performance,
+        reduzindo o número de iterações e acessos ao banco de dados.
+        """
+        # Obter todas as moedas das empresas em um único acesso
+        company_currencies = {
+            company.id: company.currency_id
+            for company in self.env["res.company"].browse(self.mapped("company_id.id"))
+        }
+
         for lead in self:
             total = 0.0
+            total_quotation = 0.0
+            perc_sale_of_quotation = 0.0
             nbr = 0
-            company_currency = lead.company_currency or self.env.user.company_id.currency_id
-            for order in lead.order_ids:
-                if order.state in ('draft', 'sent'):
+            company_currency = company_currencies.get(
+                lead.company_id.id, self.env.user.company_id.currency_id
+            )
+
+            # Filtrar pedidos relevantes diretamente no banco de dados
+            orders = lead.order_ids.filtered(lambda o: o.state not in ("cancel"))
+            for order in orders:
+                # Orçamentos
+                if order.state in ("draft", "sent"):
                     nbr += 1
-                if order.state not in ('draft', 'sent', 'cancel'):
+                    total_quotation += order.currency_id._convert(
+                        order.amount_untaxed,
+                        company_currency,
+                        order.company_id,
+                        order.date_order or fields.Date.today(),
+                    )
+
+                # Pedidos confirmados
+                if order.state not in ("draft", "sent", "cancel"):
                     total += order.currency_id._convert(
-                        order.amount_untaxed, company_currency, order.company_id, order.date_order or fields.Date.today())
-            lead.sale_amount_total = total
-            lead.sale_number = nbr
+                        order.amount_untaxed,
+                        company_currency,
+                        order.company_id,
+                        order.date_order or fields.Date.today(),
+                    )
+
+            # Calcular a porcentagem de vendas em relação ao total de cotações
+            if total_quotation > 0 and total > 0:
+                perc_sale_of_quotation = ((total / total_quotation) -1) * 100
+            elif total_quotation == 0 and total > 0:
+                perc_sale_of_quotation = 100.0
+
+            # Atualizar os campos de forma otimizada
+            lead.update(
+                {
+                    "quotation_amount_total": round(total_quotation, 2),
+                    "sale_amount_total": round(total, 2),
+                    "sale_number": nbr,
+                    "perc_sale_of_quotation": perc_sale_of_quotation,
+                }
+            )
 
     @api.model
     def retrieve_sales_dashboard(self):
