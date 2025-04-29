@@ -1792,6 +1792,9 @@ class AccountInvoice(models.Model):
         Returns:
             bool: Retorna True após a operação ser concluída.
         """
+        if not self:
+            return
+            
         if any(inv.state not in ("in_payment", "paid") for inv in self):
             raise UserError(
                 _("Invoice must be paid in order to set it to register payment.")
