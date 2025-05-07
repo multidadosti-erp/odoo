@@ -56,7 +56,7 @@ import odoo
 from . import SUPERUSER_ID
 from . import api
 from . import tools
-from .exceptions import AccessError, MissingError, ValidationError, UserError
+from .exceptions import AccessError, MissingError, ValidationError, UserError, CacheMiss
 from .osv.query import Query
 from .tools import frozendict, lazy_classproperty, lazy_property, ormcache, \
                    Collector, LastOrderedSet, OrderedSet, pycompat, groupby
@@ -5464,6 +5464,10 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     vals = {n: rec[n] for n in ns}
                 except MissingError:
                     continue
+                except CacheMiss:
+                    if not rec.exists():
+                        continue
+
                 vals = rec._convert_to_write(vals)
                 updates[frozendict(vals)].add(rec.id)
             # update records in batch when possible
