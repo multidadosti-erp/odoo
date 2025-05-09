@@ -3271,8 +3271,14 @@ class AccountPaymentTerm(models.Model):
             date_ref (Date, optional): Data de Referencias para Parcelas. Defaults to False.
             value_taxes (float, optional): Valor sem Impostos (bruto) a Calcular as Parcelas. Defaults to 0.
 
-        Returns:
+        Returns: 
             list: Lista das Parcelas
+                    0 - Data de Vencimento
+                    1 - Valor da Parcela
+                    2 - Dias de Vencimento
+                    3 - Valor sem Impostos
+                    4 - Porcentagem ou Valor do Cadastro das Parcelas
+                    5 - Pagamento Antecipado: Default False
         """
         date_ref = date_ref or fields.Date.today()
         amount = value
@@ -3319,7 +3325,7 @@ class AccountPaymentTerm(models.Model):
                     next_date += relativedelta(day=line.days, months=0)
 
                 result.append(
-                    (fields.Date.to_string(next_date), amt, line.days, amt_without_taxes)
+                    (fields.Date.to_string(next_date), amt, line.days, amt_without_taxes, line.value_amount, False)
                 )
 
                 amount -= amt
@@ -3335,7 +3341,7 @@ class AccountPaymentTerm(models.Model):
         if dist or dist_without_taxes:
             last_date = result and result[-1][0] or fields.Date.today()
             days = result and result[-1][2] or 0
-            result.append((last_date, dist, days, dist_without_taxes))
+            result.append((last_date, dist, days, dist_without_taxes, 0, False))
 
         return result
 
