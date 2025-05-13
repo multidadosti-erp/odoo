@@ -1011,7 +1011,7 @@ class AccountInvoice(models.Model):
 
         Raises:
             ValidationError: Se a conta bancária não for válida para o parceiro ou empresa.
-        """        
+        """
         for record in self.filtered("partner_bank_id"):
             if record.type in ("in_invoice", "out_refund"):
                 if record.partner_bank_id.partner_id != record.partner_id.commercial_partner_id:
@@ -1478,10 +1478,10 @@ class AccountInvoice(models.Model):
         # Calcula os valores dos impostos agrupados
         taxes_grouped = self.get_taxes_values()
         tax_lines = self.tax_line_ids.filtered('manual')
-       
+
         for tax in taxes_grouped.values():
             tax_lines += tax_lines.new(tax)
-        
+
         self.tax_line_ids = tax_lines
 
         return
@@ -1794,7 +1794,7 @@ class AccountInvoice(models.Model):
         """
         if not self:
             return
-            
+
         if any(inv.state not in ("in_payment", "paid") for inv in self):
             raise UserError(
                 _("Invoice must be paid in order to set it to register payment.")
@@ -1821,10 +1821,10 @@ class AccountInvoice(models.Model):
     @api.multi
     def _notify_get_groups(self, message, groups):
         """
-        Adiciona o botão de acesso para usuários e clientes do portal, 
+        Adiciona o botão de acesso para usuários e clientes do portal,
         desde que o estado da fatura não seja 'draft' ou 'cancel'.
 
-        Este método foi otimizado para evitar iterações desnecessárias 
+        Este método foi otimizado para evitar iterações desnecessárias
         e utiliza verificações diretas para determinar se o botão de acesso deve ser exibido.
 
         Args:
@@ -2246,10 +2246,10 @@ class AccountInvoice(models.Model):
 
     def group_lines(self, iml, line):
         """
-        Agrupa as linhas de movimentação contábil (e, consequentemente, as linhas analíticas) 
+        Agrupa as linhas de movimentação contábil (e, consequentemente, as linhas analíticas)
         se os hashcodes das características das linhas da fatura forem iguais.
 
-        Este método foi otimizado para melhorar a performance ao evitar múltiplas verificações 
+        Este método foi otimizado para melhorar a performance ao evitar múltiplas verificações
         e utiliza um dicionário para agrupar as linhas de forma eficiente.
 
         Args:
@@ -2291,7 +2291,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_move_create(self):
-        """        
+        """
         Cria as linhas de movimentação contábil e analítica relacionadas à fatura.
 
         Este método foi otimizado para melhorar a performance ao evitar operações desnecessárias
@@ -2494,7 +2494,7 @@ class AccountInvoice(models.Model):
         Returns:
             bool: Retorna True após a operação ser concluída.
         """
-        if not self:        
+        if not self:
             return True
 
         partner_ids_to_subscribe = []
@@ -3048,17 +3048,23 @@ class AccountInvoiceLine(models.Model):
             self._set_taxes()
 
             product_name = self_lang._get_invoice_line_name_from_product()
-            if product_name != None:
+            
+            if product_name is not None:
                 self.name = product_name
 
-            if not self.uom_id or product.uom_id.category_id.id != self.uom_id.category_id.id:
-                self.uom_id = product.uom_id.id
-            domain['uom_id'] = [('category_id', '=', product.uom_id.category_id.id)]
+            if type in ('in_invoice', 'in_refund'):
+                product_uom_id = product.uom_po_id
+            else:
+                product_uom_id = product.uom_id
 
-            if company and currency:
+            if not self.uom_id or product_uom_id.category_id.id != self.uom_id.category_id.id:
+                self.uom_id = product_uom_id.id
 
-                if self.uom_id and self.uom_id.id != product.uom_id.id:
-                    self.price_unit = product.uom_id._compute_price(self.price_unit, self.uom_id)
+            domain['uom_id'] = [('category_id', '=', product_uom_id.category_id.id)]
+
+            if company and currency and self.uom_id and self.uom_id.id != product_uom_id.id:
+                self.price_unit = product_uom_id._compute_price(self.price_unit, self.uom_id)
+
         return {'domain': domain}
 
     def _get_invoice_line_name_from_product(self):
@@ -3271,7 +3277,7 @@ class AccountPaymentTerm(models.Model):
             date_ref (Date, optional): Data de Referencias para Parcelas. Defaults to False.
             value_taxes (float, optional): Valor sem Impostos (bruto) a Calcular as Parcelas. Defaults to 0.
 
-        Returns: 
+        Returns:
             list: Lista das Parcelas
                     0 - Data de Vencimento
                     1 - Valor da Parcela
