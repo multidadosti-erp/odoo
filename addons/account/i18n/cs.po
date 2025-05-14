@@ -7280,7 +7280,7 @@ msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_line_form
-msgid "On the"
+msgid "On the (of the month)"
 msgstr "Na"
 
 #. module: account

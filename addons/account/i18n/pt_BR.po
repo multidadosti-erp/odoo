@@ -4078,7 +4078,7 @@ msgstr "Demonstrativos provisórios"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_line_form
 msgid "Due"
-msgstr "Vencimento"
+msgstr "Dias"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__residual
@@ -4101,12 +4101,12 @@ msgstr "Data de Vencimento"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_line_form
 msgid "Due Date Computation"
-msgstr "Cálculo da Data do Vencimento"
+msgstr "Dados para Cálculo da Data"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_line_tree
 msgid "Due Type"
-msgstr "Tipo de Vencimento"
+msgstr "Tipo de Cálculo"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__date_maturity
@@ -6807,7 +6807,7 @@ msgstr "Número de Moedas/Faturas"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term_line__days
 msgid "Number of Days"
-msgstr "Numero de dias"
+msgstr "Número de Dias"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__message_has_error_counter
@@ -6868,8 +6868,8 @@ msgstr "Impostos Antigos"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_line_form
-msgid "On the"
-msgstr "No"
+msgid "On the (of the month)"
+msgstr "No (Dia do Mês)"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_invoice_confirm_view
@@ -9403,7 +9403,7 @@ msgstr "Campo técnico que indica se o pagamento registrado gera vários pagamen
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_refund__refund_only
 msgid "Technical field to hide filter_refund in case invoice is partially paid"
-msgstr "Campo técnico para esconder filter_refund em caso de factura parcialmente paga"
+msgstr "Campo técnico para esconder filter_refund em caso de fatura parcialmente paga"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement__journal_type
@@ -9522,7 +9522,7 @@ msgstr "Tipo de Termo"
 #: model:ir.model.fields,field_description:account.field_account_payment_term__line_ids
 #: model_terms:ir.ui.view,arch_db:account.view_payment_term_form
 msgid "Terms"
-msgstr "Formas de Pagamento"
+msgstr "Regra para Cáculo das Parcelas"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_form
@@ -10701,7 +10701,7 @@ msgstr "Validado"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment_term_line__value_amount
 msgid "Value"
-msgstr "Valor"
+msgstr "Perc/Valor Parcela"
 
 #. module: account
 #: selection:account.abstract.payment,partner_type:0
@@ -11290,12 +11290,12 @@ msgstr "código"
 #. module: account
 #: selection:account.payment.term.line,option:0
 msgid "day(s) after the end of the invoice month"
-msgstr "dia(s) após o final do mês da factura"
+msgstr "dia(s) após o final do mês da fatura"
 
 #. module: account
 #: selection:account.payment.term.line,option:0
 msgid "day(s) after the invoice date"
-msgstr "dia(s) após a data da factura"
+msgstr "dia(s) após a data da fatura"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.setup_bank_account_wizard
