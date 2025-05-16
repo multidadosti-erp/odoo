@@ -9170,13 +9170,13 @@ msgstr "Descrição do Imposto"
 #: model:ir.model.fields,field_description:account.field_account_tax__tax_exigibility
 #: model:ir.model.fields,field_description:account.field_account_tax_template__tax_exigibility
 msgid "Tax Due"
-msgstr "Data de vencimento do Imposto"
+msgstr "Data Vencimento Imposto"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_tree
 #: model_terms:ir.ui.view,arch_db:account.invoice_tree
 msgid "Tax Excluded"
-msgstr "Taxas excluídas"
+msgstr "Impostos Excluídos"
 
 #. module: account
 #: model:ir.model,name:account.model_account_tax_group
