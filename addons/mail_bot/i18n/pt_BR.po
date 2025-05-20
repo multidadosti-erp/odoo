@@ -212,7 +212,7 @@ msgstr "Status do OdooBot"
 #: code:addons/mail_bot/static/src/js/mailbot_service.js:39
 #, python-format
 msgid "OdooBot has a request"
-msgstr "OdooBot tem uma requisição"
+msgstr "Bot tem uma requisição"
 
 #. module: mail_bot
 #: selection:res.users,odoobot_state:0
