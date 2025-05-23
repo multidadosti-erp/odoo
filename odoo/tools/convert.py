@@ -506,9 +506,9 @@ form: module.record_id""" % (xml_id,)
                     groups_value.append((4, group_id))
             values['groups_id'] = groups_value
 
-        if not values.get('parent_id'):
-            if rec.get('web_icon'):
-                values['web_icon'] = rec.get('web_icon')
+        # if not values.get('parent_id'): Comentado para Habilitar web_icon na tag <menuitem>
+        if rec.get('web_icon'):
+            values['web_icon'] = rec.get('web_icon')
 
         xid = self.make_xml_id(rec_id)
         data = dict(xml_id=xid, values=values, noupdate=self.isnoupdate(data_node))

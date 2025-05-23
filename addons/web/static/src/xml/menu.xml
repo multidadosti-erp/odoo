@@ -44,6 +44,9 @@
                 t-att-data-menu-xmlid="menu.xmlid"
                 t-attf-class="#{inNavbar ? '' : 'dropdown-item '}o_menu_entry_lvl_#{depth}"
                 data-toggle="collapse" data-target="#o_navbar_collapse.in">
+                <t t-if="menu.web_icon and menu.web_icon.startsWith('fa ')">
+                    <i t-att-class="menu.web_icon" style="margin-right: 5px;"/>
+                </t>            
                 <span><t t-esc="menu.name"/></span>
             </a>
         </t>
@@ -56,6 +59,9 @@
     </t>
     <t t-else="">
         <div t-attf-class="dropdown-header o_menu_header_lvl_#{depth}">
+            <t t-if="menu.web_icon and menu.web_icon.startsWith('fa ')">
+                <i t-att-class="menu.web_icon" style="margin-right: 5px;"/>
+            </t>            
             <span><t t-esc="menu.name"/></span>
         </div>
         <t t-foreach="menu.children" t-as="menu">
@@ -78,6 +84,9 @@
                 <t t-else="">
                     <li>
                         <a href="#" class="dropdown-toggle o-no-caret o_menu_header_lvl_1" t-att-data-menu-xmlid="second_level_menu.xmlid" data-toggle="dropdown" data-display="static" role="button" aria-expanded="false">
+                            <t t-if="second_level_menu.web_icon and second_level_menu.web_icon.startsWith('fa ')">
+                                <i t-att-class="second_level_menu.web_icon" style="margin-right: 2px;"/>
+                            </t>            
                             <t t-esc="second_level_menu.name"/>
                         </a>
                         <div class="dropdown-menu" role="menu">
