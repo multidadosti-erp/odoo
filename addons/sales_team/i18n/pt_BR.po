@@ -472,7 +472,7 @@ msgstr "Membros da Equipe"
 #. module: sales_team
 #: model:ir.actions.act_window,name:sales_team.crm_team_salesteams_act
 msgid "Team Pipelines"
-msgstr "Funil por equipe"
+msgstr "Pipelines por Equipe"
 
 #. module: sales_team
 #: model:ir.model.fields,field_description:sales_team.field_crm_team__team_type
