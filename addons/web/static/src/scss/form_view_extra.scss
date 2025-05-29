@@ -150,8 +150,9 @@
 
     // Separators
     .o_horizontal_separator {
-        color: $o-brand-primary;
+        color: #4c4c4c;  // $o-brand-primary;
         font-weight: bold;
+        background-color: hsl(0, 5%, 97%);
     }
 
     // Translate icon

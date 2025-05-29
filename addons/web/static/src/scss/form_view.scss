@@ -361,7 +361,7 @@
 
     // Separators
     .o_horizontal_separator {
-        font-size: $h2-font-size;
+        font-size: $h3-font-size;
         margin: $o-form-spacing-unit - 3 0;
         &:empty {
             height: $o-form-spacing-unit * 2;
