@@ -137,6 +137,7 @@ from . import models
 from . import fields
 from . import api
 from odoo.tools.translate import _
+from odoo.fields import Command
 
 #----------------------------------------------------------
 # Other imports, which may require stuff from above

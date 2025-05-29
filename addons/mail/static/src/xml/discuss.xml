@@ -105,7 +105,7 @@
         <t t-if="!disableAddThread || !empty">
             <div class="o_mail_sidebar_title">
                 <h4 t-att-class="type == 'public' ? 'o_mail_open_channels' : ''">
-                    <i t-if="icon" t-attf-class="mr4 fa-fw fa #{icon}" role="img" aria-label="Channel" title="Channel"></i>
+                    <i t-if="icon" t-attf-class="fa #{icon}" role="img" aria-label="Channel" title="Channel"></i>
                     <b><t t-esc="title"/></b>
                 </h4>
                 <span t-if="!disableAddThread" class="fa fa-plus o_add" title="Add" t-attf-data-type="#{type}" role="img" aria-label="Add"/>
