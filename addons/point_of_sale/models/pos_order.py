@@ -221,6 +221,14 @@ class PosOrder(models.Model):
         return False
 
     def _action_create_invoice_line(self, line=False, invoice_id=False):
+        # Obtendo a empresa correta para enviar para as linhas, pois abaixo utiliza sudo.
+        # Utiliza cache para evitar múltiplas buscas no banco de dados.
+        company_id = (
+            self.env["account.invoice"].browse(invoice_id).company_id
+            if invoice_id
+            else self.env.user.company_id
+        )
+
         InvoiceLine = self.env['account.invoice.line']
         inv_name = line.product_id.name_get()[0][1]
         inv_line = {
@@ -230,6 +238,7 @@ class PosOrder(models.Model):
             'account_analytic_id': self._prepare_analytic_account(line),
             'name': inv_name,
         }
+
         # Oldlin trick
         invoice_line = InvoiceLine.sudo().new(inv_line)
         invoice_line._onchange_product_id()
@@ -238,7 +247,7 @@ class PosOrder(models.Model):
         # bridge between old and new api
         inv_line = invoice_line._convert_to_write({name: invoice_line[name] for name in invoice_line._cache})
         inv_line.update(price_unit=line.price_unit, discount=line.discount)
-        return InvoiceLine.sudo().create(inv_line)
+        return InvoiceLine.sudo().with_context(company_id=company_id.id).create(inv_line)
 
     def _prepare_account_move_and_lines(self, session=None, move=None):
         def _flatten_tax_and_children(taxes, group_done=None):
@@ -476,14 +485,13 @@ class PosOrder(models.Model):
             # the sum of the product and taxes lines.
             amount_total = 0.0
             for move_line in move_lines:
-                    amount_total +=  move_line['values']['credit'] - move_line['values']['debit']
+                amount_total +=  move_line['values']['credit'] - move_line['values']['debit']
             res['amount'] = amount_total
             res['amount_currency'] = self.amount_total
         else:
             res['amount'] = self.amount_total
             res['amount_currency'] = False
         return res
-
 
     def _create_account_move_line(self, session=None, move=None):
         vals = self._prepare_account_move_and_lines(session, move)
@@ -653,7 +661,6 @@ class PosOrder(models.Model):
         help="If some order had been refunded, order created for returning "
              "will be referenced here."
     )
-
 
     @api.onchange('statement_ids', 'lines')
     def _onchange_amount_all(self):
