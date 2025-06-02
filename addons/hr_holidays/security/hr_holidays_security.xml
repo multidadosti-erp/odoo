@@ -13,9 +13,11 @@
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 
-    <record id="base.default_user" model="res.users">
+    <!-- Remove a inclusão de qualquer usuário interno à gerente de
+         "Folgas" -->
+    <!-- <record id="base.default_user" model="res.users">
         <field name="groups_id" eval="[(4,ref('hr_holidays.group_hr_holidays_manager'))]"/>
-    </record>
+    </record> -->
 
     <record id="hr_leave_rule_employee" model="ir.rule">
         <field name="name">Leaves: employee: read all</field>
