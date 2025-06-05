@@ -595,10 +595,6 @@ var BasicRenderer = AbstractRenderer.extend({
         var options = widget.nodeOptions || {};
         var dynamicStringRules = options.dynamic_string || null;
 
-        if (fieldName === 'project_id') {
-            debugger;
-        }
-
         if (dynamicStringRules) {
             // Filtra as regras de string dinâmica que atendem às condições definidas
             var dynamicLabel = _.chain(dynamicStringRules).filter(function (rule) {
