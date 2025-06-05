@@ -12,7 +12,7 @@ var config = require('web.config');
 var core = require('web.core');
 var dom = require('web.dom');
 var widgetRegistry = require('web.widget_registry');
-
+var Domain = require('web.Domain');
 var qweb = core.qweb;
 
 var BasicRenderer = AbstractRenderer.extend({
@@ -571,6 +571,7 @@ var BasicRenderer = AbstractRenderer.extend({
      */
     _renderFieldWidget: function (node, record, options) {
         options = options || {};
+        var self = this;
         var fieldName = node.attrs.name;
         // Register the node-associated modifiers
         var mode = options.mode || this.mode;
@@ -582,6 +583,35 @@ var BasicRenderer = AbstractRenderer.extend({
             mode: modifiers.readonly ? 'readonly' : mode,
             viewType: this.viewType,
         });
+        
+        // Obtém as opções do widget, incluindo regras de string dinâmica
+        // Obs.: Caso não atenda os domains, o campo irá manter a string original
+        //
+        // Exemplo de uso:
+        // <field name="project_id"
+        //        options="{'dynamic_string': [{'domain': [('contract_type_control', '=', 'out_invoice')], 'string': 'Project'},
+        //                                     {'domain': [('contract_type_control', 'in', ['in_invoice', 'hr'])], 'string': 'Analytic Account'}]}"                                   
+        //
+        var options = widget.nodeOptions || {};
+        var dynamicStringRules = options.dynamic_string || null;
+
+        if (fieldName === 'project_id') {
+            debugger;
+        }
+
+        if (dynamicStringRules) {
+            // Filtra as regras de string dinâmica que atendem às condições definidas
+            var dynamicLabel = _.chain(dynamicStringRules).filter(function (rule) {
+                    return self._evaluateCondition(rule, self.state.data);
+                }).find(function (rule) {
+                    return _t(rule.string);
+                }).get('string', null).value();
+
+            // Atualiza o label do campo caso uma string dinâmica seja encontrada
+            if (dynamicLabel) { 
+                widget.field.string = dynamicLabel;
+            }
+        }
 
         // Register the widget so that it can easily be found again
         if (this.allFieldWidgets[record.id] === undefined) {
@@ -623,6 +653,18 @@ var BasicRenderer = AbstractRenderer.extend({
 
         return $el;
     },
+    /**
+     * Avalia uma condição definida em dynamic_string.
+     * @param {Object} rule - Regra no formato {field, value, string}.
+     * @param {Object} recordData - Dados do registro atual.
+     * @returns {Boolean} - Retorna true se a condição for atendida, caso contrário false.
+     */
+    _evaluateCondition: function (rule, recordData) {
+        if (!rule || !rule.domain || !rule.string) {
+            return false; // Regra inválida
+        }
+        return new Domain((rule.domain || []), recordData).compute(recordData);
+    },     
     /**
      * Renders the nocontent helper.
      *
