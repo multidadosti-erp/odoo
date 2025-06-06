@@ -560,24 +560,75 @@ class account_payment(models.Model):
         if self.partner_type:
             return {'domain': {'partner_id': [(self.partner_type, '=', True)]}}
 
-    @api.onchange('payment_type')
-    def _onchange_payment_type(self):
+    def prepare_change_payment_type(self):
+        """
+        Prepara as alterações no tipo de pagamento, ajustando o tipo de parceiro conforme necessário.
+
+        Retorna:
+            dict: Um dicionário contendo os valores atualizados para o tipo de parceiro.
+        """
+        # Garantir que o método seja chamado em um único registro
+        self.ensure_one()
+
+        # Inicializa o dicionário de valores
+        values = {}
+
+        # Verifica se não há faturas associadas
         if not self.invoice_ids:
-            # Set default partner type for the payment type
-            if self.payment_type == 'inbound':
-                self.partner_type = 'customer'
-            elif self.payment_type == 'outbound':
-                self.partner_type = 'supplier'
-            else:
-                self.partner_type = False
+            # Define o tipo de parceiro com base no tipo de pagamento
+            partner_type = (
+                "customer"
+                if self.payment_type == "inbound"
+                else "supplier" if self.payment_type == "outbound" else False
+            )
+
+            # Atualiza os valores
+            values["partner_type"] = partner_type
+
+        return values
+
+    def prepare_change_payment_type_domain(self):
+        # Garantir que o método seja chamado em um único registro
+        self.ensure_one()
+
         # Set payment method domain
         res = self._onchange_journal()
-        if not res.get('domain', {}):
-            res['domain'] = {}
+        if not res.get("domain", {}):
+            res["domain"] = {}
+
         jrnl_filters = self._compute_journal_domain_and_types()
-        journal_types = jrnl_filters['journal_types']
-        journal_types.update(['bank', 'cash'])
-        res['domain']['journal_id'] = jrnl_filters['domain'] + [('type', 'in', list(journal_types))]
+        journal_types = jrnl_filters["journal_types"]
+        journal_types.update(["bank", "cash"])
+
+        res["domain"]["journal_id"] = jrnl_filters["domain"] + [
+            ("type", "in", list(journal_types))
+        ]
+
+        return res
+
+    @api.onchange('payment_type')
+    def _onchange_payment_type(self):
+        """
+        Método chamado ao alterar o tipo de pagamento.
+
+        Este método garante que seja executado em um único registro, prepara os valores 
+        necessários para a mudança do tipo de pagamento e atualiza o registro com esses valores, 
+        caso existam. Além disso, atualiza o domínio do método de pagamento.
+
+        Retorna:
+            dict: Um dicionário contendo o domínio atualizado para o método de pagamento.
+        """
+        # Garantir que o método seja chamado em um único registro
+        self.ensure_one()
+
+        values = self.prepare_change_payment_type()
+
+        if self.exists() and values:
+            self.update(values)
+
+        # Atualiza o domínio do método de pagamento
+        res = self.prepare_change_payment_type_domain()
+
         return res
 
     @api.model
@@ -769,13 +820,13 @@ class account_payment(models.Model):
 
         move = self.env['account.move'].create(self._get_move_vals())
 
-        #Write line corresponding to invoice payment
+        # Write line corresponding to invoice payment
         counterpart_aml_dict = self._get_shared_move_line_vals(debit, credit, amount_currency, move.id, False)
         counterpart_aml_dict.update(self._get_counterpart_move_line_vals(self.invoice_ids))
         counterpart_aml_dict.update({'currency_id': currency_id})
         counterpart_aml = aml_obj.create(counterpart_aml_dict)
 
-        #Reconcile with the invoices
+        # Reconcile with the invoices
         if self.payment_difference_handling == 'reconcile' and self.payment_difference:
             writeoff_line = self._get_shared_move_line_vals(0, 0, 0, move.id, False)
             debit_wo, credit_wo, amount_currency_wo, currency_id = aml_obj.with_context(date=self.payment_date)._compute_amount_fields(self.payment_difference, self.currency_id, self.company_id.currency_id)
@@ -792,7 +843,7 @@ class account_payment(models.Model):
                 counterpart_aml['credit'] += debit_wo - credit_wo
             counterpart_aml['amount_currency'] -= amount_currency_wo
 
-        #Write counterpart lines
+        # Write counterpart lines
         if not self.currency_id.is_zero(self.amount):
             if not self.currency_id != self.company_id.currency_id:
                 amount_currency = 0
@@ -802,11 +853,11 @@ class account_payment(models.Model):
             # Multidados: Adicionando SUDO para forçar a criação.
             aml_obj.sudo().with_context(force_uid_log=user_id).create(liquidity_aml_dict)
 
-        #validate the payment
+        # validate the payment
         if not self.journal_id.post_at_bank_rec:
             move.post()
 
-        #reconcile the invoice receivable/payable line(s) with the payment
+        # reconcile the invoice receivable/payable line(s) with the payment
         if self.invoice_ids:
             self.invoice_ids.register_payment(counterpart_aml)
 
