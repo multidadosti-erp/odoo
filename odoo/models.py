@@ -4743,7 +4743,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
     resolve_o2m_commands_to_record_dicts = resolve_2many_commands
 
     @api.model
-    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, load="_classic_read"):
         """
         Performs a ``search()`` followed by a ``read()``.
 
@@ -4773,7 +4773,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             del context['active_test']
             records = records.with_context(context)
 
-        result = records.read(fields)
+        result = records.read(fields, **({'load': load} if load != '_classic_read' else {}))
         if len(result) <= 1:
             return result
 
