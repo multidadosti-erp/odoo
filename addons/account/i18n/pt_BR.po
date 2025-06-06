@@ -10711,7 +10711,7 @@ msgstr "Perc/Valor Parcela"
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_tree
 #: model_terms:ir.ui.view,arch_db:account.view_account_supplier_payment_tree
 msgid "Vendor"
-msgstr "Parceiro"
+msgstr "Fornecedor"
 
 #. module: account
 #: selection:account.invoice,type:0
