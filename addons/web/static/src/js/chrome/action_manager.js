@@ -404,6 +404,11 @@ var ActionManager = Widget.extend({
                 dialogClass: controller.className,
                 title: action.name,
                 size: action.context.dialog_size,
+                /* Adicionado pela Multidados:
+                    * como o objeto ActionManager "self", não possui o atributo
+                    * context, força o context da action nas options do Dialog
+                */
+                context: action.context,
             }));
             /**
              * @param {Object} [options={}]
