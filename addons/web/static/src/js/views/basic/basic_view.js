@@ -382,7 +382,12 @@ var BasicView = AbstractView.extend({
             node.attrs.modifiers = node.attrs.modifiers ? JSON.parse(node.attrs.modifiers) : {};
         }
         if (!_.isObject(node.attrs.options) && node.tag === 'button') {
-            node.attrs.options = node.attrs.options ? JSON.parse(node.attrs.options) : {};
+            // Ajustado pela Multidados:
+            // O options pode vir como string representando um dict Python,
+            // e não como objeto JSON.
+            node.attrs.options = node.attrs.options ? JSON.parse(
+                node.attrs.options.replace(/'/g, '"').replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false')
+            ) : {};
         }
         if (node.tag === 'field') {
             var viewType = fv.type;
