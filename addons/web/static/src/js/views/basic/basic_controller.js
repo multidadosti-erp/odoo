@@ -265,6 +265,15 @@ var BasicController = AbstractController.extend(FieldManagerMixin, {
         };
         record = record || this.model.get(this.handle);
 
+        /* Alterado pela Multidados:
+            * O contexto do botão é passado como string, mas o parâmetro
+            * additionalContext do método getContext espera um objeto JS.
+            * Então, convertemos o contexto do botão para um objeto JSON.
+        */
+        attrs.context = attrs.context ? JSON.parse(
+            attrs.context.replace(/'/g, '"').replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false')
+        ) : {};
+
         this.trigger_up('execute_action', {
             action_data: _.extend({}, attrs, {
                 context: record.getContext({additionalContext: attrs.context || {}}),
