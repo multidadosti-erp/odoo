@@ -73,6 +73,14 @@ var Dialog = Widget.extend({
         this.size = options.size;
         this.buttons = options.buttons;
         this.technical = options.technical;
+
+        /* Adicionado pela Multidados:
+            * Atribui o contexto do dialog, que é utilizado na exibição.
+            * Quando criado a partir de um campo, o parent possui o
+            * context, então atribui automaticamente. Mas o ActionManager não
+            * possui o context, então é necessário passar explicitamente.
+        */
+        this.context = this.context || options.context || {};
     },
     /**
      * Wait for XML dependencies and instantiate the modal structure (except
