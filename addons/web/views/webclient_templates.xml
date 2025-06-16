@@ -73,6 +73,8 @@
         <script type="text/javascript" src="/web/static/lib/moment/moment.js"></script>
 
         <script type="text/javascript" src="/web/static/lib/jquery/jquery.js"></script>
+        <!-- Habilita para atualizar a versão do jquery -->
+        <!-- <script type="text/javascript" src="/web/static/lib/jquery/jquery_migrate.js"></script> -->
         <script type="text/javascript" src="/web/static/lib/jquery.ui/jquery-ui.js"></script>
         <script type="text/javascript" src="/web/static/lib/jquery/jquery.browser.js"></script>
         <script type="text/javascript" src="/web/static/lib/jquery.blockUI/jquery.blockUI.js"></script>
