@@ -270,7 +270,7 @@ var BasicController = AbstractController.extend(FieldManagerMixin, {
             * additionalContext do método getContext espera um objeto JS.
             * Então, convertemos o contexto do botão para um objeto JSON.
         */
-        attrs.context = attrs.context ? JSON.parse(
+        attrs.context = (attrs.context && typeof attrs.context === 'string') ? JSON.parse(
             attrs.context.replace(/'/g, '"').replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false')
         ) : {};
 
