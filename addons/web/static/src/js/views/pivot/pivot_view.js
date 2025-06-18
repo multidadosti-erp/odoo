@@ -21,7 +21,7 @@ var GROUPABLE_TYPES =
 
 var PivotView = AbstractView.extend({
     display_name: _lt('Pivot'),
-    icon: 'fa-table',
+    icon: 'far fa-odoo-pivot',
     config: {
         Model: PivotModel,
         Controller: PivotController,

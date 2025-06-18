@@ -756,6 +756,9 @@
 .fa-table:before {
   content: "\f0ce";
 }
+.fa-odoo-pivot:before {
+  content: "\f0ce";
+}
 .fa-magic:before {
   content: "\f0d0";
 }
