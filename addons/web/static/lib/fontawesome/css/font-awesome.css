@@ -210,6 +210,9 @@
 .fa-th-large:before {
   content: "\f009";
 }
+.fa-odoo-kanban:before {
+  content: "\f009"; /* Same Unicode as .fa-th-large */
+}
 .fa-th:before {
   content: "\f00a";
 }

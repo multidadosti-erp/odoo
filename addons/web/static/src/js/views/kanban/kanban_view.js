@@ -15,7 +15,7 @@ var _lt = core._lt;
 var KanbanView = BasicView.extend({
     accesskey: "k",
     display_name: _lt("Kanban"),
-    icon: 'fa-th-large',
+    icon: 'far fa-odoo-kanban',
     mobile_friendly: true,
     config: {
         Model: KanbanModel,
