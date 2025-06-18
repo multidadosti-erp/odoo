@@ -741,6 +741,9 @@
 .fa-list-ul:before {
   content: "\f0ca";
 }
+.fa-odoo-list:before {
+  content: "\f0ca";
+}
 .fa-list-ol:before {
   content: "\f0cb";
 }

@@ -19,7 +19,7 @@ var _lt = core._lt;
 var ListView = BasicView.extend({
     accesskey: "l",
     display_name: _lt('List'),
-    icon: 'fa-list-ul',
+    icon: 'fa-odoo-list',
     config: _.extend({}, BasicView.prototype.config, {
         Renderer: ListRenderer,
         Controller: ListController,
