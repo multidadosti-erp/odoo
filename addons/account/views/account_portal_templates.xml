@@ -37,8 +37,7 @@
                 <tr class="active">
                     <th>Invoice #</th>
                     <th>Invoice Date</th>
-                    <th class='d-none d-md-table-cell'>Due Date</th>
-                    <th/>
+                    <th class="col_status"/>
                     <th class="text-right">Amount Due</th>
                 </tr>
             </thead>
@@ -52,7 +51,6 @@
                             </a>
                         </td>
                         <td><span t-field="invoice.date_invoice"/></td>
-                        <td class='d-none d-md-table-cell'><span t-field="invoice.date_due"/></td>
                         <td class="tx_status">
                             <t t-if="invoice.state == 'open'">
                                 <span class="badge badge-pill badge-info"><i class="fa fa-fw fa-clock-o" aria-label="Opened" title="Opened" role="img"></i><span class="d-none d-md-inline"> Waiting for Payment</span></span>
