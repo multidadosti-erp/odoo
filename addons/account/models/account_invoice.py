@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 from collections import OrderedDict
 import json
@@ -2070,7 +2070,7 @@ class AccountInvoice(models.Model):
             if is_diff_currency:
                 if not line.get("currency_id") or not line.get("amount_currency"):
                     line["currency_id"] = currency.id
-                    line["amount_currency"] = currency.round(line["price"])
+                    line["amount_currency"] = line["price"]
                     line["price"] = currency._convert(
                         line["price"], company_currency, self.company_id, date
                     )
@@ -3048,7 +3048,7 @@ class AccountInvoiceLine(models.Model):
             self._set_taxes()
 
             product_name = self_lang._get_invoice_line_name_from_product()
-            
+
             if product_name is not None:
                 self.name = product_name
 
@@ -3300,14 +3300,20 @@ class AccountPaymentTerm(models.Model):
 
         for line in self.line_ids:
             if line.value == "fixed":
-                amt = sign * currency.round(line.value_amount)
-                amt_without_taxes = sign_without_taxes * currency.round(line.value_amount)
+                # amt = sign * currency.round(line.value_amount)
+                amt = sign * line.value_amount
+                # amt_without_taxes = sign_without_taxes * currency.round(line.value_amount)
+                amt_without_taxes = sign_without_taxes * line.value_amount
             elif line.value == "percent":
-                amt = currency.round(value * (line.value_amount / 100.0))
-                amt_without_taxes = currency.round(value_without_taxes * (line.value_amount / 100.0))
+                # amt = currency.round(value * (line.value_amount / 100.0))
+                amt = value * (line.value_amount / 100.0)
+                # amt_without_taxes = currency.round(value_without_taxes * (line.value_amount / 100.0))
+                amt_without_taxes = value_without_taxes * (line.value_amount / 100.0)
             elif line.value == "balance":
-                amt = currency.round(amount)
-                amt_without_taxes = currency.round(amount_without_taxes)
+                # amt = currency.round(amount)
+                amt = amount
+                # amt_without_taxes = currency.round(amount_without_taxes)
+                amt_without_taxes = amount_without_taxes
 
             if amt:
                 next_date = fields.Date.from_string(date_ref)
@@ -3341,8 +3347,11 @@ class AccountPaymentTerm(models.Model):
             amount = sum(amt[1] for amt in result)
             amount_without_taxes = sum(amt_without_taxes[3] for amt_without_taxes in result)
 
-        dist = currency.round(value - amount)
-        dist_without_taxes = currency.round(value_without_taxes - amount_without_taxes)
+        # dist = currency.round(value - amount)
+        dist = value - amount
+
+        # dist_without_taxes = currency.round(value_without_taxes - amount_without_taxes)
+        dist_without_taxes = value_without_taxes - amount_without_taxes
 
         if dist or dist_without_taxes:
             last_date = result and result[-1][0] or fields.Date.today()
