@@ -278,27 +278,20 @@ class AccountInvoice(models.Model):
             }
         )
 
-    @api.one
-    def _get_outstanding_info_JSON(self):
+    def get_domain_outstanding(self):
         """
-        Calcula e armazena as informações de créditos ou débitos pendentes relacionados à fatura no formato JSON.
+        Obtém o domínio para buscar créditos ou débitos pendentes relacionados à fatura.
 
-        Este método foi otimizado para melhorar a performance ao evitar buscas desnecessárias
-        e ao utilizar uma abordagem direta para construir o JSON apenas quando há linhas relevantes.
+        Este método foi otimizado para garantir que apenas um registro seja processado por vez,
+        melhorando a performance ao evitar operações desnecessárias.
 
-        Campos calculados:
-            - outstanding_credits_debits_widget: Widget contendo informações de créditos ou débitos pendentes no formato JSON.
-            - has_outstanding: Indica se há créditos ou débitos pendentes.
+        Retorno:
+            list: Lista de condições para o domínio de busca.
         """
-        self.outstanding_credits_debits_widget = json.dumps(False)
-        self.has_outstanding = False
+        self.ensure_one()  # Garante que apenas um registro seja processado por vez
 
-        if self.state != "open":
-            return
+        partner_id = self.env["res.partner"]._find_accounting_partner(self.partner_id).id
 
-        partner_id = (
-            self.env["res.partner"]._find_accounting_partner(self.partner_id).id
-        )
         domain = [
             ("account_id", "=", self.account_id.id),
             ("partner_id", "=", partner_id),
@@ -314,6 +307,29 @@ class AccountInvoice(models.Model):
             ("currency_id", "=", None),
             ("amount_residual", "!=", 0.0),
         ]
+
+        return domain
+
+    @api.one
+    def _get_outstanding_info_JSON(self):
+        """
+        Calcula e armazena as informações de créditos ou débitos pendentes relacionados à fatura no formato JSON.
+
+        Este método foi otimizado para melhorar a performance ao evitar buscas desnecessárias
+        e ao utilizar uma abordagem direta para construir o JSON apenas quando há linhas relevantes.
+
+        Campos calculados:
+            - outstanding_credits_debits_widget: Widget contendo informações de créditos ou débitos pendentes no formato JSON.
+            - has_outstanding: Indica se há créditos ou débitos pendentes.
+        """
+        self.outstanding_credits_debits_widget = json.dumps(False)
+        self.has_outstanding = False
+
+        # Comentado para poder incluir creditos antes de confirmar.
+        # if self.state != "open":
+        #     return
+
+        domain = self.get_domain_outstanding()
 
         if self.type in ("out_invoice", "in_refund"):
             domain.extend([("credit", ">", 0), ("debit", "=", 0)])
