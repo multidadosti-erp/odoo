@@ -220,7 +220,7 @@ msgstr "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Data\" title=\"Data
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_invoice_page
 msgid "<i class=\"fa fa-download\"/> Download"
-msgstr "<i class=\"fa fa-download\"/>Transferência"
+msgstr "<i class=\"fa fa-download\"/> Download"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -4039,7 +4039,7 @@ msgstr "Concluído"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_invoice_page
 msgid "Download"
-msgstr "Transferir"
+msgstr "Download"
 
 #. module: account
 #: selection:account.invoice,state:0
