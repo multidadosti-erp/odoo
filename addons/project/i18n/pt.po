@@ -2845,14 +2845,14 @@ msgstr "Estas pessoas vão receber email."
 #: code:addons/project/static/src/js/project_task_kanban_examples.js:51
 #, python-format
 msgid "This Month"
-msgstr "Este Mês"
+msgstr "Mês Atual"
 
 #. module: project
 #. openerp-web
 #: code:addons/project/static/src/js/project_task_kanban_examples.js:51
 #, python-format
 msgid "This Week"
-msgstr "Esta Semana"
+msgstr "Semana Atual"
 
 #. module: project
 #: model_terms:ir.actions.act_window,help:project.action_project_task_user_tree

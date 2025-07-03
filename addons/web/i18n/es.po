@@ -3345,7 +3345,7 @@ msgstr "Este Trimestre"
 #: code:addons/web/static/src/js/views/search/time_range_menu_options.js:12
 #, python-format
 msgid "This Week"
-msgstr "Esta semana"
+msgstr "Semana Atual"
 
 #. module: web
 #. openerp-web

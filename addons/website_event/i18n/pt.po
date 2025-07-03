@@ -678,13 +678,13 @@ msgstr "Desculpe, o evento solicitado não está mais disponível."
 #: code:addons/website_event/controllers/main.py:44
 #, python-format
 msgid "This Week"
-msgstr "Esta Semana"
+msgstr "Semana Atual"
 
 #. module: website_event
 #: code:addons/website_event/controllers/main.py:52
 #, python-format
 msgid "This month"
-msgstr "Este mês"
+msgstr "Mês Atual"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_attendee_details

@@ -542,7 +542,7 @@ msgstr ""
 #: code:addons/website_event/controllers/main.py:43
 #, python-format
 msgid "This Week"
-msgstr "Esta semana"
+msgstr "Semana Atual"
 
 #. module: website_event
 #. openerp-web

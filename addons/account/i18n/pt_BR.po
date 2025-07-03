@@ -10004,7 +10004,7 @@ msgstr "Esses tipos são definidos de acordo com seu País. O tipo contêm mais 
 #: code:addons/account/models/account_journal_dashboard.py:101
 #, python-format
 msgid "This Week"
-msgstr "Esta Semana"
+msgstr "Semana Atual"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_res_partner__property_account_payable_id

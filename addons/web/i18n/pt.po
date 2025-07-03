@@ -3281,7 +3281,7 @@ msgstr "Ocorreu um problema ao enviar o seu ficheiro"
 #: code:addons/web/static/src/js/views/search/time_range_menu_options.js:13
 #, python-format
 msgid "This Month"
-msgstr "Este Mês"
+msgstr "Mês Atual"
 
 #. module: web
 #. openerp-web
@@ -3295,7 +3295,7 @@ msgstr "Este Trimestre"
 #: code:addons/web/static/src/js/views/search/time_range_menu_options.js:12
 #, python-format
 msgid "This Week"
-msgstr "Esta Semana"
+msgstr "Semana Atual"
 
 #. module: web
 #. openerp-web

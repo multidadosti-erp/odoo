@@ -722,7 +722,7 @@ msgstr "Disculpe, el evento solicitado no está ya disponible."
 #: code:addons/website_event/controllers/main.py:44
 #, python-format
 msgid "This Week"
-msgstr "Esta semana"
+msgstr "Semana Atual"
 
 #. module: website_event
 #: code:addons/website_event/controllers/main.py:52

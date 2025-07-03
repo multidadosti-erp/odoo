@@ -2331,4 +2331,4 @@ msgstr "o/a"
 #. module: gamification
 #: model_terms:ir.ui.view,arch_db:gamification.badge_kanban_view
 msgid "this month"
-msgstr "este mês"
+msgstr "Mês Atual"
