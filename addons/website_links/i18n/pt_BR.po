@@ -140,12 +140,12 @@ msgstr "Ícone"
 #. module: website_links
 #: model_terms:ir.ui.view,arch_db:website_links.graphs
 msgid "Last Month"
-msgstr "Último Mês"
+msgstr "Mês Passado"
 
 #. module: website_links
 #: model_terms:ir.ui.view,arch_db:website_links.graphs
 msgid "Last Week"
-msgstr "Última Semana"
+msgstr "Semana Passada"
 
 #. module: website_links
 #: model_terms:ir.ui.view,arch_db:website_links.create_shorten_url

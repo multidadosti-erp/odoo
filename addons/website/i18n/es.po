@@ -2751,7 +2751,7 @@ msgstr "Última actualización el"
 #: code:addons/website/static/src/xml/website.backend.xml:71
 #, python-format
 msgid "Last Week"
-msgstr "Última Semana"
+msgstr "Semana Passada"
 
 #. module: website
 #. openerp-web

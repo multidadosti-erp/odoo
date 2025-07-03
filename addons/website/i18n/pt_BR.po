@@ -2709,7 +2709,7 @@ msgstr "Última modificação em"
 #: code:addons/website/static/src/xml/website.backend.xml:72
 #, python-format
 msgid "Last Month"
-msgstr "Último Mês"
+msgstr "Mês Passado"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__write_uid
@@ -2732,14 +2732,14 @@ msgstr "Última atualização em"
 #: code:addons/website/static/src/xml/website.backend.xml:71
 #, python-format
 msgid "Last Week"
-msgstr "Última Semana"
+msgstr "Semana Passada"
 
 #. module: website
 #. openerp-web
 #: code:addons/website/static/src/xml/website.backend.xml:73
 #, python-format
 msgid "Last Year"
-msgstr "Último ano"
+msgstr "Ano Passado"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.theme_customize

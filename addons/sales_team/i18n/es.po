@@ -309,7 +309,7 @@ msgstr "Última actualización el"
 #. module: sales_team
 #: selection:crm.team,dashboard_graph_period:0
 msgid "Last Week"
-msgstr "Última Semana"
+msgstr "Semana Passada"
 
 #. module: sales_team
 #: selection:crm.team,dashboard_graph_period:0

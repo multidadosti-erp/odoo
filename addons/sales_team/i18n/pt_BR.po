@@ -293,7 +293,7 @@ msgstr "Última modificação em"
 #. module: sales_team
 #: selection:crm.team,dashboard_graph_period:0
 msgid "Last Month"
-msgstr "Último Mês"
+msgstr "Mês Passado"
 
 #. module: sales_team
 #: model:ir.model.fields,field_description:sales_team.field_crm_team__write_uid
@@ -308,12 +308,12 @@ msgstr "Última atualização em"
 #. module: sales_team
 #: selection:crm.team,dashboard_graph_period:0
 msgid "Last Week"
-msgstr "Última Semana"
+msgstr "Semana Passada"
 
 #. module: sales_team
 #: selection:crm.team,dashboard_graph_period:0
 msgid "Last Year"
-msgstr "Último ano"
+msgstr "Ano Passado"
 
 #. module: sales_team
 #: selection:crm.team,dashboard_graph_type:0
