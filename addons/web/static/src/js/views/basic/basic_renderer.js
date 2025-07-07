@@ -550,6 +550,20 @@ var BasicRenderer = AbstractRenderer.extend({
         return dom.renderButton(btnOptions);
     },
     /**
+     * Adicionado pela Multidados:
+     *
+     * Adiciona obtenção do widget para a renderização de um campo.
+     * Isso é necessário para que o widget possa ser herdado para
+     * adicionar a renderização de campos dinâmicos.
+     *
+     * @param {Object} record
+     * @param {String} fieldName
+     * @returns Class;
+     */
+    _getFieldWidget: function (record, fieldName) {
+        return record.fieldsInfo[this.viewType][fieldName].Widget;
+    },
+    /**
      * Instantiates the appropriate AbstractField specialization for the given
      * node and prepares its rendering and addition to the DOM. Indeed, the
      * rendering of the widget will be started and the associated deferred will
@@ -578,19 +592,19 @@ var BasicRenderer = AbstractRenderer.extend({
         var modifiers = this._registerModifiers(node, record, null, options);
         // Initialize and register the widget
         // Readonly status is known as the modifiers have just been registered
-        var Widget = record.fieldsInfo[this.viewType][fieldName].Widget;
+        var Widget = this._getFieldWidget(record, fieldName);
         var widget = new Widget(this, fieldName, record, {
             mode: modifiers.readonly ? 'readonly' : mode,
             viewType: this.viewType,
         });
-        
+
         // Obtém as opções do widget, incluindo regras de string dinâmica
         // Obs.: Caso não atenda os domains, o campo irá manter a string original
         //
         // Exemplo de uso:
         // <field name="project_id"
         //        options="{'dynamic_string': [{'domain': [('contract_type_control', '=', 'out_invoice')], 'string': 'Project'},
-        //                                     {'domain': [('contract_type_control', 'in', ['in_invoice', 'hr'])], 'string': 'Analytic Account'}]}"                                   
+        //                                     {'domain': [('contract_type_control', 'in', ['in_invoice', 'hr'])], 'string': 'Analytic Account'}]}"
         //
         var options = widget.nodeOptions || {};
         var dynamicStringRules = options.dynamic_string || null;
@@ -604,7 +618,7 @@ var BasicRenderer = AbstractRenderer.extend({
                 }).get('string', null).value();
 
             // Atualiza o label do campo caso uma string dinâmica seja encontrada
-            if (dynamicLabel) { 
+            if (dynamicLabel) {
                 widget.field.string = dynamicLabel;
             }
         }
@@ -660,7 +674,7 @@ var BasicRenderer = AbstractRenderer.extend({
             return false; // Regra inválida
         }
         return new Domain((rule.domain || []), recordData).compute(recordData);
-    },     
+    },
     /**
      * Renders the nocontent helper.
      *

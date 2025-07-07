@@ -63,7 +63,21 @@ var BasicView = AbstractView.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-
+    /**  Adicionado pela Multidados:
+     *
+     * Retorna no nome do widget nos atributos do campo.
+     * Utilizado para herdar no br_base, e adicionar widgets
+     * dinâmicos por meio de Domains passados pelo parametro
+     * attrs.widget.
+     *
+     * @private
+     * @param {string} viewType
+     * @param {Object} attrs
+     * @returns {string} widget name
+     */
+    _getFieldWidgetName: function (viewType, field, attrs) {
+        return attrs.widget;
+    },
     /**
      * Returns the AbstractField specialization that should be used for the
      * given field informations. If there is no mentioned specific widget to
@@ -218,6 +232,13 @@ var BasicView = AbstractView.extend({
             return self._processNode(node, fv);
         });
     },
+    _processFieldOptions: function (attrs) {
+        // process the options attribute of a field, which is a stringified
+        // python dict, and convert it to a javascript object.
+        if (!_.isObject(attrs.options)) { // parent arch could have already been processed (TODO this should not happen)
+            attrs.options = attrs.options ? pyUtils.py_eval(attrs.options) : {};
+        }
+    },
     /**
      * Processes a field node, in particular, put a flag on the field to give
      * special directives to the BasicModel.
@@ -244,9 +265,11 @@ var BasicView = AbstractView.extend({
             }
         });
 
-        if (!_.isObject(attrs.options)) { // parent arch could have already been processed (TODO this should not happen)
-            attrs.options = attrs.options ? pyUtils.py_eval(attrs.options) : {};
-        }
+        // Alterado pela Multidados:
+        //
+        // Processa as opções dos campos em uma função encapsulada,
+        // para possibilitar a adição de widgets dinâmicos via herança.
+        this._processFieldOptions(attrs);
 
         if (attrs.on_change && attrs.on_change !== "0" && !field.onChange) {
             field.onChange = "1";

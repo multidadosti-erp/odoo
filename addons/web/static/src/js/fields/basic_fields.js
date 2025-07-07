@@ -1561,6 +1561,12 @@ var FieldBinaryImage = AbstractFieldBinary.extend({
     _render: function () {
         var self = this;
         var url = this.placeholder;
+
+        if (this.name === 'document_attachment'  || this.name == 'sale_report_header') {
+            console.warn('Rendering imageField');
+            debugger;
+        }
+
         if (this.value) {
             if (!utils.is_bin_size(this.value)) {
                 // Use magic-word technique for detecting image type
@@ -1613,9 +1619,12 @@ var FieldBinaryFile = AbstractFieldBinary.extend({
     supportedFieldTypes: ['binary'],
     init: function () {
         this._super.apply(this, arguments);
+        console.log("__init__() FIELD BINARY FILE");
+        debugger;
         this.filename_value = this.recordData[this.attrs.filename];
     },
     _renderReadonly: function () {
+        debugger;
         var visible = !!(this.value && this.res_id);
         this.$el.empty().css('cursor', 'not-allowed');
         this.do_toggle(visible);
@@ -1626,6 +1635,7 @@ var FieldBinaryFile = AbstractFieldBinary.extend({
         }
     },
     _renderEdit: function () {
+        debugger;
         if (this.value) {
             this.$el.children().removeClass('o_hidden');
             this.$('.o_select_file_button').first().addClass('o_hidden');
@@ -1679,6 +1689,8 @@ var FieldPdfViewer = FieldBinaryFile.extend({
      */
     init: function () {
         this._super.apply(this, arguments);
+        console.log("__init__() FIELD PDF VIEWER");
+        debugger;
         this.PDFViewerApplication = false;
     },
 
