@@ -10,6 +10,8 @@ class ProductionLot(models.Model):
     _inherit = ['mail.thread','mail.activity.mixin']
     _description = 'Lot/Serial'
 
+    _order = 'name asc, id desc'
+
     name = fields.Char(
         'Lot/Serial Number', default=lambda self: self.env['ir.sequence'].next_by_code('stock.lot.serial'),
         track_visibility='always',
