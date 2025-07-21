@@ -2527,7 +2527,8 @@ class AccountInvoice(models.Model):
                 invoice.reference = invoice._get_computed_reference()
 
             # Atualiza as referências no lançamento contábil associado
-            invoice.move_id.ref = invoice.reference
+            if invoice.move_id:
+                invoice.move_id.ref = invoice.reference
 
         # Verifica duplicidade de referência para faturas de fornecedores
         self._check_duplicate_supplier_reference()
