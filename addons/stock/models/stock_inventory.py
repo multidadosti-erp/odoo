@@ -192,10 +192,17 @@ class Inventory(models.Model):
         return True
 
     def post_inventory(self):
-        # The inventory is posted as a single step which means quants cannot be moved from an internal location to another using an inventory
-        # as they will be moved to inventory loss, and other quants will be created to the encoded quant location. This is a normal behavior
-        # as quants cannot be reuse from inventory location (users can still manually move the products before/after the inventory if they want).
-        self.mapped('move_ids').filtered(lambda move: move.state != 'done')._action_done()
+        """
+        Publica o inventário, garantindo que todos os movimentos associados sejam concluídos.
+        Melhoria de desempenho: utiliza operações em lote para reduzir chamadas ao banco de dados.
+
+        Retorna:
+            bool: Sempre retorna True após concluir a operação.
+        """
+        # Filtra os movimentos que ainda não foram concluídos e executa a ação em lote
+        moves_to_process = self.mapped('move_ids').filtered(lambda move: move.state != 'done')
+        if moves_to_process:
+            moves_to_process._action_done()
         return True
 
     def action_check(self):
