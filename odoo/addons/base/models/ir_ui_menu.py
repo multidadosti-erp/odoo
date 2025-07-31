@@ -230,15 +230,25 @@ class IrUiMenu(models.Model):
         :return: the menu root
         :rtype: dict('children': menu_nodes)
         """
-        fields = ['name', 'sequence', 'parent_id', 'action', 'web_icon', 'web_icon_data']
+        # 1. Adicionamos 'groups_id' aos campos que precisamos ler
+        fields = [
+            "name",
+            "sequence",
+            "parent_id",
+            "action",
+            "web_icon",
+            "web_icon_data",
+            "groups_id",
+        ]
+
         menu_roots = self.get_user_roots()
         menu_roots_data = menu_roots.read(fields) if menu_roots else []
         menu_root = {
-            'id': False,
-            'name': 'root',
-            'parent_id': [-1, ''],
-            'children': menu_roots_data,
-            'all_menu_ids': menu_roots.ids,
+            "id": False,
+            "name": "root",
+            "parent_id": [-1, ""],
+            "children": menu_roots_data,
+            "all_menu_ids": menu_roots.ids,
         }
 
         if not menu_roots_data:
@@ -249,13 +259,28 @@ class IrUiMenu(models.Model):
         menus = self.search([('id', 'child_of', menu_roots.ids)])
         menu_items = menus.read(fields)
 
-        # add roots at the end of the sequence, so that they will overwrite
-        # equivalent menu items from full menu read when put into id:item
-        # mapping, resulting in children being correctly set on the roots.
-        menu_items.extend(menu_roots_data)
-        menu_root['all_menu_ids'] = menus.ids  # includes menu_roots!
+        # --- INÍCIO DA CORREÇÃO ---
 
-        # make a tree using parent_id
+        # 2. Filtramos a lista de `menu_items` para remover os inacessíveis
+        accessible_menus = []
+        user_groups = self.env.user.groups_id
+
+        for menu in menu_items:
+            # Se o menu não exige grupos, ele é acessível
+            if not menu['groups_id']:
+                accessible_menus.append(menu)
+            # Se exige, verificamos se o usuário tem pelo menos um dos grupos necessários
+            elif any(group_id in user_groups.ids for group_id in menu['groups_id']):
+                accessible_menus.append(menu)
+
+        # 3. Usamos a lista filtrada `accessible_menus` em vez da original
+        menu_items = accessible_menus
+
+        # --- FIM DA CORREÇÃO ---
+
+        menu_items.extend(menu_roots_data)
+        menu_root['all_menu_ids'] = [m['id'] for m in menu_items]
+
         menu_items_map = {menu_item["id"]: menu_item for menu_item in menu_items}
         for menu_item in menu_items:
             parent = menu_item['parent_id'] and menu_item['parent_id'][0]
@@ -263,11 +288,13 @@ class IrUiMenu(models.Model):
                 menu_items_map[parent].setdefault(
                     'children', []).append(menu_item)
 
-        # sort by sequence a tree using parent_id
+        # ordenar por sequência uma árvore usando parent_id
         for menu_item in menu_items:
             menu_item.setdefault('children', []).sort(key=operator.itemgetter('sequence'))
 
-        (menu_roots + menus)._set_menuitems_xmlids(menu_root)
+        # A chamada a seguir espera um recordset, então criamos um a partir dos IDs filtrados
+        menus_recordset = self.browse(menu_root['all_menu_ids'])
+        menus_recordset._set_menuitems_xmlids(menu_root)
 
         return menu_root
 
