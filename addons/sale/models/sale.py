@@ -208,12 +208,19 @@ class SaleOrder(models.Model):
 
     invoice_count = fields.Integer(string='Invoice Count', compute='_get_invoiced', readonly=True)
     invoice_ids = fields.Many2many("account.invoice", string='Invoices', compute="_get_invoiced", readonly=True, copy=False, search="_search_invoice_ids")
-    invoice_status = fields.Selection([
-        ('upselling', 'Upselling Opportunity'),
-        ('invoiced', 'Fully Invoiced'),
-        ('to invoice', 'To Invoice'),
-        ('no', 'Nothing to Invoice')
-        ], string='Invoice Status', compute='_get_invoiced', store=True, readonly=True)
+    invoice_status = fields.Selection(
+        [
+            ("upselling", "Upselling Opportunity"),
+            ("invoiced", "Fully Invoiced"),
+            ("to invoice", "To Invoice"),
+            ("no", "Nothing to Invoice"),
+        ],
+        string="Invoice Status",
+        copy=False,
+        compute="_get_invoiced",
+        store=True,
+        readonly=True,
+    )
 
     note = fields.Text('Terms and conditions', default=_default_note)
 
