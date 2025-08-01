@@ -2,6 +2,11 @@
 <odoo>
     <data noupdate="1">
 
+        <!--
+        COMENTADO CAMPOS REMOVIDOS DAS MODELS
+        product.product , sale.order.line, sale.order, project.project, project.task
+         -->
+
         <record id="sale_line_services" model="sale.order.line">
             <field name="order_id" ref="sale.sale_order_3"/>
             <field name="name">Advance</field>
@@ -42,12 +47,10 @@
         <!-- Products -->
         <record id="product.product_product_2" model="product.product">
             <field name="service_type">timesheet</field>
-            <field name="service_tracking">project_only</field>
         </record>
 
         <record id="product.product_product_1" model="product.product">
             <field name="service_type">timesheet</field>
-            <field name="service_tracking">task_global_project</field>
         </record>
 
         <record id="product_service_order_timesheet" model="product.product">
@@ -59,9 +62,6 @@
             <field name="standard_price">190.00</field>
             <field name="uom_id" ref="uom.product_uom_hour"/>
             <field name="uom_po_id" ref="uom.product_uom_hour"/>
-            <field name="service_policy">ordered_timesheet</field>
-            <field name="service_tracking">task_global_project</field>
-            <field name="project_id" ref="project_support"/>
         </record>
 
         <record id="product_service_deliver_timesheet_1" model="product.product">
@@ -73,8 +73,6 @@
             <field name="type">service</field>
             <field name="uom_id" ref="uom.product_uom_hour"/>
             <field name="uom_po_id" ref="uom.product_uom_hour"/>
-            <field name="service_policy">delivered_timesheet</field>
-            <field name="service_tracking">task_new_project</field>
         </record>
 
         <record id="product_service_deliver_timesheet_2" model="product.product">
@@ -86,8 +84,6 @@
             <field name="type">service</field>
             <field name="uom_id" ref="uom.product_uom_hour"/>
             <field name="uom_po_id" ref="uom.product_uom_hour"/>
-            <field name="service_policy">delivered_timesheet</field>
-            <field name="service_tracking">task_new_project</field>
         </record>
 
         <record id="product_service_deliver_manual" model="product.product">
@@ -99,8 +95,6 @@
             <field name="type">service</field>
             <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
-            <field name="service_policy">delivered_manual</field>
-            <field name="service_tracking">no</field>
         </record>
 
         <!-- Sales orders -->
@@ -130,26 +124,37 @@
             <field name="product_uom_qty">50</field>
         </record>
 
+        <record id="project_project_1" model="project.project">
+            <field name="name">SO Project</field>
+            <field name="date_start" eval="time.strftime('%Y-%m-01 10:00:00')"/>
+            <field name="sale_order_id" ref="sale_timesheet.sale_order_1"/>
+            <field name="type_ids" eval="[(4, ref('project.project_stage_data_0')), (4, ref('project.project_stage_1')), (4, ref('project_stage_fixed'))]"/>
+        </record>
+
         <record id="project_task_1" model="project.task">
             <field name="name">Decoration</field>
             <field name="sale_line_id" ref="sale_timesheet.sale_line_13"/>
             <field name="sale_order_id" ref="sale_timesheet.sale_order_1"/>
+            <field name="project_id" ref="project_project_1"/>
         </record>
 
         <record id="project_task_2" model="project.task">
             <field name="name">Planning</field>
             <field name="sale_line_id" ref="sale_timesheet.sale_line_13"/>
             <field name="sale_order_id" ref="sale_timesheet.sale_order_1"/>
+            <field name="project_id" ref="project_project_1"/>
         </record>
 
         <record id="project_task_3" model="project.task">
             <field name="name">Furniture</field>
             <field name="sale_line_id" ref="sale_timesheet.sale_line_13"/>
             <field name="sale_order_id" ref="sale_timesheet.sale_order_1"/>
+            <field name="project_id" ref="project_project_1"/>
         </record>
 
         <record id="project_task_4" model="project.task">
             <field name="name">Furniture Delivery</field>
+            <field name="project_id" ref="project_project_1"/>
         </record>
 
         <!-- Sale Order 'sale_order_2' (Delta PC) -->
@@ -172,6 +177,13 @@
             <field name="product_uom_qty">10</field>
         </record>
 
+        <record id="project_project_2" model="project.project">
+            <field name="name">SO Project 2</field>
+            <field name="date_start" eval="time.strftime('%Y-%m-01 10:00:00')"/>
+            <field name="sale_order_id" ref="sale_timesheet.sale_order_2"/>
+            <field name="type_ids" eval="[(4, ref('project.project_stage_data_0')), (4, ref('project.project_stage_1')), (4, ref('project_stage_fixed'))]"/>
+        </record>
+
         <!-- Confirm Sale Orders -->
         <function model="sale.order" name="action_confirm" eval="[[ref('sale_order_1')]]"/>
         <function model="sale.order" name="action_confirm" eval="[[ref('sale_order_2')]]"/>
@@ -183,7 +195,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(weekday=3,weeks=-2)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">5.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_1'))]"/>
         </record>
         <record id="timesheet_2" model="account.analytic.line">
             <field name="name">Fine tuning</field>
@@ -191,7 +203,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(weekday=2,weeks=-2)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">5.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_1'))]"/>
         </record>
         <record id="timesheet_3" model="account.analytic.line">
             <field name="name">Assembling</field>
@@ -199,7 +211,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(days=0)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">5.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_1'))]"/>
         </record>
         <record id="timesheet_4" model="account.analytic.line">
             <field name="name">Delivery</field>
@@ -207,7 +219,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(weekday=1,weeks=-2)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">5.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_13'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_1'))]"/>
         </record>
 
         <record id="timesheet_5" model="account.analytic.line">
@@ -298,7 +310,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(weekday=1,weeks=-2)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">8.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_2'))]"/>
         </record>
         <record id="timesheet_16" model="account.analytic.line">
             <field name="name">Quality analysis</field>
@@ -306,7 +318,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(weekday=2,weeks=-2)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">8.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_2'))]"/>
         </record>
         <record id="timesheet_17" model="account.analytic.line">
             <field name="name">Repair</field>
@@ -314,7 +326,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(days=0)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">8.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_2'))]"/>
         </record>
         <record id="timesheet_18" model="account.analytic.line">
             <field name="name">Initial design improvement</field>
@@ -322,7 +334,7 @@
             <field name="date" eval="(DateTime.now() + relativedelta(weekday=4,weeks=-2)).strftime('%Y-%m-%d')"/>
             <field name="unit_amount">8.00</field>
             <field name="task_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
-            <field name="project_id" search="[('sale_line_id', '=', ref('sale_line_22'))]"/>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_2'))]"/>
         </record>
 
         <record id="timesheet_19" model="account.analytic.line">
