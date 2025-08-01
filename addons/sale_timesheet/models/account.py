@@ -39,20 +39,18 @@ class AccountAnalyticLine(models.Model):
 
     @api.onchange('employee_id')
     def _onchange_task_id_employee_id(self):
+        # Alterado pela Multidados:
+        # O campo billable_type foi removido, então segue o fluxo normalmente com
+        # o valor padrão 'no' para timesheet. Mantém os comentários para referência.
         if self.project_id:  # timesheet only
-            if self.task_id.billable_type == 'task_rate':
+            # if self.task_id.billable_type == 'task_rate':
+            billable_type = 'no'
+            if billable_type == 'task_rate':
                 self.so_line = self.task_id.sale_line_id
-            elif self.task_id.billable_type == 'employee_rate':
-                self.so_line = self._timesheet_determine_sale_line(self.task_id, self.employee_id)
+            # elif self.task_id.billable_type == 'employee_rate':
+            #     self.so_line = self._timesheet_determine_sale_line(self.task_id, self.employee_id)
             else:
                 self.so_line = False
-
-    @api.constrains('so_line', 'project_id')
-    def _check_sale_line_in_project_map(self):
-        for timesheet in self:
-            if timesheet.project_id and timesheet.so_line:  # billed timesheet
-                if timesheet.so_line not in timesheet.project_id.mapped('sale_line_employee_ids.sale_line_id') | timesheet.task_id.sale_line_id | timesheet.project_id.sale_line_id:
-                    raise ValidationError(_("This timesheet line cannot be billed: there is no Sale Order Item defined on the task, nor on the project. Please define one to save your timesheet line."))
 
     @api.multi
     def write(self, values):
@@ -98,6 +96,10 @@ class AccountAnalyticLine(models.Model):
                 on the one on the project
             NOTE: this have to be consistent with `_compute_billable_type` on project.task.
         """
+        return task.sale_line_id
+        # Alterado pela Multidados:
+        # Remove o código inutilizado, retornando sempre a linha do
+        # pedido relacionada a tarefa
         if task.billable_type != 'no':
             if task.billable_type == 'employee_rate':
                 map_entry = self.env['project.sale.line.employee.map'].search([('project_id', '=', task.project_id.id), ('employee_id', '=', employee.id)])
