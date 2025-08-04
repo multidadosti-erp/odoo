@@ -103,7 +103,7 @@ var Tip = Widget.extend({
         clearTimeout(this.timerOut);
 
         // Do not remove the parent class if it contains other tooltips
-        if (this.$ideal_location.children(".o_tooltip").not(this.$el[0]).length === 0) {
+        if (this.$ideal_location && this.$el && this.$ideal_location.children(".o_tooltip").not(this.$el[0]).length === 0) {
             this.$ideal_location.removeClass("o_tooltip_parent");
         }
 
