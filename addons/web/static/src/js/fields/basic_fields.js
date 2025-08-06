@@ -2597,8 +2597,21 @@ var FieldToggleBoolean = AbstractField.extend({
      * @param {MouseEvent} event
      */
     _onToggleButton: function (event) {
-        event.stopPropagation();
-        this._setValue(!this.value);
+        var canWrite = !this.readonly && (
+            this.mode === 'edit' ||
+            (this.editable_readonly && this.mode === 'readonly') ||
+            (this.viewType === 'kanban')
+        );
+
+        // Verifica se o Campo está setado como readOnly
+        if (canWrite && this.attrs.readonly === "1") {
+            canWrite = false
+        }
+
+        if (canWrite) {
+            event.stopPropagation();
+            this._setValue(!this.value);
+        }
     },
 });
 
