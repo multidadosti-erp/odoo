@@ -47,6 +47,11 @@ var Menu = Widget.extend({
         this.$menu_brand_placeholder = this.$('.o_menu_brand');
         this.$section_placeholder = this.$('.o_menu_sections');
 
+        // Calcula a margem com base na posição do menu_brand_placeholder
+        var brandPosition = this.$menu_brand_placeholder.position();
+        var marginLeft = brandPosition ? brandPosition.left + this.$menu_brand_placeholder.outerWidth(true) : 50; // Adiciona 10px de espaçamento extra
+        this.$section_placeholder.css('margin-left', marginLeft + 'px');  
+
         // Navbar's menus event handlers
         var on_secondary_menu_click = function (ev) {
             ev.preventDefault();
@@ -72,7 +77,9 @@ var Menu = Widget.extend({
 
         dom.initAutoMoreMenu(this.$section_placeholder, {
             maxWidth: function () {
-                return self.$el.width() - (self.$menu_apps.outerWidth(true) + self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
+                // comentado self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
+                // para aumentar a largura do menu
+                return self.$el.width() - (self.$menu_apps.outerWidth(true));  // + self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
             },
             sizeClass: 'SM',
         });
