@@ -2,11 +2,15 @@
 <templates id="template" xml:space="preserve">
 
 <header t-name="Menu">
-    <nav class="o_main_navbar">
+    <nav name="nav_title" class="o_main_navbar">
         <ul class="o_menu_apps"/>
         <a class="o_menu_brand" role="button"/>
-        <ul class="o_menu_sections" role="menu"/>
+        <!-- <ul class="o_menu_sections" role="menu"/> -->
         <ul class="o_menu_systray" role="menu"/>
+    </nav>
+    
+    <nav name="nav_applications" class="o_main_navbar">
+        <ul class="o_menu_sections" role="menu"/>
     </nav>
 </header>
 
