@@ -84,6 +84,7 @@ var SwitchCompanyMenu = Widget.extend({
     },
 });
 
+SwitchCompanyMenu.prototype.sequence = 1;
 SystrayMenu.Items.push(SwitchCompanyMenu);
 
 return SwitchCompanyMenu;
