@@ -145,6 +145,8 @@ var ActivityMenu = Widget.extend({
     },
 });
 
+ActivityMenu.prototype.sequence = 70;
+
 SystrayMenu.Items.push(ActivityMenu);
 
 return ActivityMenu;
