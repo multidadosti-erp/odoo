@@ -2355,10 +2355,11 @@ class MailThread(models.AbstractModel):
         :param default_subtype_ids: coming from ``_get_auto_subscription_subtypes``
         """
         fnames = []
-        for name, field in self._fields.items():
-            if name == 'user_id' and updated_values.get(name) and getattr(field, 'track_visibility', False):
-                if field.comodel_name == 'res.users':
-                    fnames.append(name)
+
+        field = self._fields.get('user_id')
+        if (field and updated_values.get('user_id') and getattr(field, 'track_visibility', False)
+          and field.comodel_name == 'res.users'):
+            fnames.append('user_id')
 
         new_subscriptions = []
         user_ids = [updated_values[fname] for fname in fnames if updated_values[fname]]
