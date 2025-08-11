@@ -64,7 +64,8 @@ var FiltersMenu = DropdownMenu.extend({
         this.fields.id = {string: 'ID', type: 'id', searchable: true};
         var dropdownHeader = {
             category: 'filterCategory',
-            title: _t('Filters'),
+            title: '',
+            help: _t('Filters'),
             icon: 'fa fa-filter',
             symbol: this.isMobile ? 'fa fa-chevron-right float-right mt4' : false,
         };
