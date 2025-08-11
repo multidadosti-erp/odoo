@@ -10,6 +10,7 @@ var Pager = require('web.Pager');
 var utils = require('web.utils');
 
 var _t = core._t;
+var qweb = core.qweb;
 
 // Allowed decoration on the list's rows: bold, italic and bootstrap semantics classes
 var DECORATIONS = [
@@ -328,6 +329,25 @@ var ListRenderer = BasicRenderer.extend({
         return $td.html(formattedValue);
     },
     /**
+     * Add a tooltip on a button
+     *
+     * @private
+     * @param {Object} node
+     * @param {jQuery} $button
+     */
+    _addButtonTooltip: function (node, $button) {
+        var self = this;
+        $button.tooltip({
+            title: function () {
+                return qweb.render('WidgetButton.tooltip', {
+                    debug: config.debug,
+                    state: self.state,
+                    node: node,
+                });
+            },
+        });
+    },    
+    /**
      * Renders the button element associated to the given node and record.
      *
      * @private
@@ -362,6 +382,11 @@ var ListRenderer = BasicRenderer.extend({
             } else {
                 $button.prop('disabled', true);
             }
+        }
+
+        // Display tooltip
+        if (config.debug || node.attrs.help) {
+            this._addButtonTooltip(node, $button);
         }
 
         return $button;
