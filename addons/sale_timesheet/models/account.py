@@ -97,17 +97,3 @@ class AccountAnalyticLine(models.Model):
             NOTE: this have to be consistent with `_compute_billable_type` on project.task.
         """
         return task.sale_line_id
-        # Alterado pela Multidados:
-        # Remove o código inutilizado, retornando sempre a linha do
-        # pedido relacionada a tarefa
-        if task.billable_type != 'no':
-            if task.billable_type == 'employee_rate':
-                map_entry = self.env['project.sale.line.employee.map'].search([('project_id', '=', task.project_id.id), ('employee_id', '=', employee.id)])
-                if map_entry:
-                    return map_entry.sale_line_id
-                if task.sale_line_id:
-                    return task.sale_line_id
-                return task.project_id.sale_line_id
-            elif task.billable_type == 'task_rate':
-                return task.sale_line_id
-        return self.env['sale.order.line']
