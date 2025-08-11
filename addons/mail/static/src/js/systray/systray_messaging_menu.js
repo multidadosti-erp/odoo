@@ -326,6 +326,8 @@ var MessagingMenu = Widget.extend({
     },
 });
 
+MessagingMenu.prototype.sequence = 80;
+
 // Systray menu items display order matches order in the list
 // lower index comes first, and display is from right to left.
 // For messagin menu, it should come before activity menu, if any
