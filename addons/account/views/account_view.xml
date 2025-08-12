@@ -1288,7 +1288,9 @@
                                         <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags"/>
                                     </group>
                                 </group>
-                                <field name="narration" colspan="4" nolabel="1" placeholder="Add an internal note..."/>
+                                <field name="narration" colspan="4" nolabel="1"
+                                       widget="html"
+                                       placeholder="Add an internal note..."/>
                             </page>
                             <page string="Analytic Lines" groups="analytic.group_analytic_accounting">
                                 <field name="date" invisible="1"/>
@@ -1647,7 +1649,9 @@
                                     </group>
                                     </form>
                                 </field>
-                                <field name="narration" colspan="4" placeholder="Add an internal note..." nolabel="1" height="50"/>
+                                <field name="narration" colspan="4"
+                                       widget="html"
+                                       placeholder="Add an internal note..." nolabel="1" height="50"/>
                             </page>
                             <page string="Other Info">
                                 <group>
