@@ -125,7 +125,7 @@ var ActivityMenu = Widget.extend({
         } else {
             context['search_default_activities_' + data.filter] = 1;
         }
-        this.do_action({
+        var action = (Number(data.action) != NaN && Number(data.action)) || {
             type: 'ir.actions.act_window',
             name: data.model_name,
             res_model:  data.res_model,
@@ -133,7 +133,8 @@ var ActivityMenu = Widget.extend({
             search_view_id: [false],
             domain: [['activity_user_id', '=', session.uid]],
             context:context,
-        }, {
+        };
+        this.do_action(action, {
             clear_breadcrumbs: true,
         });
     },
