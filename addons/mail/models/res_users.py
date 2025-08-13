@@ -105,19 +105,32 @@ GROUP BY channel_moderator.res_users_id""", [tuple(self.ids)])
             self.env['mail.channel'].search([('group_ids', 'in', sel_groups)])._subscribe_users()
         return write_res
 
+    def _systray_activities_data_query(self):
+        """ Adiciona função para retornar query utilizada para obter
+        as atividades planejadas do usuário.
+
+        Adiciona função a parte para possibilitar a personalização da query
+        via herança.
+
+        Returns:
+            str: Query para busca de atividades ativas do usuário.
+        """
+        return """
+        SELECT m.id, count(*), act.res_model as model,
+            CASE
+                WHEN %(today)s::date - act.date_deadline::date = 0 Then 'today'
+                WHEN %(today)s::date - act.date_deadline::date > 0 Then 'overdue'
+                WHEN %(today)s::date - act.date_deadline::date < 0 Then 'planned'
+            END AS states
+        FROM mail_activity AS act
+        JOIN ir_model AS m ON act.res_model_id = m.id
+        WHERE user_id = %(user_id)s
+        GROUP BY m.id, states, act.res_model;
+        """
+
     @api.model
     def systray_get_activities(self):
-        query = """SELECT m.id, count(*), act.res_model as model,
-                        CASE
-                            WHEN %(today)s::date - act.date_deadline::date = 0 Then 'today'
-                            WHEN %(today)s::date - act.date_deadline::date > 0 Then 'overdue'
-                            WHEN %(today)s::date - act.date_deadline::date < 0 Then 'planned'
-                        END AS states
-                    FROM mail_activity AS act
-                    JOIN ir_model AS m ON act.res_model_id = m.id
-                    WHERE user_id = %(user_id)s
-                    GROUP BY m.id, states, act.res_model;
-                    """
+        query = self._systray_activities_data_query()
         self.env.cr.execute(query, {
             'today': fields.Date.context_today(self),
             'user_id': self.env.uid,
