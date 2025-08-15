@@ -366,7 +366,7 @@ var Session = core.Class.extend(mixins.EventDispatcherMixin, {
                 return def;
             }
             // TODO: remove
-            if (! _.isString(url)) {
+            if (! _.isString(url) && url && typeof url === 'object' && 'url' in url) {
                 _.extend(options, url);
                 url = url.url;
             }
