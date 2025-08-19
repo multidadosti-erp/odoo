@@ -75,14 +75,15 @@ var Menu = Widget.extend({
         this.systray_menu = new SystrayMenu(this);
         this.systray_menu.attachTo(this.$('.o_menu_systray'));
 
-        dom.initAutoMoreMenu(this.$section_placeholder, {
-            maxWidth: function () {
-                // comentado self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
-                // para aumentar a largura do menu
-                return self.$el.width() - (self.$menu_apps.outerWidth(true));  // + self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
-            },
-            sizeClass: 'SM',
-        });
+        // Comentado para ao estourar o menu adicionar mais uma linha ao inves de adicionar sinal de +
+        // dom.initAutoMoreMenu(this.$section_placeholder, {
+        //     maxWidth: function () {
+        //         // comentado self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
+        //         // para aumentar a largura do menu
+        //         return self.$el.width() - (self.$menu_apps.outerWidth(true));  // + self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
+        //     },
+        //     sizeClass: 'SM',
+        // });
 
         return this._super.apply(this, arguments);
     },
