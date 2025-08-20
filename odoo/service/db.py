@@ -280,7 +280,7 @@ def restore_db(db, dump_file, copy=False):
         else:
             # <= 7.0 format (raw pg_dump output)
             pg_cmd = 'pg_restore'
-            pg_args = ['--no-owner', dump_file]
+            pg_args = ['--no-owner', '--no-acl', dump_file]
 
         args = []
         args.append('--dbname=' + db)
