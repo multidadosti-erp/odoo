@@ -54,7 +54,7 @@ except ImportError:
     from collections.abc import Mapping
 
 from contextlib import contextmanager
-from inspect import currentframe, getargspec
+from inspect import currentframe, getfullargspec
 from pprint import pformat
 from weakref import WeakSet
 
@@ -283,7 +283,7 @@ def downgrade(method, value, self, args, kwargs):
     if not spec:
         return value
     _, convert, _ = spec
-    if convert and len(getargspec(convert).args) > 1:
+    if convert and len(getfullargspec(convert).args) > 1:
         return convert(self, value, *args, **kwargs)
     elif convert:
         return convert(value)
@@ -308,7 +308,7 @@ def split_context(method, args, kwargs):
     """ Extract the context from a pair of positional and keyword arguments.
         Return a triple ``context, args, kwargs``.
     """
-    pos = len(getargspec(method).args) - 1
+    pos = len(getfullargspec(method).args) - 1
     if pos < len(args):
         return args[pos], args[:pos], kwargs
     else:
@@ -693,23 +693,23 @@ def guess(method):
         return method
 
     # introspection on argument names to determine api style
-    args, vname, kwname, defaults = getargspec(method)
-    names = tuple(args) + (None,) * 4
+    spec = getfullargspec(method)
+    names = tuple(spec.args) + (None,) * 4
 
     if names[0] == 'self':
         if names[1] in ('cr', 'cursor'):
             if names[2] in ('uid', 'user'):
                 if names[3] == 'ids':
-                    if 'context' in names or kwname:
+                    if 'context' in names or spec.varkw:
                         return cr_uid_ids_context(method)
                     else:
                         return cr_uid_ids(method)
                 elif names[3] == 'id' or names[3] == 'res_id':
-                    if 'context' in names or kwname:
+                    if 'context' in names or spec.varkw:
                         return cr_uid_id_context(method)
                     else:
                         return cr_uid_id(method)
-                elif 'context' in names or kwname:
+                elif 'context' in names or spec.varkw:
                     return cr_uid_context(method)
                 else:
                     return cr_uid(method)
