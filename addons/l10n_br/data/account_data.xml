@@ -139,5 +139,11 @@
         <record id="tax_group_ipi_330" model="account.tax.group">
             <field name="name">IPI 330%</field>
         </record>
+        <record id="tax_group_fust_1" model="account.tax.group">
+            <field name="name">FUST 1%</field>
+        </record>
+        <record id="tax_group_funttel_05" model="account.tax.group">
+            <field name="name">FUNTTEL 0.5%</field>
+        </record>
     </data>
 </odoo>
