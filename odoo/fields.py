@@ -2616,7 +2616,12 @@ class One2many(_RelationalMulti):
         if self.inverse_name:
             # link self to its inverse field and vice-versa
             comodel = model.env[self.comodel_name]
-            invf = comodel._fields[self.inverse_name]
+            try:
+                invf = comodel._fields[self.inverse_name]
+            except KeyError as e:
+                raise KeyError("No inverse field %r found on %r, to create the related field %r on model %r" % (
+                    self.inverse_name, self.comodel_name, self.name, model._name
+                )) from e
             # In some rare cases, a ``One2many`` field can link to ``Int`` field
             # (res_model/res_id pattern). Only inverse the field if this is
             # a ``Many2one`` field.
