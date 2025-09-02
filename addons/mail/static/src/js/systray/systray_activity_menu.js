@@ -135,6 +135,7 @@ var ActivityMenu = Widget.extend({
             context:context,
         };
         this.do_action(action, {
+            additional_context: context,
             clear_breadcrumbs: true,
         });
     },
