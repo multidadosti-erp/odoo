@@ -152,7 +152,8 @@
     .o_horizontal_separator {
         color: #4c4c4c;  // $o-brand-primary;
         font-weight: bold;
-        background-color: hsl(0, 5%, 97%);
+        background: linear-gradient(to right, hsl(0, 5%, 95%), #fff);
+        margin-right: 1px;
     }
 
     // Translate icon
