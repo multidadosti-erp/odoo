@@ -141,6 +141,9 @@ class IrFieldsConverter(models.AbstractModel):
 
     @api.model
     def _str_to_boolean(self, model, field, value):
+        if isinstance(value, bool):
+            return value, []
+
         # all translatables used for booleans
         true, yes, false, no = _(u"true"), _(u"yes"), _(u"false"), _(u"no")
         # potentially broken casefolding? What about locales?
