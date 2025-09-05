@@ -805,7 +805,16 @@ var ActionManager = Widget.extend({
      */
     _preprocessAction: function (action, options) {
         // ensure that the context and domain are evaluated
-        var context = new Context(this.userContext, options.additional_context, action.context);
+
+        // Alterado pela Multidados:
+        // Adiciona escuta de parâmetro em options, para limpar
+        // o contexto obtido pela action, mantendo somente o
+        // contexto do usuário e o contexto adicional.
+        if (!options.clear_action_context) {
+            var context = new Context(this.userContext, options.additional_context, action.context);
+        } else {
+            var context = new Context(this.userContext, options.additional_context);
+        }
         action.context = pyUtils.eval('context', context);
         if (action.domain) {
             action.domain = pyUtils.eval('domain', action.domain, action.context);

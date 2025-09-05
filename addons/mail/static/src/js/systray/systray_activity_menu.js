@@ -119,11 +119,16 @@ var ActivityMenu = Widget.extend({
         // fetch the data from the button otherwise fetch the ones from the parent (.o_mail_preview).
         var data = _.extend({}, $(event.currentTarget).data(), $(event.target).data());
         var context = {};
+        data.parent_filter = ($(event.currentTarget).data() || {}).filter;
         if (data.filter === 'my') {
             context['search_default_activities_overdue'] = 1;
             context['search_default_activities_today'] = 1;
+            context["search_default_activities_my"] = 1;
         } else {
             context['search_default_activities_' + data.filter] = 1;
+            if (data.parent_filter === "my") {
+                context["search_default_activities_my"] = 1;
+            }
         }
         var action = (Number(data.action) != NaN && Number(data.action)) || {
             type: 'ir.actions.act_window',
@@ -136,6 +141,7 @@ var ActivityMenu = Widget.extend({
         };
         this.do_action(action, {
             additional_context: context,
+            clear_action_context: true,
             clear_breadcrumbs: true,
         });
     },
