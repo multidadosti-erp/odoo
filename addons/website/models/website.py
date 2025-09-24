@@ -175,34 +175,45 @@ class Website(models.Model):
     # Page Management
     # ----------------------------------------------------------
     def _bootstrap_homepage(self):
-        Page = self.env['website.page']
+        
+        # 1. Obter a página da homepage padrão.
         standard_homepage = self.env.ref('website.homepage', raise_if_not_found=False)
         if not standard_homepage:
             return
 
-        new_homepage_view = '''<t name="Homepage" t-name="website.homepage%s">
-        <t t-call="website.layout">
-            <t t-set="pageName" t-value="'homepage'"/>
-            <div id="wrap" class="oe_structure oe_empty"/>
+        # 2. Modifique o conteúdo da view da homepage padrão usando o ID da sua website.
+        new_homepage_view = '''
+        <t name="Homepage" t-name="website.homepage">
+            <t t-call="website.layout">
+                <t t-set="pageName" t-value="'homepage'"/>
+                <div id="wrap" class="oe_structure oe_empty"/>
             </t>
-        </t>''' % (self.id)
+        </t>
+        '''
         standard_homepage.with_context(website_id=self.id).arch_db = new_homepage_view
 
-        homepage_page = Page.search([
+        # 3. Garanta que o URL da homepage esteja configurado corretamente.
+        # A lógica abaixo está correta, mas pode ser simplificada.
+        # Obter a página, se ela existir para a website atual.
+        homepage_page = self.env['website.page'].search([
             ('website_id', '=', self.id),
             ('key', '=', standard_homepage.key),
         ], limit=1)
+
         if not homepage_page:
-            homepage_page = Page.create({
+            # Se não existir, crie-a.
+            homepage_page = self.env['website.page'].create({
                 'website_published': True,
                 'url': '/',
-                'view_id': self.with_context(website_id=self.id).viewref('website.homepage').id,
+                'view_id': standard_homepage.id,
+                'website_id': self.id,
             })
-        # prevent /-1 as homepage URL
+
+        # Prevenindo o URL com ID.
         homepage_page.url = '/'
         self.homepage_id = homepage_page
 
-        # Bootstrap default menu hierarchy, create a new minimalist one if no default
+        # 4. Mantenha o restante do código para o menu.
         default_menu = self.env.ref('website.main_menu')
         self.copy_menu_hierarchy(default_menu)
 
