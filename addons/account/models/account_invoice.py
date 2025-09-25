@@ -1036,6 +1036,30 @@ class AccountInvoice(models.Model):
                 if record.company_id not in record.partner_bank_id.partner_id.ref_company_ids:
                     raise ValidationError(_("The account selected for payment does not belong to the same company as this invoice."))
 
+    def get_invoice_reconciled(self):
+        """
+        Obtém as faturas que foram reconciliadas.
+
+        Este método foi otimizado para melhorar a performance ao evitar buscas desnecessárias
+        e utiliza filtragens diretas para determinar as faturas reconciliadas.
+
+        Returns:
+            recordset: Conjunto de registros das faturas reconciliadas.
+        """
+        return self.filtered(lambda invoice: invoice.reconciled)
+
+    def get_invoice_not_reconciled(self):
+        """
+        Obtém as faturas que não foram reconciliadas.
+
+        Este método foi otimizado para melhorar a performance ao evitar buscas desnecessárias
+        e utiliza filtragens diretas para determinar as faturas não reconciliadas.
+
+        Returns:
+            recordset: Conjunto de registros das faturas reconciliadas.
+        """
+        return self.filtered(lambda invoice: not invoice.reconciled)      
+
     @api.multi
     def _write(self, vals):
         """
@@ -1051,29 +1075,27 @@ class AccountInvoice(models.Model):
             bool: Resultado da operação de escrita.
         """
         # Identifica as faturas não reconciliadas antes da atualização
-        pre_not_reconciled = self.filtered(lambda invoice: not invoice.reconciled)
+        pre_not_reconciled = self.get_invoice_not_reconciled()
         pre_reconciled = self - pre_not_reconciled
 
         # Realiza a atualização nos registros
         res = super(AccountInvoice, self)._write(vals)
 
         # Identifica as faturas reconciliadas após a atualização
-        reconciled = self.filtered(lambda invoice: invoice.reconciled)
+        reconciled = self.get_invoice_reconciled()
         not_reconciled = self - reconciled
 
         # Ajusta o estado das faturas reconciliadas que estavam reconciliadas anteriormente
         reconciled_to_paid = reconciled & pre_reconciled
+        reconciled_to_paid = reconciled_to_paid.filtered(lambda invoice: invoice.state == "open")
         if reconciled_to_paid:
-            reconciled_to_paid.filtered(
-                lambda invoice: invoice.state == "open"
-            ).action_invoice_paid()
+            reconciled_to_paid.action_invoice_paid()
 
         # Ajusta o estado das faturas não reconciliadas que estavam não reconciliadas anteriormente
         not_reconciled_to_open = not_reconciled & pre_not_reconciled
+        not_reconciled_to_open = not_reconciled_to_open.filtered(lambda invoice: invoice.state in ("in_payment", "paid"))
         if not_reconciled_to_open:
-            not_reconciled_to_open.filtered(
-                lambda invoice: invoice.state in ("in_payment", "paid")
-            ).action_invoice_re_open()
+            not_reconciled_to_open.action_invoice_re_open()
 
         return res
 
@@ -1783,16 +1805,22 @@ class AccountInvoice(models.Model):
             raise UserError(_('Invoice must be validated in order to set it to register payment.'))
 
         # Verifica se há faturas parcialmente pagas
-        if to_pay_invoices.filtered(lambda inv: not inv.reconciled):
+        # filtered(lambda inv: not inv.reconciled):
+        if to_pay_invoices.get_invoice_not_reconciled():
             raise UserError(_('You cannot pay an invoice which is partially paid. You need to reconcile payment entries first.'))
 
         # Atualiza o estado das faturas
         for invoice in to_pay_invoices:
+            # Verifica se há lançamentos contábeis de pagamento em estado 'draft' e configurados para conciliação bancária
             has_draft_bank_moves = any(
                 move.state == 'draft' and move.journal_id.post_at_bank_rec
                 for move in invoice.payment_move_line_ids.mapped('move_id')
-            )
-            invoice.state = 'in_payment' if has_draft_bank_moves else 'paid'
+            ) if invoice.move_ids and invoice.payment_move_line_ids else False
+
+            try:
+                invoice.state = 'in_payment' if has_draft_bank_moves else 'paid'
+            except Exception as e:
+                _logger.warning("Failed to set invoice %s to paid/in_payment: %s", invoice.id, e)
 
     @api.multi
     def action_invoice_re_open(self):
