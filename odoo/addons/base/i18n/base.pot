@@ -8351,11 +8351,6 @@ msgid "Context dictionary as Python expression, empty by default (Default: {})"
 msgstr ""
 
 #. module: base
-#: model:ir.module.category,name:base.module_category_hr_contract
-msgid "Contracts"
-msgstr ""
-
-#. module: base
 #: model:ir.model.fields,field_description:base.field_ir_module_module__contributors
 msgid "Contributors"
 msgstr ""
@@ -11763,6 +11758,11 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_contract_salary
 msgid "HR Contract Salary (Belgium)"
+msgstr ""
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_hr_contract
+msgid "HR Contracts"
 msgstr ""
 
 #. module: base
@@ -18952,6 +18952,11 @@ msgstr ""
 #. module: base
 #: model:res.partner.category,name:base.res_partner_category_11
 msgid "Services"
+msgstr ""
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_service_contract
+msgid "Services Contracts"
 msgstr ""
 
 #. module: base
