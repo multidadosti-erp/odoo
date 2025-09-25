@@ -1698,6 +1698,13 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         :rtype: list
         :return: list of pairs ``(id, text_repr)`` for all matching records.
         """
+        # Alterado pela Multidados:
+        # Possibilita executar a busca de registros, retornando o "nome" usando
+        # a função name_search, sem restrições de acesso.
+        # 
+        # deve incluir nos "options" de campos relacionais, a tag "sudo_search:True"
+        if self._context.get('sudo_search'):
+            self = self.sudo()
         return self._name_search(name, args, operator, limit=limit)
 
     @api.model

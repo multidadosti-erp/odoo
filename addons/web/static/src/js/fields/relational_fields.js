@@ -165,6 +165,13 @@ var FieldMany2One = AbstractField.extend({
         this.isDirty = false;
         this.lastChangeEvent = undefined;
 
+        /* Adicionado pela Multidados:
+            Permita que o campo many2one utilize o contexto 'sudo_search' para 
+            realizar a pesquisa e selecionar registros que o usuário não teria
+            permissão para visualizar.
+        */
+        this.sudo_search = this.nodeOptions.sudo_search || false;
+
         // List of autocomplete sources
         this._autocompleteSources = [];
         // Add default search method for M20 (name_search)
@@ -493,7 +500,12 @@ var FieldMany2One = AbstractField.extend({
         var domain = this.record.getDomain(this.recordParams);
 
         // Add the additionalContext
-        _.extend(context, this.additionalContext);
+        /** Alterado pela Multidados:
+         *  Adiciona o valor de 'sudo_search' no context da pesquisa.
+         *  Deve somente ser enviado a partir das opções do campo, evitando
+         *  a inclusão de um contexto manualmente.
+         */
+        _.extend(context, this.additionalContext, {sudo_search: this.sudo_search});
 
         var blacklisted_ids = this._getSearchBlacklist();
         if (blacklisted_ids.length > 0) {
