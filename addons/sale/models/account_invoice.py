@@ -70,7 +70,10 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_invoice_paid(self):
-        res = super(AccountInvoice, self).action_invoice_paid()
+        if not self:
+            return
+        
+        super(AccountInvoice, self).action_invoice_paid()
         todo = set()
         for invoice in self:
             for line in invoice.invoice_line_ids:
@@ -78,7 +81,6 @@ class AccountInvoice(models.Model):
                     todo.add((sale_line.order_id, invoice.number))
         for (order, name) in todo:
             order.message_post(body=_("Invoice %s paid") % (name))
-        return res
 
     @api.model
     def _refund_cleanup_lines(self, lines):
