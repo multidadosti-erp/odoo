@@ -12103,11 +12103,6 @@ msgstr ""
 "Dicionário de contexto como expressão Python, vazio por padrão(Default: {})"
 
 #. module: base
-#: model:ir.module.category,name:base.module_category_hr_contract
-msgid "Contracts"
-msgstr "Contratos"
-
-#. module: base
 #: model:ir.model.fields,field_description:base.field_ir_module_module__contributors
 msgid "Contributors"
 msgstr "Colaboradores"
@@ -16157,6 +16152,11 @@ msgstr "TRANSPORTE E ARMAZENAMENTO "
 #: model:ir.module.module,shortdesc:base.module_hr_contract_salary
 msgid "HR Contract Salary (Belgium)"
 msgstr "Salário de Contrato de RH (Bélgica)"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_hr_contract
+msgid "HR Contracts"
+msgstr "Contratos de RH"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_gamification
@@ -24528,6 +24528,11 @@ msgstr "Ação do Servidor"
 #: model:res.partner.category,name:base.res_partner_category_11
 msgid "Services"
 msgstr "Serviços"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_service_contract
+msgid "Services Contracts"
+msgstr "Contratos de Serviços"
 
 #. module: base
 #: selection:ir.model.fields,on_delete:0
