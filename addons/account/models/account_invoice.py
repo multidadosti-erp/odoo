@@ -1815,7 +1815,7 @@ class AccountInvoice(models.Model):
             has_draft_bank_moves = any(
                 move.state == 'draft' and move.journal_id.post_at_bank_rec
                 for move in invoice.payment_move_line_ids.mapped('move_id')
-            ) if invoice.move_ids and invoice.payment_move_line_ids else False
+            ) if invoice.payment_move_line_ids else False
 
             try:
                 invoice.state = 'in_payment' if has_draft_bank_moves else 'paid'
