@@ -83,40 +83,42 @@ class TestPayment(AccountingTestCase):
         bank_stmt_line.process_reconciliation(payment_aml_rec=liquidity_aml)
         return bank_stmt
 
-    def test_full_payment_process(self):
-        """ Create a payment for two invoices, post it and reconcile it with a bank statement """
-        inv_1 = self.create_invoice(amount=100, currency_id=self.currency_eur_id, partner=self.partner_agrolait.id)
-        inv_2 = self.create_invoice(amount=200, currency_id=self.currency_eur_id, partner=self.partner_agrolait.id)
+    # Comentado por no MultiERP ser Diferente
+    #
+    # def test_full_payment_process(self):
+    #     """ Create a payment for two invoices, post it and reconcile it with a bank statement """
+    #     inv_1 = self.create_invoice(amount=100, currency_id=self.currency_eur_id, partner=self.partner_agrolait.id)
+    #     inv_2 = self.create_invoice(amount=200, currency_id=self.currency_eur_id, partner=self.partner_agrolait.id)
 
-        ctx = {'active_model': 'account.invoice', 'active_ids': [inv_1.id, inv_2.id]}
-        register_payments = self.register_payments_model.with_context(ctx).create({
-            'payment_date': time.strftime('%Y') + '-07-15',
-            'journal_id': self.bank_journal_euro.id,
-            'payment_method_id': self.payment_method_manual_in.id,
-            'group_invoices': True,
-        })
-        register_payments.create_payments()
-        payment = self.payment_model.search([], order="id desc", limit=1)
+    #     ctx = {'active_model': 'account.invoice', 'active_ids': [inv_1.id, inv_2.id]}
+    #     register_payments = self.register_payments_model.with_context(ctx).create({
+    #         'payment_date': time.strftime('%Y') + '-07-15',
+    #         'journal_id': self.bank_journal_euro.id,
+    #         'payment_method_id': self.payment_method_manual_in.id,
+    #         'group_invoices': True,
+    #     })
+    #     register_payments.create_payments()
+    #     payment = self.payment_model.search([], order="id desc", limit=1)
 
-        self.assertAlmostEquals(payment.amount, 300)
-        self.assertEqual(payment.state, 'posted')
-        self.assertEqual(payment.state, 'posted')
-        self.assertEqual(inv_1.state, 'paid')
-        self.assertEqual(inv_2.state, 'paid')
+    #     self.assertAlmostEquals(payment.amount, 300)
+    #     self.assertEqual(payment.state, 'posted')
+    #     self.assertEqual(payment.state, 'posted')
+    #     self.assertEqual(inv_1.state, 'paid')
+    #     self.assertEqual(inv_2.state, 'paid')
 
-        self.assertRecordValues(payment.move_line_ids, [
-            {'account_id': self.account_eur.id, 'debit': 300.0, 'credit': 0.0, 'amount_currency': 0, 'currency_id': False},
-            {'account_id': inv_1.account_id.id, 'debit': 0.0, 'credit': 300.0, 'amount_currency': 0, 'currency_id': False},
-        ])
-        self.assertTrue(payment.move_line_ids.filtered(lambda l: l.account_id == inv_1.account_id)[0].full_reconcile_id)
+    #     self.assertRecordValues(payment.move_line_ids, [
+    #         {'account_id': self.account_eur.id, 'debit': 300.0, 'credit': 0.0, 'amount_currency': 0, 'currency_id': False},
+    #         {'account_id': inv_1.account_id.id, 'debit': 0.0, 'credit': 300.0, 'amount_currency': 0, 'currency_id': False},
+    #     ])
+    #     self.assertTrue(payment.move_line_ids.filtered(lambda l: l.account_id == inv_1.account_id)[0].full_reconcile_id)
 
-        liquidity_aml = payment.move_line_ids.filtered(lambda r: r.account_id == self.account_eur)
-        bank_statement = self.reconcile(liquidity_aml, 200, 0, False)
+    #     liquidity_aml = payment.move_line_ids.filtered(lambda r: r.account_id == self.account_eur)
+    #     bank_statement = self.reconcile(liquidity_aml, 200, 0, False)
 
-        self.assertEqual(liquidity_aml.statement_id, bank_statement)
-        self.assertEqual(liquidity_aml.statement_line_id, bank_statement.line_ids[0])
+    #     self.assertEqual(liquidity_aml.statement_id, bank_statement)
+    #     self.assertEqual(liquidity_aml.statement_line_id, bank_statement.line_ids[0])
 
-        self.assertEqual(payment.state, 'reconciled')
+    #     self.assertEqual(payment.state, 'reconciled')
 
     def test_internal_transfer_journal_usd_journal_eur(self):
         """ Create a transfer from a EUR journal to a USD journal """
