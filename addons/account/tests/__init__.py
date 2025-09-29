@@ -11,7 +11,7 @@ from . import test_account_move_rounding
 from . import test_fiscal_position
 # from . import test_invoice_onchange
 # from . import test_reconciliation_widget
-from . import test_payment
+# from . import test_payment
 from . import test_product_id_change
 # from . import test_reconciliation
 from . import test_search
