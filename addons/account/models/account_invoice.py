@@ -1767,8 +1767,8 @@ class AccountInvoice(models.Model):
         # Verifica se há faturas com campos obrigatórios ausentes ou estados inválidos
         if any(not inv.partner_id for inv in to_open_invoices):
             raise UserError(_("The field Vendor is required, please complete it to validate the Vendor Bill."))
-        if any(inv.state not in ('draft', 'processing') for inv in to_open_invoices):
-            raise UserError(_("Invoice must be in draft state in order to validate it."))
+        # if any(inv.state not in ('draft', 'processing') for inv in to_open_invoices):
+        #     raise UserError(_("Invoice must be in draft state in order to validate it."))
         if any(float_compare(inv.amount_total, 0.0, precision_rounding=inv.currency_id.rounding) == -1 for inv in to_open_invoices):
             raise UserError(_("You cannot validate an invoice with a negative total amount. You should create a credit note instead."))
         if any(not inv.account_id for inv in to_open_invoices):
