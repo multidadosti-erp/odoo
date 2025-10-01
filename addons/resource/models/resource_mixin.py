@@ -43,7 +43,7 @@ class ResourceMixin(models.AbstractModel):
             # Alterado pela Multidados:
             #  adiciona a empresa na criação do resource, se ela for passada
             #  nos valores de criação do registro.
-            if values.get('company_id'):
+            if 'company_id' in values:
                 resource_vals['company_id'] = values.get('company_id')
 
             resource = self.env['resource.resource'].create(resource_vals)
