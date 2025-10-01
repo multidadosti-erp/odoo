@@ -39,6 +39,13 @@ class ResourceMixin(models.AbstractModel):
                   self.env['resource.calendar'].browse(values.get('resource_calendar_id')).tz)
             if tz:
                 resource_vals['tz'] = tz
+
+            # Alterado pela Multidados:
+            #  adiciona a empresa na criação do resource, se ela for passada
+            #  nos valores de criação do registro.
+            if values.get('company_id'):
+                resource_vals['company_id'] = values.get('company_id')
+
             resource = self.env['resource.resource'].create(resource_vals)
             values['resource_id'] = resource.id
         return super(ResourceMixin, self).create(values)
