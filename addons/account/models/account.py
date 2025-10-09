@@ -374,6 +374,7 @@ class AccountAccount(models.Model):
 
 class AccountGroup(models.Model):
     _name = "account.group"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Account Group'
     _parent_store = True
     _order = 'code_prefix'
@@ -382,6 +383,11 @@ class AccountGroup(models.Model):
     parent_path = fields.Char(index=True)
     name = fields.Char(required=True)
     code_prefix = fields.Char()
+    active = fields.Boolean(
+        string='Active', 
+        default=True, 
+        track_visibility=True
+    )
 
     def name_get(self):
         result = []
