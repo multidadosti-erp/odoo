@@ -583,6 +583,7 @@ class ResConfigSettings(models.TransientModel, ResConfigModuleInstallationMixin)
                 if self[name]:
                     groups.write({'implied_ids': [(4, implied_group.id)]})
                 else:
+                    # Remove todos os usuários do grupo referenciado
                     groups.write({'implied_ids': [(3, implied_group.id)]})
                     implied_group.sudo().write({'users': [(5,)]})
         self.recompute()
