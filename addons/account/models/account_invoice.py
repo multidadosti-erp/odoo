@@ -626,7 +626,8 @@ class AccountInvoice(models.Model):
         required=True, readonly=True, states={'draft': [('readonly', False)]},
         default=_default_journal,
         domain="[('type', 'in', {'out_invoice': ['sale'], 'out_refund': ['sale'], 'in_refund': ['purchase'], 'in_invoice': ['purchase']}.get(type, [])), ('company_id', '=', company_id)]")
-    company_id = fields.Many2one('res.company', string='Company', change_default=True,
+    company_id = fields.Many2one('res.company', string='Company', track_visibility="onchange",
+        change_default=True,
         required=True, readonly=True, states={'draft': [('readonly', False)]},
         default=lambda self: self.env['res.company']._company_default_get('account.invoice'))
 

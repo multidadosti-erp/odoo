@@ -117,7 +117,8 @@ class AccountMove(models.Model):
     partner_id = fields.Many2one('res.partner', compute='_compute_partner_id', string="Partner", store=True, readonly=True)
     amount = fields.Monetary(compute='_amount_compute', store=True)
     narration = fields.Text(string='Internal Note')
-    company_id = fields.Many2one('res.company', related='journal_id.company_id', string='Company', store=True, readonly=True)
+    company_id = fields.Many2one('res.company', related='journal_id.company_id', string='Company', store=True, readonly=True, track_visibility="onchange",
+)
     matched_percentage = fields.Float('Percentage Matched', compute='_compute_matched_percentage', digits=0, store=True, readonly=True, help="Technical field used in cash basis method")
     # Dummy Account field to search on account.move by account_id
     dummy_account_id = fields.Many2one('account.account', related='line_ids.account_id', string='Account', store=False, readonly=True)
@@ -717,7 +718,8 @@ class AccountMoveLine(models.Model):
         help="Indicates that this journal item is a tax line")
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account', index=True)
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
-    company_id = fields.Many2one('res.company', related='account_id.company_id', string='Company', store=True, readonly=True)
+    company_id = fields.Many2one('res.company', related='account_id.company_id', string='Company', store=True, readonly=True, track_visibility="onchange",
+)
     counterpart = fields.Char("Counterpart", compute='_get_counterpart', help="Compute the counter part accounts of this journal item for this journal entry. This can be needed in reports.")
 
     # TODO: put the invoice link and partner_id on the account_move
