@@ -270,6 +270,13 @@ var BasicView = AbstractView.extend({
             attrs.__no_fetch = true;
         }
 
+        // Alguns casos por field estar vazio causando erro no odoo, por isso adicionado 
+        // a verificação antes de prosseguir.
+        if (!field) {
+            console.warn("Field is empty, skipping processing.");
+            return attrs;
+        }
+
         if (!_.isEmpty(field.views)) {
             // process the inner fields_view as well to find the fields they use.
             // register those fields' description directly on the view.
