@@ -3248,6 +3248,7 @@ var BasicModel = AbstractModel.extend({
             }
             if (parent.type === 'record') {
                 evalContext.parent = this._getRecordEvalContext(parent, forDomain);
+                evalContext.parent._model = parent._model || parent.model;
             }
         }
         return _.extend({
@@ -3356,6 +3357,10 @@ var BasicModel = AbstractModel.extend({
             }
 
         }
+
+        // Adicionado pela Multidados:
+        context._model = context._model || record.model;
+
         return context;
     },
     /**
