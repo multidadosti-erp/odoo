@@ -287,6 +287,24 @@ class IrSequence(models.Model):
         return seq_id._next()
 
     @api.model
+    def actual_by_code(self, sequence_code):
+        """
+        Retorna o ID da sequência correspondente ao código informado, priorizando a empresa do usuário ou a empresa forçada no contexto.
+        Utiliza busca direta e retorna False se não encontrar nenhuma sequência.
+        """
+        self.check_access_rights('read')
+        force_company = self._context.get('force_company') or self.env.user.company_id.id
+        seq_id = self.search(
+            [('code', '=', sequence_code), ('company_id', 'in', [force_company, False])],
+            order='company_id',
+            limit=1
+        )
+        if not seq_id:
+            _logger.debug("No ir.sequence has been found for code '%s'. Please make sure a sequence is set for current company." % sequence_code)
+            return False
+        return seq_id.id
+
+    @api.model
     def get_id(self, sequence_code_or_id, code_or_id='id'):
         """ Draw an interpolated string using the specified sequence.
 
