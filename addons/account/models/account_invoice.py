@@ -3118,18 +3118,15 @@ class AccountInvoiceLine(models.Model):
         the product it is linked to.
         """
         self.ensure_one()
+
         if not self.product_id:
             return ''
-        invoice_type = self.invoice_id.type
-        rslt = self.product_id.partner_ref
-        if invoice_type in ('in_invoice', 'in_refund'):
-            if self.product_id.description_purchase:
-                rslt += '\n' + self.product_id.description_purchase
-        else:
-            if self.product_id.description_sale:
-                rslt += '\n' + self.product_id.description_sale
 
-        return rslt
+        if self.invoice_id.type in ('in_invoice', 'in_refund'):
+            return self.product_id.description_purchase or self.product_id.partner_ref or ""
+
+        else:
+            return self.product_id.description_sale or self.product_id.partner_ref or ""
 
     @api.onchange("account_id")
     def _onchange_account_id(self):
