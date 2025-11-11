@@ -221,11 +221,11 @@ def create_unaccent(cr):
     - Mais seguro e eficiente
     
     Note:
-        Commit removido - savepoint já gerencia a transação corretamente.
         Commit explícito pode causar problemas em contextos transacionais.
     """
     try:
         with cr.savepoint():
             cr.execute("CREATE EXTENSION IF NOT EXISTS unaccent")
+        cr.commit()
     except psycopg2.Error:
         pass
