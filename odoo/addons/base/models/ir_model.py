@@ -868,11 +868,18 @@ class IrModelFields(models.Model):
         self.clear_caches()
         by_label = {}
         for field in model._fields.values():
-            if field.string in by_label:
-                _logger.warning('Two fields (%s, %s) of %s have the same label: %s.',
-                                field.name, by_label[field.string], model, field.string)
-            else:
+            if field.string not in by_label:
                 by_label[field.string] = field.name
+            else:
+                if field.name[:2] != "x_":
+                    # Somente Alertar para campos nativos
+                    _logger.warning(
+                        "Two fields (%s, %s) of %s have the same label: %s.",
+                        field.name,
+                        by_label[field.string],
+                        model,
+                        field.string,
+                    )
 
         cr = self._cr
         module = self._context.get('module')
