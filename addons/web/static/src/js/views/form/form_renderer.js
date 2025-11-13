@@ -621,6 +621,21 @@ var FormRenderer = BasicRenderer.extend({
             return renderer.call(this, node);
         }
         if (node.tag === 'div' && node.attrs.name === 'button_box') {
+            // Alterado pela Multidados: ordenação de botões na buttonBox
+            //  Adiciona ordenação de nós filhos do statusbar para priorizar
+            //  a visualização de botões.
+            node.children = _.sortBy(node.children, function (child) {
+                var seq = child.attrs.sequence;
+                if (seq === undefined) {
+                    seq = "999";
+                }
+                try {
+                    seq = parseInt(seq, 10);
+                } catch (e) {
+                    seq = 999;
+                }
+                return seq;
+            });
             return this._renderButtonBox(node);
         }
         if (_.isString(node)) {
