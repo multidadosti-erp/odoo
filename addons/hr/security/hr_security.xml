@@ -17,9 +17,9 @@
     </record>
 
 <data noupdate="1">
-    <record id="base.default_user" model="res.users">
+    <!-- <record id="base.default_user" model="res.users">
         <field name="groups_id" eval="[(4,ref('group_hr_manager'))]"/>
-    </record>
+    </record> -->
 
     <record id="hr_dept_comp_rule" model="ir.rule">
         <field name="name">Department multi company rule</field>
