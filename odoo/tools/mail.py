@@ -46,9 +46,22 @@ allowed_tags = frozenset({
     'ul', 'var', 'video', 'wbr'
 }) | frozenset([etree.Comment])
 
-safe_attrs = clean.defs.safe_attrs | frozenset(
+try:
+    # lxml versions exposing Cleaner defaults via clean.defs
+    _base_safe_attrs = clean.defs.safe_attrs  # type: ignore[attr-defined]
+except AttributeError:
+    try:
+        # Fallback: instantiate a Cleaner to obtain its safe_attrs defaults
+        _base_safe_attrs = frozenset(clean.Cleaner().safe_attrs)
+    except Exception:
+        # Ultimate fallback: empty set (will be combined with custom attrs below)
+        _base_safe_attrs = frozenset()
+
+safe_attrs = _base_safe_attrs | frozenset(
     ['style',
      'data-o-mail-quote',  # quote detection
+     'data-o-mail-quote-container',  # container for quoted content
+     'data-o-mail-quote-node',  # individual quoted node marker
      'data-oe-model', 'data-oe-id', 'data-oe-field', 'data-oe-type', 'data-oe-expression', 'data-oe-translation-id', 'data-oe-nodeid',
      'data-publish', 'data-id', 'data-res_id', 'data-interval', 'data-member_id', 'data-scroll-background-ratio', 'data-view-id',
      'data-class',
