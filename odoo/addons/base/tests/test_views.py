@@ -1220,9 +1220,11 @@ class TestViews(ViewCase):
         })
         view = self.View.with_context(check_view_ids=view2.ids).fields_view_get(view1.id)
         self.assertEqual(view['type'], 'form')
+
+        # Ajuste para o lxml 5
         self.assertEqual(
             view['arch'],
-            '<form string="F">(<div/>a<p/>b<p/>c)</form>',
+            '<form string="F">(<div/>)a<p/>b<p/>c</form>',
         )
 
     def test_view_inheritance_text_before(self):
