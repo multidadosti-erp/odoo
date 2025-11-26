@@ -801,7 +801,11 @@ actual arch.
 
         # read the view arch
         [view_data] = root.read(fields=fields)
-        view_arch = etree.fromstring(view_data['arch'].encode('utf-8'))
+        if isinstance(view_data['arch'], bytes):
+            view_arch = etree.fromstring(view_data['arch'].decode('utf-8'))
+        else:
+            view_arch = etree.fromstring(view_data['arch'])
+
         if not root.inherit_id:
             if self._context.get('inherit_branding'):
                 view_arch.attrib.update({
