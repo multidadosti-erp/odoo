@@ -33,6 +33,7 @@ import logging
 import operator
 import pytz
 import re
+import time
 import uuid
 
 try:
@@ -62,7 +63,13 @@ from .tools import frozendict, lazy_classproperty, lazy_property, ormcache, \
                    Collector, LastOrderedSet, OrderedSet, pycompat, groupby
 from .tools.config import config
 from .tools.func import frame_codeinfo
-from .tools.misc import CountingStream, clean_context, DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
+from .tools.misc import (
+    CountingStream,
+    clean_context,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    DEFAULT_SERVER_DATE_FORMAT,
+    str2bool,
+)
 from .tools.safe_eval import safe_eval
 from .tools.translate import _
 from .tools import date_utils
@@ -77,6 +84,7 @@ regex_pg_name = re.compile(r'^[a-z_][a-z0-9_$]*$', re.I)
 regex_field_agg = re.compile(r'(\w+)(?::(\w+)(?:\((\w+)\))?)?')
 
 AUTOINIT_RECALCULATE_STORED_FIELDS = 1000
+IMPORT_LOAD_CHUNK_DEFAULT = 1000
 
 def check_object_name(name):
     """ Check if the given name is a valid model name.
@@ -852,6 +860,17 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         :param data: row-major matrix of data to import
         :type data: list(list(str))
         :returns: {ids: list(int)|False, messages: [Message]}
+
+        Additional context keys:
+            * ``import_chunk_size`` (int) controls how many prepared records
+              are flushed per batch (defaults to ``IMPORT_LOAD_CHUNK_DEFAULT``
+              or the ``import_chunk_size`` config option).
+            * ``import_log_every`` (int) controls the logging cadence for
+              progress messages (defaults to the chunk size).
+            * ``import_allow_partial`` (bool) skips the outer savepoint so
+              partial chunks can stay committed even when later rows fail.
+            * ``import_autocommit`` (bool) forces a commit after each chunk;
+              automatically enabled when ``import_allow_partial`` is set.
         """
         # determine values of mode, current_module and noupdate
         mode = self._context.get('mode', 'init')
@@ -862,7 +881,34 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         self = self.with_context(_import_current_module=current_module)
 
         cr = self._cr
-        cr.execute('SAVEPOINT model_load')
+        def _to_bool(value, default=False):
+            """Normalize truthy values while delegating parsing to str2bool."""
+            if isinstance(value, bool):
+                return value
+            if value in (None, ''):
+                return default
+
+            normalized = value if isinstance(value, pycompat.string_types) else pycompat.text_type(value)
+            try:
+                return str2bool(normalized)
+            except (ValueError, TypeError):
+                return default
+
+        allow_partial_value = self._context.get('import_allow_partial')
+        if allow_partial_value is None:
+            allow_partial_value = config.get('import_allow_partial')
+        allow_partial = _to_bool(allow_partial_value, False)
+
+        auto_commit_value = self._context.get('import_autocommit')
+        if auto_commit_value is None:
+            auto_commit_value = allow_partial
+        auto_commit = _to_bool(auto_commit_value, allow_partial)
+
+        if auto_commit:
+            allow_partial = True
+
+        if not allow_partial:
+            cr.execute('SAVEPOINT model_load')
 
         fields = [fix_import_export_id_paths(f) for f in fields]
         fg = self.fields_get()
@@ -871,16 +917,50 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         messages = []
         ModelData = self.env['ir.model.data']
 
+        def _ensure_minimum(value, default):
+            try:
+                return max(int(value), 1)
+            except (TypeError, ValueError):
+                return default
+
+        chunk_size_hint = self._context.get('import_chunk_size', config.get('import_chunk_size'))
+        chunk_size = _ensure_minimum(chunk_size_hint, IMPORT_LOAD_CHUNK_DEFAULT)
+        log_every_hint = self._context.get('import_log_every')
+        log_every = _ensure_minimum(log_every_hint if log_every_hint is not None else chunk_size, chunk_size)
+        processed = 0
+        load_started_at = time.monotonic()
+        chunk_start = load_started_at
+
         # list of (xid, vals, info) for records to be created in batch
         batch = []
         batch_xml_ids = set()
 
-        def flush(xml_id=None):
+        def _log_progress(reason='progress', force=False, details=None):
+            nonlocal chunk_start
+            if not processed:
+                return
+            if not force and processed % log_every:
+                return
+            now = time.monotonic()
+            chunk_elapsed = now - chunk_start
+            total_elapsed = now - load_started_at
+            detail_suffix = f" | {details}" if details else ""
+            _logger.info(
+                (
+                    f"Import progress | model={self._name} processed={processed} "
+                    f"pending_batch={len(batch)} elapsed_chunk={chunk_elapsed:.2f}s "
+                    f"elapsed_total={total_elapsed:.2f}s reason={reason}{detail_suffix}"
+                )
+            )
+            chunk_start = now
+
+        def flush(xml_id=None, reason='manual'):
             if not batch:
                 return
             if xml_id and xml_id not in batch_xml_ids:
                 return
 
+            items_in_batch = len(batch)
             data_list = [
                 dict(xml_id=xid, values=vals, info=info, noupdate=noupdate)
                 for xid, vals, info in batch
@@ -904,6 +984,9 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 recs = self._load_records(data_list, mode == 'update')
                 ids.extend(recs.ids)
                 cr.execute('RELEASE SAVEPOINT model_load_save')
+                if auto_commit:
+                    cr.commit()
+                _log_progress(reason='flush-%s' % reason, force=True, details="rows=%s" % items_in_batch)
                 return
             except Exception:
                 cr.execute('ROLLBACK TO SAVEPOINT model_load_save')
@@ -916,6 +999,8 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     rec = self._load_records([rec_data], mode == 'update')
                     ids.append(rec.id)
                     cr.execute('RELEASE SAVEPOINT model_load_save')
+                    if auto_commit:
+                        cr.commit()
                 except psycopg2.Warning as e:
                     cr.execute('ROLLBACK TO SAVEPOINT model_load_save')
                     info = rec_data['info']
@@ -947,6 +1032,12 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     })
                     break
 
+            _log_progress(
+                reason='flush-%s-partial' % reason,
+                force=True,
+                details="rows=%s errors=%s" % (items_in_batch, errors),
+            )
+
         # make 'flush' available to the methods below, in the case where XMLID
         # resolution fails, for instance
         flush_self = self.with_context(import_flush=flush)
@@ -960,10 +1051,16 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             elif id:
                 record['id'] = id
             batch.append((xid, record, info))
+            processed += 1
+            if len(batch) >= chunk_size:
+                flush(reason='chunk')
+            _log_progress()
 
         flush()
+        _log_progress(reason='final', force=True)
         if any(message['type'] == 'error' for message in messages):
-            cr.execute('ROLLBACK TO SAVEPOINT model_load')
+            if not allow_partial:
+                cr.execute('ROLLBACK TO SAVEPOINT model_load')
             ids = False
             # cancel all changes done to the registry/ormcache
             self.pool.reset_changes()
