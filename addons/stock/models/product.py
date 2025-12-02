@@ -686,16 +686,54 @@ class UoM(models.Model):
     def write(self, values):
         # Users can not update the factor if open stock moves are based on it
         if 'factor' in values or 'factor_inv' in values or 'category_id' in values:
-            changed = self.filtered(
-                lambda u: any(u[f] != values[f] if f in values else False
-                              for f in {'factor', 'factor_inv'})) + self.filtered(
-                lambda u: any(u[f].id != int(values[f]) if f in values else False
-                              for f in {'category_id'}))
-            if changed:
-                stock_move_lines = self.env['stock.move.line'].search_count([
-                    ('product_uom_id.category_id', 'in', changed.mapped('category_id.id')),
-                    ('state', '!=', 'cancel'),
-                ])
+            # Alterado pela Multidados
+            #  - Melhora performance e leitura do código
+            #  - Comentado código antigo
+            #  - Adiciona verificação se é "uom" de referencia da categoria
+            #    pois, o uom de referencia impacta em todos os uoms da categoria
+            uom_changed = self.browse()
+            reference_uom_changed = self.browse()
+
+            for rec in self:
+                for _field in ['factor', 'factor_inv', 'category_id']:
+                    if _field in values:
+                        if _field == 'category_id' and values[_field] != rec[_field].id:
+                            if rec.uom_type == "reference" or values.get('uom_type') == 'reference':
+                                reference_uom_changed |= rec
+                            else:
+                                uom_changed |= rec
+                        elif _field != 'category_id' and values[_field] != rec[_field]:
+                            if rec.uom_type == "reference" or values.get('uom_type') == 'reference':
+                                reference_uom_changed |= rec
+                            else:
+                                uom_changed |= rec
+            # changed = self.filtered(
+            #     lambda u: any(u[f] != values[f] if f in values else False
+            #                   for f in {'factor', 'factor_inv'})) + self.filtered(
+            #     lambda u: any(u[f].id != int(values[f]) if f in values else False
+            #                   for f in {'category_id'}))
+
+            if uom_changed or reference_uom_changed:
+                # Alterado pela Multidados
+                #  - Ajusta busca para considerar uom de referencia
+                stock_move_lines = self.env['stock.move.line']
+                if uom_changed and not reference_uom_changed:
+                    stock_move_lines = stock_move_lines.search_count([
+                        ('product_uom_id', 'in', uom_changed.ids),
+                        ('state', '!=', 'cancel'),
+                    ])
+                elif not uom_changed and reference_uom_changed:
+                    stock_move_lines = stock_move_lines.search_count([
+                        ('product_uom_id.category_id', 'in', reference_uom_changed.mapped('category_id').ids),
+                        ('state', '!=', 'cancel'),
+                    ])
+                elif uom_changed and reference_uom_changed:
+                    stock_move_lines = stock_move_lines.search_count([
+                        ('state', '!=', 'cancel'),
+                        '|',
+                        ('product_uom_id', 'in', uom_changed.ids),
+                        ('product_uom_id.category_id', 'in', reference_uom_changed.mapped('category_id').ids),
+                    ])
 
                 if stock_move_lines:
                     raise UserError(_(
