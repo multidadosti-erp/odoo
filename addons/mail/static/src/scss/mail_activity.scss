@@ -119,7 +119,7 @@
     }
 
     .o_activity_color_default {
-        color: #2C8397;
+        color: #747b7c;
     }
 
     .o_activity_color_planned {
@@ -165,40 +165,116 @@
 /* Kanban View */
 .o_kanban_record{
     .o_kanban_inline_block {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 }
 
 .o_kanban_record, .o_view_controller{
     .o_mail_activity {
         .o_activity_btn {
+            position: relative;
+            transition: all 0.25s ease;
+            border-radius: 6px;
+            
+            &:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+            &:active {
+                transform: translateY(0);
+            }
+            
             span.fa {
                 overflow: visible;
                 line-height: 1;
                 vertical-align: middle;
+                transition: transform 0.2s ease;
+            }
+            
+            &:hover span.fa {
+                transform: scale(1.1);
             }
         }
 
         div.o_activity {
-            min-width: 290px;
-            padding: 0px 0px;
+            min-width: 320px;
+            padding: 8px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            transition: box-shadow 0.3s ease;
+            
+            &:hover {
+                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16);
+            }
 
             .o_activity_log_container {
-                max-height: 300px;
+                max-height: 320px;
                 overflow-y: auto;
+                padding: 4px;
+                
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+                
+                &::-webkit-scrollbar-track {
+                    background: rgba(0, 0, 0, 0.05);
+                    border-radius: 10px;
+                }
+                
+                &::-webkit-scrollbar-thumb {
+                    background: rgba(0, 0, 0, 0.2);
+                    border-radius: 10px;
+                    transition: background 0.2s ease;
+                    
+                    &:hover {
+                        background: rgba(0, 0, 0, 0.3);
+                    }
+                }
             }
 
             ul.o_activity_log {
                 color: $body-color;
+                margin: 0;
+                padding: 0;
+                list-style: none;
 
                 li {
+                    padding: 10px 12px;
+                    margin-bottom: 6px;
+                    border-radius: 8px;
+                    background: rgba(0, 0, 0, 0.02);
+                    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                    
+                    &:hover {
+                        background: rgba(0, 0, 0, 0.04);
+                        transform: translateX(4px);
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                    }
+                    
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                    
                     .o_activity_title_entry {
                         display: flex;
-                        align-items: baseline;
+                        align-items: center;
+                        gap: 8px;
                     }
 
                     .o_edit_button {
-                        opacity: 0.5;
+                        opacity: 0;
+                        transition: all 0.2s ease;
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        
+                        &:hover {
+                            background: rgba(0, 0, 0, 0.08);
+                        }
                     }
 
                     &:hover .o_edit_button{
@@ -206,13 +282,21 @@
                     }
 
                     .o_activity_link_kanban {
-                        font-size: 1.5em;
+                        font-size: 1.4em;
+                        transition: all 0.25s ease;
                         @include o-hover-text-color($text-muted, theme-color('success'));
-                        @include o-hover-opacity(0.5, 1);
+                        @include o-hover-opacity(0.6, 1);
+                        
+                        &:hover {
+                            transform: scale(1.15);
+                        }
                     }
 
                     &.o_activity_selected {
                         border-bottom: 0;
+                        background: rgba(theme-color('primary'), 0.08);
+                        border-left: 3px solid theme-color('primary');
+                        padding-left: 9px;
                     }
 
                     &.o_activity_form > div {
@@ -223,8 +307,14 @@
             }
 
             .o_no_activity {
-                padding: 10px;
-                cursor: initial;
+                padding: 24px 16px;
+                cursor: default;
+                text-align: center;
+                color: rgba(0, 0, 0, 0.45);
+                font-style: italic;
+                border-radius: 8px;
+                background: rgba(0, 0, 0, 0.02);
+                border: 1px dashed rgba(0, 0, 0, 0.15);
             }
         }
     }
