@@ -301,6 +301,20 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click o_has_icon">
                                 <div class="o_project_kanban_main">
+                                    <div class="o_dropdown_kanban dropdown" groups="project.group_project_manager">
+                                        <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <div class="o_kanban_card_manage_section o_kanban_manage_reports">
+                                                <a role="menuitem" name="%(portal.portal_share_action)d" type="action" class="dropdown-item">Share</a>
+                                                <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                                                <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                                                <a role="menuitem" t-if="record.rating_status.raw_value != 'no'" name="action_view_all_rating" type="object" class="dropdown-item">Customer Ratings</a>
+                                            </div>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                        </div>
+                                    </div>
                                     <div class="o_kanban_card_content">
                                         <div class="o_kanban_primary_left">
                                             <div class="o_primary">
@@ -326,23 +340,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="o_kanban_card_manage_pane dropdown-menu" groups="project.group_project_manager" role="menu">
-                                        <div class="o_kanban_card_manage_section o_kanban_manage_reports">
-                                            <div role="menuitem">
-                                                <a name="%(portal.portal_share_action)d" type="action">Share</a>
-                                            </div>
-                                            <div role="menuitem">
-                                                <a type="edit">Edit</a>
-                                            </div>
-                                            <div role="menuitem" t-if="record.rating_status.raw_value != 'no'">
-                                                <a name="action_view_all_rating" type="object">Customer Ratings</a>
-                                            </div>
-                                        </div>
-                                        <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
-                                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
-                                        </div>
-                                    </div>
-                                    <a class="o_kanban_manage_toggle_button o_left" href="#" groups="project.group_project_manager"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
                                     <span class="o_right"><field name="is_favorite" widget="boolean_favorite" nolabel="1" force_save="1" /></span>
                                 </div>
 
