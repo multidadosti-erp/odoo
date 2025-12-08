@@ -539,7 +539,7 @@
                     <field name="activity_ids"/>
                     <field name="activity_state"/>
                     <field name="rating_last_value"/>
-                    <field name="rating_ids"/>
+                    <field name="rating_ids" invisible="1"/>
                     <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger"}'/>
                     <templates>
                     <t t-name="kanban-box">
