@@ -28,7 +28,7 @@
         <menuitem id="res_partner_menu"
             parent="sale_order_menu_reg"
             action="base.action_partner_form"
-            sequence="1" 
+            sequence="1"
             groups="sales_team.group_sale_salesman"/>
 
         <menuitem id="menu_sale_report"
@@ -787,7 +787,7 @@
             name="Orders"
             action="action_orders"
             parent="sale_order_menu"
-            sequence="2" 
+            sequence="2"
             groups="sales_team.group_sale_salesman"/>
 
        <record id="action_orders_done" model="ir.actions.act_window">
@@ -854,7 +854,7 @@
             name="Orders Done"
             action="action_orders_done"
             parent="sale_order_menu"
-            sequence="3" 
+            sequence="3"
             groups="sales_team.group_sale_salesman"/>
 
         <record id="action_orders_to_invoice" model="ir.actions.act_window">
@@ -879,7 +879,7 @@
         <menuitem id="menu_sale_invoicing"
             name="To Invoice"
             parent="sale_menu_root"
-            sequence="4" 
+            sequence="4"
             groups="sales_team.group_sale_salesman"/>
 
         <menuitem id="menu_sale_order_invoice"
@@ -1096,7 +1096,10 @@
                 </button>
                 <group name="description" position="after">
                     <group string="Warning when Selling this Product" groups="sale.group_warning_sale">
-                        <field name="sale_line_warn" nolabel="1"/>
+                        <label for="sale_line_warn" string="Warn on Select"/>
+                        <div>
+                            <field name="sale_line_warn" nolabel="0"/>
+                        </div>
                         <field name="sale_line_warn_msg" colspan="3" nolabel="1"
                                 attrs="{'required':[('sale_line_warn','!=','no-message')],'readonly':[('sale_line_warn','=','no-message')]}"/>
                     </group>
@@ -1124,7 +1127,10 @@
                 </button>
                 <group name="description" position="after">
                     <group string="Warning when Selling this Product" groups="sale.group_warning_sale">
-                        <field name="sale_line_warn" nolabel="1"/>
+                        <label for="sale_line_warn" string="Warn on Select"/>
+                        <div>
+                            <field name="sale_line_warn" nolabel="0"/>
+                        </div>
                         <field name="sale_line_warn_msg" colspan="3" nolabel="1"
                                 attrs="{'required':[('sale_line_warn','!=','no-message')],'readonly':[('sale_line_warn','=','no-message')], 'invisible':[('sale_line_warn','=','no-message')]}"/>
                     </group>
