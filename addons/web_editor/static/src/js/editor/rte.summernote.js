@@ -634,7 +634,22 @@ $.summernote.pluginEvents.codeview = function (event, editor, layoutInfo, enable
         if (is_activated === enable) {
             return;
         }
-        return eventHandler.modules.codeview.toggle(layoutInfo);
+        
+        var result = eventHandler.modules.codeview.toggle(layoutInfo);
+        
+        // Toggle validate button visibility after toggle
+        var $toolbar = layoutInfo.toolbar ? layoutInfo.toolbar() : $();
+        var $validateBtn = $toolbar.find('button[data-event="validateHTML"]');
+        // After toggle, is_activated will be opposite of current state
+        if (is_activated) {
+            // Was active, now will be inactive - hide validate button
+            $validateBtn.hide();
+        } else {
+            // Was inactive, now will be active - show validate button
+            $validateBtn.show();
+        }
+        
+        return result;
     } else {
         // if editor iframe (FieldTextHtml)
         var $editor = layoutInfo.editor();
@@ -799,6 +814,12 @@ function summernote_ie_fix(event, pred) {
     var editable;
     var div;
     var node = event.target;
+    
+    // Safety check for pred parameter
+    if (typeof pred !== 'function') {
+        pred = function() { return false; };
+    }
+    
     while (node.parentNode) {
         if (!div && pred(node)) {
             div = node;
@@ -849,9 +870,287 @@ function summernote_ie_fix(event, pred) {
     return editable !== div ? div : null;
 }
 
+// ============ MODERN FEATURES IMPLEMENTATION ============
+
+/**
+ * Show Emoji Dialog
+ */
+function showEmojiDialog(oLayoutInfo) {
+    var $editable = oLayoutInfo.editable();
+    var $dialog = $(oLayoutInfo.dialog()).find('.note-emoji-dialog');
+    
+    if (!$dialog.length) {
+        console.warn('Emoji dialog not found. Make sure summernote is properly configured.');
+        return;
+    }
+    
+    // Save current range
+    var savedRange = range.create();
+    
+    // Show dialog
+    $dialog.modal('show');
+    
+    // Handle emoji selection (bind once per show)
+    $dialog.off('click.emoji').on('click.emoji', '.note-emoji-btn', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var emoji = $(this).data('emoji');
+        
+        // Restore range and insert emoji
+        if (savedRange) {
+            savedRange.select();
+        }
+        
+        // Insert emoji at cursor
+        var textNode = document.createTextNode(emoji + ' ');
+        savedRange.insertNode(textNode);
+        
+        // Move cursor after emoji
+        var newRange = range.createFromNodeAfter(textNode);
+        if (newRange) {
+            newRange.select();
+        }
+        
+        // Close dialog
+        $dialog.modal('hide');
+        
+        // Trigger change event
+        $editable.trigger('change');
+    });
+    
+    // Handle dialog close
+    $dialog.one('hidden.bs.modal', function () {
+        $dialog.off('click.emoji');
+        $editable.focus();
+    });
+}
+
+/**
+ * Format Inline Code
+ */
+function formatInlineCode(oLayoutInfo) {
+    var $editable = oLayoutInfo.editable();
+    var rng = range.create();
+    
+    if (rng && !rng.isCollapsed()) {
+        var $parent = $(rng.sc).parent();
+        
+        // Check if already wrapped in code
+        if ($parent.is('code')) {
+            // Unwrap code
+            var content = $parent.html();
+            $parent.replaceWith(content);
+        } else {
+            // Wrap in code
+            var $code = $('<code style="background-color: #f6f8fa; padding: 2px 6px; border-radius: 4px; font-family: \'Courier New\', Consolas, Monaco, monospace; font-size: 90%; color: #d73a49; border: 1px solid #e1e4e8;"></code>');
+            $code.text(rng.toString());
+            rng.insertNode($code[0]);
+            
+            // Move cursor after code
+            var newRange = range.createFromNodeAfter($code[0]);
+            if (newRange) {
+                newRange.select();
+            }
+        }
+        
+        $editable.trigger('change');
+    }
+}
+
+/**
+ * Format Code Block
+ */
+function formatCodeBlock(oLayoutInfo) {
+    var $editable = oLayoutInfo.editable();
+    var rng = range.create();
+    
+    if (rng) {
+        // Check if already in PRE
+        var $pre = $(dom.ancestor(rng.sc, dom.isPre));
+        
+        if ($pre.length) {
+            // Convert back to paragraph
+            var content = $pre.html();
+            var $p = $('<p></p>').html(content);
+            $pre.replaceWith($p);
+            
+            // Select the new paragraph
+            range.createFromNode($p[0]).select();
+        } else {
+            // Format as code block
+            document.execCommand('formatBlock', false, 'pre');
+            
+            // Style the pre element
+            var newRng = range.create();
+            if (newRng) {
+                var $newPre = $(dom.ancestor(newRng.sc, dom.isPre));
+                if ($newPre.length) {
+                    $newPre.css({
+                        'background-color': '#f6f8fa',
+                        'border': '1px solid #d0d7de',
+                        'border-radius': '6px',
+                        'padding': '16px',
+                        'overflow': 'auto',
+                        'font-family': '\'Courier New\', Consolas, Monaco, monospace',
+                        'font-size': '85%',
+                        'line-height': '1.45',
+                        'color': '#24292f'
+                    });
+                }
+            }
+        }
+        
+        $editable.trigger('change');
+    }
+}
+
+/**
+ * Clear All Content
+ */
+function clearContent(oLayoutInfo) {
+    var $editable = oLayoutInfo.editable();
+    
+    if (confirm('Tem certeza que deseja limpar todo o conteúdo?')) {
+        $editable.empty();
+        $editable.html('<p><br></p>');
+        
+        // Set focus and cursor to the beginning
+        var newRange = range.create($editable[0].firstChild, 0);
+        if (newRange) {
+            newRange.select();
+        }
+        
+        $editable.trigger('change');
+    }
+}
+
+/**
+ * Validate HTML - Check for unclosed tags and invalid structure
+ */
+function validateHTML(oLayoutInfo) {
+    var $editable = oLayoutInfo.editable();
+    var html = $editable.html();
+    var errors = [];
+    
+    // Check for common self-closing tags
+    var selfClosingTags = ['br', 'hr', 'img', 'input', 'meta', 'link', 'area', 'base', 'col', 'embed', 'source', 'track', 'wbr'];
+    
+    // Stack to track open tags with line info
+    var tagStack = [];
+    var tagRegex = /<\/?([a-zA-Z][a-zA-Z0-9]*)[^>]*>/g;
+    var match;
+    
+    while ((match = tagRegex.exec(html)) !== null) {
+        var fullTag = match[0];
+        var tagName = match[1].toLowerCase();
+        var position = match.index;
+        
+        // Skip self-closing tags
+        if (selfClosingTags.indexOf(tagName) !== -1) {
+            continue;
+        }
+        
+        // Check if it's a closing tag
+        if (fullTag.indexOf('</') === 0) {
+            // Closing tag
+            if (tagStack.length === 0) {
+                errors.push('Tag de fechamento sem abertura: </' + tagName + '> na posição ' + position);
+            } else {
+                var lastTag = tagStack[tagStack.length - 1];
+                if (lastTag.name === tagName) {
+                    // Correct closing tag
+                    tagStack.pop();
+                } else {
+                    // Try to find matching opening tag in stack
+                    var found = false;
+                    for (var i = tagStack.length - 1; i >= 0; i--) {
+                        if (tagStack[i].name === tagName) {
+                            // Found matching tag, but there are unclosed tags before it
+                            for (var j = tagStack.length - 1; j > i; j--) {
+                                errors.push('Tag não fechada antes de </' + tagName + '>: <' + tagStack[j].name + '> na posição ' + tagStack[j].pos);
+                            }
+                            // Remove all including the matched one
+                            tagStack.splice(i, tagStack.length - i);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        errors.push('Tag de fechamento sem abertura correspondente: </' + tagName + '> na posição ' + position);
+                    }
+                }
+            }
+        } else if (fullTag.indexOf('/>') === fullTag.length - 2) {
+            // Self-closing tag (e.g., <tag />)
+            continue;
+        } else {
+            // Opening tag
+            tagStack.push({name: tagName, pos: position});
+        }
+    }
+    
+    // Check for unclosed tags
+    if (tagStack.length > 0) {
+        tagStack.forEach(function(tag) {
+            errors.push('Tag não fechada: <' + tag.name + '> na posição ' + tag.pos);
+        });
+    }
+    
+    // Show results
+    if (errors.length === 0) {
+        alert('✓ HTML válido! Todas as tags estão corretas.');
+    } else {
+        var errorMessage = 'Erros encontrados no HTML:\n\n';
+        errors.forEach(function(error, index) {
+            errorMessage += (index + 1) + '. ' + error + '\n';
+        });
+        alert(errorMessage);
+    }
+}
+
+// ============ END MODERN FEATURES IMPLEMENTATION ============
+
 var fn_attach = eventHandler.attach;
 eventHandler.attach = function (oLayoutInfo, options) {
     fn_attach.call(this, oLayoutInfo, options);
+
+    // ============ MODERN FEATURES: Emoji, Video, Code ============
+    
+    // Event handler for emoji dialog
+    var $toolbar = oLayoutInfo.toolbar ? oLayoutInfo.toolbar() : $();
+    var $popover = $(oLayoutInfo.popover());
+    
+    $toolbar.add($popover).on('click', 'button[data-event="showEmojiDialog"]', function (e) {
+        e.preventDefault();
+        showEmojiDialog(oLayoutInfo);
+    });
+    
+    $toolbar.add($popover).on('click', 'button[data-event="formatInlineCode"]', function (e) {
+        e.preventDefault();
+        formatInlineCode(oLayoutInfo);
+    });
+    
+    $toolbar.add($popover).on('click', 'button[data-event="formatCodeBlock"]', function (e) {
+        e.preventDefault();
+        formatCodeBlock(oLayoutInfo);
+    });
+    
+    $toolbar.add($popover).on('click', 'button[data-event="clearContent"]', function (e) {
+        e.preventDefault();
+        clearContent(oLayoutInfo);
+    });
+    
+    $toolbar.add($popover).on('click', 'button[data-event="validateHTML"]', function (e) {
+        e.preventDefault();
+        validateHTML(oLayoutInfo);
+    });
+    
+    // Hide validate button initially (only show when codeview is active)
+    var $validateBtn = $toolbar.find('button[data-event="validateHTML"]');
+    $validateBtn.hide();
+    
+    // ============ END MODERN FEATURES ============
 
     oLayoutInfo.editor().on('dragstart', 'img', function (e) { e.preventDefault(); });
     $(document).on('mousedown', summernote_mousedown).on('mouseup', summernote_mouseup);
@@ -1040,6 +1339,14 @@ $.summernote.lang.odoo = {
     },
     hr: {
       insert: _t('Insert Horizontal Rule')
+    },
+    emoji: {
+      emoji: _t('Insert Emoji'),
+      select: _t('Select Emoji')
+    },
+    code: {
+      inline: _t('Code Inline'),
+      block: _t('Code Block')
     },
     style: {
       style: _t('Style'),

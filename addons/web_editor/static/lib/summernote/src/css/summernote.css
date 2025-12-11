@@ -130,7 +130,10 @@
 .note-popover .popover .popover-body,
 .panel-heading.note-toolbar {
   margin: 0;
-  padding: 0 0 5px 5px;
+  padding: 4px 4px 4px 4px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   /* dropdown-menu for toolbar and popover */
   /* color palette for toolbar and popover */
 }
@@ -188,11 +191,6 @@
 .note-popover .popover .popover-body .note-style blockquote,
 .panel-heading.note-toolbar .note-style blockquote {
   margin: 0;
-}
-.note-popover .popover .popover-body .note-color .dropdown-toggle,
-.panel-heading.note-toolbar .note-color .dropdown-toggle {
-  width: 20px;
-  padding-left: 5px;
 }
 .note-popover .popover .popover-body .note-color .dropdown-menu,
 .panel-heading.note-toolbar .note-color .dropdown-menu {
@@ -444,4 +442,188 @@
   font-size: 12px;
   border-radius: 5px;
   opacity: 0.7;
+}
+
+/* Inline Code Styling */
+code {
+  background-color: #f6f8fa !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-family: 'Courier New', Consolas, Monaco, monospace !important;
+  font-size: 90% !important;
+  color: #d73a49 !important;
+  border: 1px solid #e1e4e8 !important;
+}
+
+/* Code Block Styling */
+pre {
+  background-color: #f6f8fa !important;
+  border: 1px solid #d0d7de !important;
+  border-radius: 6px !important;
+  padding: 16px !important;
+  overflow: auto !important;
+  font-family: 'Courier New', Consolas, Monaco, monospace !important;
+  font-size: 85% !important;
+  line-height: 1.45 !important;
+  color: #24292f !important;
+}
+
+pre code {
+  background-color: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  color: inherit !important;
+}
+
+/* Modern Color Palette */
+.note-color-palette {
+  padding: 5px;
+}
+
+.note-color-row {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.note-color-btn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.note-color-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.note-color-btn:active {
+  transform: scale(1.05);
+}
+
+/* Modern Font Selector */
+.note-fontname .dropdown-menu {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.note-fontname .dropdown-item {
+  padding: 8px 12px;
+  transition: background-color 0.15s ease;
+}
+
+.note-fontname .dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* Enhanced Toolbar Buttons */
+.note-toolbar .btn,
+.panel-heading.note-toolbar .btn,
+.note-popover .popover .popover-body .btn {
+  border-radius: 4px;
+  margin: 1px;
+  padding: 4px 8px;
+  min-height: 30px;
+  min-width: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.note-toolbar .btn:hover,
+.panel-heading.note-toolbar .btn:hover,
+.note-popover .popover .popover-body .btn:hover {
+  background-color: #e9ecef;
+  transform: translateY(-1px);
+  border-color: #dee2e6;
+}
+
+.note-toolbar .btn.active,
+.panel-heading.note-toolbar .btn.active,
+.note-popover .popover .popover-body .btn.active {
+  background-color: #dee2e6;
+  border-color: #ced4da;
+}
+
+.note-toolbar .btn.active {
+  background-color: #2196F3;
+  color: white;
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
+/* Button fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-toolbar .btn-group,
+.panel-heading.note-toolbar .btn-group {
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+/* Staggered animation for each button group */
+.note-toolbar .btn-group:nth-child(1),
+.panel-heading.note-toolbar .btn-group:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.note-toolbar .btn-group:nth-child(2),
+.panel-heading.note-toolbar .btn-group:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.note-toolbar .btn-group:nth-child(3),
+.panel-heading.note-toolbar .btn-group:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.note-toolbar .btn-group:nth-child(4),
+.panel-heading.note-toolbar .btn-group:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.note-toolbar .btn-group:nth-child(5),
+.panel-heading.note-toolbar .btn-group:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.note-toolbar .btn-group:nth-child(6),
+.panel-heading.note-toolbar .btn-group:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.note-toolbar .btn-group:nth-child(7),
+.panel-heading.note-toolbar .btn-group:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.note-toolbar .btn-group:nth-child(8),
+.panel-heading.note-toolbar .btn-group:nth-child(8) {
+  animation-delay: 0.4s;
+}
+
+.note-toolbar .btn-group:nth-child(9),
+.panel-heading.note-toolbar .btn-group:nth-child(9) {
+  animation-delay: 0.45s;
+}
+
+.note-toolbar .btn-group:nth-child(10),
+.panel-heading.note-toolbar .btn-group:nth-child(10) {
+  animation-delay: 0.5s;
 }

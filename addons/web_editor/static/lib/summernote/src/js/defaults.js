@@ -98,10 +98,22 @@ define('summernote/defaults', function () {
           unordered: 'list-ul',
           ordered: 'list-ol'
         },
+        emoji: {
+          emoji: 'smile-o'
+        },
+        video: {
+          video: 'video-camera'
+        },
+        code: {
+          inline: 'code',
+          block: 'file-code-o'
+        },
         options: {
           help: 'question',
           fullscreen: 'arrows-alt',
-          codeview: 'code'
+          codeview: 'file-text-o',
+          clearall: 'trash',
+          validate: 'check-circle'
         },
         paragraph: {
           paragraph: 'align-left',
@@ -147,7 +159,8 @@ define('summernote/defaults', function () {
         ['para', ['ul', 'ol', 'paragraph']],
         ['height', ['height']],
         ['table', ['table']],
-        ['insert', ['link', 'picture', 'hr']],
+        ['insert', ['link', 'picture', 'video', 'emoji', 'hr']],
+        ['code', ['inlinecode', 'codeblock']],
         ['view', ['fullscreen', 'codeview']],
         ['help', ['help']]
       ],
@@ -185,22 +198,35 @@ define('summernote/defaults', function () {
       fontNames: [
         'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
         'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
-        'Tahoma', 'Times New Roman', 'Verdana'
+        'Tahoma', 'Times New Roman', 'Verdana',
+        'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Poppins',
+        'Source Sans Pro', 'Raleway', 'Ubuntu', 'Nunito', 'Playfair Display'
       ],
-      fontNamesIgnoreCheck: [],
+      fontNamesIgnoreCheck: ['Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Poppins', 'Source Sans Pro', 'Raleway', 'Ubuntu', 'Nunito', 'Playfair Display'],
 
       fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
 
       // pallete colors(n x n)
       colors: [
-        ['#000000', '#424242', '#636363', '#9C9C94', '#CEC6CE', '#EFEFEF', '#F7F7F7', '#FFFFFF'],
-        ['#FF0000', '#FF9C00', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#9C00FF', '#FF00FF'],
-        ['#F7C6CE', '#FFE7CE', '#FFEFC6', '#D6EFD6', '#CEDEE7', '#CEE7F7', '#D6D6E7', '#E7D6DE'],
-        ['#E79C9C', '#FFC69C', '#FFE79C', '#B5D6A5', '#A5C6CE', '#9CC6EF', '#B5A5D6', '#D6A5BD'],
-        ['#E76363', '#F7AD6B', '#FFD663', '#94BD7B', '#73A5AD', '#6BADDE', '#8C7BC6', '#C67BA5'],
-        ['#CE0000', '#E79439', '#EFC631', '#6BA54A', '#4A7B8C', '#3984C6', '#634AA5', '#A54A7B'],
-        ['#9C0000', '#B56308', '#BD9400', '#397B21', '#104A5A', '#085294', '#311873', '#731842'],
-        ['#630000', '#7B3900', '#846300', '#295218', '#083139', '#003163', '#21104A', '#4A1031']
+        ['#000000', '#424242', '#636363', '#9E9E9E', '#BDBDBD', '#E0E0E0', '#F5F5F5', '#FFFFFF'],
+        ['#D32F2F', '#F57C00', '#FBC02D', '#388E3C', '#0097A7', '#1976D2', '#7B1FA2', '#C2185B'],
+        ['#EF5350', '#FF9800', '#FFEB3B', '#66BB6A', '#26C6DA', '#42A5F5', '#AB47BC', '#EC407A'],
+        ['#E57373', '#FFB74D', '#FFF176', '#81C784', '#4DD0E1', '#64B5F6', '#BA68C8', '#F06292'],
+        ['#FFCDD2', '#FFE0B2', '#FFF9C4', '#C8E6C9', '#B2EBF2', '#BBDEFB', '#E1BEE7', '#F8BBD0'],
+        ['#B71C1C', '#E65100', '#F57F17', '#1B5E20', '#006064', '#0D47A1', '#4A148C', '#880E4F'],
+        ['#FF5252', '#FF6E40', '#FFFF00', '#00E676', '#00E5FF', '#2979FF', '#D500F9', '#F50057'],
+        ['#3E2723', '#263238', '#1A237E', '#004D40', '#827717', '#BF360C', '#311B92', '#FF6F00']
+      ],
+      
+      // emoji list for quick access
+      emojis: [
+        '😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘',
+        '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒',
+        '😞', '😔', '😟', '😕', '🙁', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬',
+        '👍', '👎', '👊', '✊', '🤛', '🤜', '👏', '🙌', '👐', '🤝', '🙏', '✍️', '💪', '🦾', '🦿', '🦵',
+        '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖',
+        '⭐', '🌟', '✨', '⚡', '🔥', '💥', '💫', '💦', '💨', '🌈', '☀️', '🌤️', '⛅', '🌥️', '☁️', '🌦️',
+        '🎉', '🎊', '🎈', '🎁', '🏆', '🥇', '🥈', '🥉', '⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉'
       ],
 
       // lineHeight
@@ -355,6 +381,19 @@ define('summernote/defaults', function () {
         hr: {
           insert: 'Insert Horizontal Rule'
         },
+        emoji: {
+          emoji: 'Insert Emoji',
+          select: 'Select Emoji'
+        },
+        video: {
+          video: 'Insert Video',
+          url: 'Video URL',
+          providers: 'Supported: YouTube, Vimeo, Dailymotion'
+        },
+        code: {
+          inline: 'Code Inline',
+          block: 'Code Block'
+        },
         style: {
           style: 'Style',
           normal: 'Paragraph',
@@ -374,7 +413,9 @@ define('summernote/defaults', function () {
         options: {
           help: 'Help',
           fullscreen: 'Full Screen',
-          codeview: 'Code View'
+          codeview: 'Code View',
+          clearall: 'Clear All Content',
+          validate: 'Validate HTML'
         },
         paragraph: {
           paragraph: 'Paragraph',
