@@ -372,6 +372,18 @@ define([
           title: lang.options.codeview
         });
       },
+      clearall: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.options.clearall, {
+          event: 'clearContent',
+          title: lang.options.clearall
+        });
+      },
+      validate: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.options.validate, {
+          event: 'validateHTML',
+          title: lang.options.validate
+        });
+      },
       undo: function (lang, options) {
         return tplIconButton(options.iconPrefix + options.icons.history.undo, {
           event: 'undo',
@@ -388,6 +400,32 @@ define([
         return tplIconButton(options.iconPrefix + options.icons.hr.insert, {
           event: 'insertHorizontalRule',
           title: lang.hr.insert
+        });
+      },
+      emoji: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.emoji.emoji, {
+          event: 'showEmojiDialog',
+          title: lang.emoji.emoji,
+          hide: true
+        });
+      },
+      video: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.video.video, {
+          event: 'showVideoDialog',
+          title: lang.video.video,
+          hide: true
+        });
+      },
+      inlinecode: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.code.inline, {
+          event: 'formatInlineCode',
+          title: lang.code.inline
+        });
+      },
+      codeblock: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.code.block, {
+          event: 'formatCodeBlock',
+          title: lang.code.block
         });
       }
     };
@@ -696,6 +734,31 @@ define([
                      '<a href="//github.com/summernote/summernote/issues" target="_blank">Issues</a>' +
                    '</p>';
         return tplDialog('note-help-dialog', '', body, '');
+      },
+
+      emoji: function (lang, options) {
+        var emojis = options.emojis || [];
+        var emojiButtons = emojis.map(function(emoji) {
+          return '<button type="button" class="btn btn-light note-emoji-btn" data-emoji="' + emoji + '" title="' + emoji + '">' + emoji + '</button>';
+        }).join('');
+        
+        var body = '<div class="form-group row">' +
+                     '<label>' + lang.emoji.select + '</label>' +
+                     '<div class="note-emoji-picker" style="max-height: 300px; overflow-y: auto; padding: 10px;">' +
+                       emojiButtons +
+                     '</div>' +
+                   '</div>';
+        return tplDialog('note-emoji-dialog', lang.emoji.emoji, body, '');
+      },
+
+      video: function (lang, options) {
+        var body = '<div class="form-group row">' +
+                     '<label>' + lang.video.url + '</label>' +
+                     '<input class="note-video-url form-control col-md-12" type="text" placeholder="https://www.youtube.com/watch?v=..." />' +
+                     '<small class="form-text text-muted">' + lang.video.providers + '</small>' +
+                   '</div>';
+        var footer = '<button href="#" class="btn btn-primary note-video-btn disabled" disabled>' + lang.video.video + '</button>';
+        return tplDialog('note-video-dialog', lang.video.video, body, footer);
       }
     };
 

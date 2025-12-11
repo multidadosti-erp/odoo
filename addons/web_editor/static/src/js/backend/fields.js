@@ -147,7 +147,9 @@ var FieldTextHtmlSimple = basic_fields.DebouncedField.extend(TranslatableFieldMi
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
-                ['insert', this.nodeOptions['no-attachment'] ? ['link'] : ['link', 'picture']],
+                ['insert', this.nodeOptions['no-attachment'] ? ['link', 'emoji'] : ['link', 'picture', 'emoji']],
+                ['code', ['inlinecode', 'codeblock']],
+                ['view', ['fullscreen', 'codeview', 'validate', 'clearall']],
                 ['history', ['undo', 'redo']]
             ],
             prettifyHtml: false,
@@ -173,10 +175,6 @@ var FieldTextHtmlSimple = basic_fields.DebouncedField.extend(TranslatableFieldMi
         }
         summernoteConfig.getMediaDomain = this._getAttachmentsDomain.bind(this);
 
-
-        if (config.debug) {
-            summernoteConfig.toolbar.splice(7, 0, ['view', ['codeview']]);
-        }
         return summernoteConfig;
     },
     /**

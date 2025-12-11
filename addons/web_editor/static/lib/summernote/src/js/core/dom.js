@@ -1068,6 +1068,7 @@ define([
       isS: makePredByNodeName('S'),
       isI: makePredByNodeName('I'),
       isImg: makePredByNodeName('IMG'),
+      isPre: makePredByNodeName('PRE'),
       isTextarea: isTextarea,
       isEmpty: isEmpty,
       isEmptyAnchor: func.and(isAnchor, isEmpty),

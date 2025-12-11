@@ -829,6 +829,64 @@ define([
     };
 
     /**
+     * format inline code
+     *
+     * @param {jQuery} $editable
+     */
+    this.formatInlineCode = function ($editable) {
+      beforeCommand($editable);
+      var rng = range.create();
+      
+      if (rng && !rng.isCollapsed()) {
+        var nodes = rng.nodes(dom.isText);
+        var $wrapper = $('<code style="background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: \'Courier New\', monospace; font-size: 90%;"></code>');
+        
+        // Check if already wrapped in code
+        var $parent = $(rng.sc).parent();
+        if ($parent.is('code')) {
+          // Unwrap code
+          var content = $parent.html();
+          $parent.replaceWith(content);
+        } else {
+          // Wrap in code
+          rng.pasteHTML($wrapper[0].outerHTML.replace('</code>', rng.toString() + '</code>'));
+        }
+      }
+      
+      afterCommand($editable);
+    };
+
+    /**
+     * format code block
+     *
+     * @param {jQuery} $editable
+     */
+    this.formatCodeBlock = function ($editable) {
+      beforeCommand($editable);
+      this.formatBlock($editable, 'PRE');
+      
+      // Style the pre element
+      var rng = range.create();
+      if (rng) {
+        var $pre = $(dom.ancestor(rng.sc, dom.isPre));
+        if ($pre.length) {
+          $pre.css({
+            'background-color': '#f6f8fa',
+            'border': '1px solid #d0d7de',
+            'border-radius': '6px',
+            'padding': '16px',
+            'overflow': 'auto',
+            'font-family': '\'Courier New\', Consolas, Monaco, monospace',
+            'font-size': '85%',
+            'line-height': '1.45'
+          });
+        }
+      }
+      
+      afterCommand($editable);
+    };
+
+    /**
      * set focus
      *
      * @param $editable
