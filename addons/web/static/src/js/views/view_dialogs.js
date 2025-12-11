@@ -271,6 +271,11 @@ var FormViewDialog = ViewDialog.extend({
             // id now), so don't re-use the copy obtained before the save
             var record = self.form_view.model.get(self.form_view.handle);
             self.on_saved(record, !!changedFields.length);
+        }).fail(function (error) {
+            // Adicionado pela Multidados:
+            // - Re-enable the save button if the save failed
+            self.$footer.find(".btn-primary").prop('disabled', false);
+            return $.Deferred().reject();
         });
     },
 });
