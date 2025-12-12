@@ -531,8 +531,8 @@ var FormRenderer = BasicRenderer.extend({
                 return;
             }
 
-            var colspan = parseInt(child.attrs.colspan, 10);
-            var isLabeledField = (child.tag === 'field' && child.attrs.nolabel !== '1');
+            var colspan = parseInt((child.attrs && child.attrs.colspan) || 0, 10);
+            var isLabeledField = (child.tag === 'field' && !(child.attrs && child.attrs.nolabel === '1'));
             if (!colspan) {
                 if (isLabeledField) {
                     colspan = 2;
