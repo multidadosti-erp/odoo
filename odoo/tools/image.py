@@ -121,7 +121,7 @@ def image_resize_and_sharpen(image, size, preserve_aspect_ratio=False, factor=2.
     origin_mode = image.mode
     if image.mode != 'RGBA':
         image = image.convert('RGBA')
-    image.thumbnail(size, Image.ANTIALIAS)
+    image.thumbnail(size, Image.LANCZOS)
     if preserve_aspect_ratio:
         size = image.size
     sharpener = ImageEnhance.Sharpness(image)
