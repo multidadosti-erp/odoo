@@ -234,3 +234,11 @@ a.o_underline {
     @include bg-variant(".bg-#{$color}", $value);
     @include text-emphasis-variant(".text-#{$color}", $value);
 }
+
+// Reduced paragraph spacing for HTML content edited with Summernote
+.o_editable p,
+#wrapwrap p,
+.oe_structure p {
+    margin: 0.05em 0 !important;
+    line-height: 1.4 !important;
+}

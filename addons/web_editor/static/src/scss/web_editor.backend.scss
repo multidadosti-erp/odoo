@@ -3,11 +3,14 @@
         min-height: 180px;
         font: initial !important;
         font-family: inherit !important;
-        line-height: initial !important;
+        line-height: 1.4 !important;
         color: initial !important;
         p, div {
             font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif;
             font-size: 13px;
+        }
+        p {
+            margin: 0.05em 0 !important;
         }
         a, a:hover {
             color: initial;
@@ -23,6 +26,10 @@
         padding: 0;
         border: 0;
         word-wrap: break-word;
+        line-height: 1.4 !important;
+        p {
+            margin: 0.05em 0 !important;
+        }
         ul > li > p {
             margin: 0px;
         }
