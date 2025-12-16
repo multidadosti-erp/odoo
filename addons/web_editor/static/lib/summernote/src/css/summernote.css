@@ -65,6 +65,16 @@
   padding: 10px;
   overflow: auto;
   outline: none;
+  line-height: 1.4;
+}
+.note-editor .note-editing-area .note-editable > p {
+  margin: 0.05em 0 !important;
+}
+.note-editor .note-editing-area .note-editable > p:first-child {
+  margin-top: 0 !important;
+}
+.note-editor .note-editing-area .note-editable > p:last-child {
+  margin-bottom: 0 !important;
 }
 .note-editor .note-editing-area .note-editable[contenteditable=true]:empty:not(:focus):before {
   content: attr(data-placeholder);
@@ -626,4 +636,27 @@ pre code {
 .note-toolbar .btn-group:nth-child(10),
 .panel-heading.note-toolbar .btn-group:nth-child(10) {
   animation-delay: 0.5s;
+}
+
+/* Reduced spacing for Summernote content (view and edit mode) */
+.note-editable p,
+.note-editor p,
+.o_mail_thread p,
+.oe_form_field_html p {
+  margin: 0.25em 0 !important;
+  line-height: 1.6 !important;
+}
+
+.note-editable p:first-child,
+.note-editor p:first-child,
+.o_mail_thread p:first-child,
+.oe_form_field_html p:first-child {
+  margin-top: 0 !important;
+}
+
+.note-editable p:last-child,
+.note-editor p:last-child,
+.o_mail_thread p:last-child,
+.oe_form_field_html p:last-child {
+  margin-bottom: 0 !important;
 }
