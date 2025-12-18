@@ -115,20 +115,10 @@ var NetworkManager = (function NetworkManagerClosure() {
         pendingRequest.expectedStatus = 200;
       }
 
-      if (args.onProgressiveData) {
-        // Some legacy browsers might throw an exception.
-        try {
-          xhr.responseType = 'moz-chunked-arraybuffer';
-        } catch(e) {}
-        if (xhr.responseType === 'moz-chunked-arraybuffer') {
-          pendingRequest.onProgressiveData = args.onProgressiveData;
-          pendingRequest.mozChunked = true;
-        } else {
-          xhr.responseType = 'arraybuffer';
-        }
-      } else {
-        xhr.responseType = 'arraybuffer';
-      }
+      // Patch: Removido 'moz-chunked-arraybuffer' deprecated (não mais suportado)
+      // Progressive data loading não é mais suportado com arraybuffer padrão
+      // pois xhr.response contém todos dados acumulados, não chunks incrementais
+      xhr.responseType = 'arraybuffer';
 
       if (args.onError) {
         xhr.onerror = function(evt) {
@@ -142,6 +132,7 @@ var NetworkManager = (function NetworkManagerClosure() {
       pendingRequest.onDone = args.onDone;
       pendingRequest.onError = args.onError;
       pendingRequest.onProgress = args.onProgress;
+      pendingRequest.onProgressiveData = args.onProgressiveData;
 
       xhr.send(null);
 
@@ -155,10 +146,8 @@ var NetworkManager = (function NetworkManagerClosure() {
         return;
       }
 
-      if (pendingRequest.mozChunked) {
-        var chunk = getArrayBuffer(pendingRequest.xhr);
-        pendingRequest.onProgressiveData(chunk);
-      }
+      // Patch: Progressive data loading não é mais suportado
+      // (moz-chunked-arraybuffer era específico do Firefox e foi descontinuado)
 
       var onProgress = pendingRequest.onProgress;
       if (onProgress) {
