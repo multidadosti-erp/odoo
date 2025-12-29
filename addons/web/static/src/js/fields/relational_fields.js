@@ -2326,6 +2326,29 @@ var FieldStatus = AbstractField.extend({
         // instead of options.
         // If not set, the statusbar is not clickable.
         this.isClickable = !!this.attrs.clickable || !!this.nodeOptions.clickable;
+        
+        /**
+         * Custom: support clickable_false_on option to disable clicking based on a field value
+         * 
+         * Optional name of a boolean field on the current record that controls
+         * whether the statusbar buttons are clickable.
+         *
+         * - This option must contain a field name (string) of a boolean field.
+         * - When that field is true, clicking on the statusbar stages is
+         *   disabled (the widget will behave as read‑only with respect to
+         *   stage changes).
+         * - When that field is false or not set, the normal clickable behavior
+         *   (as defined by `clickable` / `options.clickable`) applies.
+         *
+         * Usage in XML views (example):
+         *
+         *   <field name="state" widget="statusbar"
+         *          options="{'clickable': true, 'clickable_false_on': 'locked'}"/>
+         *
+         * where `locked` is a boolean field on the model. When `locked` is
+         * true, the user cannot change the statusbar state by clicking.
+        **/        
+        this.clickableFalseOn = this.nodeOptions.clickable_false_on;
     },
 
     //--------------------------------------------------------------------------
@@ -2373,10 +2396,17 @@ var FieldStatus = AbstractField.extend({
         var selections = _.partition(this.status_information, function (info) {
             return (info.selected || !info.fold);
         });
+        
+        // Check if clickable should be disabled based on clickable_false_on option
+        var clickable = this.isClickable;
+        if (this.clickableFalseOn && this.clickableFalseOn in this.recordData && this.recordData[this.clickableFalseOn]) {
+            clickable = false;
+        }
+        
         this.$el.html(qweb.render("FieldStatus.content", {
             selection_unfolded: selections[0],
             selection_folded: selections[1],
-            clickable: this.isClickable,
+            clickable: clickable,
         }));
     },
 
@@ -2386,11 +2416,16 @@ var FieldStatus = AbstractField.extend({
 
     /**
      * Called when on status stage is clicked -> sets the field value.
-     *
      * @private
      * @param {MouseEvent} e
      */
     _onClickStage: function (e) {
+        // Check if clicking should be prevented based on clickable_false_on option
+        if (this.clickableFalseOn && this.clickableFalseOn in this.recordData && this.recordData[this.clickableFalseOn]) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
         this._setValue($(e.currentTarget).data("value"));
     },
 });
