@@ -588,7 +588,7 @@ class SaleOrder(models.Model):
                 subtype_id=self.env.ref('mail.mt_note').id)
 
     @api.multi
-    def action_invoice_create(self, grouped=False, final=False):
+    def action_invoice_create(self, grouped=False, final=False, product_filter=None):
         """
         Create the invoice associated to the SO.
         :param grouped: if True, invoices are grouped by SO id. If False, invoices are grouped by
@@ -614,8 +614,14 @@ class SaleOrder(models.Model):
 
             # Create lines in batch to avoid performance problems
             line_vals_list = []
+
+            if product_filter in ("product", "service"):
+                order_lines = order.order_line.filtered(lambda r: r.product_id.type == product_filter)
+            else:
+                order_lines = order.order_line
+
             # sequence is the natural order of order_lines
-            for line in order.order_line:
+            for line in order_lines:
                 if line.display_type == 'line_section':
                     pending_section = line
                     continue
