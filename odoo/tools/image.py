@@ -229,7 +229,13 @@ def crop_image(data, type='top', ratio=False, size=None, image_format=None):
         thumbnail = Image.open(io.BytesIO(output_stream.getvalue()))
         output_stream.truncate(0)
         output_stream.seek(0)
-        thumbnail.thumbnail(size, Image.ANTIALIAS)
+
+        # Ajuste de atualizacao da lib
+        if hasattr(Image, 'ANTIALIAS'):
+            thumbnail.thumbnail(size, Image.ANTIALIAS)
+        else:
+            thumbnail.thumbnail(size, Image.LANCZOS)
+
         thumbnail.save(output_stream, image_format)
     return base64.b64encode(output_stream.getvalue())
 
