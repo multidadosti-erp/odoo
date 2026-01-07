@@ -130,12 +130,15 @@ class SaleAdvancePaymentInv(models.TransientModel):
 
     @api.multi
     def create_invoices(self):
+        # Metodo foi sobrescrito pelo "action_br_sale_create_invoices" no br_sale
         sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
 
         if self.advance_payment_method == 'delivered':
             sale_orders.action_invoice_create()
+
         elif self.advance_payment_method == 'all':
             sale_orders.action_invoice_create(final=True)
+
         else:
             # Create deposit product if necessary
             if not self.product_id:

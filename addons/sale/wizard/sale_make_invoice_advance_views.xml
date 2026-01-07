@@ -31,9 +31,9 @@
                     </group>
                     <footer>
                         <button name="create_invoices" string="Create and View Invoices" type="object"
-                            context="{'open_invoices': True}" class="btn-primary"/>
+                            context="{'open_invoices': True}" class="btn-primary" invisible="1"/>
                         <button name="create_invoices" string="Create Invoices" type="object"
-                            class="btn-primary"/>
+                            class="btn-primary" invisible="1"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
