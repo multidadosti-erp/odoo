@@ -2941,6 +2941,8 @@ class AccountInvoiceLine(models.Model):
     price_unit = fields.Float(
         string='Unit Price',
         required=True,
+        digits=dp.get_precision('Product Price'),
+        default=0.0,
     )
     price_subtotal = fields.Monetary(string='Amount (without Taxes)',
         store=True, readonly=True, compute='_compute_price', help="Total amount without taxes")
