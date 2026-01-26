@@ -24,17 +24,10 @@ var PDFSlidesViewer = (function(){
         this.canvas_context = $canvas.getContext('2d');
         // PDF JS business
         /**
-         * Disable the web worker and run all code on the main thread. This will happen
-         * automatically if the browser doesn't support workers or sending typed arrays
-         * to workers.
+         * Disable the web worker and run all code on the main thread.
          * @var {boolean}
-         *
-         * disableWorker should be 'true' if the document came from another origin than the
-         * page (typically the 'embed case').
-         * @see http://en.wikipedia.org/wiki/Cross-origin_resource_sharing.
-         * this is equivalent to the use_cors option in openerpframework.js
          */
-        window.PDFJS.disableWorker = disableWorker || false;
+        this.disableWorker = disableWorker || false;
     };
 
     /**
@@ -44,7 +37,23 @@ var PDFSlidesViewer = (function(){
     PDFSlidesViewer.prototype.loadDocument = function(url) {
         var self = this;
         var pdf_url = url || this.pdf_url;
-        return window.PDFJS.getDocument(pdf_url).then(function (file_content) {
+        var pdfjsLib = window.pdfjsLib || window.PDFJS;
+        if (!pdfjsLib) {
+            return Promise.reject(new Error('PDF.js not loaded'));
+        }
+        var params = {
+            cMapUrl: '/web/static/lib/pdfjs/web/cmaps/',
+            cMapPacked: true,
+            standardFontDataUrl: '/web/static/lib/pdfjs/web/standard_fonts/',
+            disableWorker: self.disableWorker,
+        };
+        if (typeof pdf_url === 'string') {
+            params.url = pdf_url;
+        } else {
+            params.data = pdf_url;
+        }
+        var loadingTask = pdfjsLib.getDocument(params);
+        return loadingTask.promise.then(function (file_content) {
             self.pdf = file_content;
             self.pdf_page_total = file_content.numPages;
             return file_content;
@@ -60,7 +69,7 @@ var PDFSlidesViewer = (function(){
         this.pageRendering = true;
         return this.pdf.getPage(page_number).then(function(page) {
             // Each PDF page has its own viewport which defines the size in pixels and initial rotation.
-            var viewport = page.getViewport(self.pdf_scale);
+            var viewport = page.getViewport({ scale: self.pdf_scale });
             self.canvas.height = viewport.height;
             self.canvas.width = viewport.width;
             // Render PDF page into canvas context
