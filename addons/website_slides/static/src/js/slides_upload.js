@@ -112,15 +112,28 @@ var SlideDialog = Widget.extend({
             ArrayReader.readAsArrayBuffer(file);
             ArrayReader.onload = function (evt) {
                 var buffer = evt.target.result;
-                var passwordNeeded = function () {
+                var pdfjsLib = window.pdfjsLib || window.PDFJS;
+                if (!pdfjsLib) {
+                    self.display_alert(_t("PDF.js not loaded."));
+                    self.reset_file();
+                    self.$('.save').button('reset');
+                    return;
+                }
+                var loadingTask = pdfjsLib.getDocument({
+                    data: new Uint8Array(buffer),
+                    cMapUrl: '/web/static/lib/pdfjs/web/cmaps/',
+                    cMapPacked: true,
+                    standardFontDataUrl: '/web/static/lib/pdfjs/web/standard_fonts/',
+                });
+                loadingTask.onPassword = function () {
                     self.display_alert(_t("You can not upload password protected file."));
                     self.reset_file();
                     self.$('.save').button('reset');
                 };
-                PDFJS.getDocument(new Uint8Array(buffer), null, passwordNeeded).then(function getPdf(pdf) {
+                loadingTask.promise.then(function getPdf(pdf) {
                     pdf.getPage(1).then(function getFirstPage(page) {
                         var scale = 1;
-                        var viewport = page.getViewport(scale);
+                        var viewport = page.getViewport({ scale: scale });
                         var canvas = document.getElementById('data_canvas');
                         var context = canvas.getContext('2d');
                         canvas.height = viewport.height;
@@ -139,7 +152,7 @@ var SlideDialog = Widget.extend({
 
                         });
                     });
-                    var maxPages = pdf.pdfInfo.numPages;
+                    var maxPages = pdf.numPages;
                     var page, j;
                     self.index_content = "";
                     for (j = 1; j <= maxPages; j += 1) {
