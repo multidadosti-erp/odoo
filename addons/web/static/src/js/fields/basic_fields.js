@@ -1711,7 +1711,8 @@ var FieldPdfViewer = FieldBinaryFile.extend({
         }
         fileURI = encodeURIComponent(fileURI);
         var viewerURL = '/web/static/lib/pdfjs/web/viewer.html?file=';
-        return viewerURL + fileURI + '#page=' + page;
+        return viewerURL + fileURI + '#page=' + page +
+            '&disablestream=true&disablerange=true&disableautofetch=true';
     },
     /**
      * @private
