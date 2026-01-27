@@ -1953,14 +1953,27 @@ $.summernote.pluginEvents.formatBlock = function (event, editor, layoutInfo, sTa
         return;
     }
     // select content since container (that firefox selects) may be removed
-    if (r.so === 0) {
-        r.sc = dom.firstChild(r.sc);
+    var sc = r.sc, so = r.so, ec = r.ec, eo = r.eo;
+    if (so === 0) {
+        var firstChild = dom.firstChild(sc);
+        if (firstChild) {
+            sc = firstChild;
+            so = 0;
+        }
     }
-    if (dom.nodeLength(r.ec) >= r.eo) {
-        r.ec = dom.lastChild(r.ec);
-        r.eo = dom.nodeLength(r.ec);
+    if (dom.nodeLength(ec) >= eo) {
+        var lastChild = dom.lastChild(ec);
+        if (lastChild) {
+            ec = lastChild;
+            eo = dom.nodeLength(ec);
+        }
     }
-    r = range.create(r.sc, r.so, r.ec, r.eo);
+    // clamp offsets to node length to avoid IndexSizeError
+    var scLen = dom.nodeLength(sc);
+    var ecLen = dom.nodeLength(ec);
+    if (so > scLen) { so = scLen; }
+    if (eo > ecLen) { eo = ecLen; }
+    r = range.create(sc, so, ec, eo);
     r.reRange().select();
 
     if (sTagName === "blockquote" || sTagName === "pre") {

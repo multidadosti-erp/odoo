@@ -297,14 +297,20 @@ eventHandler.modules.popover.button.update = function ($container, oStyle) {
             $container.find('.d-none:not(.only_fa, .note-recent-color)').removeClass('d-none');
             $container.find('button[data-event="cropImage"]').removeClass('d-none');
             $container.find('.only_fa').addClass('d-none');
-            var width = ($(oStyle.image).attr('style') || '').match(/(^|;|\s)width:\s*([0-9]+%)/);
+            var $img = $(oStyle.image);
+            var width = ($img.attr('style') || '').match(/(^|;|\s)width:\s*([0-9]+%)/);
             if (width) {
                 width = width[2];
             }
-            $container.find('button[data-event="resize"][data-value="auto"]').toggleClass("active", width !== "100%" && width !== "50%" && width !== "25%");
-            $container.find('button[data-event="resize"][data-value="1"]').toggleClass("active", width === "100%");
-            $container.find('button[data-event="resize"][data-value="0.5"]').toggleClass("active", width === "50%");
-            $container.find('button[data-event="resize"][data-value="0.25"]').toggleClass("active", width === "25%");
+            var resizeData = $img.data('sn-resize');
+            var hasResizeData = resizeData !== undefined && resizeData !== null && resizeData !== '';
+            var resizeDataStr = hasResizeData ? (resizeData + '') : '';
+            var isAuto = hasResizeData ? (resizeDataStr === 'auto') : (width !== "100%" && width !== "75%" && width !== "50%" && width !== "25%");
+            $container.find('button[data-event="resize"][data-value="auto"]').toggleClass("active", isAuto);
+            $container.find('button[data-event="resize"][data-value="1"]').toggleClass("active", hasResizeData ? (resizeDataStr === '1') : (width === "100%"));
+            $container.find('button[data-event="resize"][data-value="0.75"]').toggleClass("active", hasResizeData ? (resizeDataStr === '0.75') : (width === "75%"));
+            $container.find('button[data-event="resize"][data-value="0.5"]').toggleClass("active", hasResizeData ? (resizeDataStr === '0.5') : (width === "50%"));
+            $container.find('button[data-event="resize"][data-value="0.25"]').toggleClass("active", hasResizeData ? (resizeDataStr === '0.25') : (width === "25%"));
 
             $container.find('button[data-event="imageShape"][data-value="shadow"]').toggleClass("active", $(oStyle.image).hasClass("shadow"));
 
@@ -400,7 +406,11 @@ eventHandler.modules.editor.resize = function ($editable, sValue) {
     if (width) {
         width = width[2]/100;
     }
-    $target.css('width', (width !== sValue && sValue !== "auto") ? (sValue * 100) + '%' : '');
+    var widthValue = (width !== undefined && width !== null) ? parseFloat(width) : null;
+    var sValueNum = (sValue !== "auto") ? parseFloat(sValue) : null;
+    var useValue = (sValue !== "auto" && widthValue !== sValueNum) ? (sValueNum * 100) + '%' : '';
+    $target.css('width', useValue);
+    $target.data('sn-resize', useValue ? sValue : 'auto');
 };
 eventHandler.modules.editor.resizefa = function ($editable, sValue) {
     var $target = $(getImgTarget($editable));

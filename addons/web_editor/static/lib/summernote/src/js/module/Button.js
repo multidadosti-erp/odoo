@@ -67,15 +67,24 @@ define([
           return imgFloat !== 'left' && imgFloat !== 'right';
         });
 
-        var style = $img.attr('style');
+        var style = $img.attr('style') || '';
+        var widthMatcher = function (percent) {
+          return new RegExp('(^|;|\\s)(max-)?width\\s*:\\s*' + percent + '%').test(style);
+        };
+        btnState('button[data-event="resize"][data-value="auto"]', function () {
+          return !(widthMatcher(100) || widthMatcher(75) || widthMatcher(50) || widthMatcher(25));
+        });
         btnState('button[data-event="resize"][data-value="1"]', function () {
-          return !!/(^|\s)(max-)?width\s*:\s*100%/.test(style);
+          return widthMatcher(100);
+        });
+        btnState('button[data-event="resize"][data-value="0.75"]', function () {
+          return widthMatcher(75);
         });
         btnState('button[data-event="resize"][data-value="0.5"]', function () {
-          return !!/(^|\s)(max-)?width\s*:\s*50%/.test(style);
+          return widthMatcher(50);
         });
         btnState('button[data-event="resize"][data-value="0.25"]', function () {
-          return !!/(^|\s)(max-)?width\s*:\s*25%/.test(style);
+          return widthMatcher(25);
         });
         return;
       }
