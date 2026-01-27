@@ -5,6 +5,14 @@
 .note-editor {
   border: 1px solid #a9a9a9;
   position: relative;
+  --o-we-color-paper: #ffffff;
+  --o-we-color-surface: #f8f9fa;
+  --o-we-color-text-normal: #495057;
+  --o-we-color-border: #ced4da;
+  --o-we-color-border-hover: #dee2e6;
+  --o-we-color-hover-bg: #e9ecef;
+  --o-we-color-primary: #2196F3;
+  --o-we-color-primary-border: #1e88e5;
   /* overflow: hidden; ODOO: removed for embedded editor */
   /* dropzone */
   /* codeview mode */
@@ -46,6 +54,37 @@
   width: 100%;
   z-index: 1050;
   /* bs3 modal-backdrop: 1030, bs2: 1040 */
+}
+.note-editor.fullscreen .note-toolbar,
+.note-editor.fullscreen .panel-heading.note-toolbar {
+  position: relative;
+  z-index: 1060;
+  overflow: visible;
+}
+.note-editor.fullscreen .note-editing-area {
+  position: relative;
+  z-index: 1050;
+}
+.note-editor.fullscreen .note-toolbar .dropdown-menu,
+.note-editor.fullscreen .note-popover .popover .dropdown-menu,
+.note-editor.fullscreen .panel-heading.note-toolbar .dropdown-menu {
+  z-index: 1070;
+}
+.note-editor.fullscreen .note-toolbar .note-fontsize .dropdown-menu,
+.note-editor.fullscreen .panel-heading.note-toolbar .note-fontsize .dropdown-menu {
+  position: absolute;
+  top: 100% !important;
+  left: 0 !important;
+  transform: none !important;
+  margin-top: 4px;
+}
+.note-editor.fullscreen .note-toolbar .note-style .dropdown-menu,
+.note-editor.fullscreen .panel-heading.note-toolbar .note-style .dropdown-menu {
+  position: absolute;
+  top: 100% !important;
+  left: 0 !important;
+  transform: none !important;
+  margin-top: 4px;
 }
 .note-editor.fullscreen .note-editable {
   background-color: white;
@@ -140,12 +179,24 @@
 .note-popover .popover .popover-body,
 .panel-heading.note-toolbar {
   margin: 0;
-  padding: 4px 4px 4px 4px;
+  padding: 6px 8px;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-bottom: 1px solid #dee2e6;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   /* dropdown-menu for toolbar and popover */
   /* color palette for toolbar and popover */
+}
+.panel-heading.note-toolbar {
+  position: relative;
+  z-index: 1100;
+  overflow: visible;
+}
+.note-popover .popover .popover-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
 }
 .note-popover .popover .popover-body > .btn-group,
 .panel-heading.note-toolbar > .btn-group {
@@ -201,6 +252,19 @@
 .note-popover .popover .popover-body .note-style blockquote,
 .panel-heading.note-toolbar .note-style blockquote {
   margin: 0;
+}
+.note-popover .popover .popover-body .note-style,
+.panel-heading.note-toolbar .note-style {
+  position: relative;
+}
+.note-popover .popover .popover-body .note-style .dropdown-menu,
+.panel-heading.note-toolbar .note-style .dropdown-menu {
+  position: absolute;
+  top: 100% !important;
+  left: 0 !important;
+  transform: none !important;
+  margin-top: 4px;
+  z-index: 1110;
 }
 .note-popover .popover .popover-body .note-color .dropdown-menu,
 .panel-heading.note-toolbar .note-color .dropdown-menu {
@@ -547,6 +611,11 @@ pre code {
   transition: all 0.15s ease;
   border: 1px solid transparent;
 }
+.note-popover .popover .popover-body .btn {
+  background-color: #ffffff;
+  color: #495057;
+  border-color: #ced4da;
+}
 
 .note-toolbar .btn:hover,
 .panel-heading.note-toolbar .btn:hover,
@@ -561,6 +630,66 @@ pre code {
 .note-popover .popover .popover-body .btn.active {
   background-color: #dee2e6;
   border-color: #ced4da;
+}
+.note-popover .popover .popover-body .btn.active {
+  background-color: #2196F3;
+  color: #ffffff;
+  border-color: #1e88e5;
+}
+.note-popover .note-image-popover .btn,
+.note-popover .note-link-popover .btn,
+.note-popover .note-air-popover .btn {
+  background-color: var(--o-we-color-paper) !important;
+  color: var(--o-we-color-text-normal) !important;
+  border: 1px solid var(--o-we-color-border) !important;
+  padding: 2px 6px !important;
+  min-height: 26px !important;
+  min-width: 26px !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+.note-popover .note-image-popover .btn:hover,
+.note-popover .note-link-popover .btn:hover,
+.note-popover .note-air-popover .btn:hover {
+  background-color: var(--o-we-color-hover-bg) !important;
+  border-color: var(--o-we-color-border-hover) !important;
+}
+.note-popover .note-image-popover .btn.active,
+.note-popover .note-link-popover .btn.active,
+.note-popover .note-air-popover .btn.active {
+  background-color: var(--o-we-color-primary) !important;
+  color: var(--o-we-color-paper) !important;
+  border-color: var(--o-we-color-primary-border) !important;
+}
+.note-popover .note-image-popover .dropdown-menu,
+.note-popover .note-link-popover .dropdown-menu,
+.note-popover .note-air-popover .dropdown-menu {
+  background-color: var(--o-we-color-paper) !important;
+  color: var(--o-we-color-text-normal) !important;
+  border: 1px solid var(--o-we-color-border) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+  padding: 4px 0 !important;
+}
+.note-popover .note-image-popover .dropdown-item,
+.note-popover .note-link-popover .dropdown-item,
+.note-popover .note-air-popover .dropdown-item {
+  color: var(--o-we-color-text-normal) !important;
+  background-color: transparent !important;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+}
+.note-popover .note-image-popover .dropdown-item:hover,
+.note-popover .note-link-popover .dropdown-item:hover,
+.note-popover .note-air-popover .dropdown-item:hover {
+  background-color: var(--o-we-color-hover-bg) !important;
+  color: var(--o-we-color-text-normal) !important;
+}
+.note-popover .note-image-popover .dropdown-item.active,
+.note-popover .note-link-popover .dropdown-item.active,
+.note-popover .note-air-popover .dropdown-item.active {
+  background-color: var(--o-we-color-primary) !important;
+  color: var(--o-we-color-paper) !important;
 }
 
 .note-toolbar .btn.active {

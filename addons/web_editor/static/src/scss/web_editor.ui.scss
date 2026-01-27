@@ -823,6 +823,63 @@ html[lang] > body.editor_enable [data-oe-translation-state] {
     }
 }
 
+// Restore standard popover look for image/link/air popovers
+.note-popover .note-image-popover,
+.note-popover .note-link-popover,
+.note-popover .note-air-popover {
+    height: auto;
+    top: auto !important;
+    left: auto !important;
+    margin: 0;
+    padding: 0;
+    background-color: $o-we-color-paper;
+    border-radius: 4px;
+    border: 1px solid $border-color;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: left;
+}
+
+.note-popover .note-image-popover .popover-body,
+.note-popover .note-link-popover .popover-body,
+.note-popover .note-air-popover .popover-body {
+    height: auto;
+    white-space: normal;
+    padding: 6px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    background-color: $gray-100;
+}
+
+.note-popover .note-image-popover .btn,
+.note-popover .note-link-popover .btn,
+.note-popover .note-air-popover .btn {
+    height: auto;
+    border-radius: 4px;
+    padding: 4px 8px;
+    background-color: $o-we-color-paper;
+    color: $gray-700;
+    border: 1px solid $gray-400;
+    transition: all 0.15s ease;
+}
+
+.note-popover .note-image-popover .btn:hover,
+.note-popover .note-link-popover .btn:hover,
+.note-popover .note-air-popover .btn:hover {
+    background-color: $gray-200;
+    border-color: $gray-300;
+}
+
+.note-popover .note-image-popover .btn.active,
+.note-popover .note-link-popover .btn.active,
+.note-popover .note-air-popover .btn.active {
+    background-color: $o-brand-odoo;
+    color: $white;
+    border-color: darken($o-brand-odoo, 5%);
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
 .note-popover .popover, .note-editor {
     .dropdown-menu {
         .dropdown-item {
