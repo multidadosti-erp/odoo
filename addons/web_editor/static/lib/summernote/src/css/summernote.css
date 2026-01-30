@@ -86,6 +86,22 @@
   transform: none !important;
   margin-top: 4px;
 }
+.note-editor.fullscreen .note-toolbar .note-para .dropdown-menu,
+.note-editor.fullscreen .panel-heading.note-toolbar .note-para .dropdown-menu {
+  position: absolute;
+  top: 100% !important;
+  left: 0 !important;
+  transform: none !important;
+  margin-top: 4px;
+}
+.note-editor.fullscreen .note-toolbar .note-table .dropdown-menu,
+.note-editor.fullscreen .panel-heading.note-toolbar .note-table .dropdown-menu {
+  position: absolute;
+  top: 100% !important;
+  left: 0 !important;
+  transform: none !important;
+  margin-top: 4px;
+}
 .note-editor.fullscreen .note-editable {
   background-color: white;
 }
