@@ -50,6 +50,10 @@
                                 <strong class="text-dark"><t t-esc="log.title_action or log.activity_type_id[1]"/></strong>
                                 <button t-if="! log.force_next" class="btn btn-sm btn-link py-0 o_edit_button"><i class="fa fa-pencil"/></button>
                             </div>
+                            <div class="o_activity_title_entry mt-1" t-if="log.summary">
+                                <span class="fa fa-comment-o fa-fw mr-2 text-center text-muted" role="img" aria-label="Summary" title="Summary"/>
+                                <small t-att-title="log.summary"><t t-esc="log.summary" /></small>
+                            </div>
                             <div class="o_activity_title_entry mt-1" t-if="log.state != 'today'">
                                 <span class="fa fa-clock-o fa-fw mr-2 text-center text-muted" role="img" aria-label="Deadline" title="Deadline"/>
                                 <small t-att-title="log.date_deadline"><t t-esc="log.label_delay" /></small>
