@@ -8,7 +8,7 @@ var DropdownMenu = require('web.DropdownMenu');
 var QWeb = core.qweb;
 var _t = core._t;
 
-var GROUPABLE_TYPES = ['many2one', 'char', 'boolean', 'selection', 'date', 'datetime'];
+var GROUPABLE_TYPES = ['many2one', 'many2many', 'char', 'boolean', 'selection', 'date', 'datetime'];
 
 var DEFAULT_INTERVAL = 'month';
 
@@ -58,7 +58,8 @@ var GroupByMenu = DropdownMenu.extend({
         this.defaultOptionId = DEFAULT_INTERVAL;
         this.groupableFields = [];
         _.each(fields, function (field, name) {
-            if (field.sortable && _.contains(GROUPABLE_TYPES, field.type)) {
+            var isMany2Many = field.type === 'many2many';
+            if ((field.sortable || isMany2Many) && _.contains(GROUPABLE_TYPES, field.type)) {
                 self.groupableFields.push(_.extend({}, field, {
                     name: name,
                     isDate: _.contains(['date', 'datetime'], field.type),
