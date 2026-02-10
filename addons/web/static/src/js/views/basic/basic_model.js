@@ -4201,6 +4201,10 @@ var BasicModel = AbstractModel.extend({
                         });
                         value = choice ? choice[1] : false;
                     }
+                    if (list.fields[rawGroupBy].type === 'many2many' &&
+                            (value === false || value === 'false' || value === null)) {
+                        value = undefined;
+                    }
                     var newGroup = self._makeDataPoint({
                         modelName: list.model,
                         count: group[rawGroupBy + '_count'],

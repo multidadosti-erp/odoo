@@ -17,7 +17,7 @@ var _t = core._t;
 var _lt = core._lt;
 
 var GROUPABLE_TYPES =
-    ['many2one', 'char', 'boolean', 'selection', 'date', 'datetime'];
+    ['many2one', 'many2many', 'char', 'boolean', 'selection', 'date', 'datetime'];
 
 var GraphView = AbstractView.extend({
     display_name: _lt('Graph'),

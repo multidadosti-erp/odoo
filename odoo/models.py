@@ -2254,9 +2254,22 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         :raise AccessError: * if user has no read rights on the requested object
                             * if user tries to bypass access rules for read on the requested object
         """
-        result = self._read_group_raw(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        groupby_list = [groupby] if isinstance(groupby, pycompat.string_types) else list(OrderedSet(groupby))
+        groupby_list_to_use = groupby_list[:1] if lazy else groupby_list
+        has_many2many_gb = any(
+            self._fields[gb.split(':')[0]].type == 'many2many'
+            for gb in groupby_list_to_use
+            if gb.split(':')[0] in self._fields
+        )
 
-        groupby = [groupby] if isinstance(groupby, pycompat.string_types) else list(OrderedSet(groupby))
+        if has_many2many_gb:
+            result = self._read_group_raw_many2many(
+                domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy
+            )
+        else:
+            result = self._read_group_raw(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+
+        groupby = groupby_list
         dt = [
             f for f in groupby
             if self._fields[f.split(':')[0]].type in ('date', 'datetime')    # e.g. 'date:month'
@@ -2287,6 +2300,343 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                                 totals[field] += getattr(record, field, 0.0)
                         for field, total in totals.items():
                             line[field] = total
+
+        return result
+
+    @api.model
+    def _read_group_raw_many2many(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        self.check_access_rights('read')
+
+        groupby = [groupby] if isinstance(groupby, pycompat.string_types) else list(OrderedSet(groupby))
+        groupby_list = groupby[:1] if lazy else groupby
+
+        query = self._where_calc(domain)
+        annotated_groupbys = []
+        groupby_field_names = []
+
+        for gb in groupby_list:
+            gb_field = gb.split(':')[0]
+            if gb_field not in self._fields:
+                raise UserError(_("Unknown field %r in 'groupby'") % gb_field)
+            field = self._fields[gb_field]
+            if field.type == 'many2many':
+                if ':' in gb:
+                    raise UserError(_("Grouping by many2many does not support temporal groupby functions."))
+                annotated_groupbys.append({
+                    'field': gb_field,
+                    'groupby': gb,
+                    'type': 'many2many',
+                    'display_format': None,
+                    'interval': None,
+                    'tz_convert': False,
+                })
+            else:
+                if not (field.base_field.store and field.base_field.column_type):
+                    raise UserError(_("Fields in 'groupby' must be database-persisted fields (no computed fields)"))
+                annotated_groupbys.append(self._read_group_process_groupby(gb, query))
+            groupby_field_names.append(gb_field)
+
+        if not annotated_groupbys:
+            return self._read_group_raw(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+
+        count_field = groupby_field_names[0] if groupby_field_names else '_'
+
+        fields = fields or [f.name for f in self._fields.values() if f.store]
+
+        aggregated_fields = []
+        aggregate_specs = []
+
+        for fspec in fields:
+            if fspec == 'sequence':
+                continue
+
+            match = regex_field_agg.match(fspec)
+            if not match:
+                raise UserError(_("Invalid field specification %r.") % fspec)
+
+            name, func, fname = match.groups()
+            if func:
+                fname = fname or name
+                field = self._fields[fname]
+                if not (field.base_field.store and field.base_field.column_type):
+                    raise UserError(_("Cannot aggregate field %r.") % fname)
+                if func not in VALID_AGGREGATE_FUNCTIONS:
+                    raise UserError(_("Invalid aggregation function %r.") % func)
+            else:
+                field = self._fields.get(name)
+                if not (field and field.base_field.store and field.base_field.column_type and field.group_operator):
+                    continue
+                func, fname = field.group_operator, name
+
+            if fname in groupby_field_names:
+                continue
+            if name in aggregated_fields:
+                raise UserError(_("Output name %r is used twice.") % name)
+
+            aggregated_fields.append(name)
+            aggregate_specs.append({
+                'name': name,
+                'func': func,
+                'fname': fname,
+                'field': field,
+            })
+
+        records = self.search(domain)
+        groups = {}
+
+        def normalize_value(rec, field_name):
+            value = rec[field_name]
+            field_def = self._fields[field_name]
+            if field_def.type == 'many2one':
+                return value.id if value else False
+            if field_def.type in ('many2many', 'one2many'):
+                return value.ids
+            return value
+
+        def _parse_date_value(value, field_type):
+            if isinstance(value, pycompat.string_types):
+                dt_format = DEFAULT_SERVER_DATETIME_FORMAT if field_type == 'datetime' else DEFAULT_SERVER_DATE_FORMAT
+                value = datetime.datetime.strptime(value, dt_format)
+            if field_type == 'date' and isinstance(value, datetime.datetime):
+                value = value.date()
+            return value
+
+        def _truncate_date(value, gb_function):
+            if gb_function == 'day':
+                return value
+            if gb_function == 'week':
+                return value - datetime.timedelta(days=value.weekday())
+            if gb_function == 'month':
+                return value.replace(day=1)
+            if gb_function == 'quarter':
+                month = ((value.month - 1) // 3) * 3 + 1
+                return value.replace(month=month, day=1)
+            if gb_function == 'year':
+                return value.replace(month=1, day=1)
+            return value
+
+        def _truncate_datetime(value, gb_function):
+            if gb_function == 'hour':
+                return value.replace(minute=0, second=0, microsecond=0)
+            if gb_function == 'day':
+                return value.replace(hour=0, minute=0, second=0, microsecond=0)
+            if gb_function == 'week':
+                base = value - datetime.timedelta(days=value.weekday())
+                return base.replace(hour=0, minute=0, second=0, microsecond=0)
+            if gb_function == 'month':
+                return value.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            if gb_function == 'quarter':
+                month = ((value.month - 1) // 3) * 3 + 1
+                return value.replace(month=month, day=1, hour=0, minute=0, second=0, microsecond=0)
+            if gb_function == 'year':
+                return value.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+            return value
+
+        def _get_groupby_value(record, gb_meta):
+            field_name = gb_meta['field']
+            field_type = gb_meta['type']
+            gb_function = gb_meta['groupby'].split(':')[1] if ':' in gb_meta['groupby'] else 'month'
+
+            if field_type == 'many2many':
+                m2m_values = record[field_name]
+                m2m_ids = sorted(m2m_values.ids)
+                if m2m_ids:
+                    m2m_names = [name for _, name in m2m_values.name_get()]
+                    label = ', '.join(sorted(m2m_names))
+                else:
+                    label = False
+                return {
+                    'key': tuple(m2m_ids),
+                    'value': label,
+                }
+
+            value = record[field_name]
+
+            if field_type == 'many2one':
+                return {
+                    'key': value.id if value else False,
+                    'value': (value.id, value.display_name) if value else False,
+                }
+
+            if field_type in ('date', 'datetime'):
+                if not value:
+                    return {'key': False, 'value': False}
+
+                value = _parse_date_value(value, field_type)
+                locale = self._context.get('lang') or 'en_US'
+                tzinfo = None
+
+                if field_type == 'datetime':
+                    if gb_meta['tz_convert']:
+                        tzinfo = pytz.timezone(self._context.get('tz'))
+                        if value.tzinfo is None:
+                            value = pytz.utc.localize(value).astimezone(tzinfo)
+                        else:
+                            value = value.astimezone(tzinfo)
+                    base = _truncate_datetime(value, gb_function)
+                    range_start = base
+                    range_end = base + gb_meta['interval']
+                    if gb_meta['tz_convert']:
+                        range_start_utc = range_start.astimezone(pytz.utc)
+                        range_end_utc = range_end.astimezone(pytz.utc)
+                        range_start_str = range_start_utc.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                        range_end_str = range_end_utc.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                    else:
+                        range_start_str = range_start.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                        range_end_str = range_end.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                    label = babel.dates.format_datetime(
+                        value, format=gb_meta['display_format'], tzinfo=tzinfo, locale=locale
+                    )
+                else:
+                    base = _truncate_date(value, gb_function)
+                    range_start = base
+                    range_end = base + gb_meta['interval']
+                    range_start_str = range_start.strftime(DEFAULT_SERVER_DATE_FORMAT)
+                    range_end_str = range_end.strftime(DEFAULT_SERVER_DATE_FORMAT)
+                    label = babel.dates.format_date(value, format=gb_meta['display_format'], locale=locale)
+
+                return {
+                    'key': range_start_str,
+                    'value': ('%s/%s' % (range_start_str, range_end_str), label),
+                }
+
+            return {
+                'key': value,
+                'value': value,
+            }
+
+        for record in records:
+            group_values = []
+            group_payload = {}
+
+            for gb_meta in annotated_groupbys:
+                value_data = _get_groupby_value(record, gb_meta)
+                group_values.append(value_data['key'])
+                group_payload[gb_meta['groupby']] = value_data['value']
+
+            key = tuple(group_values)
+            if key not in groups:
+                groups[key] = {
+                    count_field + '_count': 0,
+                    '__count': 0,
+                    '__ids': [],
+                    '__agg_state': {},
+                }
+                groups[key].update(group_payload)
+                for spec in aggregate_specs:
+                    func = spec['func']
+                    state = {}
+                    if func in ('sum', 'avg'):
+                        state = {'sum': 0.0, 'count': 0}
+                    elif func in ('min', 'max'):
+                        state = {'value': None}
+                    elif func in ('count',):
+                        state = {'count': 0}
+                    elif func in ('count_distinct',):
+                        state = {'values': set()}
+                    elif func in ('bool_and', 'bool_or'):
+                        state = {'value': None}
+                    elif func in ('array_agg',):
+                        state = {'values': []}
+                    groups[key]['__agg_state'][spec['name']] = state
+
+            group = groups[key]
+            group['__ids'].append(record.id)
+            group[count_field + '_count'] += 1
+            group['__count'] += 1
+
+            for spec in aggregate_specs:
+                func = spec['func']
+                field_name = spec['fname']
+                value = normalize_value(record, field_name)
+                state = group['__agg_state'][spec['name']]
+
+                if isinstance(value, list) and func in ('sum', 'avg', 'min', 'max', 'bool_and', 'bool_or'):
+                    continue
+
+                if func == 'count':
+                    if value not in (False, None, []):
+                        state['count'] += 1
+                elif func == 'count_distinct':
+                    if value not in (False, None, []):
+                        if isinstance(value, list):
+                            state['values'].update(value)
+                        else:
+                            state['values'].add(value)
+                elif func == 'sum':
+                    if value not in (False, None):
+                        state['sum'] += value
+                        state['count'] += 1
+                elif func == 'avg':
+                    if value not in (False, None):
+                        state['sum'] += value
+                        state['count'] += 1
+                elif func == 'min':
+                    if value not in (False, None):
+                        state['value'] = value if state['value'] is None else min(state['value'], value)
+                elif func == 'max':
+                    if value not in (False, None):
+                        state['value'] = value if state['value'] is None else max(state['value'], value)
+                elif func == 'bool_and':
+                    if value not in (False, None):
+                        state['value'] = bool(value) if state['value'] is None else state['value'] and bool(value)
+                elif func == 'bool_or':
+                    if value not in (False, None):
+                        state['value'] = bool(value) if state['value'] is None else state['value'] or bool(value)
+                elif func == 'array_agg':
+                    if value not in (False, None):
+                        if isinstance(value, list):
+                            state['values'].extend(value)
+                        else:
+                            state['values'].append(value)
+
+        result = []
+        for group in groups.values():
+            for spec in aggregate_specs:
+                func = spec['func']
+                name = spec['name']
+                state = group['__agg_state'][name]
+                if func == 'count':
+                    group[name] = state['count']
+                elif func == 'count_distinct':
+                    group[name] = len(state['values'])
+                elif func == 'sum':
+                    group[name] = state['sum']
+                elif func == 'avg':
+                    group[name] = state['sum'] / state['count'] if state['count'] else 0
+                elif func in ('min', 'max', 'bool_and', 'bool_or'):
+                    group[name] = state['value'] if state['value'] is not None else False
+                elif func == 'array_agg':
+                    group[name] = state['values']
+
+            group['__domain'] = expression.AND([domain, [('id', 'in', group['__ids'])]])
+            if lazy and len(groupby) > 1:
+                group['__context'] = {'group_by': groupby[1:]}
+            group.pop('__agg_state', None)
+            group.pop('__ids', None)
+            result.append(group)
+
+        orderby_value = orderby or ''
+        if isinstance(orderby_value, pycompat.string_types) and orderby_value:
+            order_token = orderby_value.split(',')[0].strip().split()[0]
+            reverse = 'desc' in orderby_value.lower()
+            if result and order_token in result[0]:
+                result.sort(key=lambda item: item.get(order_token) or '', reverse=reverse)
+        else:
+            sort_key = annotated_groupbys[0]['groupby'] if annotated_groupbys else None
+            if sort_key:
+                def _sort_value(item):
+                    value = item.get(sort_key)
+                    if isinstance(value, tuple) and len(value) == 2:
+                        value = value[1]
+                    return value or ''
+
+                result.sort(key=lambda item: (item.get(sort_key) is False, _sort_value(item)))
+
+        if offset:
+            result = result[offset:]
+        if limit:
+            result = result[:limit]
 
         return result
 
