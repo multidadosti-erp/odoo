@@ -97,7 +97,7 @@ div.o_boolean_toggle.custom-control.custom-checkbox,
         &::before {
             width: $slider-width;
             height: 100%;
-            background-color: #6c757d !important;
+            background-color: lighten(#6c757d, 5%) !important;
             border-radius: 100px;
             outline: none !important;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -117,7 +117,7 @@ div.o_boolean_toggle.custom-control.custom-checkbox,
         
         // Hover state
         &:hover::before {
-            background-color: #5a6268 !important;
+            background-color: lighten(#5a6268, 5%) !important;
         }
         
         &:hover::after {
@@ -130,9 +130,9 @@ div.o_boolean_toggle.custom-control.custom-checkbox,
     > input.custom-control-input:checked + label.custom-control-label,
     > input:checked + label.custom-control-label {
         &::before {
-            background: linear-gradient(135deg, lighten($o-brand-primary, 5%), $o-brand-primary) !important;
+            background: linear-gradient(135deg, lighten($o-brand-primary, 14%), lighten($o-brand-primary, 2%)) !important;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
-                        0 0 8px rgba($o-brand-primary, 0.4);
+                        0 0 10px rgba($o-brand-primary, 0.5);
         }
         
         &::after {
@@ -144,9 +144,9 @@ div.o_boolean_toggle.custom-control.custom-checkbox,
         }
         
         &:hover::before {
-            background: linear-gradient(135deg, $o-brand-primary, darken($o-brand-primary, 5%)) !important;
+            background: linear-gradient(135deg, lighten($o-brand-primary, 18%), $o-brand-primary) !important;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15),
-                        0 0 12px rgba($o-brand-primary, 0.5);
+                        0 0 14px rgba($o-brand-primary, 0.6);
         }
     }
     
@@ -174,20 +174,20 @@ div.o_boolean_toggle.custom-control.custom-checkbox,
         
         // Mantém as mesmas cores do estado normal (não editável)
         &::before {
-            background-color: #6c757d !important;
+            background-color: lighten(#6c757d, 18%) !important;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
         }
         
         &::after {
             cursor: default;
-            background-color: #f8f9fa;
+            background-color: #dee2e6;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
                         0 1px 2px rgba(0, 0, 0, 0.2);
         }
         
         // Sem hover no disabled
         &:hover::before {
-            background-color: #6c757d !important;
+            background-color: lighten(#6c757d, 18%) !important;
         }
         
         &:hover::after {
@@ -200,9 +200,14 @@ div.o_boolean_toggle.custom-control.custom-checkbox,
     > input.custom-control-input:disabled:checked + label.custom-control-label,
     > input:disabled:checked + label.custom-control-label {
         &::before {
-            background: linear-gradient(135deg, lighten($o-brand-primary, 5%), $o-brand-primary) !important;
+            background: linear-gradient(
+                135deg,
+                mix(white, $o-brand-primary, 58%),
+                mix(white, $o-brand-primary, 32%)
+            ) !important;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
-                        0 0 8px rgba($o-brand-primary, 0.4);
+                        0 0 0 1px rgba($o-brand-primary, 0.32),
+                        0 0 8px rgba($o-brand-primary, 0.25);
         }
         
         &::after {
@@ -213,9 +218,14 @@ div.o_boolean_toggle.custom-control.custom-checkbox,
         
         // Sem hover especial no disabled checked
         &:hover::before {
-            background: linear-gradient(135deg, lighten($o-brand-primary, 5%), $o-brand-primary) !important;
+            background: linear-gradient(
+                135deg,
+                mix(white, $o-brand-primary, 58%),
+                mix(white, $o-brand-primary, 32%)
+            ) !important;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
-                        0 0 8px rgba($o-brand-primary, 0.4);
+                        0 0 0 1px rgba($o-brand-primary, 0.32),
+                        0 0 8px rgba($o-brand-primary, 0.25);
         }
         
         &:hover::after {
