@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <h2>Contacts</h2>
+                    <h2 name="block_contacts">Contacts</h2>
                     <div class="row mt16 o_settings_container" id="contacts_div">
                         <div class="col-lg-6 o_setting_box">
                             <div class="o_setting_left_pane">
