@@ -15,6 +15,7 @@ var Pager = Widget.extend({
         'click .o_pager_next': '_onNext',
         'click .o_pager_previous': '_onPrevious',
         'click .o_pager_value': '_onEdit',
+        'click .o_pager_all': '_onShowAll',
     },
     /**
      * The pager goes from 1 to size (included).
@@ -60,6 +61,7 @@ var Pager = Widget.extend({
     start: function () {
         this.$value = this.$('.o_pager_value');
         this.$limit = this.$('.o_pager_limit');
+        this.$showAll = this.$('.o_pager_all');
         this._render();
         return this._super();
     },
@@ -185,6 +187,9 @@ var Pager = Widget.extend({
         } else {
             this.do_show();
             this._updateArrows();
+            if (this.$showAll) {
+                this.$showAll.toggleClass('d-none', this._singlePage());
+            }
 
             var value = "" + current_min;
             if (this.state.limit > 1) {
@@ -269,6 +274,21 @@ var Pager = Widget.extend({
     _onPrevious: function (event) {
         event.stopPropagation();
         this.previous();
+    },
+    /**
+     * @private
+     * @param {MouseEvent} event
+     */
+    _onShowAll: function (event) {
+        event.stopPropagation();
+        if (this.disabled || !this.state.size) {
+            return;
+        }
+
+        this.state.current_min = 1;
+        this.state.limit = this.state.size;
+        this._render();
+        this.trigger('pager_changed', _.clone(this.state));
     },
 });
 

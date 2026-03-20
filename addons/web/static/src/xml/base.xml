@@ -1516,11 +1516,12 @@
     <span class="btn-group" aria-atomic="true">
         <!-- accesskeys not wanted in X2Many widgets -->
         <t t-if="widget.options.withAccessKey">
-            <t t-set="att_prev" t-value="{'accesskey': 'p'}" />
-            <t t-set="att_next" t-value="{'accesskey': 'n'}" />
+            <t t-set="att_prev" t-value="{'accesskey': 'p'}"/>
+            <t t-set="att_next" t-value="{'accesskey': 'n'}"/>
         </t>
         <button type="button" class="fa fa-chevron-left btn btn-secondary o_pager_previous" t-att="att_prev" aria-label="Previous" title="Previous" tabindex="-1"/>
         <button type="button" class="fa fa-chevron-right btn btn-secondary o_pager_next" t-att="att_next" aria-label="Next" title="Next" tabindex="-1"/>
+        <button type="button" class="fa fa-align-justify btn btn-secondary o_pager_all" aria-label="Show all" title="Show all" tabindex="-1"/>
     </span>
 </div>
 
