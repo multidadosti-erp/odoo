@@ -9,122 +9,6 @@ var contentdisposition = require('web.contentdisposition');
 
 var _t = core._t;
 
-function getRpcTraceState() {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-    if (!window.__odooRpcTraceState) {
-        window.__odooRpcTraceState = {
-            pending: {},
-            history: [],
-            maxHistory: 100,
-        };
-    }
-    return window.__odooRpcTraceState;
-}
-
-function sendRpcTraceEvent(payload) {
-    if (typeof window === 'undefined' || !window.navigator) {
-        return;
-    }
-    try {
-        var body = JSON.stringify(payload || {});
-        if (navigator.sendBeacon) {
-            // Keep text/plain so Odoo handles this as an HTTP request (not JsonRequest).
-            var blob = new Blob([body], {type: 'text/plain;charset=UTF-8'});
-            navigator.sendBeacon('/web/rpc_trace_event', blob);
-            return;
-        }
-        // Fallback for older browsers.
-        if (window.fetch) {
-            window.fetch('/web/rpc_trace_event', {
-                method: 'POST',
-                headers: {'Content-Type': 'text/plain;charset=UTF-8'},
-                credentials: 'same-origin',
-                body: body,
-            });
-        }
-    } catch (e) {
-        // Never break normal RPC flow due to diagnostics.
-    }
-}
-
-if (typeof window !== 'undefined') {
-    window.__odooSendRpcTraceEvent = sendRpcTraceEvent;
-}
-
-function normalizeRpcMeta(url, fct_name, params, data, shadow) {
-    var kwargs = params && params.kwargs || {};
-    var context = kwargs.context || params && params.context || {};
-    var rpcUrl = url || '';
-    var isLongPolling = rpcUrl.indexOf('/longpolling/poll') !== -1;
-    return {
-        id: data.id,
-        url: rpcUrl,
-        fct_name: fct_name,
-        model: params && params.model || null,
-        method: params && params.method || null,
-        route: params && params.route || null,
-        uid: context.uid || null,
-        shadow: !!shadow,
-        isLongPolling: isLongPolling,
-        startedAt: Date.now(),
-    };
-}
-
-function registerRpc(url, fct_name, params, data, shadow) {
-    var state = getRpcTraceState();
-    if (!state) {
-        return null;
-    }
-    var meta = normalizeRpcMeta(url, fct_name, params, data, shadow);
-    state.pending[data.id] = meta;
-    return meta;
-}
-
-function finalizeRpc(meta, ok) {
-    if (!meta) {
-        return;
-    }
-    var state = getRpcTraceState();
-    if (!state) {
-        return;
-    }
-    delete state.pending[meta.id];
-
-    meta.endedAt = Date.now();
-    meta.durationMs = meta.endedAt - meta.startedAt;
-    meta.ok = !!ok;
-    state.history.push(meta);
-
-    if (state.history.length > state.maxHistory) {
-        state.history.shift();
-    }
-
-    // Useful for diagnosing random "Loading" overlays caused by slow RPCs.
-    if (!meta.shadow && !meta.isLongPolling && meta.durationMs >= 3000) {
-        console.warn('[RPC-SLOW]', {
-            durationMs: meta.durationMs,
-            url: meta.url,
-            model: meta.model,
-            method: meta.method,
-            route: meta.route,
-            id: meta.id,
-            ok: meta.ok,
-        });
-        sendRpcTraceEvent({
-            category: 'rpc_slow',
-            id: meta.id,
-            durationMs: meta.durationMs,
-            url: meta.url,
-            model: meta.model,
-            method: meta.method,
-            route: meta.route,
-            ok: meta.ok,
-        });
-    }
-}
-
 function genericJsonRpc (fct_name, params, settings, fct) {
     var shadow = settings.shadow || false;
     delete settings.shadow;
@@ -140,7 +24,6 @@ function genericJsonRpc (fct_name, params, settings, fct) {
         params: params,
         id: Math.floor(Math.random() * 1000 * 1000 * 1000)
     };
-    var traceMeta = registerRpc(settings._rpc_url || null, fct_name, params, data, shadow);
     var xhr = fct(data);
     var result = xhr.pipe(function(result) {
         core.bus.trigger('rpc:result', data, result);
@@ -176,13 +59,11 @@ function genericJsonRpc (fct_name, params, settings, fct) {
     };
 
     result.then(function (result) {
-        finalizeRpc(traceMeta, true);
         if (!shadow) {
             core.bus.trigger('rpc_response');
         }
         deferred.resolve(result);
     }, function (type, error, textStatus, errorThrown) {
-        finalizeRpc(traceMeta, false);
         if (type === "server") {
             if (!shadow) {
                 core.bus.trigger('rpc_response');
@@ -219,7 +100,6 @@ function genericJsonRpc (fct_name, params, settings, fct) {
 
 function jsonRpc(url, fct_name, params, settings) {
     settings = settings || {};
-    settings._rpc_url = url;
     return genericJsonRpc(fct_name, params, settings, function(data) {
         return $.ajax(url, _.extend({}, settings, {
             url: url,
@@ -233,7 +113,6 @@ function jsonRpc(url, fct_name, params, settings) {
 
 function jsonpRpc(url, fct_name, params, settings) {
     settings = settings || {};
-    settings._rpc_url = url;
     return genericJsonRpc(fct_name, params, settings, function(data) {
         var payload_str = JSON.stringify(data, time.date_to_utc);
         var payload_url = $.param({r:payload_str});
@@ -308,8 +187,6 @@ function jsonpRpc(url, fct_name, params, settings) {
 
 // helper function to make a rpc with a function name hardcoded to 'call'
 function rpc(url, params, settings) {
-    settings = settings || {};
-    settings._rpc_url = url;
     return jsonRpc(url, 'call', params, settings);
 }
 

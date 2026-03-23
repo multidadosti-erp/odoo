@@ -20,7 +20,6 @@ import sys
 import tempfile
 import time
 import zlib
-import threading
 
 import werkzeug
 import werkzeug.exceptions
@@ -50,10 +49,6 @@ from odoo.models import check_method_name
 from odoo.service import db, security
 
 _logger = logging.getLogger(__name__)
-
-RPC_TRACE_THROTTLE_SECONDS = 10
-_rpc_trace_lock = threading.Lock()
-_rpc_trace_last_seen = {}
 
 if hasattr(sys, 'frozen'):
     # When running on compiled windows binary, we don't have access to package loader.
@@ -1720,47 +1715,3 @@ class ReportController(http.Controller):
     @http.route(['/report/check_wkhtmltopdf'], type='json', auth="user")
     def check_wkhtmltopdf(self):
         return request.env['ir.actions.report'].get_wkhtmltopdf_state()
-
-
-class RpcTraceController(http.Controller):
-
-    @http.route('/web/rpc_trace_event', type='http', auth='user', methods=['POST'], csrf=False)
-    def rpc_trace_event(self, **kw):
-        payload = {}
-        try:
-            raw = request.httprequest.get_data(cache=False, as_text=True)
-            if raw:
-                payload = json.loads(raw)
-        except Exception:
-            _logger.exception("Failed to decode rpc trace payload")
-            return Response('BAD_REQUEST', status=400)
-
-        category = payload.get('category', 'unknown')
-        model = payload.get('model') or '-'
-        method = payload.get('method') or '-'
-        route = payload.get('route') or '-'
-        duration_ms = payload.get('durationMs')
-        age_ms = payload.get('ageMs')
-        url = payload.get('url') or '-'
-        event_id = payload.get('id') or '-'
-
-        uid = request.session.uid or 0
-        dbname = request.session.db or '-'
-        now = time.time()
-        key = (dbname, uid, category, model, method, route, url)
-
-        should_log = True
-        with _rpc_trace_lock:
-            last_seen = _rpc_trace_last_seen.get(key)
-            if last_seen and (now - last_seen) < RPC_TRACE_THROTTLE_SECONDS:
-                should_log = False
-            else:
-                _rpc_trace_last_seen[key] = now
-
-        if should_log:
-            _logger.warning(
-                "[RPC-TRACE] db=%s uid=%s category=%s id=%s durationMs=%s ageMs=%s model=%s method=%s route=%s url=%s",
-                dbname, uid, category, event_id, duration_ms, age_ms, model, method, route, url,
-            )
-
-        return Response('OK', status=200)

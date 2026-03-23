@@ -18,58 +18,6 @@ var session = require('web.session');
 var Widget = require('web.Widget');
 
 var _t = core._t;
-var MIN_LOADING_BLOCKED_AGE_MS = 3200;
-
-function getPendingRpcDiagnostics() {
-    if (typeof window === 'undefined' || !window.__odooRpcTraceState) {
-        return [];
-    }
-    var pending = window.__odooRpcTraceState.pending || {};
-    var now = Date.now();
-    return _.chain(pending)
-        .values()
-        .filter(function (rpc) {
-            if (!rpc || rpc.shadow) {
-                return false;
-            }
-            if (rpc.url && rpc.url.indexOf('/longpolling/poll') !== -1) {
-                return false;
-            }
-            return (now - rpc.startedAt) >= MIN_LOADING_BLOCKED_AGE_MS;
-        })
-        .map(function (rpc) {
-            return {
-                id: rpc.id,
-                ageMs: now - rpc.startedAt,
-                url: rpc.url,
-                model: rpc.model,
-                method: rpc.method,
-                route: rpc.route,
-                shadow: rpc.shadow,
-            };
-        })
-        .sortBy(function (rpc) {
-            return -rpc.ageMs;
-        })
-        .value();
-}
-
-function sendLoadingBlockedDiagnostics(pendingRpc) {
-    if (typeof window === 'undefined' || typeof window.__odooSendRpcTraceEvent !== 'function') {
-        return;
-    }
-    _.each((pendingRpc || []).slice(0, 10), function (rpc) {
-        window.__odooSendRpcTraceEvent({
-            category: 'loading_blocked',
-            id: rpc.id,
-            ageMs: rpc.ageMs,
-            url: rpc.url,
-            model: rpc.model,
-            method: rpc.method,
-            route: rpc.route,
-        });
-    });
-}
 
 var Loading = Widget.extend({
     template: "Loading",
@@ -98,11 +46,6 @@ var Loading = Widget.extend({
             // Block UI after 3s
             this.long_running_timer = setTimeout(function () {
                 self.blocked_ui = true;
-                var pendingRpc = getPendingRpcDiagnostics();
-                if (pendingRpc.length) {
-                    console.warn('[LOADING-BLOCKED] UI blocked by long running RPC(s)', pendingRpc);
-                    sendLoadingBlockedDiagnostics(pendingRpc);
-                }
                 framework.blockUI();
             }, 3000);
         }
