@@ -70,6 +70,8 @@ class StockQuant(models.Model):
 
     @api.constrains('product_id')
     def check_product_id(self):
+        if self.env.context.get('skip_quant_product_type_check'):
+            return
         if any(elem.product_id.type != 'product' for elem in self):
             raise ValidationError(_('Quants cannot be created for consumables or services.'))
 
