@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import re
+import unicodedata
+
 from odoo import api, fields, tools, models, _
 from odoo.exceptions import UserError, ValidationError
 
@@ -34,7 +37,69 @@ class UoM(models.Model):
     _description = 'Product Unit of Measure'
     _order = "name"
 
+    _FISCAL_NAME_MAP = {
+        'UN': 'UN',
+        'UNIT': 'UN',
+        'UNITS': 'UN',
+        'UNIDADE': 'UN',
+        'UNIDADES': 'UN',
+        'KG': 'KG',
+        'KILOGRAM': 'KG',
+        'KILOGRAMS': 'KG',
+        'QUILOGRAMA': 'KG',
+        'QUILOGRAMAS': 'KG',
+        'G': 'G',
+        'GRAM': 'G',
+        'GRAMS': 'G',
+        'GRAMA': 'G',
+        'GRAMAS': 'G',
+        'LT': 'LT',
+        'LITER': 'LT',
+        'LITERS': 'LT',
+        'LITRO': 'LT',
+        'LITROS': 'LT',
+        'M': 'M',
+        'METRO': 'M',
+        'M2': 'M2',
+        'METROQUADRADO': 'M2',
+        'METROSQUADRADOS': 'M2',
+        'M3': 'M3',
+        'METROCUBICO': 'M3',
+        'METROSCUBICOS': 'M3',
+        'TON': 'TON',
+        'TONELADA': 'TON',
+        'TONELADAS': 'TON',
+        'T': 'TON',
+        'DZ': 'DZ',
+        'DUZIA': 'DZ',
+        'DUZIAS': 'DZ',
+        'DOZEN': 'DZ',
+        'DOZENS': 'DZ',
+        'PR': 'PR',
+        'PAR': 'PR',
+        'PARES': 'PR',
+        'PAIR': 'PR',
+        'PAIRS': 'PR',
+        '1000UN': '1000UN',
+        'MILHEIRO': '1000UN',
+        'MWHORA': 'MWHORA',
+        'MWH': 'MWHORA',
+        'MEGAWATTHORA': 'MWHORA',
+        'MEGAWATTHOUR': 'MWHORA',
+        'QUILAT': 'QUILAT',
+        'QUILATE': 'QUILAT',
+        'KARAT': 'QUILAT',
+        'JOGO': 'JOGO',
+        'JOGOS': 'JOGO',
+        'SET': 'JOGO',
+        'SETS': 'JOGO',
+    }
+
     name = fields.Char('Unit of Measure', required=True, translate=True)
+    fiscal_name = fields.Char(
+        'Fiscal Name',
+        help='Official fiscal/statistical UoM code used for Foreign Trade in NF-e uTrib (e.g., UN, KG, LT).',
+    )
     category_id = fields.Many2one(
         'uom.category', 'Category', required=True, ondelete='cascade',
         help="Conversion between Units of Measure can only occur if they belong to the same category. The conversion will be made based on the ratios.")
@@ -68,6 +133,28 @@ class UoM(models.Model):
     def _compute_factor_inv(self):
         self.factor_inv = self.factor and (1.0 / self.factor) or 0.0
 
+    @api.model
+    def _normalize_uom_label(self, label):
+        normalized = unicodedata.normalize('NFKD', (label or '').strip().upper())
+        normalized = ''.join(char for char in normalized if not unicodedata.combining(char))
+        return re.sub(r'[^A-Z0-9]+', '', normalized)
+
+    @api.model
+    def _guess_fiscal_name(self, label):
+        key = self._normalize_uom_label(label)
+        return self._FISCAL_NAME_MAP.get(key, False)
+
+    @api.model
+    def _populate_missing_fiscal_names(self):
+        for uom in self.search([('fiscal_name', '=', False)]):
+            uom.fiscal_name = self._guess_fiscal_name(uom.name) or uom.name
+
+    @api.model
+    def _register_hook(self):
+        result = super(UoM, self)._register_hook()
+        self._populate_missing_fiscal_names()
+        return result
+
     @api.onchange('uom_type')
     def _onchange_uom_type(self):
         if self.uom_type == 'reference':
@@ -99,6 +186,8 @@ class UoM(models.Model):
             if 'factor_inv' in values:
                 factor_inv = values.pop('factor_inv')
                 values['factor'] = factor_inv and (1.0 / factor_inv) or 0.0
+            if values.get('name') and (not values.get('fiscal_name')):
+                values['fiscal_name'] = self._guess_fiscal_name(values.get('name')) or values.get('name')
         return super(UoM, self).create(vals_list)
 
     @api.multi
@@ -106,7 +195,13 @@ class UoM(models.Model):
         if 'factor_inv' in values:
             factor_inv = values.pop('factor_inv')
             values['factor'] = factor_inv and (1.0 / factor_inv) or 0.0
-        return super(UoM, self).write(values)
+        if values.get('name') and ('fiscal_name' not in values or not values.get('fiscal_name')):
+            values['fiscal_name'] = self._guess_fiscal_name(values.get('name')) or values.get('name')
+        result = super(UoM, self).write(values)
+        if 'name' in values and 'fiscal_name' not in values:
+            for uom in self.filtered(lambda record: not record.fiscal_name):
+                uom.fiscal_name = uom._guess_fiscal_name(uom.name) or uom.name
+        return result
 
     @api.multi
     def unlink(self):
