@@ -179,6 +179,11 @@ msgid "Ratio"
 msgstr "Proporção"
 
 #. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__fiscal_name
+msgid "Fiscal Name"
+msgstr "Nome Fiscal"
+
+#. module: uom
 #: selection:uom.uom,uom_type:0
 msgid "Reference Unit of Measure for this category"
 msgstr "Unidade de Medida Referência para esta categoria"
@@ -201,6 +206,11 @@ msgid ""
 msgstr ""
 "A quantidade calculada será um múltiplo desse valor. Utilizar 1,0 para uma "
 "unidade de medida que não pode ser dividida ainda mais, como uma peça."
+
+#. module: uom
+#: model:ir.model.fields,help:uom.field_uom_uom__fiscal_name
+msgid "Official fiscal/statistical UoM code used for Foreign Trade in NF-e uTrib (e.g., UN, KG, LT)."
+msgstr "Código fiscal/estatístico oficial da UoM usado no Comércio Exterior na uTrib da NF-e (ex.: UN, KG, LT)."
 
 #. module: uom
 #: sql_constraint:uom.uom:0
