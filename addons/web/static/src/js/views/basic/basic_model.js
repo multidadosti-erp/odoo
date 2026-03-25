@@ -4209,7 +4209,7 @@ var BasicModel = AbstractModel.extend({
                         modelName: list.model,
                         count: group[rawGroupBy + '_count'],
                         domain: group.__domain,
-                        context: list.context,
+                        context: _.extend({}, list.context, group.__context),
                         fields: list.fields,
                         fieldsInfo: list.fieldsInfo,
                         value: value,
@@ -4419,6 +4419,17 @@ var BasicModel = AbstractModel.extend({
             element.offset = _.indexOf(element.res_ids, element.res_id);
         }
         var loadOptions = _.pick(options, 'fieldNames', 'viewType');
+
+        /* Adicionado pela Multidados:
+            Necessário para efetivar a troca do viewType, e carregar os
+            dados de forma correta. Foi identificado o erro nas visões
+            graph e pivot, onde o viewType não estava sendo passado para
+            o método _load, e consequentemente, os dados não estavam sendo
+            carregados corretamente.
+        */
+        if (!loadOptions.viewType && element.viewType) {
+            loadOptions.viewType = element.viewType;
+        }
         return this._load(element, loadOptions).then(function (result) {
             return result.id;
         });
