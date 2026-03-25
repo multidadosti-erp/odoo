@@ -1798,7 +1798,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         # Alterado pela Multidados:
         # Possibilita executar a busca de registros, retornando o "nome" usando
         # a função name_search, sem restrições de acesso.
-        # 
+        #
         # deve incluir nos "options" de campos relacionais, a tag "sudo_search:True"
         if self._context.get('sudo_search'):
             self = self.sudo()
@@ -2765,11 +2765,11 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
     def _read_group_resolve_many2one_fields(self, data, fields):
         many2onefields = {field['field'] for field in fields if field['type'] == 'many2one'}
         for field in many2onefields:
-            ids_set = {d[field] for d in data if d[field]}
+            ids_set = {d[field] for d in data if d[field] and d[field] > 0}
             m2o_records = self.env[self._fields[field].comodel_name].browse(ids_set)
             data_dict = dict(lazy_name_get(m2o_records.sudo()))
             for d in data:
-                d[field] = (d[field], data_dict[d[field]]) if d[field] else False
+                d[field] = (d[field], data_dict[d[field]]) if d[field] and d[field] > 0 else False
 
     def _inherits_join_add(self, current_model, parent_model_name, query):
         """
