@@ -106,7 +106,13 @@ class Web_Editor(http.Controller):
         image = Image.new("RGBA", (size, size), color=(0, 0, 0, 0))
         draw = ImageDraw.Draw(image)
 
-        boxw, boxh = draw.textsize(icon, font=font_obj)
+        if hasattr(draw, 'textbbox'):
+            text_bbox = draw.textbbox((0, 0), icon, font=font_obj)
+            boxw = max(1, text_bbox[2] - text_bbox[0])
+            boxh = max(1, text_bbox[3] - text_bbox[1])
+        else:
+            boxw, boxh = draw.textsize(icon, font=font_obj)
+            
         draw.text((0, 0), icon, font=font_obj)
         left, top, right, bottom = image.getbbox()
 
