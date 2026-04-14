@@ -548,7 +548,7 @@ class Partner(models.Model):
     def write(self, vals):
         if vals.get('active') is False:
             for partner in self:
-                if partner.active and partner.user_ids:
+                if not self._context.get("inactvate_user") and partner.active and partner.user_ids:
                     raise ValidationError(_('You cannot archive a contact linked to a portal or internal user.'))
         # res.partner must only allow to set the company_id of a partner if it
         # is the same as the company of all users that inherit from this partner

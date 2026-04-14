@@ -433,9 +433,17 @@ class Users(models.Model):
 
     @api.multi
     def toggle_active(self):
-        for user in self:
-            if not user.active and not user.partner_id.active:
-                user.partner_id.toggle_active()
+        # Alterado pela Multidados:
+        # - Deve replicar a inativação/ativação do parceiro
+        # - Usa o contexto "inactivate_user" para não dar erro de
+        #   validação ao atualizar o parceiro
+        context = {
+            **self._context,
+            "inactvate_user": True,
+        }
+        for user in self.with_context(context):
+            # if not user.active and not user.partner_id.active:
+            user.partner_id.toggle_active()
         super(Users, self).toggle_active()
 
     @api.multi
