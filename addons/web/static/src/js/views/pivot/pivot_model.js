@@ -370,6 +370,8 @@ var PivotModel = AbstractModel.extend({
         this.initialRowGroupBys = params.context.pivot_row_groupby || params.rowGroupBys;
         this.fields = params.fields;
         this.modelName = params.modelName;
+        var contextRowGroupBys = params.context.pivot_row_groupby || [];
+        var effectiveGroupedBy = contextRowGroupBys.length ? contextRowGroupBys : params.groupedBy;
         this.data = {
             domain: this.initialDomain,
             timeRange: params.timeRange || [],
@@ -378,13 +380,13 @@ var PivotModel = AbstractModel.extend({
             comparisonTimeRangeDescription: params.comparisonTimeRangeDescription || "",
             compare: params.compare || false,
             context: _.extend({}, session.user_context, params.context),
-            groupedBy: params.groupedBy,
+            groupedBy: effectiveGroupedBy,
             colGroupBys: params.context.pivot_column_groupby || params.colGroupBys,
             measures: this._processMeasures(params.context.pivot_measures) || params.measures,
             sorted_column: {},
         };
         this.variationData = {};
-        this.defaultGroupedBy = params.groupedBy;
+        this.defaultGroupedBy = effectiveGroupedBy;
 
         return this._loadData().then(function () {
             if (params.default_order) {
@@ -428,7 +430,7 @@ var PivotModel = AbstractModel.extend({
         } else {
             this.data.domain = this.initialDomain;
         }
-        if ('groupBy' in params) {
+        if ('groupBy' in params && !('pivot_row_groupby' in (params.context || {}))) {
             this.data.groupedBy = params.groupBy.length ? params.groupBy : this.defaultGroupedBy;
         }
         if (!this.data.has_data) {
