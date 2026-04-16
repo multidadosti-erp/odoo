@@ -106,7 +106,7 @@ var KanbanModel = BasicModel.extend({
         var group = this.localData[groupID];
         var context = this._getContext(group);
         var parent = this.localData[group.parentID];
-        var groupedBy = parent.groupedBy;
+        var groupedBy = parent.groupedBy[0];
         context['default_' + groupedBy] = viewUtils.getGroupValue(group, groupedBy);
         var def;
         if (Object.keys(values).length === 1 && 'display_name' in values) {
@@ -146,6 +146,9 @@ var KanbanModel = BasicModel.extend({
     get: function () {
         var result = this._super.apply(this, arguments);
         var dp = result && this.localData[result.id];
+        if (result && result.type === 'list' && _.isArray(result.data)) {
+            result.data = _.compact(result.data);
+        }
         if (dp) {
             if (dp.tooltipData) {
                 result.tooltipData = $.extend(true, {}, dp.tooltipData);
@@ -180,7 +183,11 @@ var KanbanModel = BasicModel.extend({
      */
     load: function (params) {
         this.defaultGroupedBy = params.groupBy;
-        params.groupedBy = (params.groupedBy && params.groupedBy.length) ? params.groupedBy : this.defaultGroupedBy;
+        if (params.groupedBy && params.groupedBy.length) {
+            params.groupedBy = this._normalizeGroupedByOrder(params.groupedBy);
+        } else {
+            params.groupedBy = this._normalizeGroupedByOrder(this.defaultGroupedBy);
+        }
         return this._super(params);
     },
     /**
@@ -272,6 +279,8 @@ var KanbanModel = BasicModel.extend({
         // fallback on the default groupBy
         if (options && options.groupBy && !options.groupBy.length) {
             options.groupBy = this.defaultGroupedBy;
+        } else if (options && options.groupBy) {
+            options.groupBy = this._normalizeGroupedByOrder(options.groupBy);
         }
         var def = this._super(id, options);
         if (options && options.loadMoreOffset) {
@@ -311,8 +320,7 @@ var KanbanModel = BasicModel.extend({
         return this._super.apply(this, arguments);
     },
     /**
-     * Ensures that there is no nested groups in Kanban (only the first grouping
-     * level is taken into account).
+     * Reads grouped data for kanban columns.
      *
      * @override
      * @private
@@ -320,8 +328,10 @@ var KanbanModel = BasicModel.extend({
      */
     _readGroup: function (list) {
         var self = this;
-        if (list.groupedBy.length > 1) {
-            list.groupedBy = [list.groupedBy[0]];
+        // For nested kanban grouping, keep groups open by default so inner
+        // levels are loaded and can be rendered inside the main column.
+        if (list.groupedBy && list.groupedBy.length > 1) {
+            list.openGroupByDefault = true;
         }
         return this._super.apply(this, arguments).then(function (result) {
             return self._readTooltipFields(list).then(_.constant(result));
@@ -436,6 +446,39 @@ var KanbanModel = BasicModel.extend({
             element = this.localData[element.parentID];
         }
         return def;
+    },
+    /**
+     * Keeps the primary grouped field (default kanban column) at first
+     * position, so extra group_by fields are rendered as nested levels.
+     *
+     * @private
+     * @param {string[]|string} groupedBy
+     * @returns {string[]}
+     */
+    _normalizeGroupedByOrder: function (groupedBy) {
+        if (!groupedBy) {
+            return [];
+        }
+        if (typeof groupedBy === 'string') {
+            groupedBy = [groupedBy];
+        }
+        groupedBy = groupedBy.slice();
+
+        if (!this.defaultGroupedBy || !this.defaultGroupedBy.length) {
+            return groupedBy;
+        }
+
+        var primaryField = this.defaultGroupedBy[0].split(':')[0];
+        var primaryIndex = _.findIndex(groupedBy, function (expr) {
+            return expr.split(':')[0] === primaryField;
+        });
+        if (primaryIndex <= 0) {
+            return groupedBy;
+        }
+
+        var primaryExpr = groupedBy.splice(primaryIndex, 1)[0];
+        groupedBy.unshift(primaryExpr);
+        return groupedBy;
     },
 });
 return KanbanModel;

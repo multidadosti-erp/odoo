@@ -28,6 +28,8 @@ var KanbanColumn = Widget.extend({
         'click .o_kanban_quick_add': '_onAddQuickCreate',
         'click .o_kanban_load_more': '_onLoadMore',
         'click .o_kanban_toggle_fold': '_onToggleFold',
+        'click .o_kanban_subgroup_header': '_onToggleSubGroup',
+        'keydown .o_kanban_subgroup_header': '_onSubGroupHeaderKeyDown',
         'click .o_column_archive_records': '_onArchiveRecords',
         'click .o_column_unarchive_records': '_onUnarchiveRecords'
     },
@@ -61,8 +63,11 @@ var KanbanColumn = Widget.extend({
         this.records_editable = options.records_editable;
         this.records_deletable = options.records_deletable;
         this.relation = options.relation;
+        this.showLevelTotals = !!options.show_level_totals;
         this.offset = 0;
-        this.remaining = data.count - this.data_records.length;
+        this.hasSubGroups = !!(data.groupedBy && data.groupedBy.length);
+        this.subGroupDepth = this.hasSubGroups ? data.groupedBy.length : 0;
+        this.remaining = this.hasSubGroups ? 0 : data.count - this.data_records.length;
 
         if (options.hasProgressBar) {
             this.barOptions = {
@@ -98,18 +103,34 @@ var KanbanColumn = Widget.extend({
         var defs = [this._super.apply(this, arguments)];
         this.$header = this.$('.o_kanban_header');
 
-        for (var i = 0; i < this.data_records.length; i++) {
-            var def = this._addRecord(this.data_records[i]);
-            if (def.state() === 'pending') {
-                defs.push(def);
+        if (this.hasSubGroups) {
+            var $subGroupsContainer = $('<div/>', { class: 'o_kanban_subgroups' });
+            var $loadMore = this.$('.o_kanban_load_more');
+            if ($loadMore.length) {
+                $loadMore.before($subGroupsContainer);
+            } else {
+                $subGroupsContainer.insertAfter(this.$header);
+            }
+            this._addSubGroups(this.data_records, $subGroupsContainer, 1, defs);
+        } else {
+            for (var i = 0; i < this.data_records.length; i++) {
+                var def = this._addRecord(this.data_records[i]);
+                if (def.state() === 'pending') {
+                    defs.push(def);
+                }
             }
         }
         this.$header.find('.o_kanban_header_title').tooltip();
+        this.$el.css('--o-kanban-main-header-offset', (this.$header.outerHeight() || 44) + 'px');
+        this.$el.toggleClass('o_kanban_group_has_subgroups', this.hasSubGroups);
+        if (this.hasSubGroups) {
+            this.$el.addClass('o_kanban_group_subgroup_depth_' + Math.min(this.subGroupDepth, 3));
+        }
 
         // Multidados:
         // Adiicona verificação do campo draggable para indicar se os registros
         // devem poder ser arrastados
-        if (!config.device.isMobile && this.draggable) {
+        if (!config.device.isMobile && this.draggable && !this.hasSubGroups) {
 
             // deactivate sortable in mobile mode.  It does not work anyway,
             // and it breaks horizontal scrolling in kanban views.  Someday, we
@@ -250,13 +271,20 @@ var KanbanColumn = Widget.extend({
      * @private
      * @param {Object} recordState
      * @param {Object} [options]
+     * @param {jQuery} [options.container]
      * @param {string} [options.position]
      *        'before' to add at the top, add at the bottom by default
      * @return {Deferred}
      */
     _addRecord: function (recordState, options) {
+        if (!recordState) {
+            return $.when();
+        }
         var record = new this.KanbanRecord(this, recordState, this.record_options);
         this.records.push(record);
+        if (options && options.container) {
+            return record.appendTo(options.container);
+        }
         if (options && options.position === 'before') {
             return record.insertAfter(this.quickCreateWidget ? this.quickCreateWidget.$el : this.$header);
         } else {
@@ -267,6 +295,117 @@ var KanbanColumn = Widget.extend({
                 return record.appendTo(this.$el);
             }
         }
+    },
+    /**
+     * Renders nested groups in the current column.
+     *
+     * @private
+     * @param {Object[]} groups
+     * @param {jQuery} $container
+     * @param {number} level
+     * @param {Deferred[]} defs
+     */
+    _addSubGroups: function (groups, $container, level, defs) {
+        var self = this;
+        if (this.showLevelTotals && level === 1 && groups.length) {
+            var levelTotal = _.reduce(groups, function (acc, groupState) {
+                return acc + self._countGroupCards(groupState);
+            }, 0);
+            $('<div/>', {
+                class: 'o_kanban_subgroup_level_total o_kanban_subgroup_level_total_' + level,
+                text: _t('Level') + ' ' + level + ': ' + levelTotal + ' ' + _t('cards'),
+            }).appendTo($container);
+        }
+        var collapseByDefault = groups.length > 1;
+        _.each(groups, function (groupState, groupIndex) {
+            if (!groupState) {
+                return;
+            }
+            var startCollapsed = collapseByDefault;
+            if (groups.length > 3 && groupIndex === 0) {
+                startCollapsed = false;
+            }
+            var toneStep = 0;
+            if (groups.length > 1) {
+                toneStep = Math.round((groupIndex / (groups.length - 1)) * 7);
+            }
+            var title = groupState.value;
+            if (title === undefined || title === null || title === false) {
+                title = _t('Undefined');
+            }
+
+            var $group = $('<div/>', {
+                class: 'o_kanban_subgroup o_kanban_subgroup_level_' + level +
+                    ' o_kanban_subgroup_tone_' + toneStep +
+                    (startCollapsed ? ' o_kanban_subgroup_collapsed' : ''),
+            });
+            var $header = $('<div/>', {
+                class: 'o_kanban_subgroup_header',
+                role: 'button',
+                tabindex: 0,
+                'aria-expanded': startCollapsed ? 'false' : 'true',
+            });
+            $('<i/>', {
+                class: 'o_kanban_subgroup_toggle fa ' + (startCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'),
+                role: 'img',
+                'aria-label': startCollapsed ? _t('Expand subgroup') : _t('Collapse subgroup'),
+            }).appendTo($header);
+            $('<span/>', {
+                class: 'o_kanban_subgroup_title',
+                text: title,
+            }).appendTo($header);
+            $('<span/>', {
+                class: 'o_kanban_subgroup_count',
+                text: groupState.count || 0,
+            }).appendTo($header);
+            $group.append($header);
+
+            var $body = $('<div/>', { class: 'o_kanban_subgroup_body' });
+            $group.append($body);
+            $container.append($group);
+
+            if (groupState.groupedBy && groupState.groupedBy.length) {
+                self._addSubGroups(
+                    groupState.data || [],
+                    $body,
+                    level + 1,
+                    defs
+                );
+                return;
+            }
+
+            _.each(groupState.data || [], function (recordState) {
+                if (!recordState) {
+                    return;
+                }
+                var def = self._addRecord(recordState, {container: $body});
+                if (def.state() === 'pending') {
+                    defs.push(def);
+                }
+            });
+        });
+    },
+    /**
+     * Counts records inside one group recursively.
+     *
+     * @private
+     * @param {Object} groupState
+     * @returns {number}
+     */
+    _countGroupCards: function (groupState) {
+        var self = this;
+        if (!groupState) {
+            return 0;
+        }
+        if (groupState.type === 'record') {
+            return 1;
+        }
+        if (groupState.count !== undefined && groupState.count !== null) {
+            return parseInt(groupState.count, 10) || 0;
+        }
+        return _.reduce(groupState.data || [], function (acc, item) {
+            return acc + self._countGroupCards(item);
+        }, 0);
     },
     /**
      * Destroys the QuickCreate widget.
@@ -362,6 +501,32 @@ var KanbanColumn = Widget.extend({
     _onToggleFold: function (event) {
         event.preventDefault();
         this.trigger_up('column_toggle_fold');
+    },
+    /**
+     * @private
+     * @param {KeyboardEvent} event
+     */
+    _onSubGroupHeaderKeyDown: function (event) {
+        if (event.which === $.ui.keyCode.ENTER || event.which === $.ui.keyCode.SPACE) {
+            this._onToggleSubGroup(event);
+        }
+    },
+    /**
+     * @private
+     * @param {MouseEvent|KeyboardEvent} event
+     */
+    _onToggleSubGroup: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var $header = $(event.currentTarget);
+        var $group = $header.closest('.o_kanban_subgroup');
+        var collapsed = $group.toggleClass('o_kanban_subgroup_collapsed').hasClass('o_kanban_subgroup_collapsed');
+        $header.attr('aria-expanded', String(!collapsed));
+        $header.find('.o_kanban_subgroup_toggle')
+            .toggleClass('fa-chevron-down', !collapsed)
+            .toggleClass('fa-chevron-right', collapsed)
+            .attr('aria-label', collapsed ? _t('Expand subgroup') : _t('Collapse subgroup'));
     },
     /**
      * @private
