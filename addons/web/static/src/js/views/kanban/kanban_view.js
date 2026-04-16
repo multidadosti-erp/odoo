@@ -68,6 +68,7 @@ var KanbanView = BasicView.extend({
             draggable: this.arch.attrs.draggable ? JSON.parse(this.arch.attrs.draggable) : true,
             archivable: this.arch.attrs.archivable ? JSON.parse(this.arch.attrs.archivable) : true,
             group_creatable: activeActions.group_create && !config.device.isMobile,
+            show_level_totals: this.arch.attrs.show_level_totals ? JSON.parse(this.arch.attrs.show_level_totals) : false,
             quickCreateView: this.arch.attrs.quick_create_view || null,
             hasProgressBar: !!progressBar,
         };

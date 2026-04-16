@@ -25,12 +25,13 @@ var KanbanColumnProgressBar = Widget.extend({
 
         this.columnID = options.columnID;
         this.columnState = columnState;
+        this.progressBarValues = columnState.progressBarValues || {};
 
         // <progressbar/> attributes
-        this.fieldName = columnState.progressBarValues.field;
-        this.colors = columnState.progressBarValues.colors;
-        this.sumField = columnState.progressBarValues.sum_field;
-        this.progressBarHelp = columnState.progressBarValues.help;
+        this.fieldName = this.progressBarValues.field || false;
+        this.colors = this.progressBarValues.colors || {};
+        this.sumField = this.progressBarValues.sum_field || false;
+        this.progressBarHelp = this.progressBarValues.help || false;
 
         // Previous progressBar state
         var state = options.progressBarStates[this.columnID];
@@ -45,7 +46,11 @@ var KanbanColumnProgressBar = Widget.extend({
         var sumFieldInfo = this.sumField && columnState.fieldsInfo.kanban[this.sumField];
         var currencyField = sumFieldInfo && sumFieldInfo.options && sumFieldInfo.options.currency_field;
         if (currencyField && columnState.data.length) {
-            this.currency = session.currencies[columnState.data[0].data[currencyField].res_id];
+            var firstRecord = this._findFirstRecord(columnState.data);
+            var currencyDP = firstRecord && firstRecord.data && firstRecord.data[currencyField];
+            if (currencyDP && currencyDP.res_id && session.currencies[currencyDP.res_id]) {
+                this.currency = session.currencies[currencyDP.res_id];
+            }
         }
     },
     /**
@@ -78,8 +83,9 @@ var KanbanColumnProgressBar = Widget.extend({
             // current use of progressbars
 
             var subgroupCounts = {};
+            var counts = self.progressBarValues.counts || {};
             _.each(self.colors, function (val, key) {
-                var subgroupCount = self.columnState.progressBarValues.counts[key] || 0;
+                var subgroupCount = counts[key] || 0;
                 if (self.activeFilter === key && subgroupCount === 0) {
                     self.activeFilter = false;
                 }
@@ -186,13 +192,7 @@ var KanbanColumnProgressBar = Widget.extend({
 
         if (this.activeFilter) {
             if (this.sumField) {
-                end = 0;
-                _.each(self.columnState.data, function (record) {
-                    var recordData = record.data;
-                    if (self.activeFilter === recordData[self.fieldName]) {
-                        end += parseFloat(recordData[self.sumField]);
-                    }
-                });
+                end = this._sumFilteredValue(self.columnState.data, this.activeFilter);
             } else {
                 end = this.subgroupCounts[this.activeFilter];
             }
@@ -239,6 +239,57 @@ var KanbanColumnProgressBar = Widget.extend({
                 activeFilter: this.activeFilter,
             },
         });
+    },
+    /**
+     * Returns the first record found in a nested list (records/subgroups).
+     *
+     * @private
+     * @param {Object[]} data
+     * @returns {Object|undefined}
+     */
+    _findFirstRecord: function (data) {
+        var result;
+        _.some(data || [], function (item) {
+            if (!item) {
+                return false;
+            }
+            if (item.type === 'record') {
+                result = item;
+                return true;
+            }
+            if (item.type === 'list' && item.data && item.data.length) {
+                result = this._findFirstRecord(item.data);
+                return !!result;
+            }
+            return false;
+        }, this);
+        return result;
+    },
+    /**
+     * Sums current measure for a given active filter in nested data.
+     *
+     * @private
+     * @param {Object[]} data
+     * @param {string} activeFilter
+     * @returns {number}
+     */
+    _sumFilteredValue: function (data, activeFilter) {
+        var self = this;
+        var total = 0;
+        _.each(data || [], function (item) {
+            if (!item) {
+                return;
+            }
+            if (item.type === 'list') {
+                total += self._sumFilteredValue(item.data, activeFilter);
+                return;
+            }
+            var recordData = item.data || {};
+            if (activeFilter === recordData[self.fieldName]) {
+                total += parseFloat(recordData[self.sumField]) || 0;
+            }
+        });
+        return total;
     },
 
     //--------------------------------------------------------------------------

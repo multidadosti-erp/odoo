@@ -186,21 +186,34 @@ var KanbanRenderer = BasicRenderer.extend({
      */
     updateColumn: function (localID, columnState, options) {
         var self = this;
-        var KanbanColumn = this.config.KanbanColumn;
-        var newColumn = new KanbanColumn(this, columnState, this.columnOptions, this.recordOptions);
-        var index = _.findIndex(this.widgets, {db_id: localID});
-        var column = this.widgets[index];
-        this.widgets[index] = newColumn;
+        var index = _.findIndex(this.widgets, function (widget) {
+            return widget && (widget.db_id === localID || String(widget.db_id) === String(localID));
+        });
+        var column = index >= 0 ? this.widgets[index] : null;
         if (options && options.state) {
             this.state = options.state;
         }
+        if (!column || !column.$el || !column.$el.length) {
+            // In nested grouping flows, incremental updates can target a column
+            // not present in renderer widgets. Ask controller for a safe refresh.
+            this.trigger_up('reload');
+            return $.when();
+        }
+
+        var KanbanColumn = this.config.KanbanColumn;
+        var newColumn = new KanbanColumn(this, columnState, this.columnOptions, this.recordOptions);
+        this.widgets[index] = newColumn;
         return newColumn.appendTo(document.createDocumentFragment()).then(function () {
             var def;
             if (options && options.openQuickCreate) {
                 def = newColumn.addQuickCreate();
             }
             return $.when(def).then(function () {
-                newColumn.$el.insertAfter(column.$el);
+                if (column.$el && column.$el.parent().length) {
+                    newColumn.$el.insertAfter(column.$el);
+                } else {
+                    self.$el.append(newColumn.$el);
+                }
                 self._toggleNoContentHelper();
                 // When a record has been quick created, the new column directly
                 // renders the quick create widget (to allow quick creating several
@@ -295,6 +308,9 @@ var KanbanRenderer = BasicRenderer.extend({
         // Render columns
         var KanbanColumn = this.config.KanbanColumn;
         _.each(this.state.data, function (group) {
+            if (!group) {
+                return;
+            }
             var column = new KanbanColumn(self, group, self.columnOptions, self.recordOptions);
             var def;
             if (!group.value) {
