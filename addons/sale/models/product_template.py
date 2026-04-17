@@ -163,6 +163,18 @@ class ProductTemplate(models.Model):
                 self.invoice_policy = 'order'
             self.service_type = 'manual'
 
+    @api.onchange("invoice_policy")
+    def _onchange_invoice_policy(self):
+        if self.type == "service" and self.invoice_policy != "order":
+            self.invoice_policy = "order"
+            return {
+                "warning": {
+                    "title": _("Incompatible Invoicing Policy"),
+                    "message": _("For service products, the invoicing policy "
+                                 "must be 'Ordered quantities'."),
+                }
+            }
+
     @api.model
     def get_import_templates(self):
         res = super(ProductTemplate, self).get_import_templates()

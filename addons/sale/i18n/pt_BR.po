@@ -1380,6 +1380,12 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Ícone do Font Awesome. Ex: fa-tasks"
 
 #. module: sale
+#: code:addons/sale/models/product_template.py:173
+#, python-format
+msgid "For service products, the invoicing policy must be 'Ordered quantities'."
+msgstr "Para produtos de serviço, a política de faturamento deve ser 'Quantidades Solicitadas'."
+
+#. module: sale
 #: sql_constraint:sale.order.line:0
 msgid "Forbidden values on non-accountable sale order line"
 msgstr "Valores inválidos em uma linha do pedido não faturável."
@@ -1506,13 +1512,13 @@ msgid "Image of the product variant (Big-sized image of product template if fals
 msgstr "Imagem da variante do produto (Imagem grande do modelo de produto se for falso). Será redimensionado automaticamente para uma imagem 1024x1024px, com a proporção preservada."
 
 #. module: sale
-#: code:addons/sale/models/product_template.py:173
+#: code:addons/sale/models/product_template.py:185
 #, python-format
 msgid "Import Template for Products"
 msgstr "Importar Modelo para Produtos"
 
 #. module: sale
-#: code:addons/sale/models/product_template.py:176
+#: code:addons/sale/models/product_template.py:188
 #, python-format
 msgid "Import Template for Products (with several prices)"
 msgstr "Importar o Template de Produtos (com multiplos preços)"
@@ -1541,6 +1547,12 @@ msgstr "Imposto incluído"
 #: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__deposit_account_id
 msgid "Income Account"
 msgstr "Conta de Receita"
+
+#. module: sale
+#: code:addons/sale/models/product_template.py:172
+#, python-format
+msgid "Incompatible Invoicing Policy"
+msgstr "Política de Faturamento Incompatível"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
