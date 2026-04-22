@@ -43,9 +43,14 @@ var KanbanRecord = Widget.extend({
     init: function (parent, state, options) {
         this._super(parent);
 
-        this.fields = state.fields;
-        this.fieldsInfo = state.fieldsInfo.kanban;
-        this.modelName = state.model;
+        var stateObj = _.isObject(state) ? state : {};
+
+        var parentState = (parent && parent.data) || {};
+        var parentFieldsInfo = parentState.fieldsInfo && parentState.fieldsInfo.kanban;
+
+        this.fields = stateObj.fields || parentState.fields || {};
+        this.fieldsInfo = (stateObj.fieldsInfo && stateObj.fieldsInfo.kanban) || parentFieldsInfo || {};
+        this.modelName = stateObj.model || parentState.model;
 
         this.options = options;
         this.editable = options.editable;
@@ -58,10 +63,11 @@ var KanbanRecord = Widget.extend({
             this.group_readonly = false;    
         }
         else {
-            this.group_readonly = options.groupReadonlyAttr.length ? new Domain(options.groupReadonlyAttr, state.data).compute(state.data) : false;
+            var stateData = stateObj.data || {};
+            this.group_readonly = options.groupReadonlyAttr.length ? new Domain(options.groupReadonlyAttr, stateData).compute(stateData) : false;
         }
 
-        this._setState(state);
+        this._setState(stateObj);
         // avoid quick multiple clicks
         this._onKanbanActionClicked = _.debounce(this._onKanbanActionClicked, 300, true);
     },
@@ -128,7 +134,18 @@ var KanbanRecord = Widget.extend({
      * @returns {boolean} the domain evaluted with the current values
      */
     _computeDomain: function (d) {
-        return new Domain(d).compute(this.state.evalContext);
+        var evalContext = _.extend({}, this.recordData || {}, (this.state && this.state.evalContext) || {});
+        if (!evalContext.context) {
+            evalContext.context = (this.state && this.state.context) || {};
+        }
+        if (!evalContext.parent) {
+            evalContext.parent = {};
+        }
+        try {
+            return new Domain(d).compute(evalContext);
+        } catch (e) {
+            return false;
+        }
     },
     /**
      * Generates the color classname from a given variable
@@ -200,7 +217,8 @@ var KanbanRecord = Widget.extend({
             if (!id) { id = undefined; }
             if (options.preview_image)
                 field = options.preview_image;
-            var unique = this.record.__last_update && this.record.__last_update.value.replace(/[^0-9]/g, '');
+            var lastUpdateValue = this.record.__last_update && this.record.__last_update.value;
+            var unique = lastUpdateValue ? String(lastUpdateValue).replace(/[^0-9]/g, '') : undefined;
             var session = this.getSession();
             url = session.url('/web/image', {model: model, field: field, id: id, unique: unique});
             if (cache !== undefined) {
@@ -239,15 +257,21 @@ var KanbanRecord = Widget.extend({
             var $field = $(this);
             var field_name = $field.attr("name");
             var field_widget = $field.attr("widget");
+            var fieldDef = self.fields[field_name];
+            var fieldInfo = self.fieldsInfo[field_name] || {};
+
+            if (!fieldDef) {
+                return;
+            }
 
             // a widget is specified for that field or a field is a many2many ;
             // in this latest case, we want to display the widget many2manytags
             // even if it is not specified in the view.
-            if (field_widget || self.fields[field_name].type === 'many2many') {
+            if (field_widget || fieldDef.type === 'many2many') {
                 var widget = self.subWidgets[field_name];
                 if (!widget) {
                     // the widget doesn't exist yet, so instanciate it
-                    var Widget = self.fieldsInfo[field_name].Widget;
+                    var Widget = fieldInfo.Widget;
                     if (Widget) {
                         widget = self._processWidget($field, field_name, Widget);
                         self.subWidgets[field_name] = widget;
@@ -308,8 +332,9 @@ var KanbanRecord = Widget.extend({
         // that dict being shared between records, we don't modify it
         // in place
         var self = this;
+        var fieldInfo = this.fieldsInfo[field_name] || {};
         var attrs = Object.create(null);
-        _.each(this.fieldsInfo[field_name], function (value, key) {
+        _.each(fieldInfo, function (value, key) {
             if (_.str.startsWith(key, 't-att-')) {
                 key = key.slice(6);
                 value = $field.attr(key);
@@ -381,15 +406,16 @@ var KanbanRecord = Widget.extend({
      * @param {string} fieldName
      */
     _setFieldDisplay: function ($el, fieldName) {
+        var fieldInfo = this.fieldsInfo[fieldName] || {};
         // attribute display
-        if (this.fieldsInfo[fieldName].display === 'right') {
+        if (fieldInfo.display === 'right') {
             $el.addClass('float-right');
-        } else if (this.fieldsInfo[fieldName].display === 'full') {
+        } else if (fieldInfo.display === 'full') {
             $el.addClass('o_text_block');
         }
 
         // attribute bold
-        if (this.fieldsInfo[fieldName].bold) {
+        if (fieldInfo.bold) {
             $el.addClass('o_text_bold');
         }
     },
@@ -400,11 +426,16 @@ var KanbanRecord = Widget.extend({
      * @param {Object} recordState
      */
     _setState: function (recordState) {
-        this.state = recordState;
-        this.id = recordState.res_id;
-        this.db_id = recordState.id;
-        this.recordData = recordState.data;
-        this.record = this._transformRecord(recordState.data);
+        var state = _.isObject(recordState) ? recordState : {};
+        if (!_.isObject(state.data)) {
+            state.data = {};
+        }
+
+        this.state = state;
+        this.id = state.res_id;
+        this.db_id = state.id;
+        this.recordData = state.data || {};
+        this.record = this._transformRecord(this.recordData);
 
         //  Multidados - Adiciona no widget, os campos 'now' e 'today',
         //  para facilitar a obtenção do dia de hoje e o horário.
@@ -419,10 +450,54 @@ var KanbanRecord = Widget.extend({
             kanban_getcolorname: this._getColorname.bind(this),
             kanban_compute_domain: this._computeDomain.bind(this),
             read_only_mode: this.read_only_mode,
-            record: this.record,
+            record: this._getQWebRecord(this.record),
+            context: (this.state && this.state.context) ||
+                (this.state && this.state.evalContext && this.state.evalContext.context) || {},
             user_context: this.getSession().user_context,
             widget: this,
         };
+    },
+    /**
+     * Returns a safe record object for QWeb templates.
+     * Missing fields fallback to {value:false, raw_value:false}.
+     *
+     * @private
+     * @param {Object} record
+     * @returns {Object}
+     */
+    _getQWebRecord: function (record) {
+        var safeRecord = _.isObject(record) ? record : {};
+        var emptyField = {
+            value: false,
+            raw_value: false,
+        };
+
+        _.each(_.keys(this.fields || {}), function (fieldName) {
+            if (!safeRecord[fieldName]) {
+                safeRecord[fieldName] = emptyField;
+            }
+        });
+        _.each(_.keys(this.fieldsInfo || {}), function (fieldName) {
+            if (!safeRecord[fieldName]) {
+                safeRecord[fieldName] = emptyField;
+            }
+        });
+
+        if (typeof Proxy !== 'function') {
+            return safeRecord;
+        }
+
+        return new Proxy(safeRecord, {
+            get: function (target, prop) {
+                if (typeof prop === 'symbol') {
+                    return target[prop];
+                }
+                if (prop in target) {
+                    return target[prop];
+                }
+                return emptyField;
+            },
+        });
     },
     /**
      * If an attribute `color` is set on the kanban record, adds the
@@ -462,19 +537,35 @@ var KanbanRecord = Widget.extend({
      */
     _transformRecord: function (recordData) {
         var self = this;
+        recordData = recordData || {};
         var new_record = {};
-        _.each(this.state.getFieldNames(), function (name) {
+        var fieldNames = _.isFunction(this.state.getFieldNames)
+            ? this.state.getFieldNames()
+            : _.union(
+                _.keys(this.fields || {}),
+                _.keys(this.fieldsInfo || {}),
+                _.keys(recordData)
+            );
+        _.each(fieldNames, function (name) {
             var value = recordData[name];
             var r = _.clone(self.fields[name] || {});
 
             if ((r.type === 'date' || r.type === 'datetime') && value) {
                 //  Multidados - Acerto na Formatação da Data e Data e Hora
-                if(r.type === 'date'){
-                    value = moment(value._i).utc(false);}
-                r.moment = moment(value.toDate());
-                r.raw_value = value.toDate();
+                var dateValue = value;
+                if (r.type === 'date' && value && value._i !== undefined) {
+                    dateValue = moment(value._i).utc(false);
+                }
+                var dateObj = _.isFunction(dateValue.toDate) ? dateValue.toDate() : moment(dateValue).toDate();
+                if (dateObj && !isNaN(dateObj.getTime())) {
+                    r.moment = moment(dateObj);
+                    r.raw_value = dateObj;
+                } else {
+                    r.raw_value = false;
+                }
             } else if (r.type === 'one2many' || r.type === 'many2many') {
-                r.raw_value = value.count ? value.res_ids : [];
+                var resIDs = value && _.isArray(value.res_ids) ? value.res_ids : [];
+                r.raw_value = resIDs;
             } else if (r.type === 'many2one' ) {
                 r.raw_value = value && value.res_id || false;
             } else {
@@ -483,9 +574,47 @@ var KanbanRecord = Widget.extend({
 
             if (r.type) {
                 var formatter = field_utils.format[r.type];
-                r.value = formatter(value, self.fields[name], recordData, self.state);
+                if (formatter) {
+                    var valueForFormatter = value;
+                    if ((r.type === 'one2many' || r.type === 'many2many') && !valueForFormatter) {
+                        valueForFormatter = {
+                            data: [],
+                            res_ids: [],
+                            count: 0,
+                        };
+                    } else if (r.type === 'many2one' && !valueForFormatter) {
+                        valueForFormatter = {
+                            data: {
+                                display_name: '',
+                            },
+                            res_id: false,
+                        };
+                    } else if ((r.type === 'date' || r.type === 'datetime') && valueForFormatter) {
+                        if (!_.isFunction(valueForFormatter.format)) {
+                            valueForFormatter = moment(valueForFormatter);
+                        }
+                    }
+                    try {
+                        if ((r.type === 'date' || r.type === 'datetime') && !valueForFormatter) {
+                            r.value = false;
+                        } else {
+                            r.value = formatter(valueForFormatter, self.fields[name] || r, recordData, self.state);
+                        }
+                    } catch (e) {
+                        r.value = r.raw_value !== undefined ? r.raw_value : false;
+                    }
+                } else {
+                    r.value = value;
+                }
             } else {
                 r.value = value;
+            }
+
+            if (r.raw_value === undefined) {
+                r.raw_value = false;
+            }
+            if (r.value === undefined) {
+                r.value = false;
             }
 
             new_record[name] = r;

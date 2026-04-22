@@ -277,7 +277,7 @@ var KanbanColumn = Widget.extend({
      * @return {Deferred}
      */
     _addRecord: function (recordState, options) {
-        if (!recordState) {
+        if (!_.isObject(recordState) || (recordState.type && recordState.type !== 'record')) {
             return $.when();
         }
         var record = new this.KanbanRecord(this, recordState, this.record_options);

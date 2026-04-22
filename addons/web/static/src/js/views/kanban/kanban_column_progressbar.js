@@ -43,7 +43,8 @@ var KanbanColumnProgressBar = Widget.extend({
         }
 
         // Prepare currency (TODO this should be automatic... use a field ?)
-        var sumFieldInfo = this.sumField && columnState.fieldsInfo.kanban[this.sumField];
+        var kanbanFieldsInfo = columnState.fieldsInfo && columnState.fieldsInfo.kanban;
+        var sumFieldInfo = this.sumField && kanbanFieldsInfo && kanbanFieldsInfo[this.sumField];
         var currencyField = sumFieldInfo && sumFieldInfo.options && sumFieldInfo.options.currency_field;
         if (currencyField && columnState.data.length) {
             var firstRecord = this._findFirstRecord(columnState.data);

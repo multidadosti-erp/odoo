@@ -454,8 +454,10 @@ var KanbanRenderer = BasicRenderer.extend({
 
         // split groupedBy field with ':' as it can be date/datetime field
         var groupByField = state.groupedBy.length && state.groupedBy[0].split(":")[0];
-        var groupByFieldAttrs = state.fields[groupByField];
-        var groupByFieldInfo = state.fieldsInfo.kanban[groupByField];
+        var fields = state.fields || {};
+        var fieldsInfo = (state.fieldsInfo && state.fieldsInfo.kanban) || {};
+        var groupByFieldAttrs = fields[groupByField];
+        var groupByFieldInfo = fieldsInfo[groupByField];
         // Deactivate the drag'n'drop if the groupedBy field:
         // - is a date or datetime since we group by month or
         // - is readonly (on the field attrs or in the view)
