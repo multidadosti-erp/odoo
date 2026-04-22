@@ -379,11 +379,15 @@ var KanbanModel = BasicModel.extend({
      */
     _readTooltipFields: function (list) {
         var self = this;
-        var groupedByField = list.fields[list.groupedBy[0].split(':')[0]];
-        if (groupedByField.type !== 'many2one') {
+        if (!list || !list.groupedBy || !list.groupedBy.length || !list.fields) {
             return $.when();
         }
-        var groupIds = _.reduce(list.data, function (groupIds, id) {
+        var groupedByExpr = list.groupedBy[0];
+        var groupedByField = list.fields[groupedByExpr.split(':')[0]];
+        if (!groupedByField || groupedByField.type !== 'many2one') {
+            return $.when();
+        }
+        var groupIds = _.reduce(list.data || [], function (groupIds, id) {
             var res_id = self.get(id, {raw: true}).res_id;
             // The field on which we are grouping might not be set on all records
             if (res_id) {
@@ -392,7 +396,8 @@ var KanbanModel = BasicModel.extend({
             return groupIds;
         }, []);
         var tooltipFields = [];
-        var groupedByFieldInfo = list.fieldsInfo.kanban[list.groupedBy[0]];
+        var fieldsInfo = list.fieldsInfo && list.fieldsInfo.kanban;
+        var groupedByFieldInfo = fieldsInfo && fieldsInfo[groupedByExpr];
         if (groupedByFieldInfo && groupedByFieldInfo.options) {
             tooltipFields = Object.keys(groupedByFieldInfo.options.group_by_tooltip || {});
         }
