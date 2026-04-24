@@ -1128,7 +1128,6 @@ class SaleOrderLine(models.Model):
         Para cada linha, verifica se o estado do pedido permite faturamento. 
         Se permitido, determina a quantidade a faturar com base na quantidade entregue ou na quantidade do produto, 
         subtraindo o que já foi faturado. Se não permitido, define a quantidade a faturar como zero.
-        Garante que a quantidade a faturar nunca seja negativa.
 
         Esta quantidade é gravada no campo qty_to_invoice da linha do pedido.
         """
@@ -1138,10 +1137,6 @@ class SaleOrderLine(models.Model):
                     qty_to_invoice = line.qty_delivered - line.qty_invoiced
                 else:
                     qty_to_invoice = line.product_uom_qty - line.qty_invoiced
-
-                # Garantir que a quantidade a faturar não seja negativa
-                if qty_to_invoice < 0:
-                    qty_to_invoice = 0
             else:
                 qty_to_invoice = 0
 
