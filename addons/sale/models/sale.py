@@ -782,26 +782,40 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_confirm(self):
-        if self._get_forbidden_state_confirm() & set(self.mapped('state')):
-            raise UserError(_(
-                'It is not allowed to confirm an order in the following states: %s'
-            ) % (', '.join(self._get_forbidden_state_confirm())))
+        """
+        Confirma o pedido de venda, alterando seu estado para 'sale' e registrando a data de confirmação.
+        Melhoria de performance: 
+        - Reduz chamadas desnecessárias ao banco de dados usando operações em lote.
+        - Evita múltiplas leituras e escritas individuais.
+        """
+        forbidden_states = self._get_forbidden_state_confirm() & set(self.mapped('state'))
+        if forbidden_states:
+            raise UserError(
+                _("It is not allowed to confirm an order in the following states: %s")
+                % (", ".join(forbidden_states))
+            )
 
-        for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
-            order.message_subscribe([order.partner_id.id])
-        self.write({
-            'state': 'sale',
-            'confirmation_date': fields.Datetime.now()
-        })
+        # Subscreve os parceiros que ainda não estão inscritos em lote
+        partner_ids_to_subscribe = [
+            order.partner_id.id
+            for order in self
+            if order.partner_id and order.partner_id not in order.message_partner_ids
+        ]
+        if partner_ids_to_subscribe:
+            self.message_subscribe(partner_ids_to_subscribe)
 
-        # Context key 'default_name' is sometimes propagated up to here.
-        # We don't need it and it creates issues in the creation of linked records.
-        context = self._context.copy()
-        context.pop('default_name', None)
+        # Atualiza todos os pedidos em lote
+        self.write({"state": "sale", "confirmation_date": fields.Datetime.now()})
 
+        # Remove chave desnecessária do contexto apenas se existir
+        context = dict(self._context)
+        context.pop("default_name", None)
         self.with_context(context)._action_confirm()
-        if self.env['ir.config_parameter'].sudo().get_param('sale.auto_done_setting'):
+
+        # Confirma automaticamente se a configuração estiver habilitada
+        if self.env["ir.config_parameter"].sudo().get_param("sale.auto_done_setting"):
             self.action_done()
+
         return True
 
     def _get_forbidden_state_confirm(self):
@@ -998,34 +1012,54 @@ class SaleOrderLine(models.Model):
     _description = 'Sales Order Line'
     _order = 'order_id, sequence, id'
 
-    @api.depends('state', 'product_uom_qty', 'qty_delivered', 'qty_to_invoice', 'qty_invoiced')
+    def _get_invoice_status(self):
+        """
+        Retorna o status de faturamento da linha do pedido de venda.
+
+        Possíveis status:
+        - 'no': Nada a faturar (pedido não está em 'sale' ou 'done').
+        - 'to invoice': Existe quantidade a faturar.
+        - 'upselling': O produto foi entregue além do pedido (apenas para invoice_policy='order' e estado 'sale').
+        - 'invoiced': Tudo já foi faturado.
+        - 'no': Caso nenhum dos critérios acima seja atendido.
+
+        Retorna:
+            str: Status de faturamento da linha.
+        """
+        self.ensure_one()
+
+        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+
+        if self.state not in ("sale", "done"):
+            return "no"
+
+        if not float_is_zero(self.qty_to_invoice, precision_digits=precision):
+            return "to invoice"
+
+        if (
+            self.state == "sale"
+            and self.product_id.invoice_policy == "order"
+            and float_compare(self.qty_delivered, self.product_uom_qty, precision_digits=precision) == 1
+        ):
+            return "upselling"
+
+        if float_compare(self.qty_invoiced, self.product_uom_qty, precision_digits=precision) >= 0:
+            return "invoiced"
+
+        return "no"
+
+    @api.depends("state", "product_uom_qty", "qty_delivered", "qty_to_invoice", "qty_invoiced")
     def _compute_invoice_status(self):
         """
-        Compute the invoice status of a SO line. Possible statuses:
-        - no: if the SO is not in status 'sale' or 'done', we consider that there is nothing to
-          invoice. This is also hte default value if the conditions of no other status is met.
-        - to invoice: we refer to the quantity to invoice of the line. Refer to method
-          `_get_to_invoice_qty()` for more information on how this quantity is calculated.
-        - upselling: this is possible only for a product invoiced on ordered quantities for which
-          we delivered more than expected. The could arise if, for example, a project took more
-          time than expected but we decided not to invoice the extra cost to the client. This
-          occurs onyl in state 'sale', so that when a SO is set to done, the upselling opportunity
-          is removed from the list.
-        - invoiced: the quantity invoiced is larger or equal to the quantity ordered.
+        Calcula e atualiza o status da fatura para cada linha de venda.
+
+        Este método é chamado automaticamente quando qualquer um dos campos
+        'state', 'product_uom_qty', 'qty_delivered', 'qty_to_invoice' ou 'qty_invoiced'
+        é alterado. Para cada linha, o status da fatura é recalculado utilizando o método
+        interno '_get_invoice_status' e o resultado é atribuído ao campo 'invoice_status'.
         """
-        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         for line in self:
-            if line.state not in ('sale', 'done'):
-                line.invoice_status = 'no'
-            elif not float_is_zero(line.qty_to_invoice, precision_digits=precision):
-                line.invoice_status = 'to invoice'
-            elif line.state == 'sale' and line.product_id.invoice_policy == 'order' and\
-                    float_compare(line.qty_delivered, line.product_uom_qty, precision_digits=precision) == 1:
-                line.invoice_status = 'upselling'
-            elif float_compare(line.qty_invoiced, line.product_uom_qty, precision_digits=precision) >= 0:
-                line.invoice_status = 'invoiced'
-            else:
-                line.invoice_status = 'no'
+            line.invoice_status = line._get_invoice_status()
 
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
     def _compute_amount(self):
@@ -1062,21 +1096,57 @@ class SaleOrderLine(models.Model):
             else:
                 line.product_updatable = True
 
+    def _get_order_state_to_invoice_qty(self):
+        """
+        Retorna os estados do pedido que devem acionar o cálculo da quantidade a faturar.
+
+        Por padrão, retorna ['sale', 'done'], o que significa que a quantidade a faturar será calculada
+        quando o pedido estiver nos estados 'sale' ou 'done'. Este método pode ser sobrescrito para alterar esse comportamento.
+        """
+        self.ensure_one()
+
+        return ["sale", "done"]
+
+    def _is_qtd_delivered_qty_to_invoice(self):
+        """
+        Verifica se a política de faturamento do produto não é baseada em pedido.
+
+        Retorna:
+            bool: True se a política de faturamento do produto for diferente de 'order',
+            indicando que a quantidade entregue pode ser faturada. Caso contrário, retorna False.
+        """
+        self.ensure_one()
+
+        return self.product_id.invoice_policy != 'order'
+
     # no trigger product_id.invoice_policy to avoid retroactively changing SO
-    @api.depends('qty_invoiced', 'qty_delivered', 'product_uom_qty', 'order_id.state')
+    @api.depends("qty_invoiced", "qty_delivered", "product_uom_qty", "order_id.state")
     def _get_to_invoice_qty(self):
         """
-        Compute the quantity to invoice. If the invoice policy is order, the quantity to invoice is
-        calculated from the ordered quantity. Otherwise, the quantity delivered is used.
+        Calcula e define a quantidade a faturar (qty_to_invoice) para cada linha de pedido de venda.
+
+        Para cada linha, verifica se o estado do pedido permite faturamento. 
+        Se permitido, determina a quantidade a faturar com base na quantidade entregue ou na quantidade do produto, 
+        subtraindo o que já foi faturado. Se não permitido, define a quantidade a faturar como zero.
+        Garante que a quantidade a faturar nunca seja negativa.
+
+        Esta quantidade é gravada no campo qty_to_invoice da linha do pedido.
         """
         for line in self:
-            if line.order_id.state in ['sale', 'done']:
-                if line.product_id.invoice_policy == 'order':
-                    line.qty_to_invoice = line.product_uom_qty - line.qty_invoiced
+            if line.order_id.state in line._get_order_state_to_invoice_qty():
+                if line._is_qtd_delivered_qty_to_invoice():
+                    qty_to_invoice = line.qty_delivered - line.qty_invoiced
                 else:
-                    line.qty_to_invoice = line.qty_delivered - line.qty_invoiced
+                    qty_to_invoice = line.product_uom_qty - line.qty_invoiced
+
+                # Garantir que a quantidade a faturar não seja negativa
+                if qty_to_invoice < 0:
+                    qty_to_invoice = 0
             else:
-                line.qty_to_invoice = 0
+                qty_to_invoice = 0
+
+            # Gravando a Qtde para Faturar
+            line.qty_to_invoice = qty_to_invoice
 
     @api.depends('invoice_lines.invoice_id.state', 'invoice_lines.quantity')
     def _get_invoice_qty(self):
