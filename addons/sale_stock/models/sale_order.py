@@ -73,11 +73,35 @@ class SaleOrder(models.Model):
                     order._log_decrease_ordered_quantity(documents)
         return res
 
+    def _skip_picking_creation(self):
+        """ Determina se a criação do picking deve ser pulada para o pedido.
+
+        Este método é destinado a ser sobrescrito por outros módulos (por exemplo, para implementar um recurso de "envio sob demanda").
+        Por padrão, retorna `False`, o que significa que o picking será criado normalmente.
+        """
+        self.ensure_one()
+        return False
+
     @api.multi
     def _action_confirm(self):
+        """
+        Confirma o pedido de venda e dispara a criação das regras de estoque para as linhas do pedido,
+        a menos que a criação do picking seja explicitamente pulada pelo método _skip_picking_creation.
+
+        Este método pode ser sobrescrito por módulos que desejam customizar o fluxo de confirmação do pedido,
+        como, por exemplo, implementar lógica de envio sob demanda.
+
+        Returns:
+            None
+        """
         for order in self:
-            order.order_line._action_launch_stock_rule()
-        super(SaleOrder, self)._action_confirm()
+            # Verifica se deve pular a criação do picking para este pedido
+            if not order._skip_picking_creation():
+                # Dispara a criação das regras de estoque para as linhas do pedido
+                order.order_line._action_launch_stock_rule()
+
+        # Chama o método original para manter o comportamento padrão
+        return super(SaleOrder, self)._action_confirm()
 
     @api.depends('picking_ids')
     def _compute_picking_ids(self):
