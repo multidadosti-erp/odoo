@@ -339,5 +339,16 @@
         </field>
     </record>
 
-    <menuitem id="menu_board_journal_1" name="Overview" action="open_account_journal_dashboard_kanban" parent="menu_finance" sequence="1" groups="account.group_account_user"/>
+    <menuitem id="menu_board_overview"
+              name="Overview"
+              parent="menu_finance"
+              sequence="1"
+              groups="account.group_account_user"/>
+
+    <menuitem id="menu_board_journal_1"
+              name="Accounting Overview"
+              action="open_account_journal_dashboard_kanban"
+              parent="menu_board_overview"
+              sequence="2"
+              groups="account.group_account_user"/>
 </odoo>
