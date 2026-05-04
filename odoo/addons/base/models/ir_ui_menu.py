@@ -12,6 +12,7 @@ from odoo.modules import get_module_resource
 from odoo.tools.safe_eval import safe_eval
 
 MENU_ITEM_SEPARATOR = "/"
+MENU_SEPARATOR_TOKEN = "__menu_separator__"
 NUMBER_PARENS = re.compile(r"\(([0-9]+)\)")
 
 
@@ -112,6 +113,11 @@ class IrUiMenu(models.Model):
                 while menu and menu in folder_menus and menu not in visible:
                     visible += menu
                     menu = menu.parent_id
+
+            # Keep visual separators only when attached to a visible parent menu.
+            visible += folder_menus.filtered(
+                lambda m: m.web_icon == MENU_SEPARATOR_TOKEN and m.parent_id in visible
+            )
 
         return set(visible.ids)
 

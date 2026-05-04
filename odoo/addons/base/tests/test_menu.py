@@ -28,3 +28,37 @@ class TestMenu(TransactionCase):
 
         orphans =  Menu.search([('id', 'in', all_ids), ('parent_id', '=', False)], order="id")
         self.assertEqual([child1.id, child2.id], orphans.ids)
+
+    def test_01_separator_visibility(self):
+        Menu = self.env['ir.ui.menu']
+        action = self.env['ir.actions.act_window'].create({
+            'name': 'Separator Visibility Action',
+            'res_model': 'res.partner',
+            'view_mode': 'tree,form',
+        })
+
+        root = Menu.create({'name': 'Root Menu'})
+        folder = Menu.create({'name': 'Folder Menu', 'parent_id': root.id})
+        separator = Menu.create({
+            'name': 'Separator',
+            'parent_id': folder.id,
+            'web_icon': '__menu_separator__',
+            'sequence': 15,
+        })
+        action_menu = Menu.create({
+            'name': 'Action Menu',
+            'parent_id': folder.id,
+            'action': 'ir.actions.act_window,%d' % action.id,
+            'sequence': 20,
+        })
+        top_separator = Menu.create({
+            'name': 'Top Separator',
+            'web_icon': '__menu_separator__',
+        })
+
+        visible_ids = set(Menu.search([
+            ('id', 'in', [root.id, folder.id, separator.id, action_menu.id, top_separator.id])
+        ]).ids)
+
+        self.assertIn(separator.id, visible_ids)
+        self.assertNotIn(top_separator.id, visible_ids)

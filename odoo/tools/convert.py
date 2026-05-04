@@ -19,6 +19,7 @@ from . import assertion_report, pycompat
 from .config import config
 from .misc import file_open, unquote, ustr, SKIPPED_ELEMENT_TYPES
 from .translate import _
+MENU_SEPARATOR_TOKEN = '__menu_separator__'
 from odoo import SUPERUSER_ID
 
 _logger = logging.getLogger(__name__)
@@ -493,6 +494,9 @@ form: module.record_id""" % (xml_id,)
             values['sequence'] = int(rec.get('sequence'))
 
         values['active'] = self.nodeattr2bool(rec, 'active', default=True)
+
+        if rec.get('separator') is not None and self.nodeattr2bool(rec, 'separator', default=False):
+            values['web_icon'] = MENU_SEPARATOR_TOKEN
 
         if rec.get('groups'):
             g_names = rec.get('groups','').split(',')

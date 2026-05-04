@@ -222,6 +222,7 @@
             <rng:optional> <rng:attribute name="name"/></rng:optional>
             <rng:optional> <rng:attribute name="parent"/> </rng:optional>
             <rng:optional> <rng:attribute name="action"/> </rng:optional>
+            <rng:optional> <rng:attribute name="separator"/> </rng:optional>
             <rng:optional> <rng:attribute name="sequence"/> </rng:optional>
             <rng:optional> <rng:attribute name="groups"/> </rng:optional>
             <rng:optional> <rng:attribute name="active"/> </rng:optional>

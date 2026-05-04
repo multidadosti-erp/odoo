@@ -39,7 +39,15 @@
 <t t-name="Menu.link">
     <t t-set="depth" t-value="(depth || 0) + 1"/>
 
-    <t t-if="!menu.children.length">
+    <t t-if="menu.web_icon == '__menu_separator__'">
+        <li t-if="inNavbar">
+            <div role="separator" class="dropdown-divider"/>
+        </li>
+        <t t-else="">
+            <div role="separator" class="dropdown-divider"/>
+        </t>
+    </t>
+    <t t-elif="!menu.children.length">
         <t t-set="_link">
             <a role="menuitem" t-attf-href="#menu_id=#{menu.id}&amp;action=#{menu.action ? menu.action.split(',')[1] : ''}"
                 t-att-data-menu="menu.id"
