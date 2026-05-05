@@ -5,6 +5,11 @@ odoo.define('web.KanbanController', function (require) {
  * The KanbanController is the class that coordinates the kanban model and the
  * kanban renderer.  It also makes sure that update from the search view are
  * properly interpreted.
+ *
+ * Documentacao PT-BR (customizacoes principais):
+ * - Trata evento de lazy-load de subgrupo no kanban com agrupamento multiplo.
+ * - Preserva scroll ao atualizar coluna para evitar "salto" para o topo.
+ * - Exibe cursor de espera durante carregamentos de subgrupo.
  */
 
 var BasicController = require('web.BasicController');
@@ -30,6 +35,7 @@ var KanbanController = BasicController.extend({
         kanban_column_resequence: '_onColumnResequence',
         kanban_load_more: '_onLoadMore',
         kanban_load_records: '_onLoadColumnRecords',
+        kanban_load_subgroup_records: '_onLoadSubGroupRecords',
         column_toggle_fold: '_onToggleColumn',
         kanban_column_records_toggle_active: '_onToggleActiveRecords',
     }),
@@ -45,6 +51,7 @@ var KanbanController = BasicController.extend({
         this.on_create = params.on_create;
         this.hasButtons = params.hasButtons;
         this.quickCreateEnabled = params.quickCreateEnabled;
+        this._subgroupLoadingCount = 0;
     },
 
     //--------------------------------------------------------------------------
@@ -357,6 +364,41 @@ var KanbanController = BasicController.extend({
     /**
      * @private
      * @param {OdooEvent} event
+      *
+      * PT-BR:
+      * Carrega registros de um subgrupo sob demanda e atualiza apenas a
+      * coluna afetada, preservando scroll e estado visual de loading.
+     */
+    _onLoadSubGroupRecords: function (event) {
+        var self = this;
+        var $origin = event.target && event.target.$el;
+        var scrollState = this._captureScrollState(event.target && event.target.$el);
+        this._setSubGroupLoading(true, $origin);
+        this.model.loadColumnRecords(event.data.subgroupID).then(function () {
+            var columnID = event.data.columnID;
+            var columnData = self.model.get(columnID);
+            if (!columnData) {
+                return self.reload().then(function () {
+                    self._restoreScrollState(scrollState);
+                });
+            }
+            return self.renderer.updateColumn(columnID, columnData).then(function () {
+                self._restoreScrollState(scrollState);
+                setTimeout(function () {
+                    self._restoreScrollState(scrollState);
+                }, 0);
+                self._updateEnv();
+            });
+        }).always(function () {
+            if (event.data.onComplete) {
+                event.data.onComplete();
+            }
+            self._setSubGroupLoading(false, $origin);
+        });
+    },
+    /**
+     * @private
+     * @param {OdooEvent} event
      */
     _onLoadMore: function (event) {
         var self = this;
@@ -428,6 +470,93 @@ var KanbanController = BasicController.extend({
     _onRecordDelete: function (event) {
         this._deleteRecords([event.data.id]);
     },
+
+    /**
+     * Captures current vertical/horizontal scroll positions for the window
+     * and all scrollable ancestors of a widget element.
+     *
+     * @private
+     * @param {jQuery} $origin
+     * @returns {Object[]}
+      *
+      * PT-BR:
+      * Salva a posicao de rolagem global e dos containers pais para restaurar
+      * apos re-render da coluna.
+     */
+    _captureScrollState: function ($origin) {
+        var state = [{
+            isWindow: true,
+            top: window.pageYOffset || window.scrollY || 0,
+            left: window.pageXOffset || window.scrollX || 0,
+        }];
+
+        if (!$origin || !$origin.length) {
+            return state;
+        }
+
+        $origin.parents().each(function () {
+            var el = this;
+            if (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth) {
+                state.push({
+                    el: el,
+                    top: el.scrollTop,
+                    left: el.scrollLeft,
+                });
+            }
+        });
+
+        return state;
+    },
+
+    /**
+     * Restores positions previously captured by _captureScrollState.
+     *
+     * @private
+     * @param {Object[]} state
+      *
+      * PT-BR:
+      * Restaura as posicoes de rolagem salvas antes do carregamento.
+     */
+    _restoreScrollState: function (state) {
+        _.each(state || [], function (entry) {
+            if (entry.isWindow) {
+                window.scrollTo(entry.left, entry.top);
+            } else if (entry.el) {
+                entry.el.scrollTop = entry.top;
+                entry.el.scrollLeft = entry.left;
+            }
+        });
+    },
+
+    /**
+     * Toggles wait cursor while subgroup records are being loaded.
+     *
+     * @private
+     * @param {boolean} isLoading
+     * @param {jQuery} $origin
+      *
+      * PT-BR:
+      * Ativa/desativa cursor de espera no elemento de origem e no documento,
+      * com contador para suportar carregamentos concorrentes.
+     */
+    _setSubGroupLoading: function (isLoading, $origin) {
+        if (isLoading) {
+            this._subgroupLoadingCount += 1;
+            if ($origin && $origin.length) {
+                $origin.css('cursor', 'wait');
+            }
+        } else {
+            this._subgroupLoadingCount = Math.max(0, this._subgroupLoadingCount - 1);
+            if ($origin && $origin.length) {
+                $origin.css('cursor', '');
+            }
+        }
+
+        var waiting = this._subgroupLoadingCount > 0;
+        document.body.style.cursor = waiting ? 'wait' : '';
+        document.documentElement.style.cursor = waiting ? 'wait' : '';
+    },
+
     /**
      * @private
      * @param {OdooEvent} event

@@ -4,6 +4,11 @@ odoo.define('web.KanbanModel', function (require) {
 /**
  * The KanbanModel extends the BasicModel to add Kanban specific features like
  * moving a record from a group to another, resequencing records...
+ *
+ * Documentacao PT-BR (customizacoes principais):
+ * - Organiza o groupedBy para manter o agrupamento principal como coluna.
+ * - Em agrupamento multiplo, deixa os niveis internos abertos por padrao.
+ * - Reaproveita o fluxo padrao de leitura de grupos e tooltips.
  */
 
 var BasicModel = require('web.BasicModel');
@@ -325,15 +330,19 @@ var KanbanModel = BasicModel.extend({
      * @override
      * @private
      * @param {Object} list valid resource object
+      *
+      * PT-BR:
+      * Em cenarios com agrupamento em mais de um nivel, força abertura
+      * padrao dos subgrupos para permitir renderizacao hierarquica.
      */
-    _readGroup: function (list) {
+    _readGroup: function (list, options) {
         var self = this;
         // For nested kanban grouping, keep groups open by default so inner
         // levels are loaded and can be rendered inside the main column.
         if (list.groupedBy && list.groupedBy.length > 1) {
             list.openGroupByDefault = true;
         }
-        return this._super.apply(this, arguments).then(function (result) {
+        return this._super(list, options).then(function (result) {
             return self._readTooltipFields(list).then(_.constant(result));
         });
     },
@@ -459,6 +468,10 @@ var KanbanModel = BasicModel.extend({
      * @private
      * @param {string[]|string} groupedBy
      * @returns {string[]}
+      *
+      * PT-BR:
+      * Garante que o primeiro agrupamento continue sendo a coluna principal
+      * do kanban, mesmo quando o usuario adiciona group_by extras.
      */
     _normalizeGroupedByOrder: function (groupedBy) {
         if (!groupedBy) {
