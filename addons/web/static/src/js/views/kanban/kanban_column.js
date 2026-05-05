@@ -14,6 +14,13 @@ var KanbanColumnProgressBar = require('web.KanbanColumnProgressBar');
 var _t = core._t;
 var QWeb = core.qweb;
 
+/**
+ * Documentacao PT-BR (customizacoes principais):
+ * - Renderiza subgrupos aninhados dentro de cada coluna do kanban.
+ * - Mantem estado visual aberto/fechado baseado em `isOpen` do model.
+ * - Faz lazy-load de subgrupo ao expandir quando ha contador sem cards carregados.
+ */
+
 var KanbanColumn = Widget.extend({
     template: 'KanbanView.Group',
     custom_events: {
@@ -304,6 +311,10 @@ var KanbanColumn = Widget.extend({
      * @param {jQuery} $container
      * @param {number} level
      * @param {Deferred[]} defs
+      *
+      * PT-BR:
+      * Monta recursivamente a hierarquia de subgrupos e records dentro da
+      * coluna atual, respeitando o estado aberto/fechado retornado pelo model.
      */
     _addSubGroups: function (groups, $container, level, defs) {
         var self = this;
@@ -321,9 +332,14 @@ var KanbanColumn = Widget.extend({
             if (!groupState) {
                 return;
             }
-            var startCollapsed = collapseByDefault;
-            if (groups.length > 3 && groupIndex === 0) {
-                startCollapsed = false;
+            var startCollapsed;
+            if (groupState.isOpen !== undefined) {
+                startCollapsed = !groupState.isOpen;
+            } else {
+                startCollapsed = collapseByDefault;
+                if (groups.length > 3 && groupIndex === 0) {
+                    startCollapsed = false;
+                }
             }
             var toneStep = 0;
             if (groups.length > 1) {
@@ -338,6 +354,8 @@ var KanbanColumn = Widget.extend({
                 class: 'o_kanban_subgroup o_kanban_subgroup_level_' + level +
                     ' o_kanban_subgroup_tone_' + toneStep +
                     (startCollapsed ? ' o_kanban_subgroup_collapsed' : ''),
+                'data-subgroup-id': groupState.id,
+                'data-subgroup-count': groupState.count || 0,
             });
             var $header = $('<div/>', {
                 class: 'o_kanban_subgroup_header',
@@ -391,6 +409,10 @@ var KanbanColumn = Widget.extend({
      * @private
      * @param {Object} groupState
      * @returns {number}
+      *
+      * PT-BR:
+      * Calcula total de cards de um grupo, usando `count` quando disponivel
+      * e fallback recursivo quando necessario.
      */
     _countGroupCards: function (groupState) {
         var self = this;
@@ -514,6 +536,10 @@ var KanbanColumn = Widget.extend({
     /**
      * @private
      * @param {MouseEvent|KeyboardEvent} event
+      *
+      * PT-BR:
+      * Alterna visualmente o subgrupo e, na primeira expansao de um subgrupo
+      * ainda nao carregado, dispara carregamento sob demanda para os registros.
      */
     _onToggleSubGroup: function (event) {
         event.preventDefault();
@@ -521,12 +547,39 @@ var KanbanColumn = Widget.extend({
 
         var $header = $(event.currentTarget);
         var $group = $header.closest('.o_kanban_subgroup');
+        var $body = $group.children('.o_kanban_subgroup_body');
         var collapsed = $group.toggleClass('o_kanban_subgroup_collapsed').hasClass('o_kanban_subgroup_collapsed');
         $header.attr('aria-expanded', String(!collapsed));
         $header.find('.o_kanban_subgroup_toggle')
             .toggleClass('fa-chevron-down', !collapsed)
             .toggleClass('fa-chevron-right', collapsed)
             .attr('aria-label', collapsed ? _t('Expand subgroup') : _t('Collapse subgroup'));
+
+        if (!collapsed &&
+                !$group.data('subgroupLoaded') &&
+                !$body.children().length &&
+                (parseInt($group.attr('data-subgroup-count'), 10) || 0) > 0) {
+            var subgroupId = $group.attr('data-subgroup-id');
+            if (subgroupId) {
+                var $count = $header.find('.o_kanban_subgroup_count');
+                var previousCountText = $count.text();
+                $group.addClass('o_kanban_subgroup_loading');
+                $header.attr('aria-busy', 'true');
+                $count.text(_t('Loading...'));
+                this.trigger_up('kanban_load_subgroup_records', {
+                    subgroupID: subgroupId,
+                    columnID: this.db_id,
+                    onComplete: function () {
+                        $group.removeClass('o_kanban_subgroup_loading');
+                        $header.removeAttr('aria-busy');
+                        if ($count.length) {
+                            $count.text(previousCountText);
+                        }
+                    },
+                });
+                $group.data('subgroupLoaded', true);
+            }
+        }
     },
     /**
      * @private
