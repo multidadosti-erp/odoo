@@ -36,6 +36,7 @@ var KanbanController = BasicController.extend({
         kanban_load_more: '_onLoadMore',
         kanban_load_records: '_onLoadColumnRecords',
         kanban_load_subgroup_records: '_onLoadSubGroupRecords',
+        kanban_subgroup_toggle: '_onSubGroupToggle',
         column_toggle_fold: '_onToggleColumn',
         kanban_column_records_toggle_active: '_onToggleActiveRecords',
     }),
@@ -373,6 +374,7 @@ var KanbanController = BasicController.extend({
         var self = this;
         var $origin = event.target && event.target.$el;
         var scrollState = this._captureScrollState(event.target && event.target.$el);
+        var loaded = false;
         this._setSubGroupLoading(true, $origin);
         this.model.loadColumnRecords(event.data.subgroupID).then(function () {
             var columnID = event.data.columnID;
@@ -389,9 +391,11 @@ var KanbanController = BasicController.extend({
                 }, 0);
                 self._updateEnv();
             });
+        }).then(function () {
+            loaded = true;
         }).always(function () {
             if (event.data.onComplete) {
-                event.data.onComplete();
+                event.data.onComplete(loaded);
             }
             self._setSubGroupLoading(false, $origin);
         });
@@ -408,6 +412,13 @@ var KanbanController = BasicController.extend({
             self.renderer.updateColumn(db_id, data);
             self._updateEnv();
         });
+    },
+    /**
+     * @private
+     * @param {OdooEvent} event
+     */
+    _onSubGroupToggle: function (event) {
+        this.model.setGroupOpenState(event.data.subgroupID, event.data.isOpen);
     },
     /**
      * @private

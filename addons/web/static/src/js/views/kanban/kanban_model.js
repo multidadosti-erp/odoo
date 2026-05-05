@@ -220,6 +220,19 @@ var KanbanModel = BasicModel.extend({
         });
     },
     /**
+     * Persiste localmente o estado visual de abertura de um subgrupo.
+     * Isso evita que rerenders da coluna restaurem estado antigo.
+     *
+     * @param {string} groupID localID do subgrupo
+     * @param {boolean} isOpen
+    */
+    setGroupOpenState: function (groupID, isOpen) {
+        var group = this.localData[groupID];
+        if (group) {
+            group.isOpen = !!isOpen;
+        }
+    },
+    /**
      * Moves a record from a group to another.
      *
      * @param {string} recordID localID of the record
@@ -339,7 +352,9 @@ var KanbanModel = BasicModel.extend({
         var self = this;
         // For nested kanban grouping, keep groups open by default so inner
         // levels are loaded and can be rendered inside the main column.
-        if (list.groupedBy && list.groupedBy.length > 1) {
+        // Preserve explicit values (notably mobile lazy loading sets this to
+        // false in KanbanView).
+        if (list.groupedBy && list.groupedBy.length > 1 && list.openGroupByDefault === undefined) {
             list.openGroupByDefault = true;
         }
         return this._super(list, options).then(function (result) {
