@@ -555,6 +555,14 @@ var KanbanColumn = Widget.extend({
             .toggleClass('fa-chevron-right', collapsed)
             .attr('aria-label', collapsed ? _t('Expand subgroup') : _t('Collapse subgroup'));
 
+        var toggledSubgroupId = $group.attr('data-subgroup-id');
+        if (toggledSubgroupId) {
+            this.trigger_up('kanban_subgroup_toggle', {
+                subgroupID: toggledSubgroupId,
+                isOpen: !collapsed,
+            });
+        }
+
         if (!collapsed &&
                 !$group.data('subgroupLoaded') &&
                 !$body.children().length &&
@@ -569,15 +577,19 @@ var KanbanColumn = Widget.extend({
                 this.trigger_up('kanban_load_subgroup_records', {
                     subgroupID: subgroupId,
                     columnID: this.db_id,
-                    onComplete: function () {
+                    onComplete: function (success) {
                         $group.removeClass('o_kanban_subgroup_loading');
                         $header.removeAttr('aria-busy');
                         if ($count.length) {
                             $count.text(previousCountText);
                         }
+                        if (success) {
+                            $group.data('subgroupLoaded', true);
+                        } else {
+                            $group.removeData('subgroupLoaded');
+                        }
                     },
                 });
-                $group.data('subgroupLoaded', true);
             }
         }
     },
