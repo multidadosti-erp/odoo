@@ -190,6 +190,8 @@
         <script type="text/javascript" src="/web/static/lib/jquery.scrollTo/jquery.scrollTo.js"></script>
         <script type="text/javascript" src="/web/static/lib/backbone/backbone.js"></script>
         <script type="text/javascript" src="/web/static/lib/fuzzy-master/fuzzy.js"></script>
+        <script type="text/javascript" src="/web/static/lib/highcharts/highcharts.js"></script>
+        <script type="text/javascript" src="/web/static/lib/highcharts/modules/funnel.js"></script>
 
         <script type="text/javascript" charset="utf-8">
             odoo._modules = <t t-raw="get_modules_order()"/>;

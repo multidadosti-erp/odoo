@@ -11,6 +11,7 @@ var Domain = require('web.Domain');
 var field_utils = require('web.field_utils');
 var utils = require('web.utils');
 var Widget = require('web.Widget');
+var ajax = require('web.ajax');
 var widgetRegistry = require('web.widget_registry');
 
 var _t = core._t;
@@ -31,6 +32,27 @@ var KANBAN_RECORD_COLORS = [
     _t('Purple'),
 ];
 var NB_KANBAN_RECORD_COLORS = KANBAN_RECORD_COLORS.length;
+var highchartsLoadDef;
+
+function _ensureHighchartsLoaded() {
+    if (window.Highcharts) {
+        return $.when();
+    }
+    if (highchartsLoadDef) {
+        return highchartsLoadDef;
+    }
+
+    highchartsLoadDef = $.getScript('/web/static/lib/highcharts/highcharts.js').then(function () {
+        if (window.Highcharts && window.Highcharts.seriesTypes && window.Highcharts.seriesTypes.funnel) {
+            return;
+        }
+        return $.getScript('/web/static/lib/highcharts/modules/funnel.js');
+    }).fail(function () {
+        highchartsLoadDef = null;
+    });
+
+    return highchartsLoadDef;
+}
 
 var KanbanRecord = Widget.extend({
     events: {
@@ -55,6 +77,8 @@ var KanbanRecord = Widget.extend({
         this.options = options;
         this.editable = options.editable;
         this.deletable = options.deletable;
+        this._kanbanCharts = [];
+        this._kanbanChartRetryTimeout = null;
         this.read_only_mode = options.read_only_mode;
         this.qweb = options.qweb;
         this.subWidgets = {};
@@ -82,12 +106,19 @@ var KanbanRecord = Widget.extend({
      */
     on_attach_callback: function () {
         _.invoke(this.subWidgets, 'on_attach_callback');
+        if (this.$ && this.$('[data-kanban-chart]').length) {
+            this._renderKanbanCharts();
+        }
     },
     /**
      * Called each time the record is detached from the DOM.
      */
     on_detach_callback: function () {
         _.invoke(this.subWidgets, 'on_detach_callback');
+        if (this._kanbanChartRetryTimeout) {
+            clearTimeout(this._kanbanChartRetryTimeout);
+            this._kanbanChartRetryTimeout = null;
+        }
     },
 
     //--------------------------------------------------------------------------
@@ -207,14 +238,19 @@ var KanbanRecord = Widget.extend({
     _getImageURL: function (model, field, id, cache, options) {
         options = options || {};
         var url;
-        if (this.record[field] && this.record[field].value && !utils.is_bin_size(this.record[field].value)) {
+        var hasRawField = this.recordData && Object.prototype.hasOwnProperty.call(this.recordData, field);
+        var rawFieldValue = hasRawField ? this.recordData[field] : undefined;
+
+        if (hasRawField && rawFieldValue && !utils.is_bin_size(rawFieldValue)) {
             // Use magic-word technique for detecting image type
-            url = 'data:image/' + this.file_type_magic_word[this.record[field].value[0]] + ';base64,' + this.record[field].value;
-        } else if (this.record[field] && ! this.record[field].value) {
+            url = 'data:image/' + this.file_type_magic_word[rawFieldValue[0]] + ';base64,' + rawFieldValue;
+        } else if (hasRawField && !rawFieldValue) {
             url = "/web/static/src/img/placeholder.png";
         } else {
             if (_.isArray(id)) { id = id[0]; }
-            if (!id) { id = undefined; }
+            if (!id) {
+                id = this.id || this.db_id || undefined;
+            }
             if (options.preview_image)
                 field = options.preview_image;
             var lastUpdateValue = this.record.__last_update && this.record.__last_update.value;
@@ -368,12 +404,353 @@ var KanbanRecord = Widget.extend({
         });
     },
     /**
+     * @private
+     * @param {string} raw
+     * @param {*} fallback
+     * @returns {*}
+     */
+    _parseKanbanChartJSONAttr: function (raw, fallback) {
+        if (!raw) {
+            return fallback;
+        }
+        try {
+            return JSON.parse(raw);
+        } catch (e) {
+            return fallback;
+        }
+    },
+    /**
+     * @private
+     * @param {JQuery} $chart
+     * @param {string} message
+     */
+    _showKanbanChartError: function ($chart, message) {
+        if (!$chart || !$chart.length) {
+            return;
+        }
+        $chart.empty();
+        $('<div/>', {
+            class: 'o_kanban_chart_error',
+            text: message,
+        }).css({
+            color: '#9f1239',
+            padding: '12px',
+            fontSize: '12px',
+            textAlign: 'center',
+        }).appendTo($chart);
+    },
+    /**
+     * @private
+     * @param {string} chartType
+     * @param {*} dataset
+     * @param {string} seriesName
+     * @returns {Object}
+     */
+    _normalizeKanbanChartDataset: function (chartType, dataset, seriesName) {
+        var normalized = {
+            categories: [],
+            series: [{
+                name: seriesName,
+                data: [],
+            }],
+        };
+
+        if (_.isObject(dataset) && _.isArray(dataset.series)) {
+            normalized.categories = _.isArray(dataset.categories) ? dataset.categories : [];
+            normalized.series = dataset.series;
+            return normalized;
+        }
+
+        if (chartType === 'funnel') {
+            normalized.series[0].data = dataset || [];
+            return normalized;
+        }
+
+        if (chartType === 'pie') {
+            normalized.series[0].colorByPoint = true;
+            normalized.series[0].data = _.map(dataset || [], function (item) {
+                return {
+                    name: item[0],
+                    y: item[1],
+                };
+            });
+            return normalized;
+        }
+
+        normalized.categories = _.map(dataset || [], function (item) { return item[0]; });
+        normalized.series[0].data = _.map(dataset || [], function (item) { return item[1]; });
+        return normalized;
+    },
+    /**
+     * @private
+     * @param {string} chartType
+     * @param {string} title
+     * @param {Object} normalized
+     * @returns {Object}
+     */
+    _buildKanbanChartOptions: function (chartType, title, normalized) {
+        if (chartType === 'funnel') {
+            return {
+                chart: {
+                    type: 'funnel',
+                    marginRight: 90,
+                    backgroundColor: 'transparent',
+                },
+                title: {
+                    text: title,
+                    style: {
+                        fontSize: '13px',
+                    },
+                },
+                legend: {
+                    enabled: false,
+                },
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            inside: false,
+                            format: '<b>{point.name}</b> ({point.y:,.0f})',
+                            softConnector: true,
+                        },
+                        neckWidth: '42%',
+                        neckHeight: '48%',
+                    },
+                },
+                series: normalized.series,
+                responsive: {
+                    rules: [{
+                        condition: { maxWidth: 560 },
+                        chartOptions: {
+                            plotOptions: {
+                                series: {
+                                    dataLabels: {
+                                        inside: true,
+                                    },
+                                },
+                            },
+                        },
+                    }],
+                },
+            };
+        }
+
+        if (chartType === 'pie') {
+            return {
+                chart: {
+                    type: 'pie',
+                    backgroundColor: 'transparent',
+                },
+                title: {
+                    text: title,
+                    style: {
+                        fontSize: '13px',
+                    },
+                },
+                legend: {
+                    enabled: false,
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y:,.0f}',
+                        },
+                    },
+                },
+                series: normalized.series,
+            };
+        }
+
+        return {
+            chart: {
+                type: 'bar',
+                backgroundColor: 'transparent',
+            },
+            title: {
+                text: title,
+                style: {
+                    fontSize: '13px',
+                },
+            },
+            xAxis: {
+                categories: normalized.categories,
+                title: {
+                    text: null,
+                },
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: normalized.series[0] && normalized.series[0].name,
+                    align: 'high',
+                },
+                labels: {
+                    overflow: 'justify',
+                },
+            },
+            legend: {
+                enabled: false,
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true,
+                    },
+                },
+            },
+            series: normalized.series,
+        };
+    },
+    /**
+     * Render embedded charts declared in kanban templates with data attributes.
+     *
+     * Usage in template:
+     * <div
+     *   data-kanban-chart="funnel"
+     *   data-kanban-chart-model="crm.lead"
+     *   data-kanban-chart-method="get_lead_stage_data"
+     *   data-kanban-chart-title="Lead Funnel"
+     * />
+     *
+     * @private
+     */
+    _renderKanbanCharts: function () {
+        var self = this;
+
+        this._destroyKanbanCharts();
+
+        var $chartNodes = this.$('[data-kanban-chart]');
+        if (!$chartNodes.length) {
+            return;
+        }
+
+        $chartNodes.each(function () {
+            var $chart = $(this);
+            if (!$chart.children().length) {
+                $('<div/>', {
+                    class: 'o_kanban_chart_loading',
+                    text: _t('Loading chart...'),
+                }).css({
+                    color: '#334155',
+                    padding: '10px',
+                    fontSize: '12px',
+                    textAlign: 'center',
+                }).appendTo($chart);
+            }
+        });
+
+        _ensureHighchartsLoaded().then(function () {
+            if (!window.Highcharts) {
+                $chartNodes.each(function () {
+                    self._showKanbanChartError($(this), _t('Chart library is not available.'));
+                });
+                return;
+            }
+
+            $chartNodes.each(function () {
+                var $chart = $(this);
+                var chartType = $chart.data('kanban-chart') || 'funnel';
+                var model = $chart.data('kanban-chart-model') || self.modelName;
+                var method = $chart.data('kanban-chart-method');
+                var title = $chart.data('kanban-chart-title') || _t('Kanban Chart');
+                var seriesName = $chart.data('kanban-chart-series-name') || _t('Value');
+                var args = self._parseKanbanChartJSONAttr($chart.attr('data-kanban-chart-args'), []);
+                var kwargs = self._parseKanbanChartJSONAttr($chart.attr('data-kanban-chart-kwargs'), {});
+                var customOptions = self._parseKanbanChartJSONAttr($chart.attr('data-kanban-chart-options'), {});
+
+                if (!method) {
+                    self._showKanbanChartError($chart, _t('Chart method is not configured.'));
+                    return;
+                }
+
+                if (!_.isArray(args)) {
+                    args = [args];
+                }
+                if (!_.isObject(kwargs)) {
+                    kwargs = {};
+                }
+
+                // Keep chart RPC behavior consistent with webclient calls by
+                // propagating session + view/action context.
+                var rpcContext = _.extend(
+                    {},
+                    (self.getSession() && self.getSession().user_context) || {},
+                    (self.qweb_context && self.qweb_context.context) || {},
+                    kwargs.context || {}
+                );
+                var rpcKwargs = _.extend({}, kwargs, {context: rpcContext});
+
+                self._rpc({
+                    model: model,
+                    method: method,
+                    args: args,
+                    kwargs: rpcKwargs,
+                }).then(function (dataset) {
+                    if (!$chart.closest(document.documentElement).length) {
+                        if (!self._kanbanChartRetryTimeout) {
+                            self._kanbanChartRetryTimeout = setTimeout(function () {
+                                self._kanbanChartRetryTimeout = null;
+                                if (self.$el && self.$el.closest(document.documentElement).length) {
+                                    self._renderKanbanCharts();
+                                }
+                            }, 80);
+                        }
+                        return;
+                    }
+
+                    var chart;
+                    try {
+                        var resolveSpecialChartValues = function (value) {
+                            if (_.isArray(value)) {
+                                return _.map(value, resolveSpecialChartValues);
+                            }
+                            if (_.isObject(value)) {
+                                var out = {};
+                                _.each(value, function (innerValue, key) {
+                                    out[key] = resolveSpecialChartValues(innerValue);
+                                });
+                                return out;
+                            }
+                            if (value === 'now') {
+                                return Date.now();
+                            }
+                            return value;
+                        };
+
+                        var normalized = self._normalizeKanbanChartDataset(chartType, dataset, seriesName);
+                        var baseOptions = self._buildKanbanChartOptions(chartType, title, normalized);
+                        var chartOptions = $.extend(true, {}, baseOptions, resolveSpecialChartValues(customOptions));
+                        chart = window.Highcharts.chart($chart[0], chartOptions);
+                    } catch (err) {
+                        self._showKanbanChartError($chart, _t('Error while rendering chart.'));
+                        return;
+                    }
+
+                    if (chart) {
+                        self._kanbanCharts.push(chart);
+                    }
+                }).fail(function (err) {
+                    self._showKanbanChartError($chart, _t('Error loading chart data.'));
+                });
+            });
+        }).fail(function () {
+            $chartNodes.each(function () {
+                self._showKanbanChartError($(this), _t('Error loading chart library.'));
+            });
+        });
+    },
+    /**
      * Renders the record
      *
      * @returns {Deferred}
      */
     _render: function () {
+        var self = this;
         this.defs = [];
+        this._destroyKanbanCharts();
         this._replaceElement(this.qweb.render('kanban-box', this.qweb_context));
         this.$el.addClass('o_kanban_record').attr("tabindex",0);
 
@@ -395,7 +772,33 @@ var KanbanRecord = Widget.extend({
         // We use boostrap tooltips for better and faster display
         this.$('span.o_tag').tooltip({delay: {'show': 50}});
 
-        return $.when.apply(this, this.defs);
+        return $.when.apply(this, this.defs).then(function () {
+            self._renderKanbanCharts();
+        });
+    },
+    /**
+     * @private
+     */
+    _destroyKanbanCharts: function () {
+        _.each(this._kanbanCharts || [], function (chart) {
+            if (!chart || !chart.destroy || chart.__kanbanDestroyed) {
+                return;
+            }
+
+            // Highcharts may already have torn down part of the instance
+            // during view switches; avoid throwing on double-destroy.
+            if (!chart.renderer) {
+                chart.__kanbanDestroyed = true;
+                return;
+            }
+
+            try {
+                chart.destroy();
+            } catch (err) {
+            }
+            chart.__kanbanDestroyed = true;
+        });
+        this._kanbanCharts = [];
     },
     /**
      * Sets particular classnames on a field $el according to the
@@ -418,6 +821,17 @@ var KanbanRecord = Widget.extend({
         if (fieldInfo.bold) {
             $el.addClass('o_text_bold');
         }
+    },
+    /**
+     * @override
+     */
+    destroy: function () {
+        if (this._kanbanChartRetryTimeout) {
+            clearTimeout(this._kanbanChartRetryTimeout);
+            this._kanbanChartRetryTimeout = null;
+        }
+        this._destroyKanbanCharts();
+        this._super.apply(this, arguments);
     },
     /**
      * Sets internal values of the kanban record according to the given state
@@ -467,19 +881,21 @@ var KanbanRecord = Widget.extend({
      */
     _getQWebRecord: function (record) {
         var safeRecord = _.isObject(record) ? record : {};
-        var emptyField = {
-            value: false,
-            raw_value: false,
+        var makeEmptyField = function () {
+            return {
+                value: false,
+                raw_value: false,
+            };
         };
 
         _.each(_.keys(this.fields || {}), function (fieldName) {
             if (!safeRecord[fieldName]) {
-                safeRecord[fieldName] = emptyField;
+                safeRecord[fieldName] = makeEmptyField();
             }
         });
         _.each(_.keys(this.fieldsInfo || {}), function (fieldName) {
             if (!safeRecord[fieldName]) {
-                safeRecord[fieldName] = emptyField;
+                safeRecord[fieldName] = makeEmptyField();
             }
         });
 
@@ -495,7 +911,7 @@ var KanbanRecord = Widget.extend({
                 if (prop in target) {
                     return target[prop];
                 }
-                return emptyField;
+                return makeEmptyField();
             },
         });
     },
