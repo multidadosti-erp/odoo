@@ -16,6 +16,7 @@ var Domain = require('web.Domain');
 var DomainSelector = require('web.DomainSelector');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
 var framework = require('web.framework');
+var rpc = require('web.rpc');
 var session = require('web.session');
 var utils = require('web.utils');
 var view_dialogs = require('web.view_dialogs');
@@ -23,6 +24,42 @@ var field_utils = require('web.field_utils');
 
 var qweb = core.qweb;
 var _t = core._t;
+var decimalPrecisionMapPromise;
+var decimalPrecisionMap;
+
+/**
+ * Carrega e cacheia o mapa de precisao decimal (nome -> digits).
+ *
+ * Uso:
+ * - chamado por widgets de float que usam a opcao `decimal_precision` por nome;
+ * - na primeira chamada faz RPC em `decimal.precision.search_read`;
+ * - chamadas seguintes reutilizam o resultado em memoria;
+ * - em falha/abort, limpa a promise para permitir nova tentativa.
+ *
+ * @returns {jQuery.Promise<Object<string, Array|number>>}
+ */
+function getDecimalPrecisionMap() {
+    if (decimalPrecisionMap) {
+        return $.when(decimalPrecisionMap);
+    }
+    if (!decimalPrecisionMapPromise) {
+        decimalPrecisionMapPromise = rpc.query({
+            model: 'decimal.precision',
+            method: 'search_read',
+            args: [[], ['name', 'digits']],
+        }).then(function (rows) {
+            decimalPrecisionMap = {};
+            _.each(rows, function (row) {
+                decimalPrecisionMap[row.name] = row.digits;
+            });
+            return decimalPrecisionMap;
+        }).fail(function () {
+            // Allow subsequent widgets to retry if the first RPC was aborted/rejected.
+            decimalPrecisionMapPromise = undefined;
+        });
+    }
+    return decimalPrecisionMapPromise;
+}
 
 var TranslatableFieldMixin = {
     //--------------------------------------------------------------------------
@@ -951,8 +988,13 @@ var FieldFloat = NumericField.extend({
     supportedFieldTypes: ['float'],
 
     /**
-     * Float fields have an additional precision parameter that is read from
-     * either the field node in the view or the field python definition itself.
+        * Inicializa o widget de float e prepara a base de precisao.
+        *
+        * Uso:
+        * - le `attrs.digits` quando informado no XML;
+        * - guarda uma copia do `digits` original para fallback;
+        * - se houver `options.decimal_precision`, ativa recarga em mudancas
+        *   de outros campos e aplica a precisao dinamica inicial.
      *
      * @override
      */
@@ -960,7 +1002,255 @@ var FieldFloat = NumericField.extend({
         this._super.apply(this, arguments);
         if (this.attrs.digits) {
             this.nodeOptions.digits = JSON.parse(this.attrs.digits);
+            this.parseOptions.digits = this.nodeOptions.digits;
+            this.formatOptions.digits = this.nodeOptions.digits;
         }
+        this._hasOriginalDigits = _.has(this.nodeOptions, 'digits');
+        this._originalDigits = _.isArray(this.nodeOptions.digits) ? this.nodeOptions.digits.slice() : this.nodeOptions.digits;
+
+        if (this.nodeOptions.decimal_precision) {
+            // Dynamic decimal precision depends on the record values.
+            this.resetOnAnyFieldChange = true;
+            this._applyDecimalPrecisionOption();
+        }
+    },
+
+    /**
+     * Resolve dependencias assincronas antes da primeira renderizacao.
+     *
+     * Uso:
+     * - quando `decimal_precision` esta presente, busca o mapa de nomes
+     *   de precisao e reaplica as opcoes com os dados carregados.
+     *
+     * @override
+     */
+    willStart: function () {
+        var defs = [this._super.apply(this, arguments)];
+        if (this.nodeOptions.decimal_precision) {
+            defs.push(getDecimalPrecisionMap().then(function (precisionMap) {
+                this._decimalPrecisionMap = precisionMap;
+                this._applyDecimalPrecisionOption();
+            }.bind(this)));
+        }
+        return $.when.apply($, defs);
+    },
+
+    /**
+     * Reaplica a precisao dinamica quando o widget sofre reset.
+     *
+     * Uso:
+     * - garante consistencia apos onchanges/atualizacoes de registro.
+     *
+     * @override
+     */
+    _reset: function () {
+        this._super.apply(this, arguments);
+        if (this.nodeOptions.decimal_precision) {
+            this._applyDecimalPrecisionOption();
+        }
+    },
+
+    /**
+     * Aplica efetivamente a precisao calculada nas opcoes de parse/format.
+     *
+     * Uso:
+     * - resolve a configuracao (`string`, `number`, `rules`, `domain`);
+     * - aceita `0` como valor valido de casas decimais;
+     * - se nao houver precisao valida, restaura o `digits` original.
+     *
+     * @private
+     */
+    _applyDecimalPrecisionOption: function () {
+        var precision = this._resolveDecimalPrecisionOption(this.nodeOptions.decimal_precision);
+        if (_.isUndefined(precision) || _.isNull(precision) || precision === false) {
+            this._restoreOriginalDigitsOptions();
+            return;
+        }
+
+        var precisionDigits = _.isNumber(precision) ? precision : this._decimalPrecisionMap && this._decimalPrecisionMap[precision];
+        if (!_.isNumber(precisionDigits)) {
+            this._restoreOriginalDigitsOptions();
+            return;
+        }
+
+        this.nodeOptions.digits = [16, precisionDigits];
+        this.parseOptions.digits = this.nodeOptions.digits;
+        this.formatOptions.digits = this.nodeOptions.digits;
+    },
+
+    /**
+     * Restaura as opcoes `digits` originais do campo.
+     *
+     * Uso:
+     * - chamada quando nenhuma regra dinamica se aplica;
+     * - preserva fallback original em `nodeOptions`, `parseOptions`
+     *   e `formatOptions`.
+     *
+     * @private
+     */
+    _restoreOriginalDigitsOptions: function () {
+        if (!this._hasOriginalDigits) {
+            delete this.nodeOptions.digits;
+            delete this.parseOptions.digits;
+            delete this.formatOptions.digits;
+            return;
+        }
+
+        if (_.isArray(this._originalDigits)) {
+            this.nodeOptions.digits = this._originalDigits.slice();
+        } else if (_.isObject(this._originalDigits)) {
+            this.nodeOptions.digits = _.clone(this._originalDigits);
+        } else {
+            this.nodeOptions.digits = this._originalDigits;
+        }
+        this.parseOptions.digits = this.nodeOptions.digits;
+        this.formatOptions.digits = this.nodeOptions.digits;
+    },
+
+    /**
+     * Resolve a estrutura de `decimal_precision` em um valor final.
+     *
+     * Uso:
+     * - suporta formatos antigos (`string` e `number`);
+     * - suporta lista de regras e objeto com `rules`/`domain`/`default`;
+     * - faz fallback apenas para `undefined/null` (nao para `0`).
+     *
+     * @private
+     * @param {*} option
+     * @returns {string|number|undefined|false}
+     */
+    _resolveDecimalPrecisionOption: function (option) {
+        if (!option) {
+            return false;
+        }
+
+        if (_.isString(option) || _.isNumber(option)) {
+            return option;
+        }
+
+        if (_.isArray(option)) {
+            var matched = _.find(option, function (rule) {
+                return this._isDecimalPrecisionRuleMatched(rule);
+            }.bind(this));
+            return matched && this._extractDecimalPrecisionValue(matched);
+        }
+
+        if (_.isObject(option)) {
+            if (option.rules && _.isArray(option.rules)) {
+                var rule = _.find(option.rules, function (item) {
+                    return this._isDecimalPrecisionRuleMatched(item);
+                }.bind(this));
+                var resolvedFromRule = this._extractDecimalPrecisionValue(rule);
+                return (_.isUndefined(resolvedFromRule) || _.isNull(resolvedFromRule)) ? option.default : resolvedFromRule;
+            }
+            if (option.domain) {
+                return this._isDecimalPrecisionRuleMatched(option) ? this._extractDecimalPrecisionValue(option) : option.default;
+            }
+
+            var directKeys = ['default', 'precision', 'value', 'decimal_precision'];
+            var directValue = _.find(directKeys, function (key) {
+                return !_.isUndefined(option[key]) && !_.isNull(option[key]);
+            });
+            return _.isUndefined(directValue) ? undefined : option[directValue];
+        }
+
+        return false;
+    },
+
+    /**
+     * Avalia se uma regra de precisao deve ser aplicada ao registro atual.
+     *
+     * Uso:
+     * - se nao houver `domain`, considera a regra como valida;
+     * - se houver `domain`, avalia com `web.Domain` usando `recordData`.
+     *
+     * @private
+     * @param {Object} rule
+     * @returns {boolean}
+     */
+    _isDecimalPrecisionRuleMatched: function (rule) {
+        if (!rule) {
+            return false;
+        }
+        if (!rule.domain) {
+            return true;
+        }
+        try {
+            return new Domain(rule.domain, this.recordData).compute(this.recordData);
+        } catch (e) {
+            return false;
+        }
+    },
+
+    /**
+     * Extrai a precisao de uma regra por ordem de prioridade.
+     *
+     * Uso:
+     * - aceita aliases: `precision`, `value`, `decimal_precision`;
+     * - usa checagem por presenca de chave para manter `0` valido.
+     *
+     * @private
+     * @param {Object} rule
+     * @returns {string|number|undefined}
+     */
+    _extractDecimalPrecisionValue: function (rule) {
+        if (!rule || !_.isObject(rule)) {
+            return undefined;
+        }
+
+        var keys = ['precision', 'value', 'decimal_precision'];
+        var key = _.find(keys, function (name) {
+            return _.has(rule, name) && !_.isUndefined(rule[name]) && !_.isNull(rule[name]);
+        });
+        return _.isUndefined(key) ? undefined : rule[key];
+    },
+
+    /**
+     * Faz parse do valor digitado e aplica arredondamento conforme `digits`.
+     *
+     * Uso:
+     * - delega parse base ao `NumericField`;
+     * - para floats, arredonda pelo numero de casas definido no contexto
+     *   ativo (parseOptions/nodeOptions/field).
+     *
+     * @private
+     * @param {string} value
+     * @returns {number}
+     */
+    _parseValue: function (value) {
+        var parsed = this._super.apply(this, arguments);
+        if (this.formatType !== 'float') {
+            return parsed;
+        }
+
+        var digits = this.parseOptions.digits || this.nodeOptions.digits || (this.field && this.field.digits);
+        if (_.isArray(digits) && _.isNumber(digits[1])) {
+            return utils.round_decimals(parsed, digits[1]);
+        }
+
+        return parsed;
+    },
+
+    /**
+     * Normaliza o valor no blur/change e dispara o fluxo de commit.
+     *
+     * Uso:
+     * - em modo edicao de float, reescreve o input com valor normalizado;
+     * - se parse falhar, preserva texto original para validacao padrao;
+     * - ao final, aciona `_doAction` para propagar mudanca.
+     *
+     * @private
+     */
+    _onChange: function () {
+        if (this.mode === 'edit' && this.formatType === 'float' && this.$input && this.$input.length) {
+            try {
+                var normalized = this._parseValue(this.$input.val());
+                this.$input.val(this._formatValue(normalized));
+            } catch (e) {
+                // Keep original input so default validation flow can handle invalid values.
+            }
+        }
+        this._doAction();
     },
 });
 

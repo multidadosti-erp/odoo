@@ -534,6 +534,94 @@ QUnit.module('basic_fields', {
         form.destroy();
     });
 
+    QUnit.test('float field applies named decimal precision option', function (assert) {
+        assert.expect(1);
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="qux" options="{\'decimal_precision\': \'QUnit Named Precision\'}"/>' +
+                    '</sheet>' +
+                '</form>',
+            res_id: 1,
+            mockRPC: function (route, args) {
+                if (args.model === 'decimal.precision' && args.method === 'search_read') {
+                    return Promise.resolve([
+                        {name: 'QUnit Named Precision', digits: [16, 4]},
+                    ]);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.strictEqual(form.$('.o_field_widget[name=qux]').text(), '0.4444',
+            'The named decimal precision should be applied.');
+
+        form.destroy();
+    });
+
+    QUnit.test('float field switches decimal precision with domain rules', function (assert) {
+        assert.expect(3);
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="bar"/>' +
+                        '<field name="qux" options="{\'decimal_precision\': {\'rules\': [' +
+                            '{\'domain\': [[\'bar\', \'=\', true]], \'precision\': 3},' +
+                            '{\'domain\': [[\'bar\', \'=\', false]], \'precision\': 1}' +
+                        '], \'default\': 2}}"/>' +
+                    '</sheet>' +
+                '</form>',
+            res_id: 1,
+        });
+
+        assert.strictEqual(form.$('.o_field_widget[name=qux]').text(), '0.444',
+            'The first matching rule should apply in readonly mode.');
+
+        testUtilsDom.click(form.$buttons.find('.o_form_button_edit'));
+        form.$('.o_field_widget[name=bar] input').prop('checked', false).trigger('change');
+        assert.strictEqual(form.$('input[name=qux]').val(), '0.4',
+            'The precision should update in edit mode when dependent fields change.');
+
+        testUtilsDom.click(form.$buttons.find('.o_form_button_save'));
+        assert.strictEqual(form.$('.o_field_widget[name=qux]').text(), '0.4',
+            'The updated precision should persist after saving.');
+
+        form.destroy();
+    });
+
+    QUnit.test('float field supports decimal precision zero', function (assert) {
+        assert.expect(2);
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="qux" options="{\'decimal_precision\': 0}"/>' +
+                    '</sheet>' +
+                '</form>',
+            res_id: 1,
+        });
+
+        assert.strictEqual(form.$('.o_field_widget[name=qux]').text(), '0',
+            'Readonly value should use 0 decimal places.');
+
+        testUtilsDom.click(form.$buttons.find('.o_form_button_edit'));
+        assert.strictEqual(form.$('input[name=qux]').val(), '0',
+            'Edit value should keep 0 decimal places.');
+
+        form.destroy();
+    });
+
     QUnit.test('float field in list view no widget', function (assert) {
         assert.expect(5);
 
