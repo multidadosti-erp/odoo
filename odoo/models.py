@@ -49,6 +49,7 @@ from operator import attrgetter, itemgetter
 import babel.dates
 import dateutil.relativedelta
 import psycopg2, psycopg2.extensions
+from psycopg2 import errorcodes
 from lxml import etree
 from lxml.builder import E
 from psycopg2.extensions import AsIs
@@ -2880,6 +2881,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         # get the default value; ideally, we should use default_get(), but it
         # fails due to ir.default not being ready
         field = self._fields[column_name]
+        trace_id = "model=%s table=%s" % (self._name, self._table)
 
         if field.default and field.dynamic_default:
             # Multidados: Criado a Flag dynamic_default para processar registro por registro
@@ -2887,7 +2889,10 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             query = 'SELECT id FROM "%s" WHERE "%s" IS NULL' % (self._table, column_name)
 
             self._cr.execute(query)
-            for row in self._cr.fetchall():
+            rows = self._cr.fetchall()
+            total_rows = len(rows)
+            updated_rows = 0
+            for row in rows:
                 # Adicionando ID por Context
                 self.env.context = dict(self.env.context, id=row[0])
 
@@ -2905,6 +2910,16 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                         self._table, column_name, field.column_format, row[0])
 
                     self._cr.execute(query, (value,))
+                    updated_rows += self._cr.rowcount
+
+            _logger.info(
+                "_auto_init [%s]: dynamic default population finished for '%s.%s' (updated=%s, candidates=%s)",
+                trace_id,
+                self._name,
+                column_name,
+                updated_rows,
+                total_rows,
+            )
         else:
             if field.default:
                 value = field.default(self)
@@ -2924,6 +2939,13 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 query = 'UPDATE "%s" SET "%s"=%s WHERE "%s" IS NULL' % (
                     self._table, column_name, field.column_format, column_name)
                 self._cr.execute(query, (value,))
+                _logger.info(
+                    "_auto_init [%s]: default population finished for '%s.%s' (updated=%s)",
+                    trace_id,
+                    self._name,
+                    column_name,
+                    self._cr.rowcount,
+                )
 
     @ormcache()
     def _table_has_rows(self):
@@ -2964,6 +2986,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         update_custom_fields = self._context.get('update_custom_fields', False)
         must_create_table = not tools.table_exists(cr, self._table)
         parent_path_compute = False
+        trace_id = "model=%s table=%s" % (self._name, self._table)
 
         if self._auto:
             if must_create_table:
@@ -2980,8 +3003,34 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             columns = tools.table_columns(cr, self._table)
 
             def recompute(field):
-                _logger.info("Storing computed values of %s", field)
-                recs = self.with_context(active_test=False).search([])
+                """Agenda a recomputacao de um campo armazenado apos o auto_init.
+
+                Esta funcao roda no `post_init` para evitar custo durante a
+                montagem do schema. O objetivo e marcar todos os registros do
+                modelo para recomputo de um campo `store=True` que acabou de ser
+                criado, preservando rastreabilidade via logs/contexto.
+
+                Etapas:
+                1) Conta registros com `active_test=False` para log e ETA.
+                2) Reabre o recordset com contexto de observabilidade.
+                3) Marca o campo em todo o conjunto usando `_recompute_todo`.
+                """
+                recs_model = self.with_context(active_test=False)
+                total = recs_model.search_count([])
+                _logger.info(
+                    "_auto_init [%s]: storing computed values of %s (records=%s)",
+                    trace_id,
+                    field,
+                    total,
+                )
+
+                recs = self.with_context(
+                    active_test=False,
+                    auto_init_recompute_log=True,
+                    auto_init_recompute_trace_id=trace_id,
+                    auto_init_recompute_total=total,
+                    recompute_heartbeat_seconds=60,
+                ).search([])
                 recs._recompute_todo(field)
 
             for field in self._fields.values():
@@ -2992,7 +3041,22 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     continue            # don't update custom fields
 
                 new = field.update_db(self, columns)
+                if new:
+                    _logger.info(
+                        "_auto_init [%s]: created database storage for field '%s.%s' (type=%s, compute=%s)",
+                        trace_id,
+                        self._name,
+                        field.name,
+                        field.type,
+                        bool(field.compute),
+                    )
                 if new and field.compute:
+                    _logger.info(
+                        "_auto_init [%s]: scheduling recompute for new computed field '%s.%s'",
+                        trace_id,
+                        self._name,
+                        field.name,
+                    )
                     self.pool.post_init(recompute, field)
 
         if self._auto:
@@ -4419,6 +4483,145 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
     def _load_records_create(self, values):
         return self.create(values)
 
+    def _load_records_constraint_fields(self, constraint_name):
+        self._cr.execute(
+            """
+                SELECT a.attname
+                FROM pg_constraint c
+                JOIN unnest(c.conkey) WITH ORDINALITY AS cols(attnum, ord)
+                    ON TRUE
+                JOIN pg_attribute a
+                    ON a.attrelid = c.conrelid
+                   AND a.attnum = cols.attnum
+                WHERE c.conname = %s
+                  AND c.contype = 'u'
+                  AND c.conrelid = %s::regclass
+                ORDER BY cols.ord
+            """,
+            [constraint_name, self._table],
+        )
+        return [row[0] for row in self._cr.fetchall()]
+
+    def _load_records_model_unique_fields(self):
+        """Retorna listas de campos de constraints UNIQUE declaradas no modelo."""
+        unique_sets = []
+        pattern = re.compile(r'^\s*unique\s*\(([^)]+)\)\s*$', re.I)
+        for _name, definition, _msg in getattr(self, '_sql_constraints', []):
+            if not definition:
+                continue
+            match = pattern.match(definition)
+            if not match:
+                continue
+            fields_raw = match.group(1)
+            fields = [fname.strip().strip('"') for fname in fields_raw.split(',')]
+            fields = [fname for fname in fields if fname in self._fields]
+            if fields:
+                unique_sets.append(fields)
+        return unique_sets
+
+    def _load_records_find_existing(self, values, error=None, require_unique=False):
+        """Busca de melhor esforco quando o create via XML viola uma unica.
+
+        Monta um dominio de igualdade estrita com valores escalares de
+        ``values`` e tenta reaproveitar um registro existente para nao
+        interromper a carga do modulo.
+        """
+        domain = []
+        used_constraint_domain = False
+        constraint_name = getattr(getattr(error, 'diag', None), 'constraint_name', None)
+        if constraint_name:
+            try:
+                c_fields = self._load_records_constraint_fields(constraint_name)
+            except Exception:
+                c_fields = []
+            if c_fields and all(fname in values for fname in c_fields):
+                domain = [(fname, '=', values[fname]) for fname in c_fields if fname in self._fields]
+                used_constraint_domain = bool(domain)
+
+        if not used_constraint_domain:
+            for unique_fields in self._load_records_model_unique_fields():
+                if all(fname in values for fname in unique_fields):
+                    uniq_domain = [(fname, '=', values[fname]) for fname in unique_fields]
+                    record = self.with_context(active_test=False).search(uniq_domain, limit=1)
+                    if record:
+                        return record
+
+            if require_unique:
+                return self.browse()
+
+            for fname, fval in values.items():
+                field = self._fields.get(fname)
+                if not field:
+                    continue
+                if field.type in ('one2many', 'many2many', 'binary', 'html'):
+                    continue
+                if isinstance(fval, (list, tuple, dict)):
+                    continue
+                domain.append((fname, '=', fval))
+
+        if not domain:
+            return self.browse()
+
+        return self.with_context(active_test=False).search(domain, limit=1)
+
+    def _load_records_relink_legacy_xmlid(self, imd, xml_id, record):
+        """Se o XMLID mudou de modulo, religa para o modulo atual.
+
+        Isso mantem os updates idempotentes em renomeacoes/migracoes de
+        modulo e evita acumular XMLIDs duplicados para o mesmo registro.
+        """
+        if not xml_id or not record:
+            return
+        if '.' not in xml_id:
+            return
+
+        module, name = xml_id.split('.', 1)
+        legacy_xmlids = imd.search([
+            ('name', '=', name),
+            ('model', '=', self._name),
+            ('res_id', '=', record.id),
+            ('module', '!=', module),
+        ], limit=2)
+
+        if len(legacy_xmlids) != 1:
+            return
+
+        legacy = legacy_xmlids[0]
+        old_module = legacy.module
+        legacy.write({'module': module})
+        _logger.warning(
+            "Relinked XMLID %s.%s -> %s.%s for %s(id=%s)",
+            old_module,
+            name,
+            module,
+            name,
+            self._name,
+            record.id,
+        )
+
+    def _load_records_is_unique_violation(self, error):
+        """Identifica de forma robusta erro de violacao de unicidade.
+
+        Em alguns cenarios o erro pode chegar encapsulado (``__cause__`` /
+        ``__context__``), por isso percorremos a cadeia de excecoes.
+        """
+        visited = set()
+        current = error
+        while current and id(current) not in visited:
+            visited.add(id(current))
+            pgcode = getattr(current, 'pgcode', None)
+            if pgcode == errorcodes.UNIQUE_VIOLATION:
+                return True
+
+            if isinstance(current, psycopg2.IntegrityError):
+                text = str(current).lower()
+                if 'duplicate key value violates unique constraint' in text:
+                    return True
+
+            current = getattr(current, '__cause__', None) or getattr(current, '__context__', None)
+
+        return False
+
     def _load_records(self, data_list, update=False):
         """ Create or update records of this model, and assign XMLIDs.
 
@@ -4503,16 +4706,54 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     _logger.warning("Creating record %s in module %s.", data['xml_id'], module)
 
         # create records
-        records = self._load_records_create([data['values'] for data in to_create])
-        for data, record in pycompat.izip(to_create, records):
+        for data in to_create:
+            values = data['values']
+            xml_id = data.get('xml_id')
+            if xml_id:
+                record = self._load_records_find_existing(values, require_unique=True)
+                if record:
+                    self._load_records_relink_legacy_xmlid(imd, xml_id, record)
+                    _logger.warning(
+                        "Skipping XML create for model %s (xml_id=%s), existing id=%s",
+                        self._name,
+                        xml_id,
+                        record.id,
+                    )
+                    data['record'] = record
+                    continue
+
+            try:
+                with self.env.cr.savepoint():
+                    record = self._load_records_create([values])
+                    record = record[:1]
+            except Exception as error:
+                if not self._load_records_is_unique_violation(error):
+                    raise
+                if not xml_id:
+                    raise
+                record = self._load_records_find_existing(values, error=error)
+                if record:
+                    self._load_records_relink_legacy_xmlid(imd, xml_id, record)
+                    _logger.warning(
+                        "Skipping duplicate XML create for model %s (xml_id=%s), reusing existing id=%s",
+                        self._name,
+                        xml_id,
+                        record.id,
+                    )
+                else:
+                    raise
+
             data['record'] = record
 
         # create or update XMLIDs
         if to_create or to_update:
-            imd_data_list = [data for data in data_list if data.get('xml_id')]
+            imd_data_list = [
+                data for data in data_list
+                if data.get('xml_id') and data.get('record') and data['record'].id
+            ]
             imd._update_xmlids(imd_data_list, update)
 
-        return original_self.concat(*(data['record'] for data in data_list))
+        return original_self.concat(*(data.get('record', self.browse()) for data in data_list))
 
     # TODO: ameliorer avec NULL
     @api.model
@@ -5788,11 +6029,13 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             (:class:`Field` instance), including ``self``.
             Return at most ``limit`` records.
         """
-        recs = self.browse(self._prefetch[self._name])
         ids = [self.id]
-        for record_id in self.env.cache.get_missing_ids(recs - self, field):
+        recs = self.browse(self._prefetch[self._name])
+        for record_id in self.env.cache.get_missing_ids(recs, field):
             if not record_id:
                 # Do not prefetch `NewId`
+                continue
+            if record_id == self.id:
                 continue
             ids.append(record_id)
             if limit and limit <= len(ids):
@@ -5894,45 +6137,255 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         return self.env.check_todo(field, self)
 
     def _recompute_todo(self, field):
-        """ Mark ``field`` to be recomputed. """
+        """Marca um campo para recomputacao no ambiente atual.
+
+        O registro atual (`self`) e adicionado na fila de recomputo do
+        `Environment`, que sera processada por `recompute()`.
+        """
         self.env.add_todo(field, self)
 
     def _recompute_done(self, field):
-        """ Mark ``field`` as recomputed. """
+        """Remove um campo da fila de recomputacao para o recordset atual.
+
+        Este metodo indica ao `Environment` que o campo ja foi tratado para
+        `self`, evitando recomputacoes repetidas.
+        """
         self.env.remove_todo(field, self)
 
     @api.model
     def recompute(self):
-        """ Recompute stored function fields. The fields and records to
-            recompute have been determined by method :meth:`modified`.
+        """Recalcula campos computados armazenados (`store=True`) pendentes.
+
+        Fluxo resumido:
+        1) Consome itens da fila de recomputo (`env.get_todo()`).
+        2) Computa valores em lotes controlados (`compute_batch_size`) para
+           evitar cargas monoliticas de memoria/CPU.
+        3) Agrupa resultados iguais e grava em lote (`_flush_updates`) para
+           reduzir numero de writes no banco.
+        4) Emite logs de progresso com throughput e ETA quando habilitado via
+           contexto (`auto_init_recompute_log`).
+        5) Marca os campos como concluidos com `_recompute_done`.
+
+        Contextos relevantes para manutencao:
+        - recompute_flush_every: tamanho do lote de escrita.
+        - recompute_compute_batch_size: tamanho do lote de computacao.
+        - recompute_heartbeat_seconds: intervalo entre heartbeats.
+        - auto_init_recompute_*: metadados de rastreio/observabilidade.
         """
         while self.env.has_todo():
             field, recs = self.env.get_todo()
             # determine the fields to recompute
             fs = self.env[field.model_name]._field_computed[field]
             ns = [f.name for f in fs if f.store]
+            model = self.env[field.model_name]
+            flush_every = int(self._context.get('recompute_flush_every', 50000))
+            if flush_every <= 0:
+                flush_every = 50000
+
+            trace_id = recs._context.get('auto_init_recompute_trace_id') or (
+                "model=%s table=%s field=%s" % (field.model_name, model._table, field.name)
+            )
+            started_at = time.time()
+            log_recompute = bool(recs._context.get('auto_init_recompute_log'))
+            total = None
+            if log_recompute:
+                total_hint = recs._context.get('auto_init_recompute_total')
+                total = int(total_hint) if total_hint is not None else len(recs)
+            heartbeat_seconds = int(recs._context.get('recompute_heartbeat_seconds', 60))
+            if heartbeat_seconds <= 0:
+                heartbeat_seconds = 60
+
             # evaluate fields, and group record ids by update
             updates = defaultdict(set)
-            for rec in recs:
+            pending_size = 0
+            processed = 0
+            skipped = 0
+            written = 0
+            last_heartbeat = started_at
+
+            if log_recompute:
+                _logger.info(
+                    "_recompute [%s]: started (records=%s, flush_every=%s, heartbeat=%ss)",
+                    trace_id,
+                    total,
+                    flush_every,
+                    heartbeat_seconds,
+                )
+
+            def _flush_updates():
+                """Persiste no banco os grupos de updates acumulados.
+
+                Os registros sao agrupados por payload de valores para diminuir
+                comandos SQL repetidos. A escrita ocorre em `norecompute()` para
+                impedir recursao de recomputo durante este flush.
+                """
+                nonlocal updates, pending_size, written
+                if not updates:
+                    return
+                with recs.env.norecompute():
+                    for vals, ids in updates.items():
+                        target = recs.browse(ids)
+                        try:
+                            target._write(dict(vals))
+                            written += len(ids)
+                        except MissingError:
+                            # retry without missing records
+                            exists_target = target.exists()
+                            exists_target._write(dict(vals))
+                            written += len(exists_target)
+                updates = defaultdict(set)
+                pending_size = 0
+
+            def _format_eta(seconds):
+                """Converte segundos para `HH:MM:SS` (ou `n/a`)."""
+                if seconds < 0:
+                    return 'n/a'
+                hours = seconds // 3600
+                minutes = (seconds % 3600) // 60
+                secs = seconds % 60
+                return "%02d:%02d:%02d" % (hours, minutes, secs)
+
+            eta_tz_name = 'UTC'
+            eta_tz = pytz.UTC
+            if log_recompute:
+                eta_tz_name = recs._context.get('tz') or recs.env.user.tz or 'UTC'
                 try:
-                    vals = {n: rec[n] for n in ns}
-                except MissingError:
-                    continue
-                except CacheMiss:
-                    if not rec.exists():
+                    eta_tz = pytz.timezone(eta_tz_name)
+                except pytz.UnknownTimeZoneError:
+                    eta_tz_name = 'UTC'
+                    eta_tz = pytz.UTC
+
+            def _format_eta_at(epoch_seconds):
+                """Formata um timestamp epoch no timezone de referencia do job."""
+                if epoch_seconds < 0:
+                    return 'n/a'
+                dt_utc = datetime.datetime.fromtimestamp(epoch_seconds, pytz.UTC)
+                dt_local = dt_utc.astimezone(eta_tz)
+                return dt_local.strftime('%Y-%m-%d %H:%M:%S')
+
+            def _log_heartbeat(phase, now):
+                """Emite heartbeat com progresso, taxa e previsao de termino.
+
+                `phase` diferencia o ponto atual do pipeline:
+                - read: durante coleta/conversao de valores para escrita
+                """
+                nonlocal last_heartbeat
+                remaining = max(total - processed, 0)
+                elapsed = now - started_at
+                rate = (float(processed) / elapsed) if elapsed > 0 else 0.0
+                eta_seconds = int(remaining / rate) if rate > 0 else -1
+                eta_at = _format_eta_at(now + eta_seconds) if eta_seconds >= 0 else 'n/a'
+                _logger.info(
+                    "_recompute [%s]: heartbeat (phase=%s, processed=%s, remaining=%s, written=%s, skipped=%s, rate=%.1f rec/s, eta=%s, eta_seconds=%s, eta_at=%s, eta_tz=%s, elapsed=%.1fs)",
+                    trace_id,
+                    phase,
+                    processed,
+                    remaining,
+                    written,
+                    skipped,
+                    rate,
+                    _format_eta(eta_seconds),
+                    eta_seconds,
+                    eta_at,
+                    eta_tz_name,
+                    elapsed,
+                )
+                last_heartbeat = now
+
+            if log_recompute:
+                compute_batch_size = int(recs._context.get('recompute_compute_batch_size', 2000))
+                if compute_batch_size <= 0:
+                    compute_batch_size = 2000
+
+                ids = recs._ids
+                for start in range(0, len(ids), compute_batch_size):
+                    batch_ids = ids[start:start + compute_batch_size]
+                    batch = recs.browse(batch_ids).with_context(prefetch_fields=False).with_prefetch()
+
+                    if processed == 0:
+                        _logger.info(
+                            "_recompute [%s]: entering record evaluation",
+                            trace_id,
+                        )
+
+                    for rec in batch:
+                        processed += 1
+
+                        now = time.time()
+                        if (now - last_heartbeat) >= heartbeat_seconds:
+                            _log_heartbeat('read', now)
+
+                        try:
+                            vals = {n: rec[n] for n in ns}
+                        except MissingError:
+                            skipped += 1
+                            continue
+                        except CacheMiss:
+                            skipped += 1
+                            continue
+
+                        vals = rec._convert_to_write(vals)
+                        updates[frozendict(vals)].add(rec.id)
+                        pending_size += 1
+
+                        if pending_size >= flush_every:
+                            _logger.info(
+                                "_recompute [%s]: flushing batch (pending=%s, processed=%s, written=%s)",
+                                trace_id,
+                                pending_size,
+                                processed,
+                                written,
+                            )
+                            _flush_updates()
+                            _logger.info(
+                                "_recompute [%s]: flush done (processed=%s, written=%s, skipped=%s)",
+                                trace_id,
+                                processed,
+                                written,
+                                skipped,
+                            )
+            else:
+                for rec in recs:
+                    processed += 1
+                    try:
+                        vals = {n: rec[n] for n in ns}
+                    except MissingError:
+                        skipped += 1
+                        continue
+                    except CacheMiss:
+                        skipped += 1
                         continue
 
-                vals = rec._convert_to_write(vals)
-                updates[frozendict(vals)].add(rec.id)
+                    vals = rec._convert_to_write(vals)
+                    updates[frozendict(vals)].add(rec.id)
+                    pending_size += 1
+
+                    if pending_size >= flush_every:
+                        _flush_updates()
+
             # update records in batch when possible
-            with recs.env.norecompute():
-                for vals, ids in updates.items():
-                    target = recs.browse(ids)
-                    try:
-                        target._write(dict(vals))
-                    except MissingError:
-                        # retry without missing records
-                        target.exists()._write(dict(vals))
+            if log_recompute and pending_size:
+                _logger.info(
+                    "_recompute [%s]: flushing final batch (pending=%s, processed=%s, written=%s)",
+                    trace_id,
+                    pending_size,
+                    processed,
+                    written,
+                )
+            _flush_updates()
+
+            if log_recompute:
+                total_elapsed = time.time() - started_at
+                avg_rate = (float(processed) / total_elapsed) if total_elapsed > 0 else 0.0
+                _logger.info(
+                    "_recompute [%s]: finished (processed=%s, written=%s, skipped=%s, elapsed=%.1fs, avg_rate=%.1f rec/s)",
+                    trace_id,
+                    processed,
+                    written,
+                    skipped,
+                    total_elapsed,
+                    avg_rate,
+                )
 
             # mark computed fields as done
             for f in fs:
