@@ -661,8 +661,18 @@
             }
 
             .o_kanban_config {
+                position: relative;
+                z-index: 4;
                 visibility: hidden;
                 transition: visibility 0.2s ease;
+
+                .dropdown-menu {
+                    z-index: 20;
+                }
+
+                &.show {
+                    z-index: 12;
+                }
 
                 i {
                     @include o-kanban-icon;
