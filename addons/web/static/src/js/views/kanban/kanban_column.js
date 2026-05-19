@@ -160,6 +160,13 @@ var KanbanColumn = Widget.extend({
                 },
                 stop: function (event, ui) {
                     var item = ui.item;
+                    // jQuery UI may keep the move cursor on body/html in some
+                    // connected-sortable flows; force cleanup after drop.
+                    if (ui.helper && ui.helper.length) {
+                        ui.helper.css('cursor', '');
+                    }
+                    item.css('cursor', '');
+                    $('body, html').css('cursor', '');
                     setTimeout(function () {
                         item.removeClass('o_currently_dragged');
                     });
