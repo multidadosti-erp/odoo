@@ -135,6 +135,19 @@
             .oe_kanban_bottom_right {
                 flex: 0 1 auto;
 
+                .o_kanban_tooltip_dialog_button {
+                    color: #7C7BAD;
+                    font-size: 16px;
+                    margin-left: 6px;
+                    text-decoration: none;
+
+                    &:hover,
+                    &:focus {
+                        color: darken(#7C7BAD, 10%);
+                        text-decoration: none;
+                    }
+                }
+
                 .oe_kanban_avatar {
                     width: 20px;
                     height: 20px;

@@ -388,11 +388,38 @@ var KanbanRecord = Widget.extend({
         return widget;
     },
     _processWidgets: function () {
+        var parseNodeOptions = function (rawOptions) {
+            if (!rawOptions || !_.isString(rawOptions)) {
+                return {};
+            }
+            try {
+                var normalized = rawOptions
+                    .replace(/\bTrue\b/g, 'true')
+                    .replace(/\bFalse\b/g, 'false')
+                    .replace(/'/g, '"');
+                return JSON.parse(normalized);
+            } catch (e) {
+                return {};
+            }
+        };
         var self = this;
         this.$("widget").each(function () {
             var $field = $(this);
             var Widget = widgetRegistry.get($field.attr('name'));
-            var widget = new Widget(self, self.state);
+            if (!Widget) {
+                return;
+            }
+
+            var attrs = {};
+            _.each($field[0].attributes || [], function (attr) {
+                attrs[attr.name] = attr.value;
+            });
+
+            var widget = new Widget(self, self.state, _.extend({}, self.options, {
+                attrs: attrs,
+                node: {attrs: attrs},
+                nodeOptions: parseNodeOptions(attrs.options),
+            }));
 
             var def = widget._widgetRenderAndInsert(function () {}).then(function () {
                 widget.$el.addClass('o_widget');
