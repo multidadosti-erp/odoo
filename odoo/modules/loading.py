@@ -23,6 +23,7 @@ from odoo.modules.module import adapt_version, initialize_sys_path, load_openerp
 
 _logger = logging.getLogger(__name__)
 _test_logger = logging.getLogger('odoo.tests')
+_UPDATE_ALL_LOG_PREFIX = '[MULTIERP-UPDATE-ALL]'
 
 
 def load_data(cr, idref, mode, kind, package, report):
@@ -292,6 +293,53 @@ def _check_module_names(cr, module_names):
             incorrect_names = mod_names.difference([x['name'] for x in cr.dictfetchall()])
             _logger.warning('invalid module names, ignored: %s', ", ".join(incorrect_names))
 
+
+def _schedule_missing_dependencies_for_update_all(env):
+    """Schedule installation of missing dependencies of installed modules.
+
+    When using ``-u all``, modules are not upgraded via ``button_upgrade`` one by
+    one, so dependencies newly introduced in manifests may remain ``uninstalled``.
+    Those modules are then excluded from the dependency graph and trigger
+    "Some modules are not loaded" at the end of loading.
+    """
+    cr = env.cr
+    Module = env['ir.module.module']
+    _logger.info('%s entering dependency scheduling adjustment', _UPDATE_ALL_LOG_PREFIX)
+
+    # Dependencies of installed/to-upgrade modules that are still uninstalled.
+    cr.execute(
+        """
+        SELECT DISTINCT dep.name
+          FROM ir_module_module parent
+          JOIN ir_module_module_dependency dep ON dep.module_id = parent.id
+          JOIN ir_module_module child ON child.name = dep.name
+         WHERE parent.state IN ('installed', 'to upgrade')
+           AND child.state = 'uninstalled'
+        """
+    )
+    missing_dep_names = [name for (name,) in cr.fetchall()]
+    if not missing_dep_names:
+        _logger.info('%s no missing uninstalled dependencies found', _UPDATE_ALL_LOG_PREFIX)
+        return
+
+    missing_deps = Module.search([
+        ('name', 'in', missing_dep_names),
+        ('state', '=', 'uninstalled'),
+    ])
+    if missing_deps:
+        _logger.info(
+            '%s scheduling install of missing dependencies: %s',
+            _UPDATE_ALL_LOG_PREFIX,
+            ', '.join(sorted(missing_deps.mapped('name')))
+        )
+        # button_install also resolves dependencies recursively.
+        missing_deps.button_install()
+    else:
+        _logger.info(
+            '%s missing dependency names found, but none are installable in current state',
+            _UPDATE_ALL_LOG_PREFIX
+        )
+
 def load_marked_modules(cr, graph, states, force, progressdict, report,
                         loaded_modules, perform_checks, models_to_check=None):
     """Loads modules marked with ``states``, adding them to ``graph`` and
@@ -400,6 +448,10 @@ def load_modules(db, force_demo=False, status=None, update_module=False):
                 modules = Module.search([('state', '=', 'installed'), ('name', 'in', module_names)])
                 if modules:
                     modules.button_upgrade()
+
+            if 'all' in tools.config['update']:
+                _logger.info('%s running missing dependency scheduling adjustment', _UPDATE_ALL_LOG_PREFIX)
+                _schedule_missing_dependencies_for_update_all(env)
 
             cr.execute("update ir_module_module set state=%s where name=%s", ('installed', 'base'))
             Module.invalidate_cache(['state'])
