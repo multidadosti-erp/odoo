@@ -436,6 +436,19 @@
             width: $o-kanban-small-record-width + 2*$o-kanban-group-padding + 150px;
         }
 
+        &.o_kanban_medium_column .o_kanban_group:not(.o_column_folded) {
+            width: ((($o-kanban-small-record-width + $o-kanban-large-record-width) / 2) + 2*$o-kanban-group-padding) * 1.07;
+        }
+
+        &.o_kanban_medium_column .o_kanban_group.o_kanban_group_has_subgroups:not(.o_column_folded) {
+            width: ((($o-kanban-small-record-width + $o-kanban-large-record-width) / 2) + 2*$o-kanban-group-padding + 115px) * 1.07;
+        }
+
+        &.o_kanban_medium_column .o_kanban_group.o_kanban_group_subgroup_depth_2:not(.o_column_folded),
+        &.o_kanban_medium_column .o_kanban_group.o_kanban_group_subgroup_depth_3:not(.o_column_folded) {
+            width: ((($o-kanban-small-record-width + $o-kanban-large-record-width) / 2) + 2*$o-kanban-group-padding + 155px) * 1.07;
+        }
+
         &.o_kanban_large_column .o_kanban_group:not(.o_column_folded) {
             width: $o-kanban-large-record-width + 2*$o-kanban-group-padding;
         }
