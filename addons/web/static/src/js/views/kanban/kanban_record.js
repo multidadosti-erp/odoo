@@ -1143,6 +1143,11 @@ var KanbanRecord = Widget.extend({
         event.preventDefault();
 
         var $action = $(event.currentTarget);
+        var attrs = _.extend({}, $action.data());
+        var confirmMessage = $action.attr('confirm');
+        if (confirmMessage) {
+            attrs.confirm = confirmMessage;
+        }
         var type = $action.data('type') || 'button';
 
         switch (type) {
@@ -1158,7 +1163,7 @@ var KanbanRecord = Widget.extend({
             case 'action':
             case 'object':
                 this.trigger_up('button_clicked', {
-                    attrs: $action.data(),
+                    attrs: attrs,
                     record: this.state,
                 });
                 break;

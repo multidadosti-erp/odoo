@@ -15,6 +15,7 @@ odoo.define('web.KanbanController', function (require) {
 var BasicController = require('web.BasicController');
 var Context = require('web.Context');
 var core = require('web.core');
+var Dialog = require('web.Dialog');
 var Domain = require('web.Domain');
 var view_dialogs = require('web.view_dialogs');
 var viewUtils = require('web.viewUtils');
@@ -266,7 +267,8 @@ var KanbanController = BasicController.extend({
                     active_model: record.model,
                 });
         }
-        this.trigger_up('execute_action', {
+
+        var executeAction = this.trigger_up.bind(this, 'execute_action', {
             action_data: attrs,
             env: {
                 context: record.getContext(),
@@ -276,6 +278,15 @@ var KanbanController = BasicController.extend({
             },
             on_closed: this._reloadAfterButtonClick.bind(this, event.target, event.data),
         });
+
+        if (attrs.confirm) {
+            Dialog.confirm(this, attrs.confirm, {
+                confirm_callback: executeAction,
+            });
+            return;
+        }
+
+        executeAction();
     },
     /**
      * @private
