@@ -410,4 +410,15 @@
         </rng:element>
     </rng:define>
 
+    <rng:define name="searchpanel">
+        <rng:element name="searchpanel">
+            <rng:ref name="overload"/>
+            <rng:optional><rng:attribute name="name"/></rng:optional>
+            <rng:optional><rng:attribute name="autohide"/></rng:optional>
+            <rng:zeroOrMore>
+                <rng:ref name="field"/>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+
 </rng:grammar>
