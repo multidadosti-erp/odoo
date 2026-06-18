@@ -1152,7 +1152,12 @@ class StockMove(models.Model):
                 qty_split = move.product_uom._compute_quantity(move.product_uom_qty - move.quantity_done, move.product_id.uom_id, rounding_method='HALF-UP')
                 new_move = move._split(qty_split)
                 move._unreserve_initial_demand(new_move)
-        moves_todo.mapped('move_line_ids')._action_done()
+
+
+        # Substituido pelo metodo para obter corretamente as linhas de movimento a serem processadas.
+        moves_todo._get_move_lines()._action_done()
+        # moves_todo.mapped('move_line_ids')._action_done()
+
         # Check the consistency of the result packages; there should be an unique location across
         # the contained quants.
         for result_package in moves_todo\
