@@ -4859,8 +4859,9 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             # The parenthesis surrounding the select are important, as this is a sub-select.
             # The quotes surrounding `ir_translation` are important as well.
             unique_translation_subselect = """
-                (SELECT res_id, value FROM "ir_translation"
-                 WHERE type='model' AND name=%s AND lang=%s AND value!='')
+                (SELECT DISTINCT ON (res_id) res_id, value FROM "ir_translation"
+                 WHERE type='model' AND name=%s AND lang=%s AND value!=''
+                 ORDER BY res_id, id DESC)
             """
             alias, alias_statement = query.add_join(
                 (table_alias, unique_translation_subselect, 'id', 'res_id', field),
