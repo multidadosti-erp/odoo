@@ -85,7 +85,8 @@ def check(f):
                 else:
                     return src
             finally:
-                if cr: cr.close()
+                if cr:
+                    cr.close()
 
         def _(src):
             return tr(src, 'code')
@@ -115,9 +116,10 @@ def check(f):
                 time.sleep(wait_time)
             except IntegrityError as inst:
                 registry = odoo.registry(dbname)
+                pgerror = inst.pgerror or ''
                 for key in registry._sql_error.keys():
-                    if key in inst.pgerror:
-                        raise ValidationError(tr(registry._sql_error[key], 'sql_constraint') or inst.pgerror)
+                    if key in pgerror:
+                        raise ValidationError(tr(registry._sql_error[key], 'sql_constraint') or pgerror)
                 if inst.pgcode in (errorcodes.NOT_NULL_VIOLATION, errorcodes.FOREIGN_KEY_VIOLATION, errorcodes.RESTRICT_VIOLATION):
                     msg = _('The operation cannot be completed:')
                     _logger.debug("IntegrityError", exc_info=True)
@@ -169,8 +171,8 @@ def execute_cr(cr, uid, obj, method, *args, **kw):
     result = odoo.api.call_kw(recs, method, args, kw)
     # force evaluation of lazy values before the cursor is closed, as it would
     # error afterwards if the lazy isn't already evaluated (and cached)
-    for l in traverse_containers(result, lazy):
-        _0 = l._value
+    for lazy_value in traverse_containers(result, lazy):
+        _0 = lazy_value._value
     return result
 
 
@@ -179,7 +181,8 @@ def execute_kw(db, uid, obj, method, args, kw=None):
 
 @check
 def execute(db, uid, obj, method, *args, **kw):
-    threading.currentThread().dbname = db
+    # Usa current_thread() para evitar API deprecated (currentThread) no Python moderno.
+    threading.current_thread().dbname = db
     with odoo.registry(db).cursor() as cr:
         check_method_name(method)
         res = execute_cr(cr, uid, obj, method, *args, **kw)
