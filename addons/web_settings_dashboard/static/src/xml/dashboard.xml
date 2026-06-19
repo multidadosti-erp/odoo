@@ -14,6 +14,7 @@
                 </div>
                <div class="col-12 col-lg-4 o_web_settings_dashboard_col">
                     <div class="o_web_settings_dashboard_share"></div>
+                    <div class="o_web_settings_dashboard_scheduled_actions"></div>
                 </div>
             </div>
         </div>
@@ -177,6 +178,25 @@
                 <a href="#" role="button" class="btn btn-primary btn-block o_setup_company"><strong>Set Up</strong></a>
             </div>
         </div>
+    </t>
+
+    <t t-name="DashboardScheduledActions">
+        <t t-if="widget.isDebug">
+            <div class="text-center o_web_settings_dashboard_scheduled_actions mt8">
+                <i class="fa fa-clock-o fa-4x text-muted" role="img" aria-label="Scheduled Actions" title="Scheduled Actions"></i>
+                <div class="o_web_settings_dashboard_header">
+                    Scheduled Actions
+                </div>
+                <div>
+                    <small class="text-muted text-center o_web_settings_dashboard_compact_subtitle">
+                        Access scheduled actions quickly while developer mode is enabled
+                    </small>
+                </div>
+                <div class="mt16">
+                    <a href="#" role="button" class="btn btn-primary btn-block o_open_scheduled_actions"><strong>Open Scheduled Actions</strong></a>
+                </div>
+            </div>
+        </t>
     </t>
 
 </templates>

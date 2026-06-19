@@ -15,7 +15,7 @@ var Dashboard = AbstractAction.extend({
     template: 'DashboardMain',
 
     init: function(){
-        this.all_dashboards = ['apps', 'invitations', 'share', 'translations', 'company'];
+        this.all_dashboards = ['apps', 'invitations', 'share', 'translations', 'company', 'scheduled_actions'];
         return this._super.apply(this, arguments);
     },
 
@@ -63,6 +63,10 @@ var Dashboard = AbstractAction.extend({
 
     load_company: function (data) {
         return new DashboardCompany(this, data.company).replace(this.$('.o_web_settings_dashboard_company'));
+    },
+
+    load_scheduled_actions: function (data) {
+        return new DashboardScheduledActions(this, data.share).replace(this.$('.o_web_settings_dashboard_scheduled_actions'));
     },
 });
 
@@ -420,6 +424,30 @@ var DashboardCompany = Widget.extend({
     }
 });
 
+var DashboardScheduledActions = Widget.extend({
+    template: 'DashboardScheduledActions',
+
+    events: {
+        'click .o_open_scheduled_actions': '_onOpenScheduledActions',
+    },
+
+    init: function (parent, data) {
+        this.data = data || {};
+        this.parent = parent;
+        this.isDebug = this.data.debug !== false;
+        this._super.apply(this, arguments);
+    },
+
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onOpenScheduledActions: function (ev) {
+        ev.preventDefault();
+        this.do_action('base.ir_cron_act');
+    },
+});
+
 core.action_registry.add('web_settings_dashboard.main', Dashboard);
 
 return {
@@ -428,7 +456,8 @@ return {
     DashboardInvitations: DashboardInvitations,
     DashboardShare: DashboardShare,
     DashboardTranslations: DashboardTranslations,
-    DashboardCompany: DashboardCompany
+    DashboardCompany: DashboardCompany,
+    DashboardScheduledActions: DashboardScheduledActions
 };
 
 });

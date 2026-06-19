@@ -338,3 +338,25 @@ msgstr ""
 msgid "more"
 msgstr ""
 
+#. module: web_settings_dashboard
+#. openerp-web
+#: code:addons/web_settings_dashboard/static/src/xml/dashboard.xml:186
+#: code:addons/web_settings_dashboard/static/src/xml/dashboard.xml:188
+#, python-format
+msgid "Scheduled Actions"
+msgstr ""
+
+#. module: web_settings_dashboard
+#. openerp-web
+#: code:addons/web_settings_dashboard/static/src/xml/dashboard.xml:192
+#, python-format
+msgid "Access scheduled actions quickly while developer mode is enabled"
+msgstr ""
+
+#. module: web_settings_dashboard
+#. openerp-web
+#: code:addons/web_settings_dashboard/static/src/xml/dashboard.xml:196
+#, python-format
+msgid "Open Scheduled Actions"
+msgstr ""
+
