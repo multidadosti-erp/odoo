@@ -97,7 +97,7 @@
     <span t-if="not website_url" t-esc="company.name"/>
     </span>
     using
-    <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=email" style="text-decoration:none; color: #875A7B;">Odoo</a>.
+    <a target="_blank" href="https://multi.multidados.tech?utm_source=db&amp;utm_medium=email" style="text-decoration:none; color: #875A7B;">Odoo</a>.
 </p>
 <p style="color: #555555;">
     This is an automated message, please do not reply.
