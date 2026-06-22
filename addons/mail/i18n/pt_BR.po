@@ -5147,6 +5147,11 @@ msgid "This group is visible by non members. Invisible groups can add members th
 msgstr "Este grupo é visível por não membros. Grupos invisíveis podem adicionar membros através do botão convidar."
 
 #. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.message_notification_email
+msgid "This is an automated message, please do not reply."
+msgstr "Esta é uma mensagem automática, por favor, não responda."
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_search
 msgid "Thread"
 msgstr "Tópico"
