@@ -413,17 +413,17 @@ class StockMove(models.Model):
         Picking = self.env['stock.picking']
 
         propagated_changes_dict = {}
-        #propagation of expected date:
+        # propagation of expected date:
         propagated_date_field = False
         if vals.get('date_expected'):
-            #propagate any manual change of the expected date
+            # propagate any manual change of the expected date
             propagated_date_field = 'date_expected'
         elif (vals.get('state', '') == 'done' and vals.get('date')):
-            #propagate also any delta observed when setting the move as done
+            # propagate also any delta observed when setting the move as done
             propagated_date_field = 'date'
 
         if not self._context.get('do_not_propagate', False) and (propagated_date_field or propagated_changes_dict):
-            #any propagation is (maybe) needed
+            # any propagation is (maybe) needed
             for move in self:
                 if move.move_dest_ids and move.propagate:
                     if 'date_expected' in propagated_changes_dict:
@@ -438,8 +438,8 @@ class StockMove(models.Model):
                             # in the past.
                             new_move_date = max(old_move_date + relativedelta.relativedelta(days=delta_days or 0), fields.Datetime.now())
                             propagated_changes_dict['date_expected'] = new_move_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-                    #For pushed moves as well as for pulled moves, propagate by recursive call of write().
-                    #Note that, for pulled moves we intentionally don't propagate on the procurement.
+                    # For pushed moves as well as for pulled moves, propagate by recursive call of write().
+                    # Note that, for pulled moves we intentionally don't propagate on the procurement.
                     if propagated_changes_dict:
                         move.move_dest_ids.filtered(lambda m: m.state not in ('done', 'cancel')).write(propagated_changes_dict)
         track_pickings = (
@@ -1127,6 +1127,7 @@ class StockMove(models.Model):
         self.filtered(lambda move: move.state == 'draft')._action_confirm()  # MRP allows scrapping draft moves
         moves = self.exists().filtered(lambda x: x.state not in ('done', 'cancel'))
         moves_todo = self.env['stock.move']
+        move_lines_todo = self.env['stock.move.line']
 
         # Cancel moves where necessary ; we should do it before creating the extra moves because
         # this operation could trigger a merge of moves.
@@ -1139,7 +1140,6 @@ class StockMove(models.Model):
         for move in moves:
             if move.state == 'cancel' or move.quantity_done <= 0:
                 continue
-
             moves_todo |= move._create_extra_move()
 
         # Split moves where necessary and move quants
@@ -1153,10 +1153,12 @@ class StockMove(models.Model):
                 new_move = move._split(qty_split)
                 move._unreserve_initial_demand(new_move)
 
+            # Adiciona linhas a serem processadas, para que o método _action_done() seja chamado corretamente.
+            move_lines_todo |= move._get_move_lines()
 
         # Substituido pelo metodo para obter corretamente as linhas de movimento a serem processadas.
-        moves_todo._get_move_lines()._action_done()
         # moves_todo.mapped('move_line_ids')._action_done()
+        move_lines_todo._action_done()
 
         # Check the consistency of the result packages; there should be an unique location across
         # the contained quants.
@@ -1164,18 +1166,20 @@ class StockMove(models.Model):
                 .mapped('move_line_ids.result_package_id')\
                 .filtered(lambda p: p.quant_ids and len(p.quant_ids) > 1):
             if len(result_package.quant_ids.filtered(lambda q: not float_is_zero(abs(q.quantity) + abs(q.reserved_quantity), precision_rounding=q.product_id.uom_id.rounding)).mapped('location_id')) > 1:
-                raise UserError(_('You cannot move the same package content more than once in the same transfer or split the same package into two location.'))
-        picking = moves_todo.mapped('picking_id')
-        moves_todo.write({'state': 'done', 'date': fields.Datetime.now()})
-        moves_todo.mapped('move_dest_ids')._action_assign()
+                raise UserError(_("You cannot move the same package content more than once in the same transfer or split the same package into two location."))
+
+        picking = moves_todo.mapped("picking_id")
+        moves_todo.write({"state": "done", "date": fields.Datetime.now()})
+        moves_todo.mapped("move_dest_ids")._action_assign()
 
         # We don't want to create back order for scrap moves
         # Replace by a kwarg in master
-        if self.env.context.get('is_scrap'):
+        if self.env.context.get("is_scrap"):
             return moves_todo
 
         if picking:
             picking._create_backorder()
+
         return moves_todo
 
     def unlink(self):
