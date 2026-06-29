@@ -22,6 +22,9 @@
                         <rng:value>inside</rng:value>
                         <!-- Replace matched element itself with content -->
                         <rng:value>replace</rng:value>
+                        <!-- Custom placement support for searchpanel -->
+                        <rng:value>left</rng:value>
+                        <rng:value>right</rng:value>
                     </rng:choice>
                 </rng:attribute>
                 <rng:group>
