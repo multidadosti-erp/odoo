@@ -1274,7 +1274,7 @@ msgstr "Quantidade Cumulativa"
 #. module: stock
 #: selection:stock.quantity.history,compute_at_date:0
 msgid "Current Inventory"
-msgstr "Intentário Atual"
+msgstr "Inventário Atual"
 
 #. module: stock
 #: model:ir.actions.act_window,name:stock.location_open_quants
