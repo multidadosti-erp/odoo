@@ -109,13 +109,11 @@
                                    groups="account.group_account_user"/>
 
                             <field name="company_id" groups="base.group_multi_company"/>
-                        </group><group>
-                            <field name="reference"/>
-                            <field name="account_id"
+                        </group>
+                        <group>
+                            <field name="employee_id"
                                    options="{'no_create': True, 'no_edit': True}"
-                                   domain="[('internal_type', '=', 'other')]"
-                                   groups="account.group_account_user"/>
-
+                                   groups="hr_expense.group_hr_expense_user"/>
                             <field name="sheet_id" invisible="1"/>
                             <field name="currency_id" groups="base.group_multi_currency"/>
 
@@ -124,19 +122,28 @@
                                    groups="analytic.group_analytic_accounting"/>
 
                             <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"/>
-                        </group><group>
-                            <field name="employee_id"
-                                   options="{'no_create': True, 'no_edit': True}"
-                                   groups="hr_expense.group_hr_expense_user"/>
-
-                            <field name="total_amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                            <label for="payment_mode"/>
-                            <div name="payment_mode_radio">
-                                <field name="payment_mode" widget="radio"/>
-                            </div>
                         </group>
-
                     </group>
+                    <notebook>
+                        <page name="billing" string="Billing">
+                            <group>
+                                <field name="total_amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <label for="payment_mode"/>
+                                <div name="payment_mode_radio">
+                                    <field name="payment_mode" widget="radio"/>
+                                </div>
+                            </group>
+                        </page>
+                        <page string="Accounting" name="accounting">
+                            <group>
+                                <field name="reference"/>
+                                <field name="account_id"
+                                       options="{'no_create': True, 'no_edit': True}"
+                                       domain="[('internal_type', '=', 'other')]"
+                                       groups="account.group_account_user"/>
+                            </group>
+                        </page>
+                    </notebook>
                     <div>
                         <field name="description" class="oe_inline" placeholder="Notes..."/>
                     </div>
