@@ -34,9 +34,24 @@ class MailActivity(models.Model):
         events = self.mapped('calendar_event_id')
         res = super(MailActivity, self).action_feedback(feedback)
         if feedback:
+            feedback_marker = _('Feedback: ')
+            feedback_text = tools.html2plaintext(feedback).strip()
             for event in events:
-                description = event.description
-                description = '%s\n%s%s' % (description or '', _("Feedback: "), feedback)
+                description = event.description or ''
+
+                # Evita duplicar feedback no evento ao editar o feedback da atividade.
+                marker_with_breakline = '\n%s' % feedback_marker
+                if marker_with_breakline in description:
+                    description = description.rsplit(marker_with_breakline, 1)[0]
+                elif description.startswith(feedback_marker):
+                    description = ''
+
+                description = '%s%s%s%s' % (
+                    description,
+                    '\n' if description else '',
+                    feedback_marker,
+                    feedback_text,
+                )
                 event.write({'description': description})
         return res
 
