@@ -742,19 +742,34 @@ class SaleOrder(models.Model):
 
     @api.multi
     def force_quotation_send(self):
+        """
+        Envia a cotacao por e-mail usando o template padrao e garante
+        consistencia de estado.
+
+        Regras aplicadas:
+        - So tenta postar o template quando houver `default_template_id`.
+        - Marca o pedido como `sent` apenas quando houve envio efetivo.
+        - Mantem um fallback seguro para estado `draft`, sem alterar pedidos
+            em outros estados.
+        """
         for order in self:
+            email_sent = False
             email_act = order.action_quotation_send()
             if email_act and email_act.get('context'):
-                email_ctx = email_act['context']
+                email_ctx = dict(email_act['context'])
                 email_ctx.update(default_email_from=order.company_id.email)
-                order.with_context(**email_ctx).message_post_with_template(email_ctx.get('default_template_id'))
+                template_id = email_ctx.get('default_template_id')
+                if template_id:
+                    order.with_context(**email_ctx).message_post_with_template(template_id)
+                    email_sent = True
 
-            # Valida state do envio do e-mail para 'sent' apenas se o pedido estiver em 'draft'
-            if order.state == 'draft':
-                order.with_context(tracking_disable=True).write({'state': 'sent'})                
+            # Fallback: atualiza para 'sent' somente se houve envio efetivo.
+            # Em cenarios padrao isso ja ocorre via mark_so_as_sent no contexto.
+            if email_sent and order.state == 'draft':
+                order.with_context(tracking_disable=True).write({'state': 'sent'})
 
         return True
-
+        
     @api.multi
     def action_done(self):
         for order in self:
