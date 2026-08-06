@@ -185,6 +185,9 @@ return AbstractRenderer.extend({
         this.model = params.model;
         this.filters = [];
         this.color_map = {};
+        this._lastRenderedEventsSignature = null;
+        this._needsFullCalendarResize = true;
+        this._lastFullWidth = null;
 
         if (params.eventTemplate) {
             this.qweb = new QWeb(session.debug, {_s: session.origin});
@@ -414,7 +417,10 @@ return AbstractRenderer.extend({
             },
             // Dirty hack to ensure a correct first render
             eventAfterAllRender: function () {
-                $(window).trigger('resize');
+                if (self._needsFullCalendarResize) {
+                    $(window).trigger('resize');
+                    self._needsFullCalendarResize = false;
+                }
             },
             viewRender: function (view) {
                 // compute mode from view.name which is either 'month', 'agendaWeek' or 'agendaDay'
@@ -477,12 +483,14 @@ return AbstractRenderer.extend({
         var $fc_view = $calendar.find('.fc-view');
         var scrollPosition = $fc_view.scrollLeft();
         var scrollTop = this.$calendar.find('.fc-scroller').scrollTop();
+        var mustResize = this._lastFullWidth === null || this._lastFullWidth !== this.state.fullWidth;
 
         $fc_view.scrollLeft(0);
         $calendar.fullCalendar('unselect');
 
         if (scales[this.state.scale] !== $calendar.data('fullCalendar').getView().type) {
             $calendar.fullCalendar('changeView', scales[this.state.scale]);
+            mustResize = true;
         }
 
         if (this.target_date !== this.state.target_date.toString()) {
@@ -507,6 +515,7 @@ return AbstractRenderer.extend({
         $fc_view.scrollLeft(scrollPosition);
 
         var fullWidth = this.state.fullWidth;
+        this._lastFullWidth = fullWidth;
         this.$('.o_calendar_sidebar_toggler')
             .toggleClass('fa-close', !fullWidth)
             .toggleClass('fa-chevron-left', fullWidth)
@@ -516,6 +525,7 @@ return AbstractRenderer.extend({
 
         this._renderFilters();
         this.$calendar.appendTo('body');
+        this._needsFullCalendarResize = this._needsFullCalendarResize || mustResize;
         if (scrollTop) {
             this.$calendar.fullCalendar('reinitView');
         } else {
@@ -532,8 +542,43 @@ return AbstractRenderer.extend({
      * @private
      */
     _renderEvents: function () {
+        var nextSignature = this._computeEventsSignature(this.state.data);
+        if (nextSignature === this._lastRenderedEventsSignature) {
+            return;
+        }
         this.$calendar.fullCalendar('removeEvents');
         this.$calendar.fullCalendar('addEventSource', this.state.data);
+        this._lastRenderedEventsSignature = nextSignature;
+    },
+
+    _computeEventsSignature: function (events) {
+        if (!events || !events.length) {
+            return '0';
+        }
+
+        var items = _.map(events, function (event) {
+            var className = event.className;
+            if (_.isArray(className)) {
+                className = className.join(',');
+            }
+
+            var start = event.start && _.isFunction(event.start.valueOf) ? event.start.valueOf() : event.start;
+            var end = event.end && _.isFunction(event.end.valueOf) ? event.end.valueOf() : event.end;
+
+            return [
+                event.id || event._id || '',
+                start || '',
+                end || '',
+                event.allDay ? 1 : 0,
+                event.title || '',
+                className || '',
+                event.backgroundColor || '',
+                event.borderColor || '',
+                event.textColor || ''
+            ].join('|');
+        }).sort();
+
+        return String(events.length) + '::' + items.join('||');
     },
     /**
      * Render all filters
