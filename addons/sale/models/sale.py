@@ -748,6 +748,11 @@ class SaleOrder(models.Model):
                 email_ctx = email_act['context']
                 email_ctx.update(default_email_from=order.company_id.email)
                 order.with_context(**email_ctx).message_post_with_template(email_ctx.get('default_template_id'))
+
+            # Valida state do envio do e-mail para 'sent' apenas se o pedido estiver em 'draft'
+            if order.state == 'draft':
+                order.with_context(tracking_disable=True).write({'state': 'sent'})                
+
         return True
 
     @api.multi
