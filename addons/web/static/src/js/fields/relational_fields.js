@@ -2396,17 +2396,26 @@ var FieldStatus = AbstractField.extend({
         var selections = _.partition(this.status_information, function (info) {
             return (info.selected || !info.fold);
         });
-        
         // Check if clickable should be disabled based on clickable_false_on option
         var clickable = this.isClickable;
         if (this.clickableFalseOn && this.clickableFalseOn in this.recordData && this.recordData[this.clickableFalseOn]) {
             clickable = false;
         }
-        
+        // Adicionado pela Multidados:
+        // mostra o texto alternativo quando o modificador
+        // "alt_invisible" for true e a opção "alt" estiver
+        // definida
+        var modifiersValue = this.attrs.modifiersValue || {};
+        var showAlt = !!modifiersValue.alt_invisible && this.nodeOptions.alt;
+
         this.$el.html(qweb.render("FieldStatus.content", {
             selection_unfolded: selections[0],
             selection_folded: selections[1],
             clickable: clickable,
+
+            // Adicionado pela Multidados:
+            label: this.nodeOptions.label,
+            alt: showAlt,
         }));
     },
 
