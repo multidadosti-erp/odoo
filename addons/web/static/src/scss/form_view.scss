@@ -264,6 +264,30 @@
                 }
             }
         }
+
+        // Statusbar label and alt text styling
+        .o_statusbar_label {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 12px;
+            background-color: gray('100');
+            border: 1px solid gray('300');
+            border-radius: 3px;
+            color: gray('700');
+            white-space: nowrap;
+            margin: 0 0 0 12px;
+            display: inline-block;
+            align-self: center;
+        }
+
+        .o_statusbar_alt_text {
+            font-size: 12px;
+            padding: 8px 12px;
+            color: gray('600');
+            font-style: italic;
+            display: flex;
+            align-items: center;
+        }
     }
 
     // Button box

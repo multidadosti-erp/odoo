@@ -2119,6 +2119,9 @@ var BasicModel = AbstractModel.extend({
         if ('invisible' in modifiers) {
             result.invisible = evalModifier(modifiers.invisible);
         }
+        if ('alt_invisible' in modifiers) {
+            result.alt_invisible = evalModifier(modifiers.alt_invisible);
+        }
         if ('column_invisible' in modifiers) {
             result.column_invisible = evalModifier(modifiers.column_invisible);
         }
