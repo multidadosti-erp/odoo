@@ -83,7 +83,7 @@
             <field name="arch" type="xml">
                 <form string="Analytic Entry">
                     <sheet string="Analytic Entry">
-                        <group>
+                        <group name="main_group">
                             <group>
                                 <field name="date"/>
                                 <field name="project_id" required="1"/>
