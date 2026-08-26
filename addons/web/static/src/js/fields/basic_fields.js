@@ -2580,6 +2580,14 @@ var StatInfo = AbstractField.extend({
                 options.text = this.string;
             }
         }
+        if (this.nodeOptions.numeric) {
+            // preserve somente os caracteres que são números do options.text
+            if (! options.value) {
+                options.value = '0';
+            } else {
+                options.value = String(options.value).replace(/\D+/g, '');
+            }
+        }
         this.$el.html(qweb.render("StatInfo", options));
         this.$el.addClass('o_stat_info');
     },
