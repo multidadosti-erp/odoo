@@ -56,9 +56,16 @@ var Domain = collections.Tree.extend({
             // get the value from the parent record.
             var isParentField = false;
             var fieldName = this._data[0];
+
+            // Guard defensivo: alguns attrs podem gerar entidades incompletas
+            // durante montagem dinâmica da view. Nesse caso, não deve quebrar.
+            if (!_.isString(fieldName)) {
+                return false;
+            }
+
             // We split the domain first part and check if it's a match
             // for the syntax 'parent.field'.
-            var parentField = this._data[0].split('.');
+            var parentField = fieldName.split('.');
 
             if ('parent' in values && parentField.length === 2) {
                 fieldName = parentField[1];
