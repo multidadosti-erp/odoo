@@ -31,6 +31,8 @@ var Notification = Widget.extend({
      * @param {string} params.type 'notification' or 'warning'
      * @param {boolean} [params.sticky=false] if true, the notification will stay
      *   visible until the user clicks on it.
+    * @param {number} [params.autoCloseDelay=2500] auto close delay (ms) when
+    *   notification is not sticky.
      * @param {string} [params.className] className to add on the dom
      * @param {function} [params.onClose] callback when the user click on the x
      *   or when the notification is auto close (no sticky)
@@ -50,6 +52,13 @@ var Notification = Widget.extend({
         this.className = params.className || '';
         this._closeCallback = params.onClose;
         this.icon = params.icon || 'fa-lightbulb-o';
+        var autoCloseDelay = params.autoCloseDelay;
+        if (typeof autoCloseDelay !== 'number') {
+            autoCloseDelay = params.auto_close_delay;
+        }
+        if (typeof autoCloseDelay === 'number' && autoCloseDelay >= 0) {
+            this._autoCloseDelay = autoCloseDelay;
+        }
         if (this.buttons && this.buttons.length) {
             this.icon = 'fa-question-circle-o';
         }
