@@ -939,7 +939,7 @@ msgstr ""
 
 #. module: hr_expense
 #: model:res.groups,name:hr_expense.group_hr_expense_user
-msgid "Officer"
+msgid "Own Documents Only"
 msgstr ""
 
 #. module: hr_expense
