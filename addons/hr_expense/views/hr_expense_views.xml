@@ -108,17 +108,19 @@
                                    widget="many2many_tags"
                                    groups="account.group_account_user"/>
 
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   options="{'no_create_edit': True, 'no_open': True}"/>
                         </group>
                         <group>
                             <field name="employee_id"
                                    options="{'no_create': True, 'no_edit': True}"
                                    groups="hr_expense.group_hr_expense_user"/>
                             <field name="sheet_id" invisible="1"/>
-                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="currency_id" groups="base.group_multi_currency"
+                                   options="{'no_create_edit': True, 'no_open': True}"/>
 
                             <field name="analytic_account_id"
-                                   options="{'no_create': True, 'no_edit': True}"
+                                   options="{'no_create': True, 'no_edit': True, 'no_open': True}"
                                    groups="analytic.group_analytic_accounting"/>
 
                             <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"/>
@@ -134,7 +136,8 @@
                                 </div>
                             </group>
                         </page>
-                        <page string="Accounting" name="accounting">
+                        <page string="Accounting" name="accounting"
+                              groups="hr_expense.group_hr_expense_manager" >
                             <group>
                                 <field name="reference"/>
                                 <field name="account_id"
