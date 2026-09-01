@@ -141,6 +141,10 @@ var FieldMany2One = AbstractField.extend({
 
         this.can_create = can_create;
         this.can_write = 'can_write' in this.attrs ? JSON.parse(this.attrs.can_write) : true;
+        if (typeof(this.nodeOptions.no_edit) != undefined){
+            this.can_write = this.can_write && !this.nodeOptions.no_edit;
+        }
+
         this.nodeOptions = _.defaults(this.nodeOptions, {
             quick_create: true,
         });
