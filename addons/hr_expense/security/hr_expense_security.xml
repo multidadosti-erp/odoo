@@ -14,6 +14,9 @@
     </record>
 
     <record id="base.default_user" model="res.users">
-        <field name="groups_id" eval="[(4,ref('hr_expense.group_hr_expense_manager'))]"/>
+        <field name="groups_id" eval="[
+            (4, ref('hr_expense.group_hr_expense_user')),
+            (3, ref('hr_expense.group_hr_expense_manager')),
+        ]"/>
     </record>
 </odoo>
