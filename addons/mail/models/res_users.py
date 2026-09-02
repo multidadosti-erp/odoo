@@ -142,6 +142,12 @@ GROUP BY channel_moderator.res_users_id""", [tuple(self.ids)])
         user_activities = {}
         for activity in activity_data:
             if not user_activities.get(activity['model']):
+                # Adicionado pela Multidados:
+                # - Quando o usuário não tem acesso ao modelo da atividade,
+                #   não deve ser exibida na lista
+                if not self.env[activity['model']].check_access_rights("read", raise_exception=False):
+                    continue
+
                 user_activities[activity['model']] = {
                     'name': model_names[activity['id']],
                     'model': activity['model'],
