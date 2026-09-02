@@ -819,18 +819,37 @@ class HrExpenseSheet(models.Model):
         self.write({'state': 'submit'})
         self.activity_update()
 
-    @api.multi
-    def approve_expense_sheets(self):
+    def _validate_expense_approve(self):
+        """ Adicionado pela Multidados:
+        Adicionada a função mantendo o comportamento utilizado
+        na aprovação, para permitir que validação da aprovação
+        seja herdada.
+
+        Mantém o comportamento original, onde o group verificado
+        é herdado em 'br_hr_expense'. Estamos utilizando outro group
+        que também faz herança ao 'hr_expense.group_hr_expense_user'.
+
+        Raises:
+            UserError: Caso o usuário não tenha permissão para aprovar a despesa.
+            UserError: Caso o usuário esteja tentando aprovar sua própria despesa.
+            UserError: Caso o usuário não seja gerente do departamento da despesa.
+        """
         if not self.user_has_groups('hr_expense.group_hr_expense_user'):
             raise UserError(_("Only Managers and HR Officers can approve expenses"))
         elif not self.user_has_groups('hr_expense.group_hr_expense_manager'):
-            current_managers = self.employee_id.parent_id.user_id | self.employee_id.department_id.manager_id.user_id | self.employee_id.expense_manager_id
-
+            current_managers = (
+                self.employee_id.parent_id.user_id
+                | self.employee_id.department_id.manager_id.user_id
+                | self.employee_id.expense_manager_id
+            )
             if self.employee_id.user_id == self.env.user:
                 raise UserError(_("You cannot approve your own expenses"))
-
             if not self.env.user in current_managers:
                 raise UserError(_("You can only approve your department expenses"))
+
+    @api.multi
+    def approve_expense_sheets(self):
+        self._validate_expense_approve()
 
         responsible_id = self.user_id.id or self.env.user.id
         self.write({'state': 'approve', 'user_id': responsible_id})
