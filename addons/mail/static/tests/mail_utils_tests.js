@@ -35,5 +35,17 @@ QUnit.test('add_link utility function', function (assert) {
     });
 });
 
+QUnit.test('inline utility handles nodes without a tag name', function (assert) {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(document.createTextNode('Message content'));
+
+    assert.strictEqual(
+        utils.inline(fragment, function () {
+            return 'Message content';
+        }),
+        'Message content'
+    );
+});
+
 });
 });
