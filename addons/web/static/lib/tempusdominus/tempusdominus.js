@@ -2080,13 +2080,59 @@ var TempusDominusBootstrap4 = function ($) {
             decadesView.find('td').html(html);
         };
 
+        // Adicionado pela Multidados:
+        //  - encapsulamento de código da obtenção da classe e estilo
+        //    da célula do DIA no calendário do datepicker
+        TempusDominusBootstrap4.prototype._fillDateAttrs = function _fillDateAttrs(currentDate) {
+            // Variáveis: classe e estilo do elemento <td>
+            var clsName = '',
+                style = '';
+
+            // Dia do mês anterior
+            if (currentDate.isBefore(this._viewDate, 'M')) {
+                clsName += ' old';
+            }
+            // Dia do mês seguinte
+            if (currentDate.isAfter(this._viewDate, 'M')) {
+                clsName += ' new';
+            }
+            if (this._options.allowMultidate) {
+                var index = this._datesFormatted.indexOf(currentDate.format('YYYY-MM-DD'));
+                if (index !== -1) {
+                    if (currentDate.isSame(this._datesFormatted[index], 'd') && !this.unset) {
+                        clsName += ' active';
+                    }
+                }
+            } else {
+                if (currentDate.isSame(this._getLastPickedDate(), 'd') && !this.unset) {
+                    clsName += ' active';
+                }
+            }
+            // Dia desabilitado
+            if (!this._isValid(currentDate, 'd')) {
+                clsName += ' disabled';
+            }
+            // Dia de hoje
+            if (currentDate.isSame(this.getMoment(), 'd')) {
+                clsName += ' today';
+            }
+            // Dia de final de semana
+            if (currentDate.day() === 0 || currentDate.day() === 6) {
+                clsName += ' weekend';
+
+                // colorização do dia de fim de semana
+                style = 'style="background:'+(this._options.beforeShowDay || '#a3a3a3')+';"';
+            }
+            return {clsname: clsName, style: style}
+        };
+
         TempusDominusBootstrap4.prototype._fillDate = function _fillDate() {
             var daysView = this.widget.find('.datepicker-days'),
                 daysViewHeader = daysView.find('th'),
                 html = [];
             var currentDate = void 0,
                 row = void 0,
-                clsName = void 0,
+                dateAttrs = void 0,
                 i = void 0;
 
             if (!this._hasDate()) {
@@ -2121,37 +2167,16 @@ var TempusDominusBootstrap4 = function ($) {
                     }
                     html.push(row);
                 }
-                clsName = '';
-                if (currentDate.isBefore(this._viewDate, 'M')) {
-                    clsName += ' old';
-                }
-                if (currentDate.isAfter(this._viewDate, 'M')) {
-                    clsName += ' new';
-                }
-                if (this._options.allowMultidate) {
-                    var index = this._datesFormatted.indexOf(currentDate.format('YYYY-MM-DD'));
-                    if (index !== -1) {
-                        if (currentDate.isSame(this._datesFormatted[index], 'd') && !this.unset) {
-                            clsName += ' active';
-                        }
-                    }
-                } else {
-                    if (currentDate.isSame(this._getLastPickedDate(), 'd') && !this.unset) {
-                        clsName += ' active';
-                    }
-                }
-                if (!this._isValid(currentDate, 'd')) {
-                    clsName += ' disabled';
-                }
-                // !! ODOO FIX START !!
-                if (currentDate.date() === now.date() && currentDate.month() === now.month() && currentDate.year() === now.year()) {
-                // !! ODOO FIX END !!
-                    clsName += ' today';
-                }
-                if (currentDate.day() === 0 || currentDate.day() === 6) {
-                    clsName += ' weekend';
-                }
-                row.append('<td data-action="selectDay" data-day="' + currentDate.format('L') + '" class="day' + clsName + '">' + currentDate.date() + '</td>');
+
+                // Adicionado pela Multidados:
+                // - Adiciona função para obtenção da classe e estilo da coluna
+                //   que representa cada dia no calendário.
+                dateAttrs = this._fillDateAttrs(currentDate);
+
+                // Altera inserção da coluna para adicionar os atributos obtidos pela função
+                // row.append('<td data-action="selectDay" data-day="' + currentDate.format('L') + '" class="day' + clsName + '">' + currentDate.date() + '</td>');
+                row.append('<td data-action="selectDay" '+dateAttrs.style+' data-day="' + currentDate.format('L') + '" class="day' + dateAttrs.clsname + '">' + currentDate.date() + '</td>');
+
                 currentDate.add(1, 'd');
             }
 
