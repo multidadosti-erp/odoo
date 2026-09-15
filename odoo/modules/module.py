@@ -3,6 +3,8 @@
 
 import ast
 import functools
+from fnmatch import fnmatch
+import hashlib
 import imp
 import importlib
 import inspect
@@ -27,6 +29,9 @@ from odoo.tools import pycompat
 
 MANIFEST_NAMES = ('__manifest__.py', '__openerp__.py')
 README = ['README.rst', 'README.md', 'README.txt']
+DEFAULT_CHECKSUM_EXCLUDE_PATTERNS = (
+    '*.pyc', '*.pyo', 'i18n/*.pot', 'i18n_extra/*.pot', 'static/*',
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -173,6 +178,43 @@ def get_module_path(module, downloaded=False, display_warning=True):
     if display_warning:
         _logger.warning('module %s: module not found', module)
     return False
+
+
+def get_module_checksum(module, exclude_patterns=None, keep_langs=None):
+    """Return a deterministic checksum of the relevant addon files."""
+    module_path = get_module_path(module, display_warning=False)
+    if not module_path or not os.path.isdir(module_path):
+        return False
+
+    exclude_patterns = exclude_patterns or DEFAULT_CHECKSUM_EXCLUDE_PATTERNS
+    translation_codes = set()
+    for lang in keep_langs or []:
+        lang_code = tools.get_iso_codes(lang)
+        translation_codes.add(lang_code)
+        if '_' in lang_code:
+            translation_codes.add(lang_code.split('_')[0])
+    checksum = hashlib.sha256()
+
+    for dirpath, dirnames, filenames in os.walk(module_path):
+        dirnames.sort()
+        relative_dir = os.path.relpath(dirpath, module_path)
+        if relative_dir == '.':
+            relative_dir = ''
+        for filename in sorted(filenames):
+            relative_path = os.path.join(relative_dir, filename)
+            if any(fnmatch(relative_path, pattern)
+                   for pattern in exclude_patterns):
+                continue
+            if translation_codes and relative_dir in ('i18n', 'i18n_extra'):
+                basename, extension = os.path.splitext(filename)
+                if extension == '.po' and basename not in translation_codes:
+                    continue
+            checksum.update(relative_path.encode('utf-8'))
+            with open(os.path.join(module_path, relative_path), 'rb') as stream:
+                checksum.update(stream.read())
+
+    return checksum.hexdigest()
+
 
 def get_module_filetree(module, dir='.'):
     path = get_module_path(module)

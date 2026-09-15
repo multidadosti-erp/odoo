@@ -6,6 +6,7 @@
 """
 
 import itertools
+import json
 import logging
 import sys
 import threading
@@ -19,11 +20,92 @@ import odoo.modules.registry
 import odoo.tools as tools
 
 from odoo import api, SUPERUSER_ID
-from odoo.modules.module import adapt_version, initialize_sys_path, load_openerp_module
+from odoo.modules.module import (
+    DEFAULT_CHECKSUM_EXCLUDE_PATTERNS, adapt_version, get_module_checksum,
+    initialize_sys_path, load_openerp_module,
+)
 
 _logger = logging.getLogger(__name__)
 _test_logger = logging.getLogger('odoo.tests')
 _UPDATE_ALL_LOG_PREFIX = '[MULTIERP-UPDATE-ALL]'
+_DYNAMIC_UPDATE_LOG_PREFIX = '[MULTIERP-UPDATE-DYNAMIC]'
+_MODULE_CHECKSUMS_PARAM = 'base.module_installed_checksums'
+_MODULE_CHECKSUM_EXCLUDE_PARAM = 'base.module_checksum_exclude_patterns'
+
+
+def _get_checksum_options(cr):
+    cr.execute(
+        "SELECT value FROM ir_config_parameter WHERE key = %s",
+        (_MODULE_CHECKSUM_EXCLUDE_PARAM,),
+    )
+    result = cr.fetchone()
+    patterns = result[0] if result else \
+        ','.join(DEFAULT_CHECKSUM_EXCLUDE_PATTERNS)
+    exclude_patterns = tuple(
+        pattern.strip() for pattern in patterns.split(',') if pattern.strip()
+    )
+    cr.execute("SELECT code FROM res_lang WHERE active = TRUE")
+    keep_langs = [code for (code,) in cr.fetchall()]
+    return exclude_patterns, keep_langs
+
+
+def _get_saved_module_checksums(cr):
+    cr.execute(
+        "SELECT value FROM ir_config_parameter WHERE key = %s",
+        (_MODULE_CHECKSUMS_PARAM,),
+    )
+    result = cr.fetchone()
+    value = result[0] if result else '{}'
+    try:
+        checksums = json.loads(value)
+    except (TypeError, ValueError):
+        _logger.warning('%s invalid saved checksums, rebuilding baseline',
+                        _DYNAMIC_UPDATE_LOG_PREFIX)
+        return {}
+    return checksums if isinstance(checksums, dict) else {}
+
+
+def _get_changed_modules(cr):
+    saved_checksums = _get_saved_module_checksums(cr)
+    exclude_patterns, keep_langs = _get_checksum_options(cr)
+    cr.execute(
+        "SELECT name FROM ir_module_module WHERE state = 'installed'"
+    )
+    installed_module_names = [name for (name,) in cr.fetchall()]
+    current_checksums = {}
+
+    def checksum_changed(module_name):
+        checksum = get_module_checksum(
+            module_name, exclude_patterns, keep_langs,
+        )
+        current_checksums[module_name] = checksum
+        return checksum != saved_checksums.get(module_name)
+
+    changed_module_names = list(filter(
+        checksum_changed, installed_module_names,
+    ))
+    return changed_module_names, current_checksums
+
+
+def _save_module_checksums(env, module_names, current_checksums=None):
+    checksums = _get_saved_module_checksums(env.cr)
+    exclude_patterns, keep_langs = _get_checksum_options(env.cr)
+    current_checksums = current_checksums or {}
+    modules = env['ir.module.module'].search([
+        ('state', '=', 'installed'),
+        ('name', 'in', list(module_names)),
+    ])
+    for module in modules:
+        checksum = current_checksums.get(module.name)
+        if checksum is None:
+            checksum = get_module_checksum(
+                module.name, exclude_patterns, keep_langs,
+            )
+        if checksum:
+            checksums[module.name] = checksum
+    env['ir.config_parameter'].sudo().set_param(
+        _MODULE_CHECKSUMS_PARAM, json.dumps(checksums, sort_keys=True),
+    )
 
 
 def load_data(cr, idref, mode, kind, package, report):
@@ -367,6 +449,7 @@ def load_marked_modules(cr, graph, states, force, progressdict, report,
     return processed_modules
 
 def load_modules(db, force_demo=False, status=None, update_module=False):
+    update_started_at = time.time() if update_module else None
     initialize_sys_path()
 
     force = []
@@ -374,6 +457,8 @@ def load_modules(db, force_demo=False, status=None, update_module=False):
         force.append('demo')
 
     models_to_check = set()
+    checksum_module_names = set()
+    current_module_checksums = {}
 
     with db.cursor() as cr:
         # if update_module:
@@ -394,9 +479,37 @@ def load_modules(db, force_demo=False, status=None, update_module=False):
             odoo.modules.db.initialize(cr)
             update_module = True # process auto-installed modules
             tools.config["init"]["all"] = 1
+            if tools.config['update'].pop('dynamic', None):
+                _logger.info(
+                    '%s new database detected, using full bootstrap update.',
+                    _DYNAMIC_UPDATE_LOG_PREFIX,
+                )
             tools.config['update']['all'] = 1
             if not tools.config['without_demo']:
                 tools.config["demo"]['all'] = 1
+
+        if update_module and 'dynamic' in tools.config['update']:
+            _logger.info('%s dynamic module update mode enabled (-u dynamic)',
+                         _DYNAMIC_UPDATE_LOG_PREFIX)
+            changed_module_names, current_module_checksums = \
+                _get_changed_modules(cr)
+            tools.config['update'].pop('dynamic')
+            tools.config['update'].update(dict.fromkeys(
+                changed_module_names, 1
+            ))
+            _logger.info('%s modules selected: %s',
+                         _DYNAMIC_UPDATE_LOG_PREFIX,
+                         ', '.join(sorted(changed_module_names)) or 'none')
+
+        if update_module:
+            if 'all' in tools.config['update']:
+                cr.execute(
+                    "SELECT name FROM ir_module_module "
+                    "WHERE state = 'installed'"
+                )
+                checksum_module_names.update(name for (name,) in cr.fetchall())
+            else:
+                checksum_module_names.update(tools.config['update'])
 
         # This is a brand new registry, just created in
         # odoo.modules.registry.Registry.new().
@@ -590,6 +703,14 @@ def load_modules(db, force_demo=False, status=None, update_module=False):
             _logger.error('At least one test failed when loading the modules.')
         else:
             _logger.info('Modules loaded.')
+            checksum_module_names.update(processed_modules)
+            if update_module and checksum_module_names:
+                env = api.Environment(cr, SUPERUSER_ID, {})
+                _save_module_checksums(
+                    env, checksum_module_names, current_module_checksums,
+                )
+                _logger.info('Saved checksums for %d updated modules.',
+                             len(checksum_module_names))
 
         # STEP 8: call _register_hook on every model
         # This is done *exactly once* when the registry is being loaded. See the
@@ -602,6 +723,12 @@ def load_modules(db, force_demo=False, status=None, update_module=False):
 
         # STEP 9: save installed/updated modules for post-install tests
         registry.updated_modules += processed_modules
+
+        if update_started_at is not None:
+            _logger.info(
+                '[MULTIERP-UPDATE] module update completed in %.2f seconds.',
+                time.time() - update_started_at,
+            )
 
 def reset_modules_state(db_name):
     """
