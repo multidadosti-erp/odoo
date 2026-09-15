@@ -201,7 +201,6 @@ class SaleOrder(models.Model):
         self.env['stock.picking']._log_activity(_render_note_exception_quantity_so, documents)
 
 
-
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
@@ -359,6 +358,12 @@ class SaleOrderLine(models.Model):
         return {}
 
     @api.multi
+    def _get_procurement_reference_date(self):
+        """Retorna a data-base usada no planejamento do procurement."""
+        self.ensure_one()
+        return self.order_id.confirmation_date
+
+    @api.multi
     def _prepare_procurement_values(self, group_id=False):
         """ Prepare specific key for moves or other components that will be created from a stock rule
         comming from a sale order line. This method could be override in order to add other custom key that could
@@ -366,17 +371,22 @@ class SaleOrderLine(models.Model):
         """
         values = super(SaleOrderLine, self)._prepare_procurement_values(group_id)
         self.ensure_one()
-        date_planned = self.order_id.confirmation_date\
-            + timedelta(days=self.customer_lead or 0.0) - timedelta(days=self.order_id.company_id.security_lead)
-        values.update({
-            'company_id': self.order_id.company_id,
-            'group_id': group_id,
-            'sale_line_id': self.id,
-            'date_planned': date_planned,
-            'route_ids': self.route_id,
-            'warehouse_id': self.order_id.warehouse_id or False,
-            'partner_id': self.order_id.partner_shipping_id.id,
-        })
+        date_planned = (
+            self._get_procurement_reference_date()
+            + timedelta(days=self.customer_lead or 0.0)
+            - timedelta(days=self.order_id.company_id.security_lead)
+        )
+        values.update(
+            {
+                "company_id": self.order_id.company_id,
+                "group_id": group_id,
+                "sale_line_id": self.id,
+                "date_planned": date_planned,
+                "route_ids": self.route_id,
+                "warehouse_id": self.order_id.warehouse_id or False,
+                "partner_id": self.order_id.partner_shipping_id.id,
+            }
+        )
         for line in self.filtered("order_id.commitment_date"):
             date_planned = fields.Datetime.from_string(line.order_id.commitment_date) - timedelta(days=line.order_id.company_id.security_lead)
             values.update({
@@ -473,7 +483,6 @@ class SaleOrderLine(models.Model):
                 },
             }
         return {}
-
 
     def _check_routing(self):
         """ Verify the route of the product based on the warehouse
