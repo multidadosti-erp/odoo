@@ -589,90 +589,115 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_invoice_create(self, grouped=False, final=False, product_filter=None):
+        """Cria as faturas associadas aos pedidos de venda.
+
+        O filtro ``product`` representa bens e inclui produtos estocaveis e
+        consumiveis. O filtro ``service`` considera somente servicos. Quando o
+        filtro nao e informado ou nao e reconhecido, todas as linhas sao
+        consideradas para preservar o comportamento padrao.
+
+        :param grouped: agrupa as faturas por pedido quando verdadeiro; caso
+                        contrario, agrupa por endereco de faturamento e moeda
+        :param final: permite gerar devolucoes quando verdadeiro
+        :param product_filter: categoria de linhas a faturar (``product`` ou
+                               ``service``)
+        :returns: lista dos IDs das faturas criadas
         """
-        Create the invoice associated to the SO.
-        :param grouped: if True, invoices are grouped by SO id. If False, invoices are grouped by
-                        (partner_invoice_id, currency)
-        :param final: if True, refunds will be generated if necessary
-        :returns: list of created invoices
-        """
-        inv_obj = self.env['account.invoice']
-        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        Invoice = self.env["account.invoice"]
+        InvoiceLine = self.env["account.invoice.line"]
+        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+        product_types_by_filter = {
+            "product": ("product", "consu"),
+            "service": ("service",),
+        }
+        product_types = product_types_by_filter.get(product_filter)
         invoices = {}
         references = {}
         invoices_origin = {}
         invoices_name = {}
 
-        # Keep track of the sequences of the lines
-        # To keep lines under their section
+        # Mantem a sequencia das linhas e suas respectivas secoes.
         inv_line_sequence = 0
         for order in self:
             group_key = order.id if grouped else (order.partner_invoice_id.id, order.currency_id.id)
 
-            # We only want to create sections that have at least one invoiceable line
+            # Cria somente secoes que possuam ao menos uma linha faturavel.
             pending_section = None
 
-            # Create lines in batch to avoid performance problems
+            # Acumula os valores para criar as linhas em lote.
             line_vals_list = []
 
-            if product_filter in ("product", "service"):
-                order_lines = order.order_line.filtered(lambda r: r.product_id.type == product_filter)
+            if product_types:
+                order_lines = order.order_line.filtered(lambda line: line.product_id.type in product_types)
             else:
                 order_lines = order.order_line
 
-            # sequence is the natural order of order_lines
+            # A sequencia respeita a ordem natural das linhas do pedido.
             for line in order_lines:
-                if line.display_type == 'line_section':
+                if line.display_type == "line_section":
                     pending_section = line
                     continue
-                if line.display_type != 'line_note' and float_is_zero(line.qty_to_invoice, precision_digits=precision):
+
+                if line.display_type != "line_note" and float_is_zero(
+                    line.qty_to_invoice, precision_digits=precision
+                ):
                     continue
+
                 if group_key not in invoices:
                     inv_data = order._prepare_invoice()
-                    invoice = inv_obj.create(inv_data)
+                    invoice = Invoice.create(inv_data)
                     references[invoice] = order
                     invoices[group_key] = invoice
                     invoices_origin[group_key] = [invoice.origin]
                     invoices_name[group_key] = [invoice.name]
-                elif group_key in invoices:
+                else:
                     if order.name not in invoices_origin[group_key]:
                         invoices_origin[group_key].append(order.name)
+
                     if order.client_order_ref and order.client_order_ref not in invoices_name[group_key]:
                         invoices_name[group_key].append(order.client_order_ref)
 
-                if line.qty_to_invoice > 0 or (line.qty_to_invoice < 0 and final) or line.display_type == 'line_note':
+                if line.qty_to_invoice > 0 or (line.qty_to_invoice < 0 and final) or line.display_type == "line_note":
                     if pending_section:
                         section_invoice = pending_section.invoice_line_create_vals(
-                            invoices[group_key].id,
-                            pending_section.qty_to_invoice
+                            invoices[group_key].id, pending_section.qty_to_invoice
                         )
                         inv_line_sequence += 1
-                        section_invoice[0]['sequence'] = inv_line_sequence
+                        section_invoice[0]["sequence"] = inv_line_sequence
                         line_vals_list.extend(section_invoice)
                         pending_section = None
 
                     inv_line_sequence += 1
-                    inv_line = line.invoice_line_create_vals(
-                        invoices[group_key].id, line.qty_to_invoice
-                    )
-                    inv_line[0]['sequence'] = inv_line_sequence
+                    inv_line = line.invoice_line_create_vals(invoices[group_key].id, line.qty_to_invoice)
+                    inv_line[0]["sequence"] = inv_line_sequence
                     line_vals_list.extend(inv_line)
 
-            if references.get(invoices.get(group_key)):
-                if order not in references[invoices[group_key]]:
-                    references[invoices[group_key]] |= order
+            invoice = invoices.get(group_key)
+            if invoice and order not in references[invoice]:
+                references[invoice] |= order
 
-            self.env['account.invoice.line'].create(line_vals_list)
+            if line_vals_list:
+                InvoiceLine.create(line_vals_list)
 
-        for group_key in invoices:
-            invoices[group_key].write({'name': ', '.join(invoices_name[group_key])[:2000],
-                                       'origin': ', '.join(invoices_origin[group_key])})
-            sale_orders = references[invoices[group_key]]
+        for group_key, invoice in invoices.items():
+            invoice.write(
+                {
+                    "name": ", ".join(invoices_name[group_key])[:2000],
+                    "origin": ", ".join(invoices_origin[group_key]),
+                }
+            )
+
+            sale_orders = references[invoice]
+
             if len(sale_orders) == 1:
-                invoices[group_key].reference = sale_orders.reference
+                invoice.reference = sale_orders.reference
 
         if not invoices:
-            raise UserError(_('There is no invoiceable line. If a product has a Delivered quantities invoicing policy, please make sure that a quantity has been delivered.'))
+            raise UserError(
+                _(
+                    "There is no invoiceable line. If a product has a Delivered quantities invoicing policy, please make sure that a quantity has been delivered."
+                )
+            )
 
         self._finalize_invoices(invoices, references)
         return [inv.id for inv in invoices.values()]
@@ -769,7 +794,7 @@ class SaleOrder(models.Model):
                 order.with_context(tracking_disable=True).write({'state': 'sent'})
 
         return True
-        
+
     @api.multi
     def action_done(self):
         for order in self:
