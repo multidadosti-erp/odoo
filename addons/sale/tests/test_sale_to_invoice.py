@@ -73,6 +73,26 @@ class TestSaleToInvoice(TestCommonSaleNoChart):
         result = self.env['sale.order'].search(domain)
         self.assertEqual(result, expected_result, "Unexpected result on search orders")
 
+    def test_invoice_product_filter_includes_stockable_and_consumable(self):
+        """Valida que o filtro de produtos inclui estocaveis e consumiveis."""
+        self.product_deliver.type = 'product'
+        self.sale_order.action_confirm()
+        self.sol_prod_deliver.qty_delivered = 2
+
+        invoice_ids = self.sale_order.action_invoice_create(
+            product_filter='product'
+        )
+        invoice = self.env['account.invoice'].browse(invoice_ids)
+
+        self.assertEqual(
+            set(invoice.invoice_line_ids.mapped('product_id.type')),
+            {'product', 'consu'},
+        )
+        self.assertEqual(
+            set(invoice.invoice_line_ids.mapped('product_id').ids),
+            {self.product_order.id, self.product_deliver.id},
+        )
+
     def test_search_invoice_ids(self):
         """Test searching on computed fields invoice_ids"""
 
