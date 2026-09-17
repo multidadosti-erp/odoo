@@ -390,10 +390,25 @@ class Lead(models.Model):
 
     @api.multi
     def action_set_won_rainbowman(self):
+        """Marca a oportunidade como ganha e prepara o efeito de celebração.
+
+        Compara o valor planejado da oportunidade com os melhores resultados
+        recentes do vendedor e da equipe. Quando aplicável, retorna o efeito
+        ``rainbow_man`` com uma mensagem de destaque e a imagem do líder da
+        equipe. A equipe é consultada com ``sudo`` somente para permitir a
+        leitura dos dados usados no efeito visual.
+
+        Returns:
+            dict or bool: Configuração do efeito visual ou ``True`` quando não
+                houver mensagem de celebração.
+        """
         self.ensure_one()
         self.action_set_won()
 
         if self.user_id and self.team_id:
+            user_id = self.user_id.id
+            team = self.team_id.sudo()
+            team_id = team.id
             query = """
                 SELECT
                     SUM(CASE WHEN user_id = %(user_id)s THEN 1 ELSE 0 END) as total_won,
@@ -402,46 +417,49 @@ class Lead(models.Model):
                     MAX(CASE WHEN date_closed >= CURRENT_DATE - INTERVAL '30 days' AND team_id = %(team_id)s THEN planned_revenue ELSE 0 END) as max_team_30,
                     MAX(CASE WHEN date_closed >= CURRENT_DATE - INTERVAL '7 days' AND team_id = %(team_id)s THEN planned_revenue ELSE 0 END) as max_team_7
                 FROM crm_lead
-                WHERE
-                    type = 'opportunity'
-                AND
-                    active = True
-                AND
-                    probability = 100
-                AND
-                    DATE_TRUNC('year', date_closed) = DATE_TRUNC('year', CURRENT_DATE)
-                AND
-                    (user_id = %(user_id)s OR team_id = %(team_id)s)
+                WHERE type = 'opportunity'
+                  AND active = True
+                  AND probability = 100
+                  AND DATE_TRUNC('year', date_closed) = DATE_TRUNC('year', CURRENT_DATE)
+                  AND (user_id = %(user_id)s OR team_id = %(team_id)s)
             """
-            self.env.cr.execute(query, {'user_id': self.user_id.id,
-                                        'team_id': self.team_id.id})
+            self.env.cr.execute(query, {
+                'user_id': user_id,
+                'team_id': team_id,
+            })
             query_result = self.env.cr.dictfetchone()
 
             message = False
-            if query_result['total_won'] == 1:
-                message = _('Go, go, go! Congrats for your first deal.')
-            elif query_result['max_team_30'] == self.planned_revenue:
-                message = _('Boom! Team record for the past 30 days.')
-            elif query_result['max_team_7'] == self.planned_revenue:
-                message = _('Yeah! Deal of the last 7 days for the team.')
-            elif query_result['max_user_30'] == self.planned_revenue:
-                message = _('You just beat your personal record for the past 30 days.')
-            elif query_result['max_user_7'] == self.planned_revenue:
-                message = _('You just beat your personal record for the past 7 days.')
+            if query_result["total_won"] == 1:
+                message = _("Go, go, go! Congrats for your first deal.")
+            elif query_result["max_team_30"] == self.planned_revenue:
+                message = _("Boom! Team record for the past 30 days.")
+            elif query_result["max_team_7"] == self.planned_revenue:
+                message = _("Yeah! Deal of the last 7 days for the team.")
+            elif query_result["max_user_30"] == self.planned_revenue:
+                message = _("You just beat your personal record for the past 30 days.")
+            elif query_result["max_user_7"] == self.planned_revenue:
+                message = _("You just beat your personal record for the past 7 days.")
             else:
                 message = _(
-                    'Congratulations! You just beat %s opportunities won!'
-                ) % query_result['total_won']
+                    "Congratulations! You just beat {count} opportunities won!"
+                ).format(count=query_result["total_won"])
 
             if message:
+                team_user = team.user_id
                 return {
-                    'effect': {
-                        'fadeout': 'slow',
-                        'message': message,
-                        'img_url': '/web/image/%s/%s/image' % (self.team_id.user_id._name, self.team_id.user_id.id) if self.team_id.user_id.image else '/web/static/src/img/smile.svg',
-                        'type': 'rainbow_man',
+                    "effect": {
+                        "fadeout": "slow",
+                        "message": message,
+                        "img_url": (
+                            f"/web/image/{team_user._name}/{team_user.id}/image"
+                            if team_user.image
+                            else "/web/static/src/img/smile.svg"
+                        ),
+                        "type": "rainbow_man",
                     }
                 }
+
         return True
 
     @api.multi
