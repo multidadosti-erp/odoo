@@ -22,30 +22,37 @@ class CrmTeam(models.Model):
     @api.model
     @api.returns('self', lambda value: value.id if value else False)
     def _get_default_team_id(self, user_id=None):
-        if not user_id:
-            user_id = self.env.uid
-        company_id = self.sudo(user_id).env.user.company_id.id
-        team_id = self.env['crm.team'].sudo().search([
-            '|', ('user_id', '=', user_id), ('member_ids', '=', user_id),
-            '|', ('company_id', '=', False), ('company_id', 'child_of', [company_id])
-        ], limit=1)
-        if not team_id and 'default_team_id' in self.env.context:
-            team_id = self.env['crm.team'].browse(self.env.context.get('default_team_id'))
+        """Retorna a equipe comercial padrão para o usuário informado.
 
-        # Comentado pela Multidados ...
-        # Não é correto pegar a equipe criada por padrão 'sales_team.team_sales_department'
-        # devido a utilização de multi empresas.
-        #
-        # if not team_id:
-        #     default_team_id = self.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
-        #     if default_team_id:
-        #         try:
-        #             default_team_id.check_access_rule('read')
-        #         except AccessError:
-        #             return self.env['crm.team']
-        #         if (self.env.context.get('default_type') != 'lead' or default_team_id.use_leads) and default_team_id.active:
-        #             team_id = default_team_id
-        return team_id
+        A equipe definida em ``default_team_id`` no contexto possui prioridade.
+        Caso ela não seja informada, procura uma equipe liderada pelo usuário ou
+        da qual ele seja membro, considerando equipes compartilhadas e equipes
+        pertencentes à estrutura da empresa principal do usuário.
+
+        Args:
+            user_id (int, opcional): ID do usuário usado na busca. Quando não
+                informado, utiliza o usuário do ambiente atual.
+
+        Returns:
+            crm.team: Equipe encontrada ou um recordset vazio.
+        """
+        if "default_team_id" in self.env.context:
+            return self.browse(self.env.context.get("default_team_id"))
+
+        target_user_id = user_id or self.env.uid
+        target_user = self.env["res.users"].sudo().browse(target_user_id)
+        company_id = target_user.company_id.id
+        domain = [
+            "|",
+            ("user_id", "=", target_user_id),
+            ("member_ids", "=", target_user_id),
+            "|",
+            ("company_id", "=", False),
+            ("company_id", "child_of", [company_id]),
+        ]
+        team = self.sudo().search(domain, limit=1)
+
+        return team
 
     def _get_default_favorite_user_ids(self):
         return [(6, 0, [self.env.uid])]
