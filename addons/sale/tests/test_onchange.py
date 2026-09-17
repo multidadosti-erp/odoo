@@ -65,6 +65,31 @@ class TestOnchangeProductId(TransactionCase):
         # Check the unit price of SO line
         self.assertEquals(100, sale_order.order_line[0].price_unit, "The included tax must be subtracted to the price")
 
+    def test_partner_onchange_preserves_context_team(self):
+        """Keep the context team when the partner has another sales team."""
+        partner_team = self.env['crm.team'].create({
+            'name': 'Partner Team',
+            'company_id': False,
+        })
+        context_team = self.env['crm.team'].create({
+            'name': 'Context Team',
+            'company_id': False,
+        })
+        partner = self.res_partner_model.create({
+            'name': 'Partner With Team',
+            'team_id': partner_team.id,
+        })
+        order = self.so_model.with_context(
+            default_team_id=context_team.id,
+        ).new({
+            'partner_id': partner.id,
+            'team_id': context_team.id,
+        })
+
+        order.onchange_partner_id()
+
+        self.assertEqual(order.team_id, context_team)
+
     def test_pricelist_application(self):
         """ Test different prices are correctly applied based on dates """
         support_product = self.env.ref('product.product_product_2')
