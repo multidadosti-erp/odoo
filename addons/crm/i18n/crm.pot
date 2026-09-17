@@ -419,9 +419,9 @@ msgid "Configuration options are available in the Settings app."
 msgstr ""
 
 #. module: crm
-#: code:addons/crm/models/crm_lead.py:432
-#, python-format
-msgid "Congratulations! You just beat %s opportunities won!"
+#: code:addons/crm/models/crm_lead.py:450
+#, python-brace-format
+msgid "Congratulations! You just beat {count} opportunities won!"
 msgstr ""
 
 #. module: crm
