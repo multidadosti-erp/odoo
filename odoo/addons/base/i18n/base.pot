@@ -5742,6 +5742,23 @@ msgid "Access"
 msgstr ""
 
 #. module: base
+#: code:addons/models.py:3610
+#, python-format
+msgid ""
+"Access denied by record rules. The records exist, but do not satisfy the %s rules applicable to your user.\n"
+"\n"
+"Document type: %s (%s)\n"
+"Operation: %s\n"
+"Records: %s\n"
+"User: %s\n"
+"Current company: %s\n"
+"Allowed companies: %s\n"
+"Applicable rules: %s\n"
+"\n"
+"Review the listed rules, user groups and company access, or contact your system administrator."
+msgstr ""
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_res_groups__model_access
 msgid "Access Controls"
 msgstr ""
@@ -15053,6 +15070,11 @@ msgid "None"
 msgstr ""
 
 #. module: base
+#: code:addons/models.py:3554 code:addons/models.py:3584
+msgid "None identified"
+msgstr ""
+
+#. module: base
 #: model:res.country,name:base.nf
 msgid "Norfolk Island"
 msgstr ""
@@ -21542,6 +21564,11 @@ msgstr ""
 #: code:addons/models.py:3131
 #, python-format
 msgid "Unable to delete this document because it is used as a default property"
+msgstr ""
+
+#. module: base
+#: code:addons/models.py:3533 code:addons/models.py:3534
+msgid "Unavailable"
 msgstr ""
 
 #. module: base

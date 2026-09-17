@@ -3500,6 +3500,138 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 exc = AccessError("No value found for %s.%s" % (self, field.name))
                 self.env.cache.set_failed(self, [field], exc)
 
+    def _get_record_rule_access_error(self, operation):
+        """Monta um erro detalhado para registros bloqueados por regras.
+
+        As consultas de diagnóstico usam ``sudo`` ou SQL apenas para identificar
+        registros, usuário, empresas e regras aplicáveis. Qualquer falha nessa
+        coleta mantém o erro de acesso original com informações básicas.
+        """
+        if operation not in ('read', 'write', 'create', 'unlink'):
+            raise ValueError('Invalid operation: %r' % operation)
+
+        forbidden_sample = self[:6]
+        record_ids = ', '.join(
+            str(record_id) for record_id in forbidden_sample.ids
+        )
+        record_log_details = record_ids
+        try:
+            record_log_details = ', '.join(
+                f'{record_id} ({tools.ustr(display_name)})'
+                for record_id, display_name
+                in forbidden_sample.sudo().name_get()
+            )
+        except Exception:  # noqa: BLE001 - diagnóstico não pode substituir o erro original
+            _logger.warning(
+                'Unable to obtain record names for access denial: '
+                'model=%s, ids=%r',
+                self._name,
+                forbidden_sample.ids,
+                exc_info=True,
+            )
+
+        user_details = str(self._uid)
+        current_company_details = _('Unavailable')
+        allowed_company_details = _('Unavailable')
+        try:
+            user = self.env['res.users'].sudo().browse(self._uid)
+            user_details = f'{self._uid} ({tools.ustr(user.display_name)})'
+            current_company_details = (
+                f'{user.company_id.id} '
+                f'({tools.ustr(user.company_id.display_name)})'
+            )
+            allowed_company_details = ', '.join(
+                f'{company_id} ({tools.ustr(company_name)})'
+                for company_id, company_name in user.company_ids.name_get()
+            ) or _('None')
+        except Exception:  # noqa: BLE001 - diagnóstico não pode substituir o erro original
+            _logger.warning(
+                'Unable to obtain user/company details for access denial: '
+                'uid=%s',
+                self._uid,
+                exc_info=True,
+            )
+
+        applicable_rule_details = _('None identified')
+        try:
+            self.env.cr.execute(
+                f""" SELECT DISTINCT r.id, r.name
+                    FROM ir_rule r
+                    JOIN ir_model m ON m.id = r.model_id
+                    WHERE m.model = %s
+                      AND r.active
+                      AND r.perm_{operation}
+                      AND (
+                          NOT EXISTS (
+                              SELECT 1 FROM rule_group_rel rg
+                              WHERE rg.rule_group_id = r.id
+                          )
+                          OR r.id IN (
+                              SELECT rg.rule_group_id
+                              FROM rule_group_rel rg
+                              JOIN res_groups_users_rel gu
+                                ON gu.gid = rg.group_id
+                              WHERE gu.uid = %s
+                          )
+                      )
+                    ORDER BY r.id
+                """,
+                (self._name, self._uid),
+            )
+            applicable_rules = self.env.cr.fetchall()
+            applicable_rule_details = ', '.join(
+                f'{rule_id} ({tools.ustr(rule_name)})'
+                for rule_id, rule_name in applicable_rules
+            ) or _('None identified')
+        except Exception:  # noqa: BLE001 - diagnóstico não pode substituir o erro original
+            _logger.warning(
+                'Unable to obtain applicable record rules for access denial: '
+                'model=%s, uid=%s',
+                self._name,
+                self._uid,
+                exc_info=True,
+            )
+
+        _logger.info(
+            'The requested operation cannot be completed due to record rules: '
+            'Document type: %s, Operation: %s, Records: %s, '
+            'Total records: %s, User: %s, Current company: %s, '
+            'Allowed companies: %s, Applicable rules: %s',
+            self._name,
+            operation,
+            record_log_details,
+            len(self),
+            user_details,
+            current_company_details,
+            allowed_company_details,
+            applicable_rule_details,
+        )
+        return AccessError(
+            _(
+                'Access denied by record rules. The records exist, but '
+                'do not satisfy the %s rules applicable to your user.\n\n'
+                'Document type: %s (%s)\n'
+                'Operation: %s\n'
+                'Records: %s\n'
+                'User: %s\n'
+                'Current company: %s\n'
+                'Allowed companies: %s\n'
+                'Applicable rules: %s\n\n'
+                'Review the listed rules, user groups and company access, '
+                'or contact your system administrator.'
+            ) % (
+                operation,
+                self._description,
+                self._name,
+                operation,
+                record_ids,
+                user_details,
+                current_company_details,
+                allowed_company_details,
+                applicable_rule_details,
+            )
+        )
+
     @api.multi
     def _read_from_database(self, field_names, inherited_field_names=[]):
         """ Read the given fields of the records in ``self`` from the database,
@@ -3608,14 +3740,8 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             # mark non-existing records in missing
             forbidden = missing.exists()
             if forbidden:
-                _logger.info(
-                    _('The requested operation cannot be completed due to record rules: Document type: %s, Operation: %s, Records: %s, User: %s') % \
-                    (self._name, 'read', ','.join([str(r.id) for r in forbidden]), self._uid))
                 # store an access error exception in existing records
-                exc = AccessError(
-                    _('The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n\n(Document type: %s, Operation: %s)') % (self._description, 'read')
-                    + ' - ({} {}, {} {})'.format(_('Records:'), forbidden.ids[:6], _('User:'), self._uid)
-                )
+                exc = forbidden._get_record_rule_access_error('read')
                 self.env.cache.set_failed(forbidden, self._fields.values(), exc)
 
     @api.multi

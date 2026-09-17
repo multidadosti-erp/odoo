@@ -9300,6 +9300,34 @@ msgid "Access"
 msgstr "Acesso"
 
 #. module: base
+#: code:addons/models.py:3610
+#, python-format
+msgid ""
+"Access denied by record rules. The records exist, but do not satisfy the %s rules applicable to your user.\n"
+"\n"
+"Document type: %s (%s)\n"
+"Operation: %s\n"
+"Records: %s\n"
+"User: %s\n"
+"Current company: %s\n"
+"Allowed companies: %s\n"
+"Applicable rules: %s\n"
+"\n"
+"Review the listed rules, user groups and company access, or contact your system administrator."
+msgstr ""
+"Acesso negado pelas regras de registro. Os registros existem, mas não atendem às regras de %s aplicáveis ao seu usuário.\n"
+"\n"
+"Tipo de documento: %s (%s)\n"
+"Operação: %s\n"
+"Registros: %s\n"
+"Usuário: %s\n"
+"Empresa atual: %s\n"
+"Empresas permitidas: %s\n"
+"Regras aplicáveis: %s\n"
+"\n"
+"Revise as regras listadas, os grupos do usuário e o acesso às empresas ou entre em contato com o administrador do sistema."
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_res_groups__model_access
 msgid "Access Controls"
 msgstr "Controles de Acesso"
@@ -19692,6 +19720,11 @@ msgid "None"
 msgstr "Nenhum"
 
 #. module: base
+#: code:addons/models.py:3554 code:addons/models.py:3584
+msgid "None identified"
+msgstr "Nenhuma identificada"
+
+#. module: base
 #: model:res.country,name:base.nf
 msgid "Norfolk Island"
 msgstr "Ilhas Norfolk"
@@ -27519,6 +27552,11 @@ msgid ""
 msgstr ""
 "Não é possível excluir esse documento porque ele é usado como propriedade "
 "padrão"
+
+#. module: base
+#: code:addons/models.py:3533 code:addons/models.py:3534
+msgid "Unavailable"
+msgstr "Indisponível"
 
 #. module: base
 #: code:addons/base/models/ir_actions_report.py:710
