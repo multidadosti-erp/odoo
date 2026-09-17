@@ -345,43 +345,55 @@ class SaleOrder(models.Model):
     @api.multi
     @api.onchange('partner_id')
     def onchange_partner_id(self):
+        """Atualiza os dados comerciais ao alterar o cliente.
+
+        Preenche lista de preços, condição de pagamento, endereços e vendedor.
+        A equipe comercial do cliente somente é aplicada quando o contexto não
+        possui ``default_team_id``, preservando a equipe definida pelo fluxo de
+        origem, como na criação de orçamento a partir de uma oportunidade.
         """
-        Update the following fields when the partner is changed:
-        - Pricelist
-        - Payment terms
-        - Invoice address
-        - Delivery address
-        """
-        # Multidados: Adicionado para não regravar os campos caso não tenha mudado o
-        # partner_id.
-        if hasattr(self, '_origin') and self._origin.partner_id == self.partner_id:
+        # Evita recalcular os campos quando o cliente não foi alterado.
+        if hasattr(self, "_origin") and self._origin.partner_id == self.partner_id:
             return
 
-        if not self.partner_id:
-            self.update({
-                'partner_invoice_id': False,
-                'partner_shipping_id': False,
-                'payment_term_id': False,
-                'fiscal_position_id': False,
-            })
+        partner = self.partner_id
+        if not partner:
+            self.update(
+                {
+                    "partner_invoice_id": False,
+                    "partner_shipping_id": False,
+                    "payment_term_id": False,
+                    "fiscal_position_id": False,
+                }
+            )
             return
 
-        addr = self.partner_id.address_get(['delivery', 'invoice'])
+        addresses = partner.address_get(["delivery", "invoice"])
+        salesperson = (
+            partner.user_id or partner.commercial_partner_id.user_id or self.env.user
+        )
         values = {
-            'pricelist_id': self.partner_id.property_product_pricelist and self.partner_id.property_product_pricelist.id or False,
-            'payment_term_id': self.partner_id.property_payment_term_id and self.partner_id.property_payment_term_id.id or False,
-            'partner_invoice_id': addr['invoice'],
-            'partner_shipping_id': addr['delivery'],
-            'user_id': self.partner_id.user_id.id or self.partner_id.commercial_partner_id.user_id.id or self.env.uid
+            "pricelist_id": partner.property_product_pricelist.id or False,
+            "payment_term_id": partner.property_payment_term_id.id or False,
+            "partner_invoice_id": addresses["invoice"],
+            "partner_shipping_id": addresses["delivery"],
+            "user_id": salesperson.id,
         }
-        if self.env['ir.config_parameter'].sudo().get_param('sale.use_sale_note') and self.env.user.company_id.sale_note:
-            values['note'] = self.with_context(lang=self.partner_id.lang).env.user.company_id.sale_note
+        company = self.env.user.company_id
+        use_sale_note = (
+            self.env["ir.config_parameter"].sudo().get_param("sale.use_sale_note")
+        )
+        if use_sale_note and company.sale_note:
+            values["note"] = self.with_context(
+                lang=partner.lang
+            ).env.user.company_id.sale_note
 
-        if self.partner_id.team_id:
-            values['team_id'] = self.partner_id.team_id.id
+        if partner.team_id: # and not self._context.get("default_team_id"):
+            values["team_id"] = partner.team_id.id
 
-        if self.user_id.id == values.get('user_id'):
-            del values['user_id']
+        if self.user_id.id == values.get("user_id"):
+            del values["user_id"]
+
         self.update(values)
 
     @api.onchange('partner_id')
