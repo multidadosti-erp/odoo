@@ -388,7 +388,7 @@ class SaleOrder(models.Model):
                 lang=partner.lang
             ).env.user.company_id.sale_note
 
-        if partner.team_id: # and not self._context.get("default_team_id"):
+        if partner.team_id and "default_team_id" not in self._context:
             values["team_id"] = partner.team_id.id
 
         if self.user_id.id == values.get("user_id"):

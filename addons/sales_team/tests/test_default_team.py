@@ -31,7 +31,20 @@ class TestDefaultTeam(common.SavepointCase):
         team = self.CrmTeam.sudo(self.user)._get_default_team_id()
         self.assertEqual(team, self.team_1)
 
-    def test_02_fallback_team(self):
+    def test_02_context_team_has_priority(self):
+        """Prefer the team provided by context over the user's team."""
+        context_team = self.CrmTeam.create({
+            'name': 'Context Team',
+            'company_id': False,
+        })
+
+        team = self.CrmTeam.sudo(self.user).with_context(
+            default_team_id=context_team.id,
+        )._get_default_team_id()
+
+        self.assertEqual(team, context_team)
+
+    def test_03_fallback_team(self):
         """Get default team when user does not belong to any team.
 
         Case 1: fall back default team (from XML ref) is active.
