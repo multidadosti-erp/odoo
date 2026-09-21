@@ -1,14 +1,20 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import fields, models
 
 
 class SaleReport(models.Model):
-    _inherit = 'sale.report'
+    """Estende o relatório de vendas com informações de margem."""
 
-    margin = fields.Float('Margin')
+    _inherit = "sale.report"
 
-    def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
-        fields['margin'] = ", SUM(l.margin / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) AS margin"
+    margin = fields.Float("Margin")
+
+    def _query(self, with_clause="", fields={}, groupby="", from_clause=""):
+        """Inclui a margem agregada na consulta do relatório de vendas.
+
+        A margem das linhas é convertida pela taxa da moeda do pedido antes
+        da soma; quando não há taxa válida, a consulta utiliza ``1.0``.
+        """
+        fields["margin"] = (
+            ", SUM(l.margin / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) AS margin"
+        )
         return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
