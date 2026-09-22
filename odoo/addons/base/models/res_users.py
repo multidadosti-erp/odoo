@@ -275,8 +275,9 @@ class Users(models.Model):
         """)
         if self.env.cr.rowcount:
             Users = self.sudo()
+            crypt_context = Users._crypt_context()
             for uid, pw in cr.fetchall():
-                Users.browse(uid).password = pw
+                Users._set_encrypted_password(uid, crypt_context.encrypt(pw))
 
     def _set_password(self):
         ctx = self._crypt_context()
