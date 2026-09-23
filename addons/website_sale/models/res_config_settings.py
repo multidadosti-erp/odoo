@@ -72,9 +72,12 @@ class ResConfigSettings(models.TransientModel):
                 'module_website_sale_delivery': True,
             })
 
-    @api.onchange('group_discount_per_so_line')
-    def _onchange_group_discount_per_so_line(self):
-        if self.group_discount_per_so_line:
-            self.update({
-                'multi_sales_price': True,
-            })
+    # Comentado pela Multidados:
+    # - Remoção do campo das configurações, vinculado ao grupo de desconto por linha de pedido
+    # - Essa configuração deve ser aplicada em cada usuário individualmente.
+    # @api.onchange('group_discount_per_so_line')
+    # def _onchange_group_discount_per_so_line(self):
+    #     if self.group_discount_per_so_line:
+    #         self.update({
+    #             'multi_sales_price': True,
+    #         })
