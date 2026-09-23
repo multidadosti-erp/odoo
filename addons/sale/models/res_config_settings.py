@@ -12,7 +12,12 @@ class ResConfigSettings(models.TransientModel):
         string='Default Terms & Conditions',
         oldname='default_use_sale_note',
         config_parameter='sale.use_sale_note')
-    group_discount_per_so_line = fields.Boolean("Discounts", implied_group='sale.group_discount_per_so_line')
+
+    # Comentado pela Multidados:
+    # - Remoção do campo das configurações, vinculado ao grupo de desconto por linha de pedido
+    # - Essa configuração deve ser aplicada em cada usuário individualmente.
+    # group_discount_per_so_line = fields.Boolean("Discounts", implied_group='sale.group_discount_per_so_line')
+
     module_sale_margin = fields.Boolean("Margins")
     quotation_validity_days = fields.Integer(related='company_id.quotation_validity_days', string="Default Quotation Validity (Days)", readonly=False)
     use_quotation_validity_days = fields.Boolean("Default Quotation Validity", config_parameter='sale.use_quotation_validity_days')
@@ -81,9 +86,12 @@ class ResConfigSettings(models.TransientModel):
         super(ResConfigSettings, self).set_values()
         if self.default_invoice_policy != 'order':
             self.env['ir.config_parameter'].set_param('sale.automatic_invoice', False)
-        if not self.group_discount_per_so_line:
-            pl = self.env['product.pricelist'].search([('discount_policy', '=', 'without_discount')])
-            pl.write({'discount_policy': 'with_discount'})
+        # Comentado pela Multidados:
+        # - Remoção do campo das configurações, vinculado ao grupo de desconto por linha de pedido
+        # - Essa configuração deve ser aplicada em cada usuário individualmente.
+        # if not self.group_discount_per_so_line:
+        #     pl = self.env['product.pricelist'].search([('discount_policy', '=', 'without_discount')])
+        #     pl.write({'discount_policy': 'with_discount'})
 
     @api.onchange('multi_sales_price', 'multi_sales_price_method')
     def _onchange_sale_price(self):
