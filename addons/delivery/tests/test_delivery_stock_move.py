@@ -22,6 +22,10 @@ class StockMoveInvoice(AccountingTestCase):
 
     def test_01_delivery_stock_move(self):
         # Test if the stored fields of stock moves are computed with invoice before delivery flow
+        # O cenário exige faturamento por pedido, independente do padrão instalado.
+        (self.product_cable_management_box | self.normal_delivery.product_id).write({
+            'invoice_policy': 'order',
+        })
         self.product_11.write({
             'weight': 0.25,
         })
