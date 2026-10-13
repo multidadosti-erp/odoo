@@ -6906,7 +6906,7 @@ class Model(AbstractModel):
         kind_icons = {
             'success': 'fa-check',
             'warn': 'fa-exclamation-triangle',
-            'error': 'fa-skull-crossbones',
+            'error': 'fa-times-circle',
         }
         # Títulos tipados
         kind_titles = {
