@@ -10,8 +10,14 @@ from odoo.http import request
 
 class PortalAccount(CustomerPortal):
 
-    def _prepare_portal_layout_values(self):
-        values = super(PortalAccount, self)._prepare_portal_layout_values()
+    def _prepare_portal_layout_values(self, values={}):
+        values = super(PortalAccount, self)._prepare_portal_layout_values(values)
+
+        # Retorna os valores obtidos pela função, sem incluir as informações
+        # de projetos e tarefas, quando o usuário não possui acesso a eles.
+        if values.get("access_account_invoice") is False:
+            return values
+
         invoice_count = (
             request.env['account.invoice'].search_count([])
             if request.env['account.invoice'].check_access_rights('read', raise_exception=False)
@@ -33,7 +39,14 @@ class PortalAccount(CustomerPortal):
 
     @http.route(['/my/invoices', '/my/invoices/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_invoices(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
-        values = self._prepare_portal_layout_values()
+        values = self.prepare_portal_layout_values()
+
+        # Adicionado pela Multidados:
+        # - Redireciona o usuário para a página inicial do portal,
+        #  quando o usuário não possui acesso a eles.
+        if values.get("access_account_invoice") is False:
+            return self.redirect_not_allowed_app("Invoices")
+
         AccountInvoice = request.env['account.invoice']
 
         domain = []
