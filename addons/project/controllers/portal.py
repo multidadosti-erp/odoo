@@ -15,8 +15,14 @@ from odoo.osv.expression import OR
 
 class CustomerPortal(CustomerPortal):
 
-    def _prepare_portal_layout_values(self):
-        values = super(CustomerPortal, self)._prepare_portal_layout_values()
+    def _prepare_portal_layout_values(self, values={}):
+        values = super(CustomerPortal, self)._prepare_portal_layout_values(values)
+
+        # Retorna os valores obtidos pela função, sem incluir as informações
+        # de projetos e tarefas, quando o usuário não possui acesso a eles.
+        if values.get("access_projects") is False:
+            return values
+
         values['project_count'] = request.env['project.project'].search_count([])
         values['task_count'] = request.env['project.task'].search_count([])
         return values
@@ -33,7 +39,14 @@ class CustomerPortal(CustomerPortal):
 
     @http.route(['/my/projects', '/my/projects/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_projects(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
-        values = self._prepare_portal_layout_values()
+        values = self.prepare_portal_layout_values()
+
+        # Adicionado pela Multidados:
+        # - Redireciona o usuário para a página inicial do portal,
+        #  quando o usuário não possui acesso a eles.
+        if values.get("access_projects") is False:
+            return self.redirect_not_allowed_app("Projects")
+
         Project = request.env['project.project']
         domain = []
 
@@ -100,7 +113,14 @@ class CustomerPortal(CustomerPortal):
 
     @http.route(['/my/tasks', '/my/tasks/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_tasks(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, search=None, search_in='content', groupby='project', **kw):
-        values = self._prepare_portal_layout_values()
+        values = self.prepare_portal_layout_values()
+
+        # Adicionado pela Multidados:
+        # - Redireciona o usuário para a página inicial do portal,
+        #  quando o usuário não possui acesso a eles.
+        if values.get("access_projects") is False:
+            return self.redirect_not_allowed_app("Tarefas")
+
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc'},
             'name': {'label': _('Title'), 'order': 'name'},
