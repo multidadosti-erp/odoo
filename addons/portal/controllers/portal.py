@@ -130,27 +130,54 @@ class CustomerPortal(Controller):
             })
         return groups
 
-    def _prepare_portal_layout_values(self):
+    def _prepare_portal_layout_values_accesses(self):
+        """ Adicionado pela Multidados:
+        Utiliza para validação de acesso dos usuários aos registros
+        conforme as permissões do usuário.
+
+        Args:
+            values (dict): Valores para templates do portal.
+
+        Returns:
+            dict: Valores para o template do portal, com as definições
+                de acesso aos registros.
+        """
+        return {
+            "user": request.env.user,
+        }
+
+    def _prepare_portal_layout_values(self, values={}):
         # get customer sales rep
         sales_user = False
         partner = request.env.user.partner_id
         if partner.user_id and not partner.user_id._is_public():
             sales_user = partner.user_id
 
-        return {
+        if not isinstance(values, dict):
+            values = {}
+
+        values.update({
             'sales_user': sales_user,
             'page_name': 'home',
             'archive_groups': [],
-        }
+        })
+        return values
+
+    def prepare_portal_layout_values(self):
+        # Adicionado pela Multidados:
+        # - Adiciona chamada de função que define acesso do usuário aos registros
+        values = self._prepare_portal_layout_values_accesses()
+        values = self._prepare_portal_layout_values(values)
+        return values
 
     @route(['/my', '/my/home'], type='http', auth="user", website=True)
     def home(self, **kw):
-        values = self._prepare_portal_layout_values()
+        values = self.prepare_portal_layout_values()
         return request.render("portal.portal_my_home", values)
 
     @route(['/my/account'], type='http', auth='user', website=True)
     def account(self, redirect=None, **post):
-        values = self._prepare_portal_layout_values()
+        values = self.prepare_portal_layout_values()
         partner = request.env.user.partner_id
         values.update({
             'error': {},
