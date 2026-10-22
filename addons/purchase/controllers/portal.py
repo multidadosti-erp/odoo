@@ -16,8 +16,9 @@ from odoo.addons.web.controllers.main import Binary
 
 class CustomerPortal(CustomerPortal):
 
-    def _prepare_portal_layout_values(self):
-        values = super(CustomerPortal, self)._prepare_portal_layout_values()
+    def _prepare_portal_layout_values(self, values={}):
+        values = super(CustomerPortal, self)._prepare_portal_layout_values(values)
+
         values['purchase_count'] = request.env['purchase.order'].search_count([
             ('state', 'in', ['purchase', 'done', 'cancel'])
         ]) if request.env['purchase.order'].check_access_rights('read', raise_exception=False) else 0
@@ -38,7 +39,14 @@ class CustomerPortal(CustomerPortal):
 
     @http.route(['/my/purchase', '/my/purchase/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_purchase_orders(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
-        values = self._prepare_portal_layout_values()
+        values = self.prepare_portal_layout_values()
+
+        # Adicionado pela Multidados:
+        # - Redireciona o usuário para a página inicial do portal,
+        #  quando o usuário não possui acesso a eles.
+        if values.get("access_purchase") is False:
+            return self.redirect_not_allowed_app("Purchases")
+
         partner = request.env.user.partner_id
         PurchaseOrder = request.env['purchase.order']
 
