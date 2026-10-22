@@ -146,6 +146,18 @@ class CustomerPortal(Controller):
             "user": request.env.user,
         }
 
+    def redirect_not_allowed_app(self, app_name):
+        """ Redireciona o usuário para a página inicial do portal
+        quando ele tenta acessar um aplicativo não permitido.
+
+        É sobrescrito no módulo "br_portal" para redirecionar para
+        a rota configurada para o aplicativo não permitido.
+
+        Args:
+            app_name (str): Nome do aplicativo não permitido.
+        """
+        return request.redirect('/my')
+
     def _prepare_portal_layout_values(self, values={}):
         # get customer sales rep
         sales_user = False
