@@ -1471,7 +1471,9 @@ msgid "Purchased in the last 365 days"
 msgstr "Comprado nos últimos 365 dias"
 
 #. module: purchase
+#: code:addons/purchase/controllers/portal.py:48
 #: model_terms:ir.ui.view,arch_db:purchase.res_partner_view_purchase_buttons
+#, python-format
 msgid "Purchases"
 msgstr "Compras"
 

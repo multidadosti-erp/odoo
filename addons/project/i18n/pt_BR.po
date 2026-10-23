@@ -1924,6 +1924,7 @@ msgid "Project: Send rating"
 msgstr "Projeto: Enviar Pontuação"
 
 #. module: project
+#: code:addons/project/controllers/portal.py:48
 #: model:ir.actions.act_window,name:project.open_view_project_all
 #: model:ir.actions.act_window,name:project.open_view_project_all_config
 #: model:ir.model.fields,field_description:project.field_account_analytic_account_project_ids
@@ -1935,6 +1936,7 @@ msgstr "Projeto: Enviar Pontuação"
 #: model_terms:ir.ui.view,arch_db:project.portal_my_projects
 #: model_terms:ir.ui.view,arch_db:project.rating_index
 #: model_terms:ir.ui.view,arch_db:project.view_project
+#, python-format
 msgid "Projects"
 msgstr "Projetos"
 
@@ -2469,6 +2471,7 @@ msgid "Task ready for Next Stage"
 msgstr "Tarefa Pronta para o Próximo Estágio"
 
 #. module: project
+#: code:addons/project/controllers/portal.py:122
 #: code:addons/project/models/project.py:181
 #: model:ir.actions.act_window,name:project.act_project_project_2_project_task_all
 #: model:ir.actions.act_window,name:project.action_view_task
