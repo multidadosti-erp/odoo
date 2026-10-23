@@ -45,7 +45,7 @@ class PortalAccount(CustomerPortal):
         # - Redireciona o usuário para a página inicial do portal,
         #  quando o usuário não possui acesso a eles.
         if values.get("access_account_invoice") is False:
-            return self.redirect_not_allowed_app("Invoices")
+            return self.redirect_not_allowed_app(_("Invoices"))
 
         AccountInvoice = request.env['account.invoice']
 
