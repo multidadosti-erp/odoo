@@ -45,7 +45,7 @@ class CustomerPortal(CustomerPortal):
         # - Redireciona o usuário para a página inicial do portal,
         #  quando o usuário não possui acesso a eles.
         if values.get("access_projects") is False:
-            return self.redirect_not_allowed_app("Projects")
+            return self.redirect_not_allowed_app(_("Projects"))
 
         Project = request.env['project.project']
         domain = []
@@ -119,7 +119,7 @@ class CustomerPortal(CustomerPortal):
         # - Redireciona o usuário para a página inicial do portal,
         #  quando o usuário não possui acesso a eles.
         if values.get("access_projects") is False:
-            return self.redirect_not_allowed_app("Tarefas")
+            return self.redirect_not_allowed_app(_("Tasks"))
 
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc'},

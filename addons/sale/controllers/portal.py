@@ -51,7 +51,7 @@ class CustomerPortal(CustomerPortal):
         # - Redireciona o usuário para a página inicial do portal,
         #  quando o usuário não possui acesso a eles.
         if values.get("access_sales") is False:
-            return self.redirect_not_allowed_app("Sales")
+            return self.redirect_not_allowed_app(_("Sales"))
 
         partner = request.env.user.partner_id
         SaleOrder = request.env['sale.order']

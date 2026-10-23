@@ -56,7 +56,7 @@ class WebsiteAccount(CustomerPortal):
         # - Redireciona o usuário para a página inicial do portal,
         #  quando o usuário não possui acesso a eles.
         if values.get("access_crm") is False:
-            return self.redirect_not_allowed_app("Purchases")
+            return self.redirect_not_allowed_app("CRM")
 
         CrmLead = request.env['crm.lead']
         domain = self.get_domain_my_lead(request.env.user)

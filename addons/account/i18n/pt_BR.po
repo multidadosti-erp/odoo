@@ -5414,6 +5414,7 @@ msgid "Invoiced"
 msgstr "Faturado"
 
 #. module: account
+#: code:addons/account/controllers/portal.py:42
 #: code:addons/account/models/account_invoice_import_wizard.py:38
 #: model:ir.actions.act_window,name:account.action_invoice_refund_out_tree
 #: model:ir.actions.act_window,name:account.action_invoice_tree
