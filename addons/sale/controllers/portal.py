@@ -13,8 +13,14 @@ from odoo.osv import expression
 
 class CustomerPortal(CustomerPortal):
 
-    def _prepare_portal_layout_values(self):
-        values = super(CustomerPortal, self)._prepare_portal_layout_values()
+    def _prepare_portal_layout_values(self, values={}):
+        values = super(CustomerPortal, self)._prepare_portal_layout_values(values)
+
+        # Retorna os valores obtidos pela função, sem incluir as informações
+        # de projetos e tarefas, quando o usuário não possui acesso a eles.
+        if values.get("access_sales") is False:
+            return values
+
         partner = request.env.user.partner_id
 
         SaleOrder = request.env['sale.order']
@@ -39,7 +45,14 @@ class CustomerPortal(CustomerPortal):
 
     @http.route(['/my/quotes', '/my/quotes/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_quotes(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
-        values = self._prepare_portal_layout_values()
+        values = self.prepare_portal_layout_values()
+
+        # Adicionado pela Multidados:
+        # - Redireciona o usuário para a página inicial do portal,
+        #  quando o usuário não possui acesso a eles.
+        if values.get("access_sales") is False:
+            return self.redirect_not_allowed_app(_("Sales"))
+
         partner = request.env.user.partner_id
         SaleOrder = request.env['sale.order']
 
