@@ -562,15 +562,49 @@ QUnit.module('Views', {
         form.destroy();
     });
 
+    QUnit.test('notebook record counts are opt-in and use the full list', function (assert) {
+        assert.expect(5);
+        this.data.partner.records[0].p = [2, 4, 5];
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form><sheet>' +
+                '<notebook show_record_count="1">' +
+                    '<page string="Lines" count_field="p">' +
+                        '<field name="p"><tree limit="1"><field name="foo"/></tree></field>' +
+                    '</page>' +
+                    '<page string="Empty" count_field="timmy"><field name="timmy"/></page>' +
+                    '<page string="Uncounted"/>' +
+                '</notebook>' +
+                '<notebook><page string="Default" count_field="p"/></notebook>' +
+                '</sheet></form>',
+            res_id: 1,
+        });
+        assert.strictEqual(form.$('.o_notebook_record_count:first').text(), ' (3)',
+            'the count includes records outside the loaded page');
+        assert.strictEqual(form.$('.o_notebook_record_count:eq(1)').text(), ' (0)',
+            'empty lists show zero');
+        assert.strictEqual(form.$('.o_notebook_record_count').length, 2,
+            'pages without count_field and notebooks without opt-in are unchanged');
+        form.$buttons.find('.o_form_button_edit').click();
+        form.$('.o_field_one2many .o_list_record_remove:first').click();
+        assert.strictEqual(form.$('.o_notebook_record_count:first').text(), ' (2)',
+            'deleting a row updates the total');
+        assert.strictEqual(form.$('.o_notebook:first .nav-link:first').text(), 'Lines (2)',
+            'the original title is preserved');
+        form.destroy();
+    });
+
     QUnit.test('hide_single_tab follows visible pages and is opt-in', function (assert) {
-        assert.expect(7);
+        assert.expect(10);
         var form = createView({
             View: FormView,
             model: 'partner',
             data: this.data,
             arch: '<form><sheet><field name="product_id"/>' +
-                '<notebook hide_single_tab="1">' +
-                    '<page string="Foo"><field name="foo"/></page>' +
+                '<notebook hide_single_tab="1" show_record_count="1">' +
+                    '<page string="Foo" count_field="p"><field name="foo"/><field name="p"/></page>' +
                     '<page string="Bar" attrs=\'{"invisible": [["product_id", "=", false]]}\'>' +
                         '<field name="bar"/>' +
                     '</page>' +
@@ -583,6 +617,8 @@ QUnit.module('Views', {
         });
         var $headers = form.$('.o_notebook:first > .nav-tabs');
         assert.ok($headers.hasClass('d-none'), 'one visible page hides the headers');
+        assert.strictEqual($headers.find('.o_notebook_record_count').length, 0,
+            'a single visible tab has no counter');
         assert.ok(form.$('.o_notebook:first .tab-pane:first').hasClass('active'),
             'the only visible page stays active');
         assert.notOk(form.$('.o_notebook:eq(1) > .nav-tabs').hasClass('d-none'),
@@ -596,8 +632,12 @@ QUnit.module('Views', {
         $input.click();
         $input.autocomplete('widget').find('li:first()').click();
         assert.notOk($headers.hasClass('d-none'), 'two visible pages restore the headers');
+        assert.strictEqual($headers.find('.o_notebook_record_count').length, 1,
+            'the counter is added when multiple tabs are visible');
         testUtils.fields.editInput($input, '');
         assert.ok($headers.hasClass('d-none'), 'hiding the second page hides the headers again');
+        assert.strictEqual($headers.find('.o_notebook_record_count').length, 0,
+            'the counter is removed when only one tab remains');
         form.destroy();
     });
 

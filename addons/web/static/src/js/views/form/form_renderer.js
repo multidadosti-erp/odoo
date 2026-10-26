@@ -847,6 +847,34 @@ var FormRenderer = BasicRenderer.extend({
     },
     /**
      * @private
+     * @param {string} fieldName
+     * @returns {string}
+     */
+    _getNotebookRecordCount: function (fieldName) {
+        var field = this.state.fields[fieldName];
+        var value = this.state.data[fieldName];
+        if (!field || !_.contains(['one2many', 'many2many'], field.type) ||
+                !value || typeof value.count !== 'number') {
+            throw new Error('Notebook count_field must reference a loaded x2many field: ' + fieldName);
+        }
+        return ' (' + value.count + ')';
+    },
+
+    /**
+     * @override
+     */
+    _updateAllModifiers: function () {
+        var result = this._super.apply(this, arguments);
+        var self = this;
+        this.$('.o_notebook_record_count').each(function () {
+            var $count = $(this);
+            $count.text(self._getNotebookRecordCount($count.data('count-field')));
+        });
+        return result;
+    },
+
+    /**
+     * @private
      * @param {Object} node
      * @returns {jQueryElement}
      */
@@ -857,9 +885,26 @@ var FormRenderer = BasicRenderer.extend({
         var autofocusTab = -1;
         var hideSingleTab = node.attrs.hide_single_tab === '1';
         function updateTabHeaders() {
+            var hideHeaders = hideSingleTab &&
+                $headers.children('li:not(.o_invisible_modifier)').length <= 1;
             if (hideSingleTab) {
-                $headers.toggleClass('d-none',
-                    $headers.children('li:not(.o_invisible_modifier)').length <= 1);
+                $headers.toggleClass('d-none', hideHeaders);
+            }
+            if (node.attrs.show_record_count === '1') {
+                _.each(renderedTabs, function (tab) {
+                    var $link = tab.$header.find('.nav-link');
+                    var $count = $link.children('.o_notebook_record_count');
+                    if (hideHeaders) {
+                        $count.remove();
+                    } else if (tab.node.attrs.count_field) {
+                        if (!$count.length) {
+                            $count = $('<span class="o_notebook_record_count">')
+                                .data('count-field', tab.node.attrs.count_field)
+                                .appendTo($link);
+                        }
+                        $count.text(self._getNotebookRecordCount(tab.node.attrs.count_field));
+                    }
+                });
             }
         }
         // renderedTabs is used to aggregate the generated $headers and $pages
