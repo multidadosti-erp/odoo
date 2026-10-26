@@ -855,6 +855,13 @@ var FormRenderer = BasicRenderer.extend({
         var $headers = $('<ul class="nav nav-tabs">');
         var $pages = $('<div class="tab-content">');
         var autofocusTab = -1;
+        var hideSingleTab = node.attrs.hide_single_tab === '1';
+        function updateTabHeaders() {
+            if (hideSingleTab) {
+                $headers.toggleClass('d-none',
+                    $headers.children('li:not(.o_invisible_modifier)').length <= 1);
+            }
+        }
         // renderedTabs is used to aggregate the generated $headers and $pages
         // alongside their node, so that their modifiers can be registered once
         // all tabs have been rendered, to ensure that the first visible tab
@@ -901,9 +908,11 @@ var FormRenderer = BasicRenderer.extend({
                             $pages.find($firstVisibleTab.attr('href')).addClass('active');
                         }
                     }
+                    updateTabHeaders();
                 },
             });
         });
+        updateTabHeaders();
         var $notebook = $('<div class="o_notebook">')
                 .data('name', node.attrs.name || '_default_')
                 .append($headers, $pages);

@@ -562,6 +562,45 @@ QUnit.module('Views', {
         form.destroy();
     });
 
+    QUnit.test('hide_single_tab follows visible pages and is opt-in', function (assert) {
+        assert.expect(7);
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form><sheet><field name="product_id"/>' +
+                '<notebook hide_single_tab="1">' +
+                    '<page string="Foo"><field name="foo"/></page>' +
+                    '<page string="Bar" attrs=\'{"invisible": [["product_id", "=", false]]}\'>' +
+                        '<field name="bar"/>' +
+                    '</page>' +
+                '</notebook>' +
+                '<notebook><page string="Default"/></notebook>' +
+                '<notebook hide_single_tab="0"><page string="Disabled"/></notebook>' +
+                '<notebook hide_single_tab="1"/>' +
+                '</sheet></form>',
+            res_id: 1,
+        });
+        var $headers = form.$('.o_notebook:first > .nav-tabs');
+        assert.ok($headers.hasClass('d-none'), 'one visible page hides the headers');
+        assert.ok(form.$('.o_notebook:first .tab-pane:first').hasClass('active'),
+            'the only visible page stays active');
+        assert.notOk(form.$('.o_notebook:eq(1) > .nav-tabs').hasClass('d-none'),
+            'the default behavior is unchanged');
+        assert.notOk(form.$('.o_notebook:eq(2) > .nav-tabs').hasClass('d-none'),
+            'the option can be explicitly disabled');
+        assert.ok(form.$('.o_notebook:eq(3) > .nav-tabs').hasClass('d-none'),
+            'an empty notebook has no headers');
+        form.$buttons.find('.o_form_button_edit').click();
+        var $input = form.$('.o_field_many2one input');
+        $input.click();
+        $input.autocomplete('widget').find('li:first()').click();
+        assert.notOk($headers.hasClass('d-none'), 'two visible pages restore the headers');
+        testUtils.fields.editInput($input, '');
+        assert.ok($headers.hasClass('d-none'), 'hiding the second page hides the headers again');
+        form.destroy();
+    });
+
     QUnit.test('invisible attrs on first notebook page', function (assert) {
         assert.expect(6);
 
