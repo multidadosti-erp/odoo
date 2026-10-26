@@ -673,6 +673,41 @@ QUnit.module('Views', {
         form.destroy();
     });
 
+    QUnit.test('nested notebooks keep their active tabs after reload', function (assert) {
+        assert.expect(4);
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form><sheet>' +
+                '<notebook name="outer">' +
+                    '<page string="Product">' +
+                        '<notebook name="inner">' +
+                            '<page string="Details"><field name="foo"/></page>' +
+                            '<page string="Other"><field name="bar"/></page>' +
+                        '</notebook>' +
+                    '</page>' +
+                    '<page string="Materials"><field name="qux"/></page>' +
+                '</notebook>' +
+                '</sheet></form>',
+            res_id: 1,
+        });
+
+        form.$('.o_notebook[data-name="outer"] > ul > li').eq(1).find('a').click();
+        var state = form.renderer.getLocalState();
+        assert.strictEqual(state.outer, 1, 'outer state ignores nested tabs');
+        assert.strictEqual(state.inner, 0, 'inner state tracks its own active tab');
+
+        return form.reload().then(function () {
+            assert.ok(form.$('.o_notebook[data-name="outer"] > ul > li').eq(1)
+                .find('a').hasClass('active'), 'materials tab remains active');
+            assert.ok(form.$('.o_notebook[data-name="inner"] > ul > li').eq(0)
+                .find('a').hasClass('active'), 'inner tab remains active');
+            form.destroy();
+        });
+    });
+
     QUnit.test('autofocus on second notebook page', function (assert) {
         assert.expect(2);
 
