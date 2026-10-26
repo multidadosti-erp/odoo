@@ -600,6 +600,18 @@ class SaleOrder(models.Model):
                 subtype_id=self.env.ref('mail.mt_note').id)
 
     @api.multi
+    def _get_invoice_lines_for_filter(self, product_filter):
+        """Seleciona linhas por categoria, permitindo extensoes de faturamento."""
+        self.ensure_one()
+        product_types = {
+            "product": ("product", "consu"),
+            "service": ("service",),
+        }.get(product_filter)
+        return self.order_line.filtered(
+            lambda line: line.product_id.type in product_types
+        ) if product_types else self.order_line
+
+    @api.multi
     def action_invoice_create(self, grouped=False, final=False, product_filter=None):
         """Cria as faturas associadas aos pedidos de venda.
 
@@ -618,11 +630,6 @@ class SaleOrder(models.Model):
         Invoice = self.env["account.invoice"]
         InvoiceLine = self.env["account.invoice.line"]
         precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
-        product_types_by_filter = {
-            "product": ("product", "consu"),
-            "service": ("service",),
-        }
-        product_types = product_types_by_filter.get(product_filter)
         invoices = {}
         references = {}
         invoices_origin = {}
@@ -639,10 +646,7 @@ class SaleOrder(models.Model):
             # Acumula os valores para criar as linhas em lote.
             line_vals_list = []
 
-            if product_types:
-                order_lines = order.order_line.filtered(lambda line: line.product_id.type in product_types)
-            else:
-                order_lines = order.order_line
+            order_lines = order._get_invoice_lines_for_filter(product_filter)
 
             # A sequencia respeita a ordem natural das linhas do pedido.
             for line in order_lines:
