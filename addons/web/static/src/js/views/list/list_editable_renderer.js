@@ -146,8 +146,9 @@ ListRenderer.include({
                 var rowIndex = _.findIndex(state.data, function (r) {
                     return r.id === id;
                 });
-                var $row = self.$('.o_data_row:nth(' + rowIndex + ')');
+                var $row = self._getRowByRecordId(id);
                 self._setDecorationClasses(state.data[rowIndex], $row);
+                self._applyLocalGrouping(self.$('tbody').first());
                 self._updateFooter();
             }
             return widgets;
@@ -201,8 +202,7 @@ ListRenderer.include({
             if (!record) {
                 return;
             }
-            var oldRowIndex = _.findIndex(oldData, {id: id});
-            var $row = self.$('.o_data_row:nth(' + oldRowIndex + ')');
+            var $row = self._getRowByRecordId(id);
             $row.nextAll('.o_data_row').remove();
             $row.prevAll().remove();
             _.each(oldData, function (rec) {
@@ -224,6 +224,7 @@ ListRenderer.include({
                     $lastRow = $newRow;
                 }
             });
+            self._applyLocalGrouping(self.$('tbody').first());
             if (self.currentRow !== null) {
                 self.currentRow = newRowIndex;
                 return self._selectCell(newRowIndex, self.currentFieldIndex, {force: true}).then(function () {
@@ -281,12 +282,13 @@ ListRenderer.include({
         // destroy widgets first
         this._destroyFieldWidgets(recordID);
         // remove the row
-        var $row = this.$('.o_data_row:nth(' + rowIndex + ')');
+        var $row = this._getRowByRecordId(recordID);
         if (this.state.count >= 4) {
             $row.remove();
         } else {
             $row.replaceWith(this._renderEmptyRow());
         }
+        this._applyLocalGrouping(this.$('tbody').first());
     },
     /**
      * Updates the already rendered row associated to the given recordID so that
@@ -326,7 +328,11 @@ ListRenderer.include({
         var editMode = (mode === 'edit');
 
         this.currentRow = editMode ? rowIndex : null;
-        var $row = this.$('.o_data_row:nth(' + rowIndex + ')');
+        var $row = this._getRowByRecordId(recordID);
+        if (editMode && this.arch.attrs.group_by && $row.hasClass('d-none')) {
+            this.localGroupStates[$row.data('local-group-key')] = true;
+            this._applyLocalGrouping(this.$('tbody').first());
+        }
         var $tds = $row.children('.o_data_cell');
         var oldWidgets = _.clone(this.allFieldWidgets[record.id]);
 
@@ -493,15 +499,39 @@ ListRenderer.include({
         return this.addCreateLine;
     },
     /**
+     * Retorna o indice no modelo da linha vizinha na ordem visual.
+     *
+     * @private
+     */
+    _getAdjacentRowIndex: function (direction) {
+        if (!this.arch.attrs.group_by || this.isGrouped) {
+            var index = this.currentRow + direction;
+            return index >= 0 && index < this.state.data.length ? index : -1;
+        }
+        var record = this.state.data[this.currentRow];
+        var $rows = this.$('tbody').first().children('.o_data_row:not(.d-none)');
+        var $currentRow = $rows.filter(function () {
+            return $(this).data('id') === record.id;
+        });
+        var position = $rows.index($currentRow);
+        var adjacentPosition = position + direction;
+        if (position === -1 || adjacentPosition < 0 || adjacentPosition >= $rows.length) {
+            return -1;
+        }
+        var recordID = $rows.eq(adjacentPosition).data('id');
+        return _.findIndex(this.state.data, function (row) { return row.id === recordID; });
+    },
+    /**
      * Move the cursor on the end of the previous line, if possible.
      * If there is no previous line, then we create a new record.
      *
      * @private
      */
     _moveToPreviousLine: function () {
-        if (this.currentRow > 0) {
+        var previousRow = this._getAdjacentRowIndex(-1);
+        if (previousRow !== -1) {
             // FORWARD-PORT THIS COMMIT UP TO SAAS-12.2
-            this._selectCell(this.currentRow - 1, this.columns.length - 1, {inc: -1});
+            this._selectCell(previousRow, this.columns.length - 1, {inc: -1});
         } else {
             this.unselectRow().then(this.trigger_up.bind(this, 'add_record'));
         }
@@ -521,8 +551,9 @@ ListRenderer.include({
                 return;
             }
 
-            if (self.currentRow < self.state.data.length - 1) {
-                self._selectCell(self.currentRow + 1, 0);
+            var nextRow = self._getAdjacentRowIndex(1);
+            if (nextRow !== -1) {
+                self._selectCell(nextRow, 0);
             } else {
                 self.unselectRow().then(function () {
                     if (self._isCreatetable()) {
@@ -553,7 +584,7 @@ ListRenderer.include({
      */
     _renderBody: function () {
         var $body = this._super();
-        if (this.hasHandle) {
+        if (this.hasHandle && !this.arch.attrs.group_by) {
             $body.sortable({
                 axis: 'y',
                 items: '> tr.o_data_row',
@@ -825,7 +856,7 @@ ListRenderer.include({
         }
         var $td = $(event.currentTarget);
         var $tr = $td.parent();
-        var rowIndex = this.$('.o_data_row').index($tr);
+        var rowIndex = _.findIndex(this.state.data, {id: $tr.data('id')});
         var fieldIndex = Math.max($tr.find('.o_data_cell').not('.o_list_button').index($td), 0);
         this._selectCell(rowIndex, fieldIndex, {event: event});
     },
@@ -910,8 +941,9 @@ ListRenderer.include({
                 var column = this.columns[this.currentFieldIndex];
                 var lastWidget = this._getLastWidget();
                 if (column.attrs.name === lastWidget.name) {
-                    if (this.currentRow + 1 < this.state.data.length) {
-                        this._selectCell(this.currentRow+1, 0, {wrap:false})
+                    var nextRow = this._getAdjacentRowIndex(1);
+                    if (nextRow !== -1) {
+                        this._selectCell(nextRow, 0, {wrap:false})
                             .fail(this._moveToNextLine.bind(this));
                     } else {
                         var currentRowData = this.state.data[this.currentRow];

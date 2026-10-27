@@ -23,6 +23,9 @@
             <rng:optional><rng:attribute name="colors"/></rng:optional>
             <rng:optional><rng:attribute name="fonts"/></rng:optional>
             <rng:optional><rng:attribute name="default_order"/></rng:optional>
+            <rng:optional><rng:attribute name="group_by"/></rng:optional>
+            <rng:optional><rng:attribute name="group_by_expand"/></rng:optional>
+            <rng:optional><rng:attribute name="group_by_skip_empty"/></rng:optional>
             <rng:optional><rng:attribute name="decoration-bf"/></rng:optional>
             <rng:optional><rng:attribute name="decoration-it"/></rng:optional>
             <rng:optional><rng:attribute name="decoration-danger"/></rng:optional>
