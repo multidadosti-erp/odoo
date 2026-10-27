@@ -628,6 +628,7 @@ QUnit.module('Views', {
         assert.ok(form.$('.o_notebook:eq(3) > .nav-tabs').hasClass('d-none'),
             'an empty notebook has no headers');
         form.$buttons.find('.o_form_button_edit').click();
+        $headers = form.$('.o_notebook:first > .nav-tabs');
         var $input = form.$('.o_field_many2one input');
         $input.click();
         $input.autocomplete('widget').find('li:first()').click();
@@ -773,15 +774,21 @@ QUnit.module('Views', {
             res_id: 1,
         });
 
-        form.$('.o_notebook[data-name="outer"] > ul > li').eq(1).find('a').click();
+        form.$('.o_notebook').filter(function () {
+            return $(this).data('name') === 'outer';
+        }).children('ul').children('li').eq(1).find('a').click();
         var state = form.renderer.getLocalState();
         assert.strictEqual(state.outer, 1, 'outer state ignores nested tabs');
         assert.strictEqual(state.inner, 0, 'inner state tracks its own active tab');
 
         return form.reload().then(function () {
-            assert.ok(form.$('.o_notebook[data-name="outer"] > ul > li').eq(1)
+            assert.ok(form.$('.o_notebook').filter(function () {
+                return $(this).data('name') === 'outer';
+            }).children('ul').children('li').eq(1)
                 .find('a').hasClass('active'), 'materials tab remains active');
-            assert.ok(form.$('.o_notebook[data-name="inner"] > ul > li').eq(0)
+            assert.ok(form.$('.o_notebook').filter(function () {
+                return $(this).data('name') === 'inner';
+            }).children('ul').children('li').eq(0)
                 .find('a').hasClass('active'), 'inner tab remains active');
             form.destroy();
         });

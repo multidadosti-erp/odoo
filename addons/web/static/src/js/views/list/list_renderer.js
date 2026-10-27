@@ -39,6 +39,8 @@ var ListRenderer = BasicRenderer.extend({
         'click tbody .o_list_record_selector': '_onSelectRecord',
         'click thead th.o_column_sortable': '_onSortColumn',
         'click .o_group_header': '_onToggleGroup',
+        'click .o_local_group_toggle': '_onToggleLocalGroup',
+        'keydown .o_local_group_toggle': '_onLocalGroupKeyDown',
         'click thead .o_list_record_selector input': '_onToggleSelection',
         'keypress thead tr td': '_onKeyPress',
         'keydown tr': '_onKeyDown',
@@ -68,6 +70,7 @@ var ListRenderer = BasicRenderer.extend({
         this.pagers = []; // instantiated pagers (only for grouped lists)
         this.editable = params.editable;
         this.isGrouped = this.state.groupedBy.length > 0;
+        this.localGroupStates = Object.create(null);
     },
 
     //--------------------------------------------------------------------------
@@ -257,7 +260,114 @@ var ListRenderer = BasicRenderer.extend({
         while ($rows.length < 4) {
             $rows.push(this._renderEmptyRow());
         }
-        return $('<tbody>').append($rows);
+        var $body = $('<tbody>').append($rows);
+        this._applyLocalGrouping($body);
+        return $body;
+    },
+    /**
+     * @private
+     */
+    _applyLocalGrouping: function ($body) {
+        var self = this;
+        var fieldName = this.arch.attrs.group_by;
+        if (!fieldName || this.isGrouped) {
+            return;
+        }
+        var field = this.state.fields[fieldName];
+        if (!field || !_.contains(['many2one', 'char', 'selection', 'boolean', 'integer'], field.type)) {
+            throw new Error('Tree group_by must reference a loaded scalar or many2one field: ' + fieldName);
+        }
+        var groups = [];
+        var byKey = Object.create(null);
+        _.each(this.state.data, function (record) {
+            var value = record.data[fieldName];
+            var raw = field.type === 'many2one' && value ? value.res_id : value;
+            var empty = raw === null || raw === undefined || raw === '' ||
+                (raw === false && field.type !== 'boolean');
+            var key = JSON.stringify(raw);
+            if (!byKey[key]) {
+                byKey[key] = {key: key, empty: empty, records: [],
+                    label: empty ? _t('Undefined') :
+                        field_utils.format[field.type](value, field, {data: record.data, forceString: true})};
+                groups.push(byKey[key]);
+            }
+            byKey[key].records.push(record);
+        });
+        var activeElement = document.activeElement;
+        var restoreFocus = $body.find('.o_data_row').has(activeElement).length > 0;
+        var selectionRange = restoreFocus && typeof activeElement.selectionStart === 'number' ?
+            dom.getSelectionRange(activeElement) : null;
+        function restoreActiveInput() {
+            if (restoreFocus && $(activeElement).is(':visible')) {
+                activeElement.focus();
+                if (selectionRange) {
+                    dom.setSelectionRange(activeElement, selectionRange);
+                }
+            }
+        }
+        $body.children('.o_local_group_header').remove();
+        var $rows = $body.children('.o_data_row').detach().removeClass('d-none');
+        var selectedRecordID = $rows.filter('.o_selected_row').data('id');
+        var $anchor = $body.children().first();
+        function insert($row) {
+            if ($anchor.length) {
+                $row.insertBefore($anchor);
+            } else {
+                $body.append($row);
+            }
+        }
+        if (!groups.length || (_.every(groups, function (group) { return group.empty; }) &&
+                this.arch.attrs.group_by_skip_empty === '1')) {
+            _.each(this.state.data, function (record) {
+                insert($rows.filter(function () { return $(this).data('id') === record.id; }));
+            });
+            restoreActiveInput();
+            return;
+        }
+        _.each(groups, function (group) {
+            if (self.localGroupStates[group.key] === undefined) {
+                self.localGroupStates[group.key] = self.arch.attrs.group_by_expand === '1';
+            }
+            if (_.some(group.records, function (record) { return record.id === selectedRecordID; })) {
+                self.localGroupStates[group.key] = true;
+            }
+            var open = self.localGroupStates[group.key];
+            var $button = $('<button type="button" class="btn btn-link o_local_group_toggle"/>')
+                .attr('aria-expanded', String(open))
+                .append($('<i class="fa mr-2"/>').addClass(open ? 'fa-caret-down' : 'fa-caret-right'))
+                .append(document.createTextNode(group.label + ' (' + group.records.length + ')'));
+            insert($('<tr class="o_local_group_header bg-light"/>').data('group-key', group.key)
+                .append($('<td/>').attr('colspan', self._getNumberOfCols()).append($button)));
+            _.each(group.records, function (record) {
+                insert($rows.filter(function () { return $(this).data('id') === record.id; })
+                    .data('local-group-key', group.key).toggleClass('d-none', !open));
+            });
+        });
+        restoreActiveInput();
+    },
+
+    _onLocalGroupKeyDown: function (event) {
+        if (event.which === $.ui.keyCode.ENTER) {
+            event.stopPropagation();
+        }
+    },
+
+    _onToggleLocalGroup: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var self = this;
+        var key = $(event.currentTarget).closest('tr').data('group-key');
+        var ready = this.unselectRow ? this.unselectRow() : $.when();
+        ready.then(function () {
+            self.localGroupStates[key] = !self.localGroupStates[key];
+            self._applyLocalGrouping(self.$('tbody').first());
+        });
+    },
+
+    _getRowByRecordId: function (recordID) {
+        return this.$('.o_data_row').filter(function () {
+            return $(this).data('id') === recordID;
+        });
     },
     /**
      * Render a cell for the table. For most cells, we only want to display the

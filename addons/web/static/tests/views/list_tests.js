@@ -96,6 +96,241 @@ QUnit.module('Views', {
 
     QUnit.module('ListView');
 
+    QUnit.test('local grouping preserves inline editing and totals', function (assert) {
+        assert.expect(8);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom" group_by="m2o" group_by_expand="1">' +
+                '<field name="m2o"/><field name="foo"/><field name="int_field" sum="Total"/>' +
+                '</tree>',
+        });
+        assert.strictEqual(list.$('.o_local_group_header').length, 2, 'two product groups');
+        assert.strictEqual(list.$('.o_data_row.d-none').length, 0, 'initially expanded');
+        assert.deepEqual(list.$('.o_data_row').map(function () {
+            return $(this).find('.o_data_cell').eq(1).text();
+        }).get(), ['yop', 'gnap', 'blip', 'blip'], 'nonadjacent records share a group');
+        list.$('.o_data_row:eq(1) .o_data_cell:eq(1)').click();
+        testUtils.fields.editInput(list.$('.o_selected_row input[name="foo"]'), 'Changed');
+        list.$('.o_data_row:eq(0) .o_data_cell:eq(1)').click();
+        assert.strictEqual(this.data.foo.records[2].foo, 'Changed', 'the correct record is edited');
+        assert.strictEqual(this.data.foo.records[1].foo, 'blip', 'another group is untouched');
+        list.$('.o_local_group_toggle:first').click();
+        assert.strictEqual(list.$('.o_data_row.d-none').length, 3, 'the group collapses');
+        list.$('.o_local_group_toggle:first').click();
+        assert.strictEqual(list.$('.o_data_row.d-none').length, 0, 'the group expands again');
+        assert.strictEqual(list.$('tfoot .o_list_number').text().trim(), '32', 'total is unchanged');
+        list.destroy();
+    });
+
+    QUnit.test('local grouping preserves inline focus and selection [REQUIRE FOCUS]', function (assert) {
+        assert.expect(5);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom" group_by="m2o" group_by_expand="1">' +
+                '<field name="m2o"/><field name="foo"/><field name="int_field"/>' +
+                '</tree>',
+        });
+        list.$('.o_data_row:first .o_data_cell:eq(1)').click();
+        var input = list.$('.o_selected_row input[name="foo"]')[0];
+        input.value = 'Changed';
+        input.setSelectionRange(1, 4);
+        $(input).trigger('change');
+        assert.strictEqual(document.activeElement, input, 'an inline update keeps focus');
+        assert.strictEqual(input.selectionStart, 1, 'selection start is preserved');
+        assert.strictEqual(input.selectionEnd, 4, 'selection end is preserved');
+        assert.strictEqual(input.value, 'Changed', 'the edited value is preserved');
+        $(input).trigger({type: 'keydown', which: $.ui.keyCode.TAB});
+        assert.strictEqual(document.activeElement, list.$('.o_selected_row input[name="int_field"]')[0],
+            'Tab moves to the next field in the editor');
+        list.destroy();
+    });
+
+    QUnit.test('local grouping keeps the edited record in an open group', function (assert) {
+        assert.expect(7);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom" group_by="foo">' +
+                '<field name="foo"/><field name="int_field"/>' +
+                '</tree>',
+        });
+        assert.strictEqual(list.$('.o_local_group_toggle[aria-expanded="true"]').length, 0,
+            'groups start collapsed');
+        list.$('.o_local_group_toggle:first').click();
+        list.$('.o_data_row:first .o_data_cell:first').click();
+        var recordID = list.$('.o_selected_row').data('id');
+        testUtils.fields.editInput(list.$('.o_selected_row input[name="foo"]'), 'blip');
+        assert.strictEqual(list.$('.o_selected_row').data('id'), recordID,
+            'the same record stays selected after joining an existing group');
+        assert.notOk(list.$('.o_selected_row').hasClass('d-none'),
+            'the edited row remains visible in the previously collapsed group');
+        assert.strictEqual(list.$('.o_local_group_header').filter(function () {
+            return $(this).data('group-key') === JSON.stringify('blip');
+        }).find('.o_local_group_toggle').attr('aria-expanded'), 'true',
+            'the destination group is opened');
+        testUtils.fields.editInput(list.$('.o_selected_row input[name="foo"]'), 'New group');
+        assert.strictEqual(list.$('.o_selected_row').data('id'), recordID,
+            'the same record stays selected after creating a group');
+        assert.notOk(list.$('.o_selected_row').hasClass('d-none'),
+            'the edited row remains visible in the new group');
+        assert.strictEqual(list.$('.o_local_group_header').filter(function () {
+            return $(this).data('group-key') === JSON.stringify('New group');
+        }).find('.o_local_group_toggle').attr('aria-expanded'), 'true',
+            'the new group is opened despite group_by_expand being unset');
+        list.destroy();
+    });
+
+    QUnit.test('local group buttons preserve native Enter activation in readonly lists', function (assert) {
+        assert.expect(4);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree group_by="m2o"><field name="m2o"/></tree>',
+        });
+        var $button = list.$('.o_local_group_toggle:first');
+        var event = $.Event('keydown', {which: $.ui.keyCode.ENTER});
+        $button.trigger(event);
+        assert.ok(event.isPropagationStopped(), 'Enter does not reach the row handler');
+        assert.notOk(event.isDefaultPrevented(), 'native button activation is not cancelled');
+        $button.click();
+        assert.strictEqual(list.$('.o_local_group_toggle:first').attr('aria-expanded'), 'true',
+            'button activation expands the group');
+        list.$('.o_local_group_toggle:first').click();
+        assert.strictEqual(list.$('.o_local_group_toggle:first').attr('aria-expanded'), 'false',
+            'button activation collapses the group');
+        list.destroy();
+    });
+
+    QUnit.test('local grouping navigates in rendered order [REQUIRE FOCUS]', function (assert) {
+        assert.expect(8);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom" group_by="m2o" group_by_expand="1">' +
+                '<field name="m2o"/><field name="foo"/><field name="int_field"/>' +
+                '</tree>',
+        });
+        list.$('.o_data_row:first .o_data_cell:eq(1)').click();
+        list.renderer._moveToNextLine();
+        assert.strictEqual(list.renderer.currentRow, 2, 'next line moves from record 1 to record 3');
+        list.renderer._moveToNextLine();
+        assert.strictEqual(list.renderer.currentRow, 3, 'next line moves from record 3 to record 4');
+        list.renderer._moveToNextLine();
+        assert.strictEqual(list.renderer.currentRow, 1, 'record 4 is not the last displayed row');
+        list.renderer._moveToPreviousLine();
+        assert.strictEqual(list.renderer.currentRow, 3, 'previous line returns from record 2 to record 4');
+        list.renderer._moveToPreviousLine();
+        assert.strictEqual(list.renderer.currentRow, 2, 'previous line returns from record 4 to record 3');
+        list.$('.o_selected_row input[name="int_field"]')
+            .trigger({type: 'keydown', which: $.ui.keyCode.TAB});
+        assert.strictEqual(list.renderer.currentRow, 3, 'Tab from the last field follows rendered order');
+        list.$('.o_selected_row input[name="m2o"]')
+            .trigger({type: 'keydown', which: $.ui.keyCode.TAB, shiftKey: true});
+        assert.strictEqual(list.renderer.currentRow, 2, 'Shift-Tab follows rendered order backwards');
+        return list.renderer.unselectRow().then(function () {
+            list.$('.o_local_group_toggle').eq(1).click();
+            list.$('.o_data_row:not(.d-none)').last().find('.o_data_cell').eq(1).click();
+            assert.strictEqual(list.renderer._getAdjacentRowIndex(1), -1,
+                'collapsed groups do not provide navigation targets');
+            list.destroy();
+        });
+    });
+
+    QUnit.test('local grouping can start collapsed and skip empty values', function (assert) {
+        assert.expect(3);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree group_by="m2o"><field name="m2o"/></tree>',
+        });
+        assert.strictEqual(list.$('.o_data_row.d-none').length, 4, 'collapsed by default');
+        list.destroy();
+        this.data.foo.records.forEach(function (record) { record.m2o = false; });
+        list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree group_by="m2o" group_by_skip_empty="1"><field name="m2o"/></tree>',
+        });
+        assert.strictEqual(list.$('.o_local_group_header').length, 0, 'no empty-only group');
+        assert.strictEqual(list.$('.o_data_row:not(.d-none)').length, 4, 'all rows remain visible');
+        list.destroy();
+    });
+
+    QUnit.test('local boolean grouping uses string labels and keeps false groups', function (assert) {
+        assert.expect(3);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree group_by="bar" group_by_skip_empty="1"><field name="bar"/></tree>',
+        });
+        assert.deepEqual(list.$('.o_local_group_toggle').map(function () {
+            return $(this).text();
+        }).get(), ['True (3)', 'False (1)'], 'both boolean values have string labels');
+        list.destroy();
+        this.data.foo.records.forEach(function (record) { record.bar = false; });
+        list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree group_by="bar" group_by_skip_empty="1"><field name="bar"/></tree>',
+        });
+        assert.strictEqual(list.$('.o_local_group_header').length, 1,
+            'false is not an empty group');
+        assert.strictEqual(list.$('.o_local_group_toggle').text(), 'False (4)',
+            'an all-false group retains its label');
+        list.destroy();
+    });
+
+    QUnit.test('local integer grouping keeps zero groups', function (assert) {
+        assert.expect(2);
+        this.data.foo.records.forEach(function (record) { record.int_field = 0; });
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree group_by="int_field" group_by_skip_empty="1"><field name="int_field"/></tree>',
+        });
+        assert.strictEqual(list.$('.o_local_group_header').length, 1,
+            'zero is not an empty group');
+        assert.strictEqual(list.$('.o_local_group_toggle').text(), '0 (4)',
+            'zero is formatted rather than labeled undefined');
+        list.destroy();
+    });
+
+    QUnit.test('local grouping in an editable one2many keeps deletion identities', function (assert) {
+        assert.expect(3);
+        this.data.foo.fields.lines = {type: 'one2many', relation: 'foo', string: 'Lines'};
+        this.data.foo.records[0].lines = [2, 3, 4];
+        var form = createView({
+            View: FormView,
+            model: 'foo',
+            data: this.data,
+            arch: '<form><field name="lines">' +
+                '<tree editable="bottom" group_by="m2o" group_by_expand="1">' +
+                    '<field name="m2o"/><field name="foo"/><field name="int_field" sum="Total"/>' +
+                '</tree></field></form>',
+            res_id: 1,
+            viewOptions: {mode: 'edit'},
+        });
+        assert.strictEqual(form.$('.o_local_group_header').length, 2, 'groups in the embedded list');
+        form.$('.o_data_row:eq(1) .o_list_record_remove').click();
+        assert.strictEqual(form.$('.o_data_row').length, 2, 'the row was removed');
+        assert.deepEqual(form.$('.o_data_row').map(function () {
+            return $(this).find('.o_data_cell').eq(1).text();
+        }).get(), ['blip', 'blip'], 'the correct record was removed despite regrouping');
+        form.destroy();
+    });
+
     QUnit.test('simple readonly list', function (assert) {
         assert.expect(10);
 
