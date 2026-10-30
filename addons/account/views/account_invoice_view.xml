@@ -261,7 +261,7 @@
             <field name="model">account.invoice</field>
             <field name="priority">2</field>
             <field name="arch" type="xml">
-                <form string="Vendor Bill">
+                <form string="Vendor Bill" duplicate="0">
                 <header>
                         <button name="action_invoice_open" type="object" states="draft" string="Validate" class="oe_highlight" groups="account.group_account_invoice"/>
                         <button name="%(action_account_invoice_payment)d" type="action" states="open" string="Register Payment" groups="account.group_account_invoice" class="oe_highlight"/>
@@ -410,7 +410,7 @@
             <field name="name">account.invoice.form</field>
             <field name="model">account.invoice</field>
             <field name="arch" type="xml">
-                <form string="Invoice" class="o_invoice_form">
+                <form string="Invoice" class="o_invoice_form" duplicate="0">
                 <header>
                     <button name="action_invoice_sent" string="Send &amp; Print" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', 'not in', ('open','in_payment','paid'))]}" class="oe_highlight" groups="base.group_user"/>
                     <button name="action_invoice_sent" string="Send &amp; Print" type="object" attrs="{'invisible':['|',('sent','=',False), ('state', 'not in', ('open','in_payment','paid'))]}" groups="base.group_user"/>
@@ -580,7 +580,7 @@
                                 <field name="payments_widget" colspan="2" nolabel="1" widget="payment"/>
                                 <field name="residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                                 <field name="reconciled" invisible="1"/>
-                                <field name="outstanding_credits_debits_widget" colspan="2" nolabel="1" widget="payment" 
+                                <field name="outstanding_credits_debits_widget" colspan="2" nolabel="1" widget="payment"
                                        attrs="{'invisible': [('state', 'not in', ('draft', 'sent'))]}"/>
                             </group>
                             <field name="comment" placeholder="Terms and conditions..."/>
