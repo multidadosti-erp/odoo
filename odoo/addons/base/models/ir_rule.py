@@ -9,6 +9,10 @@ from odoo.osv import expression
 from odoo.tools import config
 from odoo.tools.safe_eval import safe_eval
 
+# Chave de contexto: aplica as regras multiempresa a todas as empresas
+# permitidas do usuario (company_ids), e nao apenas a empresa atual.
+ALL_USER_COMPANIES_KEY = 'rule_all_user_companies'
+
 
 class IrRule(models.Model):
     _name = 'ir.rule'
@@ -66,7 +70,32 @@ class IrRule(models.Model):
 
     def _compute_domain_keys(self):
         """ Return the list of context keys to use for caching ``_compute_domain``. """
-        return []
+        return [ALL_USER_COMPANIES_KEY]
+
+    def _expand_company_domain(self, domain):
+        """Troca a empresa atual do usuario pelas empresas permitidas
+        (company_ids) nas condicoes multiempresa da regra.
+
+        Usado somente com a chave de contexto ``ALL_USER_COMPANIES_KEY``; o
+        usuario continua restrito as empresas que ja poderia selecionar.
+        """
+        user = self.env.user.with_context({})
+        current_id = user.company_id.id
+        company_ids = user.company_ids.ids
+        if not current_id or len(company_ids) <= 1:
+            return domain
+        current_values = (current_id, [current_id], (current_id,))
+        result = []
+        for leaf in domain:
+            if (isinstance(leaf, (list, tuple)) and len(leaf) == 3
+                    and isinstance(leaf[0], str)
+                    and leaf[0].split('.')[-1] == 'company_id'
+                    and leaf[1] in ('=', 'in', 'child_of')
+                    and leaf[2] in current_values):
+                operator = 'child_of' if leaf[1] == 'child_of' else 'in'
+                leaf = (leaf[0], operator, company_ids)
+            result.append(leaf)
+        return result
 
     @api.model
     @tools.conditional(
@@ -101,6 +130,8 @@ class IrRule(models.Model):
         for rule in self.browse(rule_ids).sudo():
             # evaluate the domain for the current user
             dom = safe_eval(rule.domain_force, eval_context) if rule.domain_force else []
+            if self._context.get(ALL_USER_COMPANIES_KEY):
+                dom = self._expand_company_domain(dom)
             dom = expression.normalize_domain(dom)
             if not rule.groups:
                 global_domains.append(dom)
