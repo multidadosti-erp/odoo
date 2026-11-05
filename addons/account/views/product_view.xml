@@ -15,11 +15,13 @@
                         <group name="properties">
                             <group string="Receivables" name="receivables" groups="account.group_account_user">
                                 <field name="property_account_income_id"
-                                    domain="[('internal_type','=','other'),('deprecated','=',False)]"/>
+                                       options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                       domain="[('internal_type','=','other'), ('deprecated','=',False)]"/>
                             </group>
                             <group string="Payables" name="payables" groups="account.group_account_user">
                                 <field name="property_account_expense_id"
-                                    domain="[('internal_type','=','other'),('deprecated','=',False)]"/>
+                                       options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                       domain="[('internal_type','=','other'), ('deprecated','=',False)]"/>
                             </group>
                         </group>
                         <group name="accounting"/>
