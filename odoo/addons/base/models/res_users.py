@@ -510,8 +510,9 @@ class Users(models.Model):
         # clear caches linked to the users
         if 'groups_id' in values:
             self.env['ir.model.access'].call_cache_clearing_methods()
-            self.env['ir.rule'].clear_caches()
             self.has_group.clear_cache(self)
+        if 'groups_id' in values or 'company_ids' in values:
+            self.env['ir.rule'].clear_caches()
         if any(key.startswith('context_') or key in ('lang', 'tz') for key in values):
             self.context_get.clear_cache(self)
         if any(key in values for key in ['active'] + USER_PRIVATE_FIELDS):

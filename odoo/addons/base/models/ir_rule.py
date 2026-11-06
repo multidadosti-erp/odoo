@@ -9,6 +9,10 @@ from odoo.osv import expression
 from odoo.tools import config
 from odoo.tools.safe_eval import safe_eval
 
+# Chave de contexto: aplica as regras multiempresa a todas as empresas
+# permitidas do usuario (company_ids), e nao apenas a empresa atual.
+ALL_USER_COMPANIES_KEY = 'rule_all_user_companies'
+
 
 class IrRule(models.Model):
     _name = 'ir.rule'
@@ -21,6 +25,10 @@ class IrRule(models.Model):
     model_id = fields.Many2one('ir.model', string='Object', index=True, required=True, ondelete="cascade")
     groups = fields.Many2many('res.groups', 'rule_group_rel', 'rule_group_id', 'group_id')
     domain_force = fields.Text(string='Domain')
+    domain_force_all_companies = fields.Text(
+        string='Allowed Companies Domain',
+        help="Optional domain used with rule_all_user_companies. "
+             "Only configure this on designated multi-company rules.")
     perm_read = fields.Boolean(string='Apply for Read', default=True)
     perm_write = fields.Boolean(string='Apply for Write', default=True)
     perm_create = fields.Boolean(string='Apply for Create', default=True)
@@ -66,7 +74,7 @@ class IrRule(models.Model):
 
     def _compute_domain_keys(self):
         """ Return the list of context keys to use for caching ``_compute_domain``. """
-        return []
+        return [ALL_USER_COMPANIES_KEY]
 
     @api.model
     @tools.conditional(
@@ -100,7 +108,11 @@ class IrRule(models.Model):
         group_domains = []                      # list of domains
         for rule in self.browse(rule_ids).sudo():
             # evaluate the domain for the current user
-            dom = safe_eval(rule.domain_force, eval_context) if rule.domain_force else []
+            domain_force = rule.domain_force
+            if (self._context.get(ALL_USER_COMPANIES_KEY)
+                    and rule.domain_force_all_companies):
+                domain_force = rule.domain_force_all_companies
+            dom = safe_eval(domain_force, eval_context) if domain_force else []
             dom = expression.normalize_domain(dom)
             if not rule.groups:
                 global_domains.append(dom)
