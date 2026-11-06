@@ -73,8 +73,32 @@ class TestSaleToInvoice(TestCommonSaleNoChart):
         result = self.env['sale.order'].search(domain)
         self.assertEqual(result, expected_result, "Unexpected result on search orders")
 
+    def test_invoice_product_filter_includes_consumables(self):
+        """Valida o filtro de produtos sem depender do modulo de estoque."""
+        self.sale_order.action_confirm()
+        self.sol_prod_deliver.qty_delivered = 2
+
+        invoice_ids = self.sale_order.action_invoice_create(
+            product_filter='product'
+        )
+        invoice = self.env['account.invoice'].browse(invoice_ids)
+
+        self.assertEqual(
+            set(invoice.invoice_line_ids.mapped('product_id.type')),
+            {'consu'},
+        )
+        self.assertEqual(
+            set(invoice.invoice_line_ids.mapped('product_id').ids),
+            {self.product_order.id, self.product_deliver.id},
+        )
+
     def test_invoice_product_filter_includes_stockable_and_consumable(self):
         """Valida que o filtro de produtos inclui estocaveis e consumiveis."""
+        product_types = dict(
+            self.product_deliver._fields['type']._description_selection(self.env)
+        )
+        if 'product' not in product_types:
+            self.skipTest('Storable products require the stock module.')
         self.product_deliver.type = 'product'
         self.sale_order.action_confirm()
         self.sol_prod_deliver.qty_delivered = 2
