@@ -1000,8 +1000,9 @@ var py = {};
             return py.PY_size(this) > 0 ? py.True : py.False;
         },
         __contains__: function (value) {
-            for(var i=0, len=this._values.length; i<len; ++i) {
-                if (py.PY_isTrue(this._values[i].__eq__(value))) {
+            for(var i=0, len=py.PY_size(this); i<len; ++i) {
+                var item = py.PY_getItem(this, py.float.fromJSON(i));
+                if (py.PY_isTrue(item.__eq__(value))) {
                     return py.True;
                 }
             }
@@ -1009,6 +1010,19 @@ var py = {};
         },
         __getitem__: function (index) {
             return this._values[index.toJSON()];
+        },
+        __add__: function (other) {
+            var cls = py.PY_isInstance(this, py.list) ? py.list : py.tuple;
+            if (!py.PY_isInstance(other, cls)) {
+                return py.NotImplemented;
+            }
+            var result = py.PY_call(cls);
+            [this, other].forEach(function (operand) {
+                for (var i = 0, len = py.PY_size(operand); i < len; ++i) {
+                    result._values.push(py.PY_getItem(operand, py.float.fromJSON(i)));
+                }
+            });
+            return result;
         },
         toJSON: function () {
             var out = [];
@@ -1021,7 +1035,7 @@ var py = {};
             if (!(ar instanceof Array)) {
                 throw new Error("Can only create a py.tuple from an Array");
             }
-            var t = py.PY_call(py.tuple);
+            var t = py.PY_call(this);
             for(var i=0; i<ar.length; ++i) {
                 t._values.push(PY_ensurepy(ar[i]));
             }
@@ -1029,11 +1043,15 @@ var py = {};
         }
     });
     py.list = py.type('list', null, {
-        __nonzero__: function () {
-            return this.__len__ > 0 ? py.True : py.False;
-        },
+        __init__: py.tuple.__init__,
+        __len__: py.tuple.__len__,
+        __nonzero__: py.tuple.__nonzero__,
+        __contains__: py.tuple.__contains__,
+        __getitem__: py.tuple.__getitem__,
+        __add__: py.tuple.__add__,
+        toJSON: py.tuple.toJSON,
+        fromJSON: py.tuple.fromJSON
     });
-    _.defaults(py.list, py.tuple) // Copy attributes not redefined in type list
     py.dict = py.type('dict', null, {
         __init__: function () {
             this._store = {};

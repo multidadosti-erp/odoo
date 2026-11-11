@@ -62,7 +62,7 @@ var wrapping_dict = py.type('wrapping_dict', null, {
     },
 });
 
-var wrapping_list = py.type('wrapping_list', null, {
+var wrapping_list = py.type('wrapping_list', [py.list], {
     __init__: function () {
         this._store = [];
     },

@@ -6,8 +6,11 @@ What
 Syntax
 ------
 
-* Lambdas and ternaries should be parsed but are not implemented (in
-  the evaluator)
+* Lambdas are parsed but are not implemented in the evaluator.
+* Conditional expressions (``value if condition else fallback``) evaluate
+  only the selected branch.
+* List and tuple concatenation with ``+`` returns a new sequence without
+  changing either operand. Mixed list/tuple operands raise ``TypeError``.
 * Only floats are implemented, ``int`` literals are parsed as floats.
 * Octal and hexadecimal literals are not implemented
 * Srings are backed by JavaScript strings and probably behave like
@@ -50,7 +53,8 @@ Builtins
     Constructor/coercer is not implemented, only handles literals
 
 ``list``
-    Same as tuple (``list`` is currently an alias for ``tuple``)
+    Same constructor limitations as tuple, but represented as a distinct
+    type. Wrapped context lists also support concatenation.
 
 ``dict``
     Implements trivial getting, setting and len, nothing beyond that.

@@ -40,6 +40,67 @@ QUnit.module('core', function () {
     });
 
 
+    QUnit.test('sequence concatenation', function (assert) {
+        assert.expect(11);
+
+        assert.deepEqual(py.eval("[1] + [2, 3]"), [1, 2, 3]);
+        assert.deepEqual(py.eval("(1,) + (2, 3)"), [1, 2, 3]);
+        assert.deepEqual(py.eval("[] + []"), []);
+        assert.deepEqual(py.eval("() + ()"), []);
+        assert.ok(py.eval("type([1] + [2]) is list"));
+        assert.ok(py.eval("type((1,) + (2,)) is tuple"));
+        assert.throws(function () { py.eval("[1] + (2,)"); }, /TypeError/);
+        assert.throws(function () { py.eval("(1,) + [2]"); }, /TypeError/);
+        assert.throws(function () { py.eval("[1] + 2"); }, /TypeError/);
+
+        var item = py.dict.fromJSON({value: 1});
+        var left = py.list.fromJSON([item]);
+        var right = py.list.fromJSON([2]);
+        var result = py.PY_add(left, right);
+        assert.strictEqual(result._values[0], item);
+        assert.deepEqual([left.toJSON(), right.toJSON()], [[{value: 1}], [2]]);
+    });
+
+    QUnit.test('conditional sequence concatenation', function (assert) {
+        assert.expect(6);
+
+        assert.deepEqual(py.eval("[1] + ([2] if True else missing)"), [1, 2]);
+        assert.deepEqual(py.eval("[1] + (missing if False else [])"), [1]);
+        assert.deepEqual(py.eval("[] + ([2] if [1] else missing)"), [2]);
+        assert.deepEqual(py.eval("[] + (missing if [] else [2])"), [2]);
+        assert.strictEqual(py.eval("bool([] + [])"), false);
+        assert.strictEqual(py.eval("bool([] + [1])"), true);
+    });
+
+    QUnit.test('wrapped sequence concatenation in domains and contexts', function (assert) {
+        assert.expect(10);
+
+        var parent = {company_id: 1, account_ids: [10]};
+        var expression = "[('company_id', '=', parent.company_id)] + " +
+            "([('id', 'in', parent.account_ids)] if parent.account_ids else [])";
+        assert.deepEqual(pyUtils.eval('domain', expression, {parent: parent}), [
+            ['company_id', '=', 1], ['id', 'in', [10]],
+        ]);
+        parent.account_ids = [];
+        assert.deepEqual(pyUtils.eval('domain', expression, {parent: parent}), [
+            ['company_id', '=', 1],
+        ]);
+
+        var values = {left: [1], right: [2]};
+        assert.deepEqual(pyUtils.eval('context', "{'ids': left + right}", values), {ids: [1, 2]});
+        assert.deepEqual(pyUtils.eval('context', "{'ids': left + [3]}", values), {ids: [1, 3]});
+        assert.deepEqual(pyUtils.eval('context', "{'ids': [0] + left}", values), {ids: [0, 1]});
+        assert.deepEqual(pyUtils.eval('context', "{'found': 1 in left}", values), {found: true});
+        assert.deepEqual(pyUtils.eval('context', "{'found': 3 in left}", values), {found: false});
+        assert.deepEqual(values, {left: [1], right: [2]});
+        assert.throws(function () {
+            pyUtils.eval('context', "{'ids': left + (2,)}", values);
+        }, /TypeError/);
+        assert.throws(function () {
+            pyUtils.eval('context', "{'ids': (2,) + left}", values);
+        }, /TypeError/);
+    });
+
     QUnit.test('not prefix', function (assert) {
         assert.expect(3);
 
