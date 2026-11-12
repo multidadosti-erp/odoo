@@ -24,6 +24,15 @@
             <rng:optional><rng:attribute name="fonts"/></rng:optional>
             <rng:optional><rng:attribute name="default_order"/></rng:optional>
             <rng:optional><rng:attribute name="group_by"/></rng:optional>
+            <!-- rowspan mescla a coluna agrupadora sem criar cabecalhos extras. -->
+            <rng:optional>
+                <rng:attribute name="group_by_mode">
+                    <rng:choice>
+                        <rng:value>header</rng:value>
+                        <rng:value>rowspan</rng:value>
+                    </rng:choice>
+                </rng:attribute>
+            </rng:optional>
             <rng:optional><rng:attribute name="group_by_expand"/></rng:optional>
             <rng:optional><rng:attribute name="group_by_skip_empty"/></rng:optional>
             <rng:optional><rng:attribute name="decoration-bf"/></rng:optional>

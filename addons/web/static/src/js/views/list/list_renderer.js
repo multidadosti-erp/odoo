@@ -265,6 +265,10 @@ var ListRenderer = BasicRenderer.extend({
         return $body;
     },
     /**
+     * Agrupa os registros carregados sem alterar a ordem no modelo.
+     * group_by_mode="rowspan" mescla a coluna visivel do group_by, em vez de
+     * criar cabecalhos. O grupo em edicao fica temporariamente desmesclado.
+     *
      * @private
      */
     _applyLocalGrouping: function ($body) {
@@ -276,6 +280,16 @@ var ListRenderer = BasicRenderer.extend({
         var field = this.state.fields[fieldName];
         if (!field || !_.contains(['many2one', 'char', 'selection', 'boolean', 'integer'], field.type)) {
             throw new Error('Tree group_by must reference a loaded scalar or many2one field: ' + fieldName);
+        }
+        var mergeCells = this.arch.attrs.group_by_mode === 'rowspan';
+        var columnIndex = _.findIndex(this.columns, function (column) {
+            return column.tag === 'field' && column.attrs.name === fieldName;
+        });
+        if (mergeCells) {
+            if (columnIndex === -1) {
+                throw new Error('Tree group_by_mode="rowspan" requires a visible grouping column: ' + fieldName);
+            }
+            this._clearRowspanGrouping($body);
         }
         var groups = [];
         var byKey = Object.create(null);
@@ -325,6 +339,23 @@ var ListRenderer = BasicRenderer.extend({
             return;
         }
         _.each(groups, function (group) {
+            if (mergeCells) {
+                var $cells = $();
+                _.each(group.records, function (record) {
+                    var $row = $rows.filter(function () { return $(this).data('id') === record.id; });
+                    insert($row);
+                    $cells = $cells.add($row.children('.o_data_cell').eq(columnIndex));
+                });
+                // O grupo em edicao mantem todas as celulas disponiveis.
+                var editing = _.some(group.records, function (record) {
+                    return record.id === selectedRecordID;
+                });
+                if (!editing && $cells.length > 1 && !$cells.is('.o_invisible_modifier')) {
+                    $cells.first().attr('rowspan', group.records.length).addClass('o_rowspan_cell');
+                    $cells.slice(1).addClass('o_rowspan_duplicate');
+                }
+                return;
+            }
             if (self.localGroupStates[group.key] === undefined) {
                 self.localGroupStates[group.key] = self.arch.attrs.group_by_expand === '1';
             }
@@ -344,6 +375,16 @@ var ListRenderer = BasicRenderer.extend({
             });
         });
         restoreActiveInput();
+    },
+
+    /**
+     * Restaura as celulas sem remove-las, preservando indices e widgets.
+     *
+     * @private
+     */
+    _clearRowspanGrouping: function ($body) {
+        $body.find('.o_rowspan_cell').removeAttr('rowspan').removeClass('o_rowspan_cell');
+        $body.find('.o_rowspan_duplicate').removeClass('o_rowspan_duplicate');
     },
 
     _onLocalGroupKeyDown: function (event) {

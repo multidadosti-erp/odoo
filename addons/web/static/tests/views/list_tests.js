@@ -331,6 +331,86 @@ QUnit.module('Views', {
         form.destroy();
     });
 
+    QUnit.test('rowspan grouping merges nonadjacent records without adding headers', function (assert) {
+        assert.expect(9);
+        this.data.bar.records[1].display_name = 'Value 1';
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree group_by="m2o" group_by_mode="rowspan">' +
+                '<field name="m2o"/><field name="foo"/><field name="int_field" sum="Total"/>' +
+                '</tree>',
+        });
+        assert.strictEqual(list.$('.o_data_row').length, 4, 'all records keep their own row');
+        assert.strictEqual(list.$('.o_local_group_header').length, 0, 'no extra group header');
+        assert.strictEqual(list.$('.o_data_row.d-none').length, 0, 'groups do not collapse');
+        assert.deepEqual(list.$('.o_data_row').map(function () {
+            return $(this).children('.o_data_cell').eq(1).text();
+        }).get(), ['yop', 'gnap', 'blip', 'blip'], 'nonadjacent records are reunited');
+        assert.strictEqual(list.$('.o_rowspan_cell').attr('rowspan'), '3', 'one cell spans three rows');
+        assert.strictEqual(list.$('.o_rowspan_duplicate').length, 2, 'only repeated cells are hidden');
+        assert.strictEqual(list.$('.o_data_row:last .o_data_cell:first').attr('rowspan'), undefined,
+            'different many2one IDs with the same label remain separate');
+        assert.strictEqual(list.$('tbody .o_list_record_selector').length, 4,
+            'each record retains its own selector');
+        assert.strictEqual(list.$('tfoot .o_list_number').text().trim(), '32', 'totals are unchanged');
+        list.destroy();
+    });
+
+    QUnit.test('rowspan grouping preserves inline editing and navigation', function (assert) {
+        assert.expect(7);
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="bottom" group_by="m2o" group_by_mode="rowspan">' +
+                '<field name="m2o"/><field name="foo"/><field name="int_field"/>' +
+                '</tree>',
+        });
+        list.$('.o_data_row:first .o_data_cell:eq(1)').click();
+        assert.strictEqual(list.$('.o_rowspan_duplicate').length, 0, 'the edited group is unmerged');
+        testUtils.fields.editInput(list.$('.o_selected_row input[name="foo"]'), 'Changed');
+        list.renderer._moveToNextLine();
+        assert.strictEqual(list.renderer.currentRow, 2, 'navigation follows the visual order');
+        assert.strictEqual(this.data.foo.records[0].foo, 'Changed', 'the intended record was edited');
+        assert.strictEqual(this.data.foo.records[1].foo, 'blip', 'another group was not edited');
+        assert.strictEqual(list.$('.o_selected_row input[name="foo"]').val(), 'gnap',
+            'the next editor belongs to the correct record');
+        return list.renderer.unselectRow().then(function () {
+            assert.strictEqual(list.$('.o_rowspan_cell').attr('rowspan'), '3',
+                'the group is merged again after editing');
+            assert.strictEqual(list.$('.o_rowspan_duplicate').length, 2,
+                'repeated cells are hidden again');
+            list.destroy();
+        });
+    });
+
+    QUnit.test('rowspan grouping restores cells when deleting the spanning row', function (assert) {
+        assert.expect(4);
+        this.data.foo.fields.lines = {type: 'one2many', relation: 'foo', string: 'Lines'};
+        this.data.foo.records[0].lines = [2, 3, 4];
+        var form = createView({
+            View: FormView,
+            model: 'foo',
+            data: this.data,
+            arch: '<form><field name="lines">' +
+                '<tree editable="bottom" group_by="m2o" group_by_mode="rowspan">' +
+                    '<field name="m2o"/><field name="foo"/>' +
+                '</tree></field></form>',
+            res_id: 1,
+            viewOptions: {mode: 'edit'},
+        });
+        assert.strictEqual(form.$('.o_rowspan_cell').attr('rowspan'), '2', 'two records share a cell');
+        form.$('.o_rowspan_cell').closest('tr').find('.o_list_record_remove').click();
+        assert.strictEqual(form.$('.o_data_row').length, 2, 'only the spanning record is deleted');
+        assert.strictEqual(form.$('.o_rowspan_duplicate').length, 0, 'remaining cells are restored');
+        assert.deepEqual(form.$('.o_data_row').map(function () {
+            return $(this).children('.o_data_cell').eq(1).text();
+        }).get(), ['blip', 'blip'], 'the correct records remain');
+        form.destroy();
+    });
+
     QUnit.test('simple readonly list', function (assert) {
         assert.expect(10);
 

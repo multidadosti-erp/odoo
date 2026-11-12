@@ -10,6 +10,15 @@
     border-collapse: initial;
     border-spacing: 0;
 
+    > tbody > tr > td.o_rowspan_cell {
+        vertical-align: middle;
+        text-align: left;
+    }
+
+    .o_rowspan_duplicate {
+        display: none;
+    }
+
     // Boolean Widgets in editable list
     // should be clickable and activate the row
     &.o_editable_list .o_data_row:not(.o_selected_row) .o_data_cell {

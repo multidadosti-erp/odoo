@@ -329,6 +329,9 @@ ListRenderer.include({
 
         this.currentRow = editMode ? rowIndex : null;
         var $row = this._getRowByRecordId(recordID);
+        if (this.arch.attrs.group_by_mode === 'rowspan') {
+            this._clearRowspanGrouping(this.$('tbody').first());
+        }
         if (editMode && this.arch.attrs.group_by && $row.hasClass('d-none')) {
             this.localGroupStates[$row.data('local-group-key')] = true;
             this._applyLocalGrouping(this.$('tbody').first());
@@ -392,6 +395,9 @@ ListRenderer.include({
         $row.find('.o_list_record_selector input').prop('disabled', !record.res_id);
 
         return $.when.apply($, defs).then(function () {
+            if (self.arch.attrs.group_by_mode === 'rowspan') {
+                self._applyLocalGrouping(self.$('tbody').first());
+            }
             // necessary to trigger resize on fieldtexts
             core.bus.trigger('DOM_updated');
         });
