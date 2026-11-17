@@ -29,6 +29,7 @@ var PivotController = AbstractController.extend({
         'click .o_pivot_field_menu a': '_onFieldMenuSelection',
         'click td': '_onCellClick',
         'click .o_pivot_measure_row': '_onMeasureRowClick',
+        'click .o_pivot_ranking_toggle': '_onRankingToggleClick',
     },
     /**
      * @override
@@ -251,6 +252,7 @@ var PivotController = AbstractController.extend({
         if ($target.hasClass('o_pivot_header_cell_closed') ||
             $target.hasClass('o_pivot_header_cell_opened') ||
             $target.hasClass('o_empty') ||
+            $target.hasClass('o_pivot_ranking_cell') ||
             $target.data('type') === 'variation' ||
             !this.enableLinking) {
             return;
@@ -344,6 +346,15 @@ var PivotController = AbstractController.extend({
         var isAscending = $target.hasClass('o_pivot_measure_row_sorted_asc');
         var dataType = $target.data('data_type');
         this.model.sortRows(col_id, measure, isAscending, dataType);
+        this.update({}, {reload: false});
+    },
+    /**
+     * Show or hide the ranking column.
+     *
+     * @private
+     */
+    _onRankingToggleClick: function () {
+        this.model.toggleRanking();
         this.update({}, {reload: false});
     },
     /**
