@@ -92,13 +92,14 @@ var PivotRenderer = AbstractRenderer.extend({
         var nbrCols = (this.state.mainColWidth === 1) ?
             nbr_measures :
             (this.state.mainColWidth + 1) * nbr_measures;
+        var nbrRankingCols = this.state.showRanking ? 1 : 0;
         var i;
         if (this.compare) {
-            for (i=0; i < 3 * nbrCols + 1; i++) {
+            for (i=0; i < 3 * nbrCols + 1 + nbrRankingCols; i++) {
                 $table.prepend($('<col>'));
             }
         } else {
-            for (i=0; i < nbrCols + 1; i++) {
+            for (i=0; i < nbrCols + 1 + nbrRankingCols; i++) {
                 $table.prepend($('<col>'));
             }
         }
@@ -133,6 +134,9 @@ var PivotRenderer = AbstractRenderer.extend({
                         .text(cell.title)
                         .attr('rowspan', cell.height + 1)
                         .attr('colspan', cell.width);
+                    if (!this.state.showRanking) {
+                        $cell.append(this._renderRankingToggle());
+                    }
                 } else {
                     $cell = $('<th>')
                         .text(cell.title)
@@ -163,6 +167,14 @@ var PivotRenderer = AbstractRenderer.extend({
                     }
                 }
                 $row.append($cell);
+
+                if (j == 0 && i == 0 && this.state.showRanking) {
+                    $row.append($('<th>')
+                        .addClass('o_pivot_ranking_sort')
+                        .text(_t('Ranking'))
+                        .attr('rowspan', cell.height + 1)
+                        .append(this._renderRankingToggle()));
+                }
 
                 $cell.toggleClass('d-none d-md-table-cell', (cell.expanded !== undefined) || (cell.measure !== undefined && j < headers[i].length - this.state.measures.length));
                 if (cell.height > 1) {
@@ -201,6 +213,18 @@ var PivotRenderer = AbstractRenderer.extend({
             }
             $thead.append($row);
         }
+    },
+    /**
+     * @private
+     * @returns {jQueryElement} button toggling the ranking column
+     */
+    _renderRankingToggle: function () {
+        var title = this.state.showRanking ? _t('Hide ranking') : _t('Show ranking');
+        return $('<button>', {
+            class: 'btn btn-sm btn-link fa fa-sort-numeric-asc o_pivot_ranking_toggle',
+            title: title,
+            'aria-label': title,
+        });
     },
     /**
      * @private

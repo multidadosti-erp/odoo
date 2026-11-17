@@ -335,6 +335,7 @@ var PivotModel = AbstractModel.extend({
             measures: this.data.measures,
             rows: !isRaw && this._computeRows(),
             rowGroupBys: this.data.main_row.root.groupbys,
+            showRanking: this.data.show_ranking,
             sortedColumn: this.data.sorted_column,
         };
     },
@@ -384,6 +385,7 @@ var PivotModel = AbstractModel.extend({
             colGroupBys: params.context.pivot_column_groupby || params.colGroupBys,
             measures: this._processMeasures(params.context.pivot_measures) || params.measures,
             sorted_column: {},
+            show_ranking: false,
         };
         this.variationData = {};
         this.defaultGroupedBy = effectiveGroupedBy;
@@ -505,6 +507,12 @@ var PivotModel = AbstractModel.extend({
                         value1[dataType] - value2[dataType]:
                         value2[dataType] - value1[dataType];
         }
+    },
+    /**
+     * Show or hide the ranking column.
+     */
+    toggleRanking: function () {
+        this.data.show_ranking = !this.data.show_ranking;
     },
     /**
      * Toggle the active state for a given measure, then reload the data.
