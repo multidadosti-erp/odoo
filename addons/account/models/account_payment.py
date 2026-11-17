@@ -814,22 +814,34 @@ class account_payment(models.Model):
         """ Create a journal entry corresponding to a payment, if the payment references invoice(s) they are reconciled.
             Return the journal entry.
         """
+        if self._context.get('force_company'):
+            # O contexto informa o ID; os cálculos precisam do registro da empresa.
+            company_id = self.env['res.company'].browse(self._context['force_company'])
+        elif 'move_id' in self._fields and self.move_id:
+            # O vínculo com o movimento é adicionado por módulos opcionais.
+            company_id = self.move_id.company_id or self.company_id
+        else:
+            company_id = self.company_id
+        
         user_id = self._context.get('uid', self.env.user.id)
         aml_obj = self.env['account.move.line'].with_context(check_move_validity=False)
-        debit, credit, amount_currency, currency_id = aml_obj.with_context(date=self.payment_date)._compute_amount_fields(amount, self.currency_id, self.company_id.currency_id)
+        debit, credit, amount_currency, currency_id = aml_obj.with_context(date=self.payment_date)._compute_amount_fields(amount, self.currency_id, company_id.currency_id)
 
+        # Grava com a Empresa de Pagamento
         move = self.env['account.move'].create(self._get_move_vals())
 
         # Write line corresponding to invoice payment
+        # Grava com a Empresa de Pagamento
         counterpart_aml_dict = self._get_shared_move_line_vals(debit, credit, amount_currency, move.id, False)
         counterpart_aml_dict.update(self._get_counterpart_move_line_vals(self.invoice_ids))
-        counterpart_aml_dict.update({'currency_id': currency_id})
-        counterpart_aml = aml_obj.create(counterpart_aml_dict)
+        counterpart_aml_dict.update({'currency_id': currency_id, 'company_id': company_id.id})
+        # Multidados: Adicionando SUDO para forçar a criação.
+        counterpart_aml = aml_obj.sudo().with_context(force_uid_log=user_id).create(counterpart_aml_dict)
 
         # Reconcile with the invoices
         if self.payment_difference_handling == 'reconcile' and self.payment_difference:
             writeoff_line = self._get_shared_move_line_vals(0, 0, 0, move.id, False)
-            debit_wo, credit_wo, amount_currency_wo, currency_id = aml_obj.with_context(date=self.payment_date)._compute_amount_fields(self.payment_difference, self.currency_id, self.company_id.currency_id)
+            debit_wo, credit_wo, amount_currency_wo, currency_id = aml_obj.with_context(date=self.payment_date)._compute_amount_fields(self.payment_difference, self.currency_id, company_id.currency_id)
             writeoff_line['name'] = self.writeoff_label
             writeoff_line['account_id'] = self.writeoff_account_id.id
             writeoff_line['debit'] = debit_wo
@@ -845,11 +857,12 @@ class account_payment(models.Model):
 
         # Write counterpart lines
         if not self.currency_id.is_zero(self.amount):
-            if not self.currency_id != self.company_id.currency_id:
+            if not self.currency_id != company_id.currency_id:
                 amount_currency = 0
+            # Grava com a Empresa de Pagamento
             liquidity_aml_dict = self._get_shared_move_line_vals(credit, debit, -amount_currency, move.id, False)
             liquidity_aml_dict.update(self._get_liquidity_move_line_vals(-amount))
-
+            liquidity_aml_dict.update({'currency_id': currency_id, 'company_id': company_id.id})
             # Multidados: Adicionando SUDO para forçar a criação.
             aml_obj.sudo().with_context(force_uid_log=user_id).create(liquidity_aml_dict)
 

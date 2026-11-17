@@ -2023,7 +2023,7 @@ class AccountInvoice(models.Model):
             recordset: Resultado da reconciliação das linhas.
         """
         # Obtém as linhas de movimentação contábil relevantes para reconciliação
-        line_to_reconcile = self.env['account.move.line']
+        line_to_reconcile = self.env['account.move.line'].sudo()
         for inv in self:
             line_to_reconcile += inv._get_aml_for_register_payment()
 
