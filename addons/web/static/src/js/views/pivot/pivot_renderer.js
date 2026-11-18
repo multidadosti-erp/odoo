@@ -26,6 +26,7 @@ var PivotRenderer = AbstractRenderer.extend({
         this._super.apply(this, arguments);
         this.compare = state.compare;
         this.fieldWidgets = params.widgets || {};
+        this.enableRanking = params.enableRanking;
         this.timeRangeDescription = params.timeRangeDescription;
         this.comparisonTimeRangeDescription = params.comparisonTimeRangeDescription;
     },
@@ -133,8 +134,10 @@ var PivotRenderer = AbstractRenderer.extend({
                     $cell = $('<th>')
                         .text(cell.title)
                         .attr('rowspan', cell.height + 1)
-                        .attr('colspan', cell.width)
-                        .append(this._renderRankingToggle());
+                        .attr('colspan', cell.width);
+                    if (this.enableRanking) {
+                        $cell.append(this._renderRankingToggle());
+                    }
                 } else {
                     $cell = $('<th>')
                         .text(cell.title)
