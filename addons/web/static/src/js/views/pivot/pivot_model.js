@@ -204,6 +204,7 @@ var PivotModel = AbstractModel.extend({
         }
         var measureRow = measureNbr >= 1 ? _.last(headers) : [];
         var rows = this._computeRows();
+        var ranking_title = this.data.show_ranking ? _t('Ranking') : undefined;
         var i, j, value, values, is_bold, additionalHeaders = [];
         // remove the empty headers on left side
         headers[0].splice(0,1);
@@ -277,6 +278,7 @@ var PivotModel = AbstractModel.extend({
                 measure_row: additionalHeaders,
                 rows: rows,
                 nbr_measures: 3 * measureNbr,
+                ranking_title: ranking_title,
             };
         } else {
         // process all rows
@@ -290,6 +292,7 @@ var PivotModel = AbstractModel.extend({
                 measure_row: measureRow,
                 rows: rows,
                 nbr_measures: measureNbr,
+                ranking_title: ranking_title,
             };
         }
     },
