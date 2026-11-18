@@ -28,13 +28,18 @@ class TableExporter(http.Controller):
 
         # Step 1: writing headers
         headers = jdata['headers']
+        # the ranking column, when present, sits right after the row titles column
+        ranking_title = jdata.get('ranking_title')
+        offset = 1 if ranking_title else 0
 
         # x,y: current coordinates
         # carry: queue containing cell information when a cell has a >= 2 height
         #      and the drawing code needs to add empty cells below
-        x, y, carry = 1, 0, deque()
+        x, y, carry = 1 + offset, 0, deque()
         for i, header_row in enumerate(headers):
             worksheet.write(i, 0, '', header_plain)
+            if ranking_title:
+                worksheet.write(i, 1, ranking_title if i == 0 else '', header_plain)
             for header in header_row:
                 while (carry and carry[0]['x'] == x):
                     cell = carry.popleft()
@@ -56,11 +61,12 @@ class TableExporter(http.Controller):
                 if cell['height'] > 1:
                     carry.append({'x': x, 'height': cell['height'] - 1})
                 x = x + nbr_measures
-            x, y = 1, y + 1
+            x, y = 1 + offset, y + 1
 
         # Step 2: measure row
         if nbr_measures > 1:
-            worksheet.write(y, 0, '', header_plain)
+            for c in range(offset + 1):
+                worksheet.write(y, c, '', header_plain)
             for measure in jdata['measure_row']:
                 style = header_bold if measure['is_bold'] else header_plain
                 worksheet.write(y, x, measure['measure'], style)
@@ -68,16 +74,19 @@ class TableExporter(http.Controller):
             y = y + 1
 
         # Step 3: writing data
-        x = 0
         for row in jdata['rows']:
-            worksheet.write(y, x, row['indent'] * '     ' + ustr(row['title']), header_plain)
+            worksheet.write(y, 0, row['indent'] * '     ' + ustr(row['title']), header_plain)
+            x = 0
+            if ranking_title:
+                worksheet.write(y, 1, row.get('ranking', ''))
+                x = 1
             for cell in row['values']:
                 x = x + 1
                 if cell.get('is_bold', False):
                     worksheet.write(y, x, cell['value'], bold)
                 else:
                     worksheet.write(y, x, cell['value'])
-            x, y = 0, y + 1
+            y = y + 1
 
         response = request.make_response(None,
             headers=[('Content-Type', 'application/vnd.ms-excel'),
