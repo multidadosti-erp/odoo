@@ -386,6 +386,7 @@ var PivotModel = AbstractModel.extend({
             measures: this._processMeasures(params.context.pivot_measures) || params.measures,
             sorted_column: {},
             show_ranking: false,
+            ranking_reversed: false,
         };
         this.variationData = {};
         this.defaultGroupedBy = effectiveGroupedBy;
@@ -473,6 +474,7 @@ var PivotModel = AbstractModel.extend({
         this._traverseTree(this.data.main_row.root, function (header) {
             header.children.sort(comparisonFunction);
         });
+        this.data.ranking_reversed = false;
         this.data.sorted_column = {
             id: col_id,
             measure: measure,
@@ -506,6 +508,17 @@ var PivotModel = AbstractModel.extend({
             return descending ?
                         value1[dataType] - value2[dataType]:
                         value2[dataType] - value1[dataType];
+        }
+    },
+    /**
+     * Invert the displayed order of the rows, at every level of the tree.
+     * The ranking of each row is kept, so the ranking column reads in reverse.
+     * If the rows are sorted by a measure, its sort order is flipped too.
+     */
+    reverseRows: function () {
+        this.data.ranking_reversed = !this.data.ranking_reversed;
+        if (this.data.sorted_column.order) {
+            this.data.sorted_column.order = this.data.sorted_column.order === 'asc' ? 'desc' : 'asc';
         }
     },
     /**
@@ -579,10 +592,46 @@ var PivotModel = AbstractModel.extend({
         result.push(measure_row);
         return result;
     },
+    /**
+     * Compute the ranking of each row: its position in the natural order of
+     * the tree (the total row has no ranking). Rankings are attached to the
+     * rows, so they do not change when the displayed order is reversed.
+     *
+     * @private
+     * @returns {Object} map from header id to ranking
+     */
+    _computeRankings: function () {
+        var rankings = {};
+        var rank = 0;
+        var root = this.data.main_row.root;
+        var max_level = this.getMaxLevel(root);
+        // rankings follow the natural order, not the displayed one
+        var reversed = this.data.ranking_reversed;
+        this.data.ranking_reversed = false;
+        this._traverseTree(root, function (header) {
+            if (header !== root && !header.expanded && header.path.length === max_level) {
+                rankings[header.id] = ++rank;
+            } else if (rank) {
+                rank = 0;
+            }
+        });
+        this.data.ranking_reversed = reversed;
+        return rankings;
+    },
+    getMaxLevel: function (root) {
+        var max_level = root.path.length;
+        this._traverseTree(root, function (header) {
+            if (header.path.length > max_level) {
+                max_level = header.path.length;
+            }
+        });
+        return max_level;
+    },
     _computeRows: function () {
         var self = this;
         var aggregates, i;
         var result = [];
+        var rankings = this._computeRankings();
         this._traverseTree(this.data.main_row.root, function (header) {
             var values = [],
                 col_ids = [];
@@ -592,6 +641,7 @@ var PivotModel = AbstractModel.extend({
                 indent: header.path.length - 1,
                 title: header.path[header.path.length-1],
                 expanded: header.expanded,
+                ranking: rankings[header.id],
                 values: values,
             });
             self._traverseTree(self.data.main_col.root, add_cells, header.id, values, col_ids);
@@ -1140,8 +1190,10 @@ var PivotModel = AbstractModel.extend({
     _traverseTree: function (root, f, arg1, arg2, arg3) {
         f(root, arg1, arg2, arg3);
         if (!root.expanded) return;
-        for (var i = 0; i < root.children.length; i++) {
-            this._traverseTree(root.children[i], f, arg1, arg2, arg3);
+        var isRowTree = this.data && this.data.main_row && root.root === this.data.main_row.root;
+        var children = isRowTree && this.data.ranking_reversed ? root.children.slice().reverse() : root.children;
+        for (var i = 0; i < children.length; i++) {
+            this._traverseTree(children[i], f, arg1, arg2, arg3);
         }
     },
     /**
