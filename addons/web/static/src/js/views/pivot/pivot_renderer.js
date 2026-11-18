@@ -254,6 +254,15 @@ var PivotRenderer = AbstractRenderer.extend({
                 .addClass(rows[i].expanded ? 'o_pivot_header_cell_opened' : 'o_pivot_header_cell_closed');
             if (rows[i].indent > 0) $header.attr('title', groupbyLabels[rows[i].indent - 1]);
             $header.appendTo($row);
+
+            // Adicionado pela Multidados:
+            // Adiciona a célula de ranking no início da linha, se o ranking estiver ativado.
+            if (this.state.showRanking) {
+                $row.append($('<td>')
+                    .addClass('o_pivot_ranking_cell text-center text-muted')
+                    .text(rows[i].ranking || ''));
+            }
+
             for (j = 0; j < length; j++) {
                 value = rows[i].values[j];
                 name = this.state.measures[j % nbrMeasures];

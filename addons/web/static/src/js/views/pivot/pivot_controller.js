@@ -30,6 +30,7 @@ var PivotController = AbstractController.extend({
         'click td': '_onCellClick',
         'click .o_pivot_measure_row': '_onMeasureRowClick',
         'click .o_pivot_ranking_toggle': '_onRankingToggleClick',
+        'click .o_pivot_ranking_sort': '_onRankingSortClick',
     },
     /**
      * @override
@@ -353,8 +354,21 @@ var PivotController = AbstractController.extend({
      *
      * @private
      */
-    _onRankingToggleClick: function () {
+    _onRankingToggleClick: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
         this.model.toggleRanking();
+        this.update({}, {reload: false});
+    },
+    /**
+     * Clicking the ranking header inverts the order of the rows.
+     *
+     * @private
+     */
+    _onRankingSortClick: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.model.reverseRows();
         this.update({}, {reload: false});
     },
     /**
