@@ -133,10 +133,8 @@ var PivotRenderer = AbstractRenderer.extend({
                     $cell = $('<th>')
                         .text(cell.title)
                         .attr('rowspan', cell.height + 1)
-                        .attr('colspan', cell.width);
-                    if (!this.state.showRanking) {
-                        $cell.append(this._renderRankingToggle());
-                    }
+                        .attr('colspan', cell.width)
+                        .append(this._renderRankingToggle());
                 } else {
                     $cell = $('<th>')
                         .text(cell.title)
@@ -172,8 +170,7 @@ var PivotRenderer = AbstractRenderer.extend({
                     $row.append($('<th>')
                         .addClass('o_pivot_ranking_sort')
                         .text(_t('Ranking'))
-                        .attr('rowspan', cell.height + 1)
-                        .append(this._renderRankingToggle()));
+                        .attr('rowspan', cell.height + 1));
                 }
 
                 $cell.toggleClass('d-none d-md-table-cell', (cell.expanded !== undefined) || (cell.measure !== undefined && j < headers[i].length - this.state.measures.length));
@@ -221,9 +218,11 @@ var PivotRenderer = AbstractRenderer.extend({
     _renderRankingToggle: function () {
         var title = this.state.showRanking ? _t('Hide ranking') : _t('Show ranking');
         return $('<button>', {
-            class: 'btn btn-sm btn-link fa fa-sort-numeric-asc o_pivot_ranking_toggle',
+            class: 'btn btn-sm btn-link fa fa-trophy o_pivot_ranking_toggle' +
+                (this.state.showRanking ? ' o_pivot_ranking_toggle_active' : ''),
             title: title,
             'aria-label': title,
+            'aria-pressed': this.state.showRanking ? 'true' : 'false',
         });
     },
     /**
