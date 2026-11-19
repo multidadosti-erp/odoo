@@ -26,6 +26,7 @@ var PivotRenderer = AbstractRenderer.extend({
         this._super.apply(this, arguments);
         this.compare = state.compare;
         this.fieldWidgets = params.widgets || {};
+        this.enableRanking = params.enableRanking;
         this.timeRangeDescription = params.timeRangeDescription;
         this.comparisonTimeRangeDescription = params.comparisonTimeRangeDescription;
     },
@@ -92,13 +93,14 @@ var PivotRenderer = AbstractRenderer.extend({
         var nbrCols = (this.state.mainColWidth === 1) ?
             nbr_measures :
             (this.state.mainColWidth + 1) * nbr_measures;
+        var nbrRankingCols = this.state.showRanking ? 1 : 0;
         var i;
         if (this.compare) {
-            for (i=0; i < 3 * nbrCols + 1; i++) {
+            for (i=0; i < 3 * nbrCols + 1 + nbrRankingCols; i++) {
                 $table.prepend($('<col>'));
             }
         } else {
-            for (i=0; i < nbrCols + 1; i++) {
+            for (i=0; i < nbrCols + 1 + nbrRankingCols; i++) {
                 $table.prepend($('<col>'));
             }
         }
@@ -133,6 +135,9 @@ var PivotRenderer = AbstractRenderer.extend({
                         .text(cell.title)
                         .attr('rowspan', cell.height + 1)
                         .attr('colspan', cell.width);
+                    if (this.enableRanking) {
+                        $cell.append(this._renderRankingToggle());
+                    }
                 } else {
                     $cell = $('<th>')
                         .text(cell.title)
@@ -163,6 +168,13 @@ var PivotRenderer = AbstractRenderer.extend({
                     }
                 }
                 $row.append($cell);
+
+                if (j == 0 && i == 0 && this.state.showRanking) {
+                    $row.append($('<th>')
+                        .addClass('o_pivot_ranking_sort')
+                        .text(_t('Ranking'))
+                        .attr('rowspan', cell.height + 1));
+                }
 
                 $cell.toggleClass('d-none d-md-table-cell', (cell.expanded !== undefined) || (cell.measure !== undefined && j < headers[i].length - this.state.measures.length));
                 if (cell.height > 1) {
@@ -204,6 +216,20 @@ var PivotRenderer = AbstractRenderer.extend({
     },
     /**
      * @private
+     * @returns {jQueryElement} button toggling the ranking column
+     */
+    _renderRankingToggle: function () {
+        var title = this.state.showRanking ? _t('Hide ranking') : _t('Show ranking');
+        return $('<button>', {
+            class: 'btn btn-sm btn-link fa fa-trophy o_pivot_ranking_toggle' +
+                (this.state.showRanking ? ' o_pivot_ranking_toggle_active' : ''),
+            title: title,
+            'aria-label': title,
+            'aria-pressed': this.state.showRanking ? 'true' : 'false',
+        });
+    },
+    /**
+     * @private
      * @param {jQueryElement} $tbody
      * @param {jQueryElement} rows
      */
@@ -230,6 +256,15 @@ var PivotRenderer = AbstractRenderer.extend({
                 .addClass(rows[i].expanded ? 'o_pivot_header_cell_opened' : 'o_pivot_header_cell_closed');
             if (rows[i].indent > 0) $header.attr('title', groupbyLabels[rows[i].indent - 1]);
             $header.appendTo($row);
+
+            // Adicionado pela Multidados:
+            // Adiciona a célula de ranking no início da linha, se o ranking estiver ativado.
+            if (this.state.showRanking) {
+                $row.append($('<td>')
+                    .addClass('o_pivot_ranking_cell text-center text-muted')
+                    .text(rows[i].ranking || ''));
+            }
+
             for (j = 0; j < length; j++) {
                 value = rows[i].values[j];
                 name = this.state.measures[j % nbrMeasures];
