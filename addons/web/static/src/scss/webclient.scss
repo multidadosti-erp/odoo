@@ -57,10 +57,36 @@
             padding: 10px;
         }
 
+        &.o_notification_countdown::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: $o-brand-primary;
+            pointer-events: none;
+            transform-origin: left center;
+            animation: o_notification_countdown var(--notification-close-delay) linear forwards;
+        }
+
         &.o_error {
             color: white;
             background-color: $o-notification-error-bg-color;
+
+            &.o_notification_countdown::after {
+                background: rgba(255, 255, 255, 0.75);
+            }
         }
+    }
+}
+
+@keyframes o_notification_countdown {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
     }
 }
 

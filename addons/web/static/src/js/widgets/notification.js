@@ -75,6 +75,8 @@ var Notification = Widget.extend({
         return this._super.apply(this, arguments).then(function () {
             self.$el.animate({opacity: 1.0}, self._animationDelay, "swing", function () {
                 if(!self.sticky) {
+                    self.el.style.setProperty('--notification-close-delay', self._autoCloseDelay + 'ms');
+                    self.$el.addClass('o_notification_countdown');
                     setTimeout(function () {
                         self.close();
                     }, self._autoCloseDelay);

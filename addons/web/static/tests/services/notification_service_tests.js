@@ -58,6 +58,29 @@ QUnit.module('Services', {
         });
     });
 
+    QUnit.test('Countdown follows the notification close delay', function (assert) {
+        var done = assert.async();
+        assert.expect(3);
+
+        var view = createView(this.viewParams);
+        view.call('notification', 'notify', {
+            title: 'a',
+            message: 'b',
+            autoCloseDelay: 100,
+            onClose: function () {
+                assert.ok(true, "notification closes automatically");
+                view.destroy();
+                done();
+            },
+        });
+        var $notification = $('body .o_notification_manager .o_notification');
+        $notification.promise('fx').done(function () {
+            assert.ok($notification.hasClass('o_notification_countdown'), "countdown starts after the opening animation");
+            assert.strictEqual($notification[0].style.getPropertyValue('--notification-close-delay'), '100ms',
+                "countdown uses the automatic close delay");
+        });
+    });
+
     QUnit.test('Display a warning', function (assert) {
         var done = assert.async();
         assert.expect(1);
@@ -78,7 +101,7 @@ QUnit.module('Services', {
 
     QUnit.test('Display a sticky notification', function (assert) {
         var done = assert.async();
-        assert.expect(3);
+        assert.expect(4);
 
         var view = createView(this.viewParams);
         view.call('notification', 'notify', {
@@ -88,6 +111,7 @@ QUnit.module('Services', {
         });
         var $notification = $('body .o_notification_manager .o_notification');
         assert.strictEqual($notification.find('.o_close').length, 1, "should display the close button in notification");
+        assert.notOk($notification.hasClass('o_notification_countdown'), "sticky notifications have no countdown");
 
         setTimeout(function () {
             assert.strictEqual($notification.is(':hidden'), false, "should not hide the notification automatically");
