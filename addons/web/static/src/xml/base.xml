@@ -116,7 +116,7 @@
 
 <t t-name="Notification">
     <div t-attf-class="o_notification #{widget.className}" t-translation="off" role="alertdialog">
-        <a t-if="widget.sticky" class="fa fa-times o_close" href="#" title="Close" aria-label="Close"/>
+        <a class="fa fa-times o_close" href="#" t-att-title="widget.closeLabel" t-att-aria-label="widget.closeLabel"/>
         <div class="o_notification_title">
             <span t-attf-class="o_icon fa fa-3x #{widget.icon}" role="img" t-attf-aria-label="Notification #{widget.name}" t-attf-title="Notification #{widget.name}"/>
             <t t-raw="widget.title"/>

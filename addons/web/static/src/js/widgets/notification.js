@@ -13,6 +13,8 @@ odoo.define('web.Notification', function (require) {
  */
 
 var Widget = require('web.Widget');
+var core = require('web.core');
+var _t = core._t;
 
 var Notification = Widget.extend({
     template: 'Notification',
@@ -46,6 +48,7 @@ var Notification = Widget.extend({
         this._super.apply(this, arguments);
         this.title = params.title;
         this.message = params.message;
+        this.closeLabel = _t("Close");
         this.buttons = params.buttons || [];
         this.sticky = !!this.buttons.length || !!params.sticky;
         this.type = params.type || 'notification';
@@ -73,11 +76,14 @@ var Notification = Widget.extend({
     start: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
+            if (self._closing) {
+                return;
+            }
             self.$el.animate({opacity: 1.0}, self._animationDelay, "swing", function () {
                 if(!self.sticky) {
                     self.el.style.setProperty('--notification-close-delay', self._autoCloseDelay + 'ms');
                     self.$el.addClass('o_notification_countdown');
-                    setTimeout(function () {
+                    self._closeTimeout = setTimeout(function () {
                         self.close();
                     }, self._autoCloseDelay);
                 }
@@ -99,6 +105,12 @@ var Notification = Widget.extend({
      */
     close: function (silent) {
         var self = this;
+        if (this._closing) {
+            return;
+        }
+        this._closing = true;
+        clearTimeout(this._closeTimeout);
+        this.$el.stop(true, false);
         this.trigger_up('close');
         if (!silent && !this._buttonClicked) {
             if (this._closeCallback) {

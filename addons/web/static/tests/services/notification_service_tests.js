@@ -47,9 +47,9 @@ QUnit.module('Services', {
         });
         var $notification = $('body .o_notification_manager .o_notification');
         assert.strictEqual(_.str.trim($notification.html().replace(/\s+/g, ' ')),
-            "<div class=\"o_notification_title\"> <span role=\"img\" aria-label=\"Notification undefined\" class=\"o_icon fa fa-3x fa-lightbulb-o\" title=\"Notification undefined\"></span> a </div> <div class=\"o_notification_content\">b</div>",
+            "<a aria-label=\"Close\" class=\"fa fa-times o_close\" href=\"#\" title=\"Close\"></a> <div class=\"o_notification_title\"> <span role=\"img\" aria-label=\"Notification undefined\" class=\"o_icon fa fa-3x fa-lightbulb-o\" title=\"Notification undefined\"></span> a </div> <div class=\"o_notification_content\">b</div>",
             "should display notification");
-        assert.strictEqual($notification.find('.o_close').length, 0, "should not display the close button in ");
+        assert.strictEqual($notification.find('.o_close').length, 1, "should display the close button");
         setTimeout(function () {
             assert.strictEqual($notification.is(':hidden'), true, "should hide the notification");
             assert.strictEqual($('body .o_notification_manager .o_notification').length, 0, "should destroy the notification");
@@ -93,10 +93,63 @@ QUnit.module('Services', {
         });
         var $notification = $('body .o_notification_manager .o_notification');
         assert.strictEqual(_.str.trim($notification.html().replace(/\s+/g, ' ')),
-            "<div class=\"o_notification_title\"> <span role=\"img\" aria-label=\"Notification undefined\" class=\"o_icon fa fa-3x fa-exclamation\" title=\"Notification undefined\"></span> a </div> <div class=\"o_notification_content\">b</div>",
+            "<a aria-label=\"Close\" class=\"fa fa-times o_close\" href=\"#\" title=\"Close\"></a> <div class=\"o_notification_title\"> <span role=\"img\" aria-label=\"Notification undefined\" class=\"o_icon fa fa-3x fa-exclamation\" title=\"Notification undefined\"></span> a </div> <div class=\"o_notification_content\">b</div>",
             "should display notification");
         view.destroy();
         setTimeout(done);
+    });
+
+    QUnit.test('Close a countdown notification before its timeout', function (assert) {
+        var done = assert.async();
+        assert.expect(4);
+        var closeCount = 0;
+        var view = createView(this.viewParams);
+        view.call('notification', 'notify', {
+            title: 'a',
+            message: 'b',
+            autoCloseDelay: 50,
+            onClose: function () {
+                closeCount++;
+            },
+        });
+        var $notification = $('body .o_notification_manager .o_notification');
+        $notification.promise('fx').done(function () {
+            assert.ok($notification.hasClass('o_notification_countdown'), "countdown is active");
+            $notification.find('.o_close').click();
+            assert.strictEqual(closeCount, 1, "onClose is called immediately");
+            setTimeout(function () {
+                assert.strictEqual(closeCount, 1, "the cancelled timeout does not call onClose again");
+                assert.strictEqual($('body .o_notification_manager .o_notification').length, 0, "notification is destroyed");
+                view.destroy();
+                done();
+            }, 100);
+        });
+    });
+
+    QUnit.test('Close a notification during its opening animation', function (assert) {
+        var done = assert.async();
+        assert.expect(2);
+        testUtils.unpatch(Notification);
+        testUtils.patch(Notification, {
+            _animationDelay: 50,
+        });
+        var closeCount = 0;
+        var view = createView(this.viewParams);
+        view.call('notification', 'notify', {
+            title: 'a',
+            message: 'b',
+            autoCloseDelay: 20,
+            onClose: function () {
+                closeCount++;
+            },
+        });
+        $('body .o_notification_manager .o_notification .o_close').click();
+        setTimeout(function () {
+            assert.strictEqual(closeCount, 1, "onClose is called only once");
+            assert.strictEqual($('body .o_notification_manager .o_notification').length, 0, "notification is destroyed");
+            view.destroy();
+            done();
+        }, 150);
     });
 
     QUnit.test('Display a sticky notification', function (assert) {
