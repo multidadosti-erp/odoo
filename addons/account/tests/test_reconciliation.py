@@ -1,5 +1,6 @@
 from odoo import api, fields
 from odoo.addons.account.tests.account_test_classes import AccountingTestCase
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 import time
 import unittest
@@ -489,6 +490,21 @@ class TestReconciliationExec(TestReconciliation):
             self.assertTrue(aml.reconciled, 'The journal item should be totally reconciled')
             self.assertEquals(aml.amount_residual, 0, 'The journal item should be totally reconciled')
             self.assertEquals(aml.amount_residual_currency, 0, 'The journal item should be totally reconciled')
+
+    def test_check_reconcile_validity_empty_selection(self):
+        move_lines = self.env['account.move.line']
+
+        self.assertIsNone(move_lines._check_reconcile_validity())
+
+    def test_check_reconcile_validity_force_company_empty(self):
+        move_lines = self.env['account.move.line'].search([], limit=1)
+        if not move_lines:
+            self.skipTest('No journal items available')
+
+        move_lines = move_lines.with_context(force_company=-1)
+
+        with self.assertRaises(UserError):
+            move_lines._check_reconcile_validity()
 
     def test_manual_reconcile_wizard_same_account(self):
         move_ids = self.env['account.move']
