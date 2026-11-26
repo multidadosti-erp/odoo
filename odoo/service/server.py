@@ -1053,6 +1053,7 @@ class WorkerCron(Worker):
     def _db_list(self):
         if config['db_name']:
             db_names = config['db_name'].split(',')
+            return odoo.service.db.filter_dbs_compatible(db_names)
         else:
             db_names = odoo.service.db.list_dbs(True)
         return db_names

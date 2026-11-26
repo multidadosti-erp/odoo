@@ -270,7 +270,7 @@ def _drop_conn(cr, db_name):
 
 @check_db_management_enabled
 def exp_drop(db_name):
-    if db_name not in list_dbs(True):
+    if db_name not in list_dbs_raw(True):
         return False
     odoo.modules.registry.Registry.delete(db_name)
     odoo.sql_db.close_db(db_name)
@@ -512,7 +512,7 @@ def exp_db_exist(db_name):
     except Exception:
         return False
 
-def list_dbs(force=False):
+def list_dbs_raw(force=False):
     """Lista bancos de dados disponíveis (otimizado para PG14+)
     
     OTIMIZAÇÕES APLICADAS:
@@ -573,23 +573,39 @@ def list_db_incompatible(databases):
     incompatible_databases = []
     server_version = '.'.join(str(v) for v in version_info[:2])
     for database_name in databases:
-        with closing(db_connect(database_name).cursor()) as cr:
-            if odoo.tools.table_exists(cr, 'ir_module_module'):
-                cr.execute("SELECT latest_version FROM ir_module_module WHERE name=%s", ('base',))
-                base_version = cr.fetchone()
-                if not base_version or not base_version[0]:
-                    incompatible_databases.append(database_name)
-                else:
-                    # e.g. 10.saas~15
-                    local_version = '.'.join(base_version[0].split('.')[:2])
-                    if local_version != server_version:
+        try:
+            with closing(db_connect(database_name).cursor()) as cr:
+                if odoo.tools.table_exists(cr, 'ir_module_module'):
+                    cr.execute("SELECT latest_version FROM ir_module_module WHERE name=%s", ('base',))
+                    base_version = cr.fetchone()
+                    if not base_version or not base_version[0]:
                         incompatible_databases.append(database_name)
-            else:
-                incompatible_databases.append(database_name)
+                    else:
+                        # e.g. 10.saas~15
+                        local_version = '.'.join(base_version[0].split('.')[:2])
+                        if local_version != server_version:
+                            incompatible_databases.append(database_name)
+                else:
+                    incompatible_databases.append(database_name)
+        except Exception:
+            _logger.exception("Could not check compatibility of database '%s'", database_name)
+            incompatible_databases.append(database_name)
     for database_name in incompatible_databases:
         # release connection
         odoo.sql_db.close_db(database_name)
     return incompatible_databases
+
+
+def filter_dbs_compatible(databases):
+    """Remove bancos incompatíveis com esta versão do Odoo."""
+    incompatible_databases = set(list_db_incompatible(databases))
+    return [database_name for database_name in databases
+            if database_name not in incompatible_databases]
+
+
+def list_dbs(force=False):
+    """Lista somente bancos compatíveis com esta versão do Odoo."""
+    return filter_dbs_compatible(list_dbs_raw(force))
 
 
 def exp_list(document=False):

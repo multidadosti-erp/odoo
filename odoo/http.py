@@ -1510,8 +1510,9 @@ class Root(object):
         return request.registry['ir.http'].routing_map()
 
 def db_list(force=False, httprequest=None):
-    dbs = odoo.service.db.list_dbs(force)
-    return db_filter(dbs, httprequest=httprequest)
+    dbs = odoo.service.db.list_dbs_raw(force)
+    dbs = db_filter(dbs, httprequest=httprequest)
+    return odoo.service.db.filter_dbs_compatible(dbs)
 
 def db_filter(dbs, httprequest=None):
     httprequest = httprequest or request.httprequest
