@@ -36,6 +36,7 @@
         th {
             font-weight: normal;  // bootstrap override
             background-color: lighten($o-brand-secondary, 40%);
+            position: relative;  // anchors the ranking toggle
         }
 
         @mixin o-pivot-header-cell {
@@ -78,6 +79,20 @@
         .o_pivot_measure_row_sorted_desc::after {
             @include o-caret-up;
             margin-left: 5px;
+        }
+
+        .o_pivot_ranking_toggle {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            padding: 1px 4px;
+            font-size: 1.25em;
+            line-height: 1;
+            &.o_pivot_ranking_toggle_active {
+                color: $o-brand-primary;
+                border-radius: 0;
+                box-shadow: 0 0 0 2px $o-brand-primary;
+            }
         }
     }
 
